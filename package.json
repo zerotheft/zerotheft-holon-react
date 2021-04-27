@@ -1,0 +1,65 @@
+{
+  "name": "zerotheft-holon-react",
+"version": "1.1.92",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.14.0",
+    "@fortawesome/react-fontawesome": "^0.1.13",
+    "@honeybadger-io/js": "^3.0.4",
+    "@honeybadger-io/react": "^1.0.1",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "add": "^2.0.6",
+    "axios": "^0.20.0",
+    "date-fns": "^2.16.1",
+    "formik": "^2.1.5",
+    "lodash": "^4.17.20",
+    "prop-types": "^15.7.2",
+    "qrcode.react": "^1.0.0",
+    "react": "^16.13.1",
+    "react-collapsible": "^2.8.1",
+    "react-dom": "^16.13.1",
+    "react-elastic-carousel": "^0.9.0",
+    "react-modal": "^3.11.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.3",
+    "react-select": "^3.1.0",
+    "react-star-ratings": "^2.3.0",
+    "react-toastify": "^6.0.8",
+    "styled-components": "^5.1.1",
+    "web3": "^1.2.11",
+    "ws": "^7.4.2",
+    "yarn": "^1.22.10",
+    "yup": "^0.29.3"
+  },
+  "scripts": {
+    "fetch-contract": "node contractAddress.js",
+    "start": "PORT=3002 react-scripts start",
+    "start-prod": "REACT_APP_MODE=production yarn fetch-contract && PORT=3003 REACT_APP_MODE=production react-scripts start",
+    "start-private": "PORT=3003 REACT_APP_MODE=private react-scripts start",
+    "start-staging": "REACT_APP_MODE=staging yarn fetch-contract && PORT=3004 REACT_APP_MODE=staging react-scripts start",
+    "build-prod": "REACT_APP_MODE=production yarn fetch-contract && REACT_APP_MODE=production react-scripts build",
+    "build-private": "REACT_APP_MODE=private react-scripts build",
+    "build-staging": "REACT_APP_MODE=staging yarn fetch-contract && REACT_APP_MODE=staging react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

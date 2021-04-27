@@ -1,0 +1,50 @@
+import React, { useEffect } from 'react'
+import { startCase, compact, concat, get } from 'lodash'
+import styled from 'styled-components'
+
+import { Wrapper, Container } from 'commons/styles'
+import Button from 'commons/Buttons'
+import { convertJSONtoString } from 'utils'
+import { getProposal } from 'apis/proposals'
+import useFetch from 'commons/hooks/useFetch'
+import OverlaySpinner from 'commons/OverlaySpinner'
+
+const ViewProposal = ({ match, history }) => {
+  const [getProposalApi, loading, proposal] = useFetch(getProposal, true)
+
+  useEffect(() => {
+    getProposalApi(match.params.id)
+  }, [])
+
+  if(loading) return <OverlaySpinner loading={true}/>
+  if(!proposal || !proposal.detail) return <div style={{padding: 40}}>Proposal is not available.</div>
+
+  const hierarchy = proposal.detail.Hierarchy || proposal.detail.hierarchy || ''
+  let pathArray = compact(hierarchy.split('/'))
+  const issue = pathArray.pop()
+  const path = concat(get(proposal, 'detail.summary_country', 'USA'), pathArray).join('%2F')
+
+  return <Wrapper>
+    <Container>
+    {hierarchy && <HeaderContainer>
+      <Header>Proposal for {startCase(issue)}</Header>
+      <Button onClick={() => history.push(`/path/${path}/issue/${issue}`)}>View Path</Button>
+    </HeaderContainer>}
+      {convertJSONtoString(proposal.detail)}
+    </Container>
+  </Wrapper>
+}
+
+export default ViewProposal
+
+const HeaderContainer = styled.div `
+  display: flex;
+  width: 100%;
+  margin-bottom: 20px;
+  align-items: center;
+  justify-content: space-between;
+`,
+Header = styled.div `
+  font-size: 26px;
+  font-weight: 600;
+`
