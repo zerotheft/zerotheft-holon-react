@@ -1,0 +1,40 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# testing
+/coverage
+
+# production
+/build
+
+# misc
+.DS_Store
+**/.DS_Store
+.env.development
+.env.staging
+.env.production
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.idea/
+.history
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+#config
+src/config.json
+src/config.staging.json
+src/config.private.json
+src/config.production.json
+src/contracts.json
+src/contracts.staging.json
+src/contracts.private.json
+src/contracts.production.json
+src/contracts/ProposalHandler.json
