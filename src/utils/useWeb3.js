@@ -2,7 +2,7 @@ import { useContext, useEffect } from 'react'
 import { Web3Context } from 'components/App/Web3Context'
 import { get } from 'utils/api'
 import config from 'config'
-const { MODE, ETHERSCAN_API_KEY, network } = config
+const { MODE } = config
 
 const useWeb3 = () => {
   const { web3, loadWeb3 } = useContext(Web3Context)
@@ -31,7 +31,7 @@ const getBalance = async (web3, address) => {
 
 const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [], gasLimit = 3000000) => {
   try {
-    if(!web3) {
+    if (!web3) {
       web3 = await loadWeb3()
     }
     const [instance, address] = await instantiateContract(web3, contract)
@@ -73,7 +73,7 @@ const instantiateContract = async (web3, contract) => {
     const deployedNetwork = contract.networks[networkId]
     return [new web3.eth.Contract(contract.abi, deployedNetwork && deployedNetwork.address), deployedNetwork.address]
   } else {
-    const {address, implementation} = contract
+    const { address, implementation } = contract
     const res = await get(`api?module=contract&action=getabi&address=${implementation}`, null, `https://blockscout.com/etc/${config.network}`)
     // const res = await get(`api?module=contract&action=getabi&address=${implementation}&apikey=${ETHERSCAN_API_KEY}`, null, `https://api${network ? `-${network}` : ''}.etherscan.io`)
     return [new web3.eth.Contract(JSON.parse(res.data.result), address), address]

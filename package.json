@@ -1,6 +1,6 @@
 {
   "name": "zerotheft-holon-react",
-"version": "1.1.92",
+  "version": "1.2.14",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
@@ -38,10 +38,10 @@
   "scripts": {
     "fetch-contract": "node contractAddress.js",
     "start": "PORT=3002 react-scripts start",
-    "start-prod": "REACT_APP_MODE=production yarn fetch-contract && PORT=3003 REACT_APP_MODE=production react-scripts start",
+    "start-production": "REACT_APP_MODE=production yarn fetch-contract && PORT=3003 REACT_APP_MODE=production react-scripts start",
     "start-private": "PORT=3003 REACT_APP_MODE=private react-scripts start",
     "start-staging": "REACT_APP_MODE=staging yarn fetch-contract && PORT=3004 REACT_APP_MODE=staging react-scripts start",
-    "build-prod": "REACT_APP_MODE=production yarn fetch-contract && REACT_APP_MODE=production react-scripts build",
+    "build-production": "REACT_APP_MODE=production yarn fetch-contract && REACT_APP_MODE=production react-scripts build",
     "build-private": "REACT_APP_MODE=private react-scripts build",
     "build-staging": "REACT_APP_MODE=staging yarn fetch-contract && REACT_APP_MODE=staging react-scripts build",
     "test": "react-scripts test",
