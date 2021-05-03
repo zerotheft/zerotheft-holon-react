@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { get, take, sortedUniqBy, sortBy, range, filter as filterArray } from 'lodash'
+import { get, sortedUniqBy, meanBy, range, filter as filterArray } from 'lodash'
 import Select from 'react-select'
 import yaml from 'js-yaml'
 import styled from 'styled-components'
@@ -8,6 +8,7 @@ import { colors } from 'theme'
 import { IssueContext } from '../IssueContext'
 import { getReport } from 'apis/reports'
 import { getProposalTemplate } from 'apis/proposals'
+import { numberWithCommas } from 'utils'
 import useFetch from 'commons/hooks/useFetch'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import Button from 'commons/Buttons'
@@ -17,6 +18,7 @@ import { Header, Left, Right } from '../commons/styles'
 import { AppContext } from 'components/App/AppContext'
 import Path from '../../Path/Path'
 import SummaryReport from './SummaryReport';
+import PathProposals from './PathProposals';
 
 const dateRange = range(1999, (new Date()).getFullYear()).reverse().map(i => ({ label: i, value: i }))
 const Dashboard = ({ history, location, match }) => {
@@ -24,7 +26,7 @@ const Dashboard = ({ history, location, match }) => {
   const { filter, updateFilter, issue, loading: issueLoading } = useContext(IssueContext)
   const [getReportApi, loading, report] = useFetch(getReport)
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
-  const { filterParams } = useContext(AppContext)
+  const { filterParams, theftInfo } = useContext(AppContext)
   const { pathname } = location
 
   const displayYaml = (template) => {
@@ -52,116 +54,109 @@ const Dashboard = ({ history, location, match }) => {
     getTemplateApi(templatePath)
   }, [get(match, 'params.id'), get(match, 'params.pathname')])
 
-  const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]
+  const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]  
   const filteredProposals = sortedUniqBy(filter.year ? filterArray(allProposals, { year: filter.year }) : allProposals, 'description')
+  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
+  const yes = theftInfo && (theftData.for/theftData.votes * 100).toFixed(0)
+  const no = 100 - yes
   return <div>
     <InnerWrapper>
       {!issueLoading && <OverlaySpinner loading={templateLoading} />}
       <Left>
-        <Title>
-          <h4>Description of the Problem</h4>
-        </Title>
-        <ProposalContents>
-          <div className='header'>From {get(filter, 'year')} Proposals</div>
-          <div className='content'>
-            {filteredProposals.length ? take(filteredProposals, 5).map(item => {
-              const title = get(item, 'title')
-              const area = get(item, 'description')
-              if (!title && !area) return null
-              return <div className='item' key={item.id}>
-                <h5>{title}</h5>
-                <p><SeeMore text={area} textLength='200' /></p>
-              </div>
-            }) : !templateLoading && displayYaml(template)}
-            {filteredProposals.length ? <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }}><Button onClick={() => history.push(`/leafReport/${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`)} width={130} height={44}>View Report</Button></div> : null}
-          </div>
-          {filteredProposals.length ? take(sortBy(filteredProposals, ['votes']).reverse(), 1).map(item => {
-            if (item.votes === 0) return null;
-            const area = get(item, 'description')
-            if (!area) return null
-            return <>
-              <div className='header'>Voter’s decided this best describes the problem</div>
-              <div className='content'>
-                <div className='item' key={item.id}>
-                  <p><SeeMore text={area} textLength='200' /></p>
-                </div>
-              </div>
-            </>
-          }) : ''}
-        </ProposalContents>
-
+        <PathProposals proposals={allProposals} />
       </Left>
       <Right>
         <Header>
-          <h3 style={{ fontSize: 29, fontWeight: '500', textAlign: 'center' }}>Your vote is needed:</h3>
-          <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
-            {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={110} height={44}>Vote</Button> :
+          <h3 style={{ fontSize: 45, fontWeight: '600', textAlign: 'left', color: colors.primary }}>Please Vote</h3>
+          <SelectWrapper>
+            <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
+            {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{fontSize: 22}}>Vote</Button> :
               <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
                 Add your proposal
-          </CustomButton>}
-          </div>
-          <SelectWrapper>
-            <span>Year:</span>
-            <Select
-              defaultValue={get(filter, 'year') ? { label: get(filter, 'year'), value: get(filter, 'year') } : null}
-              options={dateRange}
-              placeholder='Year'
-              isSearchable={false}
-              noOptionsMessage={() => 'data unavailable.'}
-              styles={{
-                container: styles => ({
-                  ...styles,
-                  width: 120
-                }),
-                control: styles => ({
-                  ...styles,
-                  borderColor: `${colors.primary} !important`,
-                  borderRadius: 3,
-                  minHeight: 0,
-                  background: 'transparent',
-                  boxShadow: 'none !important',
-                }),
-                option: styles => ({
-                  ...styles,
-                  fontSize: 16,
-                }),
-                menu: styles => ({
-                  ...styles,
-                  margin: '5px 0 0',
-                  width: 120,
-                  borderRadius: 0,
-                }),
-                placeholder: styles => ({
-                  ...styles,
-                  fontSize: 16
-                }),
-                noOptionsMessage: styles => ({
-                  ...styles,
-                  fontSize: 16
-                }),
-                singleValue: styles => ({
-                  ...styles,
-                  color: colors.primary,
-                  fontSize: 15,
-                  fontWeight: '500'
-                }),
-                indicatorSeparator: () => ({
-                  display: 'none'
-                }),
-                dropdownIndicator: styles => ({
-                  ...styles,
-                  paddingLeft: 0,
-                  color: colors.primary
-                }),
-                clearIndicator: styles => ({
-                  ...styles,
-                  color: colors.primary
-                })
-              }}
-              onChange={selected => {
-                updateFilter({ year: selected ? selected.value : null })
-              }}
-            />
+            </CustomButton>}
+              <Select
+                defaultValue={get(filter, 'year') ? { label: `Year: ${get(filter, 'year')}`, value: get(filter, 'year') } : null}
+                options={dateRange}
+                placeholder='Year'
+                isSearchable={false}
+                noOptionsMessage={() => 'data unavailable.'}
+                styles={{
+                  container: styles => ({
+                    ...styles,
+                    width: 180,
+                  }),
+                  control: styles => ({
+                    ...styles,
+                    borderColor: `${colors.primary} !important`,
+                    paddingLeft: 5,
+                    borderRadius: 8,
+                    minHeight: 0,
+                    height: 55,
+                    background: 'transparent',
+                    boxShadow: 'none !important',
+                    fontSize: 22,
+                  }),
+                  option: styles => ({
+                    ...styles,
+                    fontSize: 16,
+                  }),
+                  menu: styles => ({
+                    ...styles,
+                    margin: '5px 0 0',
+                    width: 120,
+                    borderRadius: 0,
+                  }),
+                  placeholder: styles => ({
+                    ...styles,
+                    fontSize: 22
+                  }),
+                  noOptionsMessage: styles => ({
+                    ...styles,
+                    fontSize: 16
+                  }),
+                  singleValue: styles => ({
+                    ...styles,
+                    color: colors.primary,
+                    fontSize: 22,
+                    fontWeight: '500'
+                  }),
+                  indicatorSeparator: () => ({
+                    display: 'none'
+                  }),
+                  dropdownIndicator: styles => ({
+                    ...styles,
+                    paddingLeft: 0,
+                    color: colors.primary
+                  }),
+                  clearIndicator: styles => ({
+                    ...styles,
+                    color: colors.primary
+                  })
+                }}
+                onChange={selected => {
+                  updateFilter({ year: selected ? selected.value : null })
+                }}
+              />
+            </div>
+            <TheftInfo>
+              <h2>Was There Theft?</h2>
+              <div class="wrapLeftRightsec">
+                <div class="leftTheftSec">
+                  <TheftBlockSec className="yesTheftsec" width={yes}>
+                    <span>Yes {yes}%</span>
+                  </TheftBlockSec>
+                  <TheftBlockSec className="noTheftsec" width={no}>
+                    <span>No {no}%</span>
+                  </TheftBlockSec>
+                </div>
+                <div class="rightTheftSec">
+                  <h2>How Much <span>${parseFloat(get(theftData, 'theft'))/(10**9).toFixed(1)}b</span></h2>
+                </div>
+              </div>
+              <div class="totlVotersSec">
+                Total Voters : {numberWithCommas(get(theftData, 'votes'))}
+              </div>
+            </TheftInfo>
           </SelectWrapper>
         </Header>
         {(filteredProposals.length && get(filter, 'year')) ? <IWrapper style={{ flex: get(report, 'report') ? 1 : 'initial' }}>
@@ -177,15 +172,97 @@ const Dashboard = ({ history, location, match }) => {
 
 export default Dashboard
 
+
 const InnerWrapper = styled.div`
   min-height: 80vh;
   @media(min-width: 991px) {
     display: flex;
-    & > div {
-      flex: 1;
-    }
+    flex-flow: row wrap;
   }
 `,
+  TheftInfo = styled.div`
+  display: flex;
+  flex-flow: column;
+
+  h2 {
+    color: ${colors.text.gray};
+    font-family: Poppins;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 25px;
+    line-height: 39px;
+    letter-spacing: 0.01em;
+  }
+  .totlVotersSec {
+    color: ${colors.text.gray};
+  }
+  .wrapLeftRightsec {
+    display:flex;
+    flex-flow: row wrap;
+    .leftTheftSec {
+      width:calc(100% - 209px);
+    }
+    .rightTheftSec {
+      width: 209px;
+      padding-left: 20px;
+      h2 {
+        display:flex;
+        flex-flow: column;
+        font-family: Poppins;
+        font-style: normal;
+        font-weight: 500;
+        font-size: 23px;
+        line-height: 34px;
+        color: ${colors.primary};
+
+        span {
+          font-weight: bold;
+          font-size: 55px;
+          line-height: 82px;
+          text-align: center;
+          letter-spacing: -0.025em;
+        }
+      }
+    }
+  }
+  `,
+  TheftBlockSec = styled.div`
+    display:flex;
+    flex-flow: column;
+    height: 50px;
+    margin-bottom: 10px;
+    align-item: center;
+    background: ${colors.button.greyBackground};
+    font-family: Poppins;
+    font-size: 25px;
+    position: relative;
+    span{
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      white-space: nowrap;
+      justify-content: center;
+      color: white;
+      padding-left: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: ${props => props.width || 0}%;
+      background: green;
+    }
+    &.noTheftsec {
+      &::before {
+        background: red;
+      }
+    }
+  `,
   Title = styled.div`
   margin-bottom: 20px;
   h4 {
@@ -230,10 +307,16 @@ const InnerWrapper = styled.div`
 `,
   SelectWrapper = styled.div`
   display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: center;
-  align-self: flex-end;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: flex-start;
+  .btns {
+    display: flex;
+    justify-content: flex-start;
+    align-self: flex-start;
+    border-radius: 8px;
+    margin-right: 10px;
+  }
   & > span {
     font-size: 15px;
     font-weight: 500;

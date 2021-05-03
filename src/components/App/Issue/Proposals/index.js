@@ -51,7 +51,7 @@ const Proposals = ({ history, match }) => {
             }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
           </div>
         </Header>
-        <ProposalDetail item={selectedItem} />
+        <ProposalDetail item={selectedItem} chartData={Filter(get(issue, 'proposals', []), { year: filter.year })}/>
       </div>
     </Right>
   </Wrapper>

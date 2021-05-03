@@ -34,7 +34,6 @@ const SummaryReport = (url) => {
           .boxWrapper {
             display: flex;
             justify-content: space-around;
-            min-width: 565px;
             width: 100%;
             flex-direction: column;
           }
@@ -45,8 +44,8 @@ const SummaryReport = (url) => {
             box-shadow: 0px 4px 23px rgba(0, 0, 0, 0.08);
             border-radius: 8px;
             height: 140px;
-            width: 260px;
-            margin: 20px;
+            width: 48%;
+            margin: 10px;
           }
           .boxColor1 {
             background: #EBD7F9 !important;
@@ -76,7 +75,7 @@ const SummaryReport = (url) => {
             padding: 20px 20px;
             margin: -40px 0;
           }
-          div#view-summary-report img, div#view-summary-report #summary_issue {max-width:565px;} div#view-summary-report > div {display: flex;justify-content: center;} div#view-summary-report
+          div#view-summary-report img, div#view-summary-report #summary_issue {width:100%;} div#view-summary-report > div {display: flex;justify-content: center;} div#view-summary-report
         </style>`;
       div.innerHTML = summary;
 

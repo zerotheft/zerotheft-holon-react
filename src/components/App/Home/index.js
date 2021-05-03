@@ -13,25 +13,13 @@ import { colors } from 'theme'
 import { DESKTOP_APP_DOWNLOAD_LINK } from 'constants/index'
 
 const Home = ({ history }) => {
-  const { filterParams, selectedHolon } = useContext(AppContext),
-    [loading, updateLoading] = useState(false),
-    [summary, setSummary] = useState({})
-
-  const getTheftSummary = async () => {
-    updateLoading(true)
-    const theftSummary = await getTheftInfo(get(filterParams, 'initPath'), true, get(filterParams, 'year'))
-    setSummary(theftSummary);
-    updateLoading(false)
-  }
-
-  useEffect(() => {
-    getTheftSummary()
-  }, [get(filterParams, 'year')]);
+  const { selectedHolon, theftInfo } = useContext(AppContext),
+    [loading, updateLoading] = useState(false)
 
   return <React.Fragment>
     <IssueSlider />
-    <TheftInfo summary={summary.info} />
-    <Paths summary={summary} amtLoading={loading} />
+    <TheftInfo summary={get(theftInfo,'info')} />
+    <Paths summary={theftInfo} amtLoading={loading} />
     <AboutSection>
       <Container>
         <AboutZT>

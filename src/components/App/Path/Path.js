@@ -12,7 +12,6 @@ import { Container } from 'commons/styles'
 import Button from 'commons/Buttons'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { AppContext } from 'components/App/AppContext'
-import { getTheftInfo } from 'apis/reports'
 import PathDetails from './PathDetails'
 import BreadCrumb from './BreadCrumb'
 import { calculate } from 'components/App/commons/services'
@@ -20,26 +19,14 @@ import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 
 const Path = ({ history, match, isIssuePath }) => {
-  const { paths, loadingPaths: loading, filterParams, updateFilter, umbrellaPaths = [] } = useContext(AppContext)
-
-  const [summary, setSummary] = useState({})
+  const { paths, loadingPaths: loading, filterParams, updateFilter, theftInfo, umbrellaPaths = [] } = useContext(AppContext)
   const [amtLoading, updateAmtLoading] = useState(false)
   const nation = get(filterParams, 'initPath') || 'USA'
-  const getTheftSummary = async () => {
-    updateAmtLoading(true)
-    const theftSummary = await getTheftInfo(nation, true, get(filterParams, 'year'))
-    const data = theftSummary
-    setSummary(data);
-    updateAmtLoading(false)
-  }
 
   const pathInTabs = paths && Object.keys(paths['USA']).map((path, index) => {
     if (paths['USA'][path] !== null)
       return { id: `path-${index + 1}`, pathId: path, name: _.startCase(path), path: `/path/USA/${path}` }
   }).filter(Boolean)
-  useEffect(() => {
-    getTheftSummary()
-  }, [get(filterParams, 'year')]);
 
   const populateList = (master, parents = [match.params.pathname.split('%2F')], depth = 0) => {
     if (master && (Object.keys(master)[0]) === "parent") {
@@ -70,7 +57,7 @@ const Path = ({ history, match, isIssuePath }) => {
                 <FontAwesomeIcon className='icon' icon={faChevronRight} style={{ marginRight: 18, color: '#878688' }} />
                 <h5>Umbrella</h5>
               </div>
-              <PathDetails isPath={!isUmbrellaPath} url={url} summary={summary} index={i} parents={parents} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
+              <PathDetails isPath={true} url={url} summary={theftInfo} index={i} parents={parents} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
             </ItemHead>}
           </>}>
             <ItemBody>
@@ -89,7 +76,7 @@ const Path = ({ history, match, isIssuePath }) => {
               <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 18, color: '#878688' }} />
               <h5>{master[i] && master[i]['display_name'] ? master[i]['display_name'] : startCase(i) || 'N/A'}</h5>
             </div>
-            <PathDetails url={`${url}/${i}`} summary={summary} index={i} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
+            <PathDetails url={`${url}/${i}`} summary={theftInfo} index={i} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
           </ItemHead>
         }
       }
@@ -98,7 +85,7 @@ const Path = ({ history, match, isIssuePath }) => {
   const currentPathName = `${match.params.pathname}${match.params.id ? `%2F${match.params.id}` : ''}`,
   currentPath = get(paths, currentPathName.split('%2F').join('.')) || {}
   if (!currentPath || !Object.keys(currentPath).length) return null
-  const current_path_summary = !isEmpty(summary) ? calculate(summary[get(match, 'params.pathname', '').replaceAll("%2F", "/")]) : {}
+  const current_path_summary = !isEmpty(theftInfo) ? calculate(theftInfo[get(match, 'params.pathname', '').replaceAll("%2F", "/")]) : {}
   
   return <Wrapper>
     {(loading || amtLoading) && <OverlaySpinner loading={loading || amtLoading} />}
@@ -136,7 +123,7 @@ const Path = ({ history, match, isIssuePath }) => {
           <CustomButton onClick={() => {
             const isUmbrellaPath = umbrellaPaths.includes(get(match, 'params.pathname', '').replace(/%2F/g, '/').replace('USA/', ''))
             history.push(`/${isUmbrellaPath ? 'leafReport' : 'pathReport'}/${get(match, 'params.pathname', '')}`)
-          }} plain width={140} height={31}>View Report</CustomButton>
+          }} height={31} style={{backgroundColor: colors.background.body}}>View Report</CustomButton>
         </CurrentDetails></>}
     </Title>
     }
@@ -206,7 +193,8 @@ const Wrapper = styled(Container)`
   CollapsibleWrapper = styled.div`
   border-radius: 13px;
   background: #E9E6ED;
-  padding: 20px;
+  margin-bottom: 10px;
+  padding: 10px;
   h4.col-title {
     background: #7F51C1;
     color: #fff;
@@ -219,13 +207,10 @@ const Wrapper = styled(Container)`
   }
   .collapsiblewrapper {
     background: #fff;
-    padding: 20px 0 20px 20px;
-    h4.col-title {
-      border-radius: 7px 0 0 7px;
-    }
+    padding: 20px;
   }
   .Collapsible__contentInner > div {
-    background: white;
+    background: ${colors.background.body};
   }
 `,
   ItemHead = styled.div`
@@ -243,7 +228,7 @@ const Wrapper = styled(Container)`
   `}
   h5 {
     color: #676565;
-    font-size: 20px;
+    font-size: 17px;
     font-weight: 500;
     display: inline-block;
     transition: color 0.3s ease;
@@ -269,7 +254,6 @@ const Wrapper = styled(Container)`
   `}
 `,
   ItemBody = styled.div`
-  padding: 10px 0px 10px 20px;
   border: 1px solid #F0F0F0;
   border-width: 0 1px 1px;
   border-radius: 0 0 28px 28px;
@@ -288,10 +272,6 @@ const Wrapper = styled(Container)`
     }
   }
   .Collapsible .Collapsible { 
-    ${ItemHead} { 
-      border-radius: 16px 0 0 0;
-      border-width: 1px 0 1px 1px;
-    }
     ${ItemBody} {
       border-width: 0px 0 1px 1px;
       border-radius: 0 0 0 16px;
@@ -299,6 +279,7 @@ const Wrapper = styled(Container)`
   }
 `,
   CurrentDetails = styled.div`
+  margin-right: 20px;
   padding: 10px;
   border-radius: 11px;
   display: flex;
@@ -330,13 +311,13 @@ const Wrapper = styled(Container)`
 `,
   CustomButton = styled(Button)`
   font-size: 13px;
-  border-radius: 31px;
+  border-radius: 8px;
   border-color: #7890A7;
   color: #000;
   transition: background-color 0.3s ease, color 0.3s ease;
   margin-left: 10px;
   &:hover {
-    background-color: #7890A7;
+    background-color: #7890A7 !important;
     color: #fff;
   }
 `

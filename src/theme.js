@@ -1,10 +1,18 @@
 export const colors = {
   primary: '#7F51C1',
+  solidBorder: '#C9C9C9',
+  warningColor: '#890606',
   border: '#ececec',
   borders: {
     table: '#f2f2f2',
     dropdown: '#E7E9F1',
     dark: '#E5E9F3',
+  },
+  textBackground: "#EEEBF1",
+  textTitle: "#7F58BF",
+  button: {
+    blackText: "#000",
+     greyBackground: "#C4C4C4"
   },
   background: {
     body: '#fff',
@@ -19,6 +27,7 @@ export const colors = {
     fade: '#acacac',
     gray: '#828282',
     normal: '#314252',
+    white: '#FFFFFF',
   },
   secondary: '#4b4b4b',
   error: '#d33030',

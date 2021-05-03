@@ -1,22 +1,21 @@
 import { get } from 'utils/api'
 
-let MODE = process.env.REACT_APP_MODE || process.env.NODE_ENV;
-console.log(MODE, 'modes')
-const envConfig = !MODE || MODE === "development" ? (function () { try { require('./config.json') } catch (e) { console.log(e.message); } }) : require(`./config.${MODE}.json`)
-if (!MODE) {
-  MODE = envConfig.MODE || 'development'
-}
-const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
-
-const tryRequire = async (path) => {
+const tryRequire = (path) => {
   try {
-    const proposalContract = await require(`${path}`);
-    return proposalContract
+    const file = require(`${path}`);
+    return file
   } catch (err) {
-    console.log(`getProposalContract: ${err.message}`)
+    console.log(`Required File Error: ${err.message}`)
     return null;
   }
 }
+let MODE = process.env.REACT_APP_MODE || process.env.NODE_ENV;
+if (!MODE) {
+  MODE = envConfig.MODE || 'development'
+}
+
+const envConfig = !MODE || MODE === "development" ?  tryRequire('./config.json') : require(`./config.${MODE}.json`)
+const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
 
 const getProposalContract = async () => {
   if (MODE === 'private') {

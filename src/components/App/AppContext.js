@@ -8,6 +8,8 @@ import { getPaths, getUmbrellaPaths } from '../../apis/path'
 import useFetch from 'commons/hooks/useFetch'
 import { holonInfo as getHolonInfo } from 'apis/vote'
 import { getVoterInfos } from 'apis/desktopApp'
+import { getTheftInfo } from 'apis/reports'
+
 const AppContext = createContext()
 
 const AppProvider = ({ children }) => {
@@ -21,7 +23,7 @@ const AppProvider = ({ children }) => {
   [selectedHolon, updateHolon] = useState(localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}),
   [userInfo, updateUserInfo] = useState()
   const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem('address'))
-
+  const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
 
   useEffect(() => {
     getPathsApi({nation: filterParams.initPath})
@@ -53,9 +55,11 @@ const AppProvider = ({ children }) => {
     fetchFromApp()
     getHolonApi()
   }, [])
-
+  useEffect(()=> {
+    getTheftApi(filterParams['initPath'], true, get(filterParams, 'year'))
+  }, [])
   return (
-    <AppContext.Provider value={{ ws, userInfo, filterParams, updateFilter, paths, loading, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ ws, userInfo, filterParams, updateFilter, loading, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
   )
 }
 

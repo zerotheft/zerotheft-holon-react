@@ -30,6 +30,7 @@ export const
   color: #99;
 `,
   CustomButton = styled.a`
+  font-family: Poppins;
   background: #4169E1;
   display: inline-block;
   border-radius: 4px;
@@ -53,7 +54,7 @@ export const
   flex-direction: row;
 `,
   Left = styled.div`
-  margin-right: 40px;
+  width: calc(100% - 500px);
   padding-top: 70px;
   & > .header {
     display: flex;
@@ -82,8 +83,8 @@ export const
   }
 `,
   Right = styled.div`
-  padding-top: 70px;
-  background: #F6FAFB;
+  width: 500px;
+  padding: 70px 0px 0px 50px;
   &.apply-bg {
     padding: 70px 60px 60px;
     position: relative;
@@ -99,7 +100,6 @@ export const
       left: 0;
       width: 100%;
       height: 100%;
-      background: #F6FAFB;
     }
   }
 `,
@@ -108,25 +108,73 @@ export const
   & > h4 {
     font-size: 20px;
   }
+  .bodyHeader {
+    margin-top: 25px;
+    .detailWrapper {
+      margin-top: 25px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      margin-left: 12px;
+    }
+    .warning {
+      font-size: 16px;
+      color: ${colors.warningColor};
+      border: 1px solid ${colors.solidBorder};
+      border-radius: 6px;
+      padding: 7px;
+      margin: 7px 0px;
+      span {
+        font-size: 16px;
+        font-weight: 700;
+        color: #C11D1D;
+      }
+    }
+    .theftInfo{
+      display: flex:
+      flex: 1;
+      flex-direction: column;
+      border: 1px solid ${colors.solidBorder};
+      border-radius: 6px;
+      padding: 7px;
+      & > div{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        h4 {
+          font-size: 16px;
+          font-weight: 400;
+          color: ${colors.primary};
+        }
+        h6 {
+          font-size: 13x;
+          font-weight: 300;
+          color: #606060;
+        }
+      }
+      h3 {
+        font-size: 40px;
+        font-weight: 600;
+        color: ${colors.primary};
+      }
+    }
+  }
   .bodyTitle {
-    padding: 20px;
-    border: 1px solid #C9C9C9;
-    border-radius: 6px;
-    background: #fff;
-    margin: 20px 0;
+    margin-top: 15px;
     h4 {
-      font-size: 26px;
+      font-size: 16px;
       font-weight: 400;
     }
     h6 {
-      margin: 5px 0;
       font-size: 16px;
       font-weight: 400;
       color: ${colors.primary};
     }
   }
   .bodyDescription {
-    font-family: monospace;
+    font-family: Poppins;
+    margin-top: 20px;
     h5 {
       margin-bottom: 10px;
       font-size: 18px;

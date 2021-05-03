@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { get, capitalize, round } from 'lodash'
+import { get, capitalize, round, filter as Filter } from 'lodash'
 import { Formik, Field, Form } from 'formik'
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -21,7 +21,7 @@ import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
-  const { selection, priorVoteInfo, loading } = useContext(IssueContext)
+  const { issue, selection, priorVoteInfo, loading, filter } = useContext(IssueContext)
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
   const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
   const [initialValues, updateValues] = useState()
@@ -149,7 +149,7 @@ const VoteFinalize = ({ match, history, location }) => {
                   />
                 </Row>
                 <Row>
-                  <Button type="submmit" height={50}>I approve this vote</Button>
+                  <Button type="submit" height={50}>I approve this vote</Button>
                 </Row>
               </Form>
             }}
@@ -196,7 +196,7 @@ const VoteFinalize = ({ match, history, location }) => {
       </div>
     </Wrapper>
     <ProposalWrapper>
-      <ProposalDetail show_details item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'}/>
+      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes'? 'proposals': 'counter-proposals', []), { year: filter.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'}/>
     </ProposalWrapper>
   </React.Fragment>
 }

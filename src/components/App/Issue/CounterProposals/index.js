@@ -53,7 +53,7 @@ const CounterProposals = ({ history, match }) => {
             </>}
           </div>
         </Header>
-        <ProposalDetail item={selectedItem} type="counter" />
+        <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filter.year })}/>
       </div>
     </Right>
   </Wrapper>

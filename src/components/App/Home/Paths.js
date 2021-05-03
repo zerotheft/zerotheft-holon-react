@@ -16,7 +16,6 @@ const Paths = ({ summary = [], amtLoading }) => {
         {(loading || amtLoading) ? <LoadingText>Fetching Paths</LoadingText> :
           <UL>
             {Object.keys(allPaths).map((key) => {
-              console.log('Path info',allPaths[key])
               const isIssuePath = isEmpty(get(paths, get(filterParams, 'initPath'), {})[key])
               const childPaths = get(paths, get(filterParams, 'initPath'), {})[key] || {}
               const childPathsClone = Object.assign({}, childPaths);

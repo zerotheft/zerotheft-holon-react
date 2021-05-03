@@ -20,6 +20,7 @@ const largeProperty = `
 
 export default styled.button`
   background: ${colors.primary};
+  margin-right: 10px;
   display: flex;
   align-items: center;
   justify-content: center;

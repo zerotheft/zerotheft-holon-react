@@ -31,7 +31,7 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
         e.stopPropagation()
         history.push(`/${isPath ? 'pathReport' : 'leafReport'}/${url.replaceAll('/', '%2F')}`)
       }} style={{backgroundColor: '#E9E9E9', color: '#777373'}} width={105} height={34}><FontAwesomeIcon icon={faFilePdf} />Report</CustomButton>
-      {isPath? <CustomButton onClick={() => history.push(`${viewLink}/proposals`)} width={90} height={34}>VOTE</CustomButton> : <CustomButton onClick={() => history.push(`${viewLink}/proposals`)} width={90} height={34}>VOTE</CustomButton>
+      {isPath? <CustomButton onClick={() => history.push(`${viewLink}/proposals`)} width={90} height={34}>Vote</CustomButton> : <CustomButton onClick={() => history.push(`${viewLink}/proposals`)} width={90} height={34}>Vote</CustomButton>
       }
       </div>
   </Wrapper>
@@ -95,12 +95,13 @@ const Wrapper = styled.div`
   text-align: center;
   border-radius: 6px;
   margin-left: 15px;
+  transition:0.5s ease-in-out;
   &>svg{
     margin-right: 7px;
   }
   &:hover {
-    background-color: #7890A7;
-    color: #fff;
+    background-color: #4f2e7d;
+    color: #fff !important;
   }
   &:active {
     color: #7336A3;
