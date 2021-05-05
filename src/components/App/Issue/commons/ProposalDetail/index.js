@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import StarRatings from 'react-star-ratings';
 import { useRouteMatch } from 'react-router-dom'
 import { get, isEmpty, toNumber, pickBy } from 'lodash'
@@ -12,12 +12,17 @@ import { Body } from '../styles'
 import { convertDollarToString, convertJSONtoString } from 'utils'
 import { IssueContext } from '../../IssueContext'
 import OverlaySpinner from 'commons/OverlaySpinner';
+import useFetch from 'commons/hooks/useFetch'
+import { getProposal } from 'apis/proposals'
 
 const ProposalDetail = ({ item, type, show_details = false , chartData = null}) => {
+  const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
   const { proposalDetails } = useContext(IssueContext)
+  useEffect(() => {
+    getProposalApi(item.id)
+  },[item])
   if (isEmpty(item)) return null
-  const details = proposalDetails[item.id]
   let theftAmt = [],
     votes = []
   chartData && chartData.forEach(function(value, index) {
@@ -41,7 +46,7 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
         format: '${value}B'
       },
       title: {
-          text: 'Theft Amount'
+          text: 'No. of Votes'
       }
     },
     legend: {
@@ -49,12 +54,12 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     },
     series: [{
         type: 'column',
-        name: 'Theft Amount',
-        data: theftAmt,
+        name: 'No. of Votes',
+        data: votes,
     }, {
         type: 'spline',
-        name: 'Number of Votes',
-        data: votes,
+        name: 'Theft Amount',
+        data: theftAmt,
         marker: {
             lineWidth: 2,
             lineColor: Highcharts.getOptions().colors[3],
@@ -103,13 +108,13 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
       </div>
     </div>
     <div className="bodyDescription">
-      {(show_details && details) ? <div className='detail-wrapper' style={{position: 'relative', minHeight: 50}}>
-        {details.loading ? <OverlaySpinner overlayParent loading={true} backgroundColor="transparent" />:
-        convertJSONtoString(get(details, 'detail', {}))}
+      { proposalInfo ? <div className='detail-wrapper' style={{position: 'relative', minHeight: 50}}>
+        {proposalLoading ? <OverlaySpinner overlayParent loading={true} backgroundColor="transparent" />:
+        convertJSONtoString(get(proposalInfo, 'detail', {}))}
       </div> : <React.Fragment>
         {get(item, 'title') && <h5>{get(item, 'title')}</h5>}
         <p>{get(item, 'description')}</p>
-      </React.Fragment>}
+      </React.Fragment> }
     </div>
   </Body>
   )

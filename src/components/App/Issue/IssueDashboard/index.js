@@ -28,7 +28,6 @@ const Dashboard = ({ history, location, match }) => {
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
   const { filterParams, theftInfo } = useContext(AppContext)
   const { pathname } = location
-
   const displayYaml = (template) => {
     let data
     try {
@@ -57,7 +56,7 @@ const Dashboard = ({ history, location, match }) => {
   const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]  
   const filteredProposals = sortedUniqBy(filter.year ? filterArray(allProposals, { year: filter.year }) : allProposals, 'description')
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
-  const yes = theftInfo && (theftData.for/theftData.votes * 100).toFixed(0)
+  const yes = theftData && (theftData.for/theftData.votes * 100).toFixed(0)
   const no = 100 - yes
   return <div>
     <InnerWrapper>
@@ -138,25 +137,27 @@ const Dashboard = ({ history, location, match }) => {
                 }}
               />
             </div>
-            <TheftInfo>
-              <h2>Was There Theft?</h2>
-              <div class="wrapLeftRightsec">
-                <div class="leftTheftSec">
-                  <TheftBlockSec className="yesTheftsec" width={yes}>
-                    <span>Yes {yes}%</span>
-                  </TheftBlockSec>
-                  <TheftBlockSec className="noTheftsec" width={no}>
-                    <span>No {no}%</span>
-                  </TheftBlockSec>
+
+            { theftData && <TheftInfo>
+                <h2>Was There Theft?</h2>
+                <div class="wrapLeftRightsec">
+                  <div class="leftTheftSec">
+                    <TheftBlockSec className="yesTheftsec" width={yes}>
+                      <span>Yes {yes}%</span>
+                    </TheftBlockSec>
+                    <TheftBlockSec className="noTheftsec" width={no}>
+                      <span>No {no}%</span>
+                    </TheftBlockSec>
+                  </div>
+                  <div class="rightTheftSec">
+                    <h2>How Much <span>${parseFloat(get(theftData, 'theft'))/(10**9).toFixed(1)}b</span></h2>
+                  </div>
                 </div>
-                <div class="rightTheftSec">
-                  <h2>How Much <span>${parseFloat(get(theftData, 'theft'))/(10**9).toFixed(1)}b</span></h2>
+                <div class="totlVotersSec">
+                  Total Voters : {numberWithCommas(get(theftData, 'votes'))}
                 </div>
-              </div>
-              <div class="totlVotersSec">
-                Total Voters : {numberWithCommas(get(theftData, 'votes'))}
-              </div>
-            </TheftInfo>
+              </TheftInfo>
+            }
           </SelectWrapper>
         </Header>
         {(filteredProposals.length && get(filter, 'year')) ? <IWrapper style={{ flex: get(report, 'report') ? 1 : 'initial' }}>
@@ -333,8 +334,12 @@ const InnerWrapper = styled.div`
   font-weight: 600;
   color: #fff;
   width: auto;
+  height: 55px;
+  margin-right: 20px;
   padding: 10px 20px;
-  font-size: 16px;
+  font-size: 22px;
+  align-items: center;
+  justify-content: center;
 `,
   IWrapper = styled.div`
   overflow: hidden;
