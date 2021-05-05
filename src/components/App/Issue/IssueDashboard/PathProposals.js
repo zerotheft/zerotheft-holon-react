@@ -1,13 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { isEmpty } from 'lodash'
+import { isEmpty, get } from 'lodash'
 import { colors } from 'theme'
+import useFetch from 'commons/hooks/useFetch'
+import { getProposal } from 'apis/proposals'
+import { convertJSONtoString } from 'utils'
 
-const PathProposals = ({proposals}) =>  { 
+const PathProposals =  ({proposals}) =>  {
+    const [getProposalApi, proposalLoading, bestProposalInfo] = useFetch(getProposal)
     const [proposalNumber, updateProposal] = useState(0)
-    if(isEmpty(proposals)) return null
-    let bestProposal = proposals.reduce((proposal,temp)=>proposal.votes>temp.votes?proposal:temp);
-    
+    let bestProposal = proposals.length && proposals.reduce((proposal,temp)=>proposal.votes>temp.votes?proposal:temp);
+    useEffect(() => {
+        bestProposal.id && getProposalApi(bestProposal.id)
+    },[bestProposal.id])
+    if(isEmpty(proposals)) return (<span> No proposals for the path exists yet. </span>)
     return <Wrapper>
     <h3>{proposals[proposalNumber].title}</h3>
     <div>{proposals[proposalNumber].description}
@@ -18,9 +24,10 @@ const PathProposals = ({proposals}) =>  {
     </div>
     <h4>{bestProposal.title}</h4>
         
-    <div className="best-proposal">
-        {bestProposal.description}
-    </div>
+    { !proposalLoading && <div className="best-proposal">
+            {convertJSONtoString(get(bestProposalInfo, 'detail', {}))}
+        </div>
+    }
     </Wrapper>
 }
 

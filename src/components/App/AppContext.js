@@ -24,7 +24,6 @@ const AppProvider = ({ children }) => {
   [userInfo, updateUserInfo] = useState()
   const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem('address'))
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
-
   useEffect(() => {
     getPathsApi({nation: filterParams.initPath})
     getUmbrellaPathsApi()
@@ -57,7 +56,7 @@ const AppProvider = ({ children }) => {
   }, [])
   useEffect(()=> {
     getTheftApi(filterParams['initPath'], true, get(filterParams, 'year'))
-  }, [])
+  }, [filterParams.year])
   return (
     <AppContext.Provider value={{ ws, userInfo, filterParams, updateFilter, loading, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
   )

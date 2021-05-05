@@ -27,7 +27,7 @@ const Paths = ({ summary = [], amtLoading }) => {
                   {delete childPathsClone.parent}
                   {delete childPathsClone.leaf}
                   {Object.keys(childPathsClone).map((innerKey) => {
-                    const isIssue = isEmpty(childPaths[innerKey])
+                    const isIssue = childPaths[innerKey] && childPaths[innerKey].leaf
                     return <li><PathItem summary={summary} to={isIssue ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}` : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`} name={childPaths[innerKey]['display_name'] ? childPaths[innerKey]['display_name'] : startCase(startCase(innerKey) || 'N/A')} /></li>
                   })}
                 </ul> : null}
