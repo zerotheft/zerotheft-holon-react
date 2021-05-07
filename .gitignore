@@ -16,6 +16,7 @@
 **/.DS_Store
 .env.development
 .env.staging
+.env.private
 .env.production
 .env.local
 .env.development.local
@@ -38,3 +39,5 @@ src/contracts.staging.json
 src/contracts.private.json
 src/contracts.production.json
 src/contracts/ProposalHandler.json
+deployment
+Makefile
