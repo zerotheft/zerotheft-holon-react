@@ -19,7 +19,7 @@ export const getProposalTemplate = async (path) => {
   }
 }
 
-export const getPathProposalsByYear = async(path, year) => {
+export const getPathProposalsByYear = async (path, year) => {
   const { data } = await get(`api/proposals-by-year?path=${path}&year=${year}`)
 
   return data

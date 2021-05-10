@@ -52,26 +52,25 @@ const Dashboard = ({ history, location, match }) => {
     const templatePath = `${decodedPath.replace('USA', 'proposals')}/${get(match, 'params.id')}`
     getTemplateApi(templatePath)
   }, [get(match, 'params.id'), get(match, 'params.pathname')])
-
-  const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]  
+  const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]
   const filteredProposals = sortedUniqBy(filter.year ? filterArray(allProposals, { year: filter.year }) : allProposals, 'description')
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
-  const yes = theftData && (theftData.for/theftData.votes * 100).toFixed(0)
+  const yes = theftData && (theftData.for / theftData.votes * 100).toFixed(0)
   const no = 100 - yes
   return <div>
     <InnerWrapper>
       {!issueLoading && <OverlaySpinner loading={templateLoading} />}
       <Left>
-        <PathProposals proposals={allProposals} />
+        <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
       </Left>
       <Right>
         <Header>
           <h3 style={{ fontSize: 45, fontWeight: '600', textAlign: 'left', color: colors.primary }}>Please Vote</h3>
           <SelectWrapper>
             <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
-            {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{fontSize: 22}}>Vote</Button> :
-              <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
-                Add your proposal
+              {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{ fontSize: 22 }}>Vote</Button> :
+                <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
+                  Add your proposal
             </CustomButton>}
               <Select
                 defaultValue={get(filter, 'year') ? { label: `Year: ${get(filter, 'year')}`, value: get(filter, 'year') } : null}
@@ -138,25 +137,25 @@ const Dashboard = ({ history, location, match }) => {
               />
             </div>
 
-            { theftData && <TheftInfo>
-                <h2>Was There Theft?</h2>
-                <div class="wrapLeftRightsec">
-                  <div class="leftTheftSec">
-                    <TheftBlockSec className="yesTheftsec" width={yes}>
-                      <span>Yes {yes}%</span>
-                    </TheftBlockSec>
-                    <TheftBlockSec className="noTheftsec" width={no}>
-                      <span>No {no}%</span>
-                    </TheftBlockSec>
-                  </div>
-                  <div class="rightTheftSec">
-                    <h2>How Much <span>${parseFloat(get(theftData, 'theft'))/(10**9).toFixed(1)}b</span></h2>
-                  </div>
+            {theftData && <TheftInfo>
+              <h2>Was There Theft?</h2>
+              <div class="wrapLeftRightsec">
+                <div class="leftTheftSec">
+                  <TheftBlockSec className="yesTheftsec" width={yes}>
+                    <span>Yes {yes}%</span>
+                  </TheftBlockSec>
+                  <TheftBlockSec className="noTheftsec" width={no}>
+                    <span>No {no}%</span>
+                  </TheftBlockSec>
                 </div>
-                <div class="totlVotersSec">
-                  Total Voters : {numberWithCommas(get(theftData, 'votes'))}
+                <div class="rightTheftSec">
+                  <h2>How Much <span>${parseFloat(get(theftData, 'theft')) / (10 ** 9).toFixed(1)}b</span></h2>
                 </div>
-              </TheftInfo>
+              </div>
+              <div class="totlVotersSec">
+                Total Voters : {numberWithCommas(get(theftData, 'votes'))}
+              </div>
+            </TheftInfo>
             }
           </SelectWrapper>
         </Header>
