@@ -3,7 +3,7 @@ import { get, sortedUniqBy, meanBy, range, filter as filterArray } from 'lodash'
 import Select from 'react-select'
 import yaml from 'js-yaml'
 import styled from 'styled-components'
-
+import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 import { IssueContext } from '../IssueContext'
 import { getReport } from 'apis/reports'
@@ -138,7 +138,7 @@ const Dashboard = ({ history, location, match }) => {
               />
             </div>
 
-            { theftData && <TheftInfo>
+            { theftData && no && <TheftInfo>
                 <h2>Was There Theft?</h2>
                 <div class="wrapLeftRightsec">
                   <div class="leftTheftSec">
@@ -150,7 +150,7 @@ const Dashboard = ({ history, location, match }) => {
                     </TheftBlockSec>
                   </div>
                   <div class="rightTheftSec">
-                    <h2>How Much <span>${parseFloat(get(theftData, 'theft'))/(10**9).toFixed(1)}b</span></h2>
+                    <h2>How Much <span>${(convertDollarToString(parseFloat(get(theftData, 'theft'))))}</span></h2>
                   </div>
                 </div>
                 <div class="totlVotersSec">
