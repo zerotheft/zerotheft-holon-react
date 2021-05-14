@@ -70,7 +70,7 @@ export const convertJSONtoString = (data) => {
   return <DataObject>
     {Object.keys(data).map((key) => <li>
       {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:</div>}
-      {isObject(data[key]) ? convertJSONtoString(data[key]) : <div className='dataValue' style={{wordBreak: 'break-word'}}>
+      {isObject(data[key]) ? convertJSONtoString(data[key]) : <div className='dataValue' style={{ wordBreak: 'break-word' }}>
         {data[key]}
       </div>}
     </li>)}
@@ -108,9 +108,9 @@ export const convertStringDollarToNumeric = (dollar) => {
 export const convertDollarToString = (value, decimal = 1) => {
   let val = value
   let negative = false
-  if(!isNumber(val) || val === 0) return val
-  
-  if(Math.sign(val) === -1) {
+  if (!isNumber(val) || val === 0) return val
+
+  if (Math.sign(val) === -1) {
     val = -1 * val
     negative = true
   }
@@ -121,14 +121,14 @@ export const convertDollarToString = (value, decimal = 1) => {
   else if (val >= 1e12 && val < 1e15) val = (val / 1e12).toFixed(decimal) + "T"
   else val = parseFloat((val / 1e12).toFixed(0)).toLocaleString() + "T"
 
-  if(negative) return "-" + val
+  if (negative) return "-" + val
   return val
 }
 
 export function getParameterByName(name, url = window.location.href) {
   name = name.replace(/[\[\]]/g, '\\$&');
   var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
+    results = regex.exec(url);
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
