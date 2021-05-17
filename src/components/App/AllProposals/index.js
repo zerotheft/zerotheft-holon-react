@@ -60,7 +60,7 @@ const AllProposals = () => {
   );
 
 
-  const subHeaderComponentMemo = React.useMemo(() => {
+  const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle);
@@ -72,15 +72,12 @@ const AllProposals = () => {
   }, [filterText, resetPaginationToggle]);
   return <Wrapper>
     <Container>
-
-
       <DataTable
         title="Proposal List"
         pagination
         columns={columns}
         data={filteredProposals}
         paginationResetDefaultPage={resetPaginationToggle} // optionally, a hook to reset pagination to page 1
-
         subHeader
         subHeaderComponent={subHeaderComponentMemo}
         persistTableHead
