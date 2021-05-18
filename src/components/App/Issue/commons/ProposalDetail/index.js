@@ -65,6 +65,11 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
             lineColor: Highcharts.getOptions().colors[3],
             fillColor: 'white'
         },
+        tooltip: {
+          pointFormatter: function () {
+              return 'Theft Amount: <b>$' + this.y + 'B</b>';
+          }
+        },
     }]
 }
   return (<Body>

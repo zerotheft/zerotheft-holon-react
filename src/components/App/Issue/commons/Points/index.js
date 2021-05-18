@@ -79,7 +79,7 @@ const Item = styled.div`
   & > .itemWrap {
     width: calc(100% - 75px);
     background: transparent;
-    padding: 11px 100px 11px 15px;
+    padding: 11px 30px 11px 15px;
     color: #000;
     border-radius: 8px 0 0 8px;
     display: flex;

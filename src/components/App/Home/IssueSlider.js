@@ -142,7 +142,7 @@ const Wrapper = styled.section`
     }
   `,
   Welcome = styled.div`
-    max-width: 560px;
+    max-width: 760px;
     h2 {
       font-size: 49px;
       line-height: 73px;
@@ -156,7 +156,7 @@ const Wrapper = styled.section`
   `,
   SliderContent = styled.div`
     width: 100%;
-    max-width: 580px;
+    max-width: 770px;
     min-height: 256px;
     background: #FFFFFF;
     box-shadow: 0px 0px 16px 1px #E2EDEA;

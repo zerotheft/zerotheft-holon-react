@@ -59,7 +59,7 @@ export const Wrapper = styled.div`
     }
   `,
   Container = styled.div`
-    max-width: ${props => (props.Full ? '100%' : '1440px')};
+    max-width: ${props => (props.Full ? '100%' : '1920px')};
     min-width: 1100px;
     width: 100%;
     margin: 0 auto;

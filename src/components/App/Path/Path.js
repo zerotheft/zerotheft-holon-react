@@ -183,7 +183,6 @@ const Wrapper = styled(Container)`
   z-index: 1;
   top: 60px;
   width: 100%;
-  max-width: 1440px;
   padding: 10px 20px;
   h3 {
     font-size: 45px;
@@ -279,6 +278,7 @@ const Wrapper = styled(Container)`
   }
 `,
   CurrentDetails = styled.div`
+  background: blue;
   margin-right: 20px;
   padding: 10px;
   border-radius: 11px;
