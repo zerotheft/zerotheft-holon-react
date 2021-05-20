@@ -19,8 +19,7 @@ import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 
 const Path = ({ history, match, isIssuePath }) => {
-  const { paths, loadingPaths: loading, filterParams, updateFilter, theftInfo, umbrellaPaths = [] } = useContext(AppContext)
-  const [amtLoading, updateAmtLoading] = useState(false)
+  const { paths, loadingPaths: loading, loadingTheft, filterParams, updateFilter, theftInfo, umbrellaPaths = [] } = useContext(AppContext)
   const nation = get(filterParams, 'initPath') || 'USA'
 
   const pathInTabs = paths && Object.keys(paths['USA']).map((path, index) => {
@@ -35,17 +34,17 @@ const Path = ({ history, match, isIssuePath }) => {
     return Object.keys(master).map(i => {
 
       let masterClone = Object.assign({}, master[i])
-      if(masterClone){
-        if(masterClone.umbrella)
+      if (masterClone) {
+        if (masterClone.umbrella)
           delete masterClone.umbrella
-        if(masterClone.leaf)
+        if (masterClone.leaf)
           delete masterClone.leaf
-        if(masterClone.display_name)
+        if (masterClone.display_name)
           delete masterClone.display_name
-        if(masterClone.parent)
+        if (masterClone.parent)
           delete masterClone.parent
       }
-      if((!isEmpty(master[i]) && (master[i]['umbrella'] || master[i]['parent']))) {
+      if ((!isEmpty(master[i]) && (master[i]['umbrella'] || master[i]['parent']))) {
         let newParents = [...parents, i]
         let url = newParents.join('/')
         let isUmbrellaPath = umbrellaPaths.includes(url.replace('USA/', ''))
@@ -69,8 +68,7 @@ const Path = ({ history, match, isIssuePath }) => {
         </CollapsibleWrapper>
       } else {
         let url = parents.join('/')
-        if(!['umbrella', 'leaf', 'display_name'].includes(i))
-        {
+        if (!['umbrella', 'leaf', 'display_name'].includes(i)) {
           return <ItemHead type='issue'>
             <div className='item-title'>
               <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 18, color: '#878688' }} />
@@ -83,12 +81,12 @@ const Path = ({ history, match, isIssuePath }) => {
     })
   }
   const currentPathName = `${match.params.pathname}${match.params.id ? `%2F${match.params.id}` : ''}`,
-  currentPath = get(paths, currentPathName.split('%2F').join('.')) || {}
+    currentPath = get(paths, currentPathName.split('%2F').join('.')) || {}
   if (!currentPath || !Object.keys(currentPath).length) return null
   const current_path_summary = !isEmpty(theftInfo) ? calculate(theftInfo[get(match, 'params.pathname', '').replaceAll("%2F", "/")]) : {}
-  
+
   return <Wrapper>
-    {(loading || amtLoading) && <OverlaySpinner loading={loading || amtLoading} />}
+    {(loading || loadingTheft) && <OverlaySpinner loading={loading || loadingTheft} />}
     {!get(match, 'params.id') && <Title>
       <h3>{startCase(last(get(match, 'params.pathname', '').split('%2F')))}</h3>
       {!isIssuePath && <>
@@ -123,7 +121,7 @@ const Path = ({ history, match, isIssuePath }) => {
           <CustomButton onClick={() => {
             const isUmbrellaPath = umbrellaPaths.includes(get(match, 'params.pathname', '').replace(/%2F/g, '/').replace('USA/', ''))
             history.push(`/${isUmbrellaPath ? 'leafReport' : 'pathReport'}/${get(match, 'params.pathname', '')}`)
-          }} height={31} style={{backgroundColor: colors.background.body}}>View Report</CustomButton>
+          }} height={31} style={{ backgroundColor: colors.background.body }}>View Report</CustomButton>
         </CurrentDetails></>}
     </Title>
     }
