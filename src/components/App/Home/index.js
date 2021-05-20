@@ -12,14 +12,13 @@ import Button from 'commons/Buttons'
 import { colors } from 'theme'
 import { DESKTOP_APP_DOWNLOAD_LINK } from 'constants/index'
 
-const Home = ({ history }) => {
-  const { selectedHolon, theftInfo } = useContext(AppContext),
-    [loading, updateLoading] = useState(false)
+const Home = () => {
+  const { selectedHolon, theftInfo } = useContext(AppContext)
 
   return <React.Fragment>
     <IssueSlider />
-    <TheftInfo summary={get(theftInfo,'info')} />
-    <Paths summary={theftInfo} amtLoading={loading} />
+    <TheftInfo summary={get(theftInfo, 'info')} />
+    <Paths summary={theftInfo} />
     <AboutSection>
       <Container>
         <AboutZT>
@@ -49,9 +48,7 @@ const Home = ({ history }) => {
   </React.Fragment>
 }
 
-Home.propTypes = {
-  history: PropTypes.object
-}
+Home.propTypes = {}
 
 export default Home
 

@@ -7,20 +7,20 @@ import { Container, LoadingText, EmptyText } from 'commons/styles'
 import { AppContext } from '../AppContext'
 import PathItem from './PathItem'
 
-const Paths = ({ summary = [], amtLoading }) => {
-  const { paths, loading, filterParams } = useContext(AppContext)
+const Paths = ({ summary = [] }) => {
+  const { paths, loading, loadingTheft, filterParams } = useContext(AppContext)
   const allPaths = get(paths, get(filterParams, 'initPath'), {})
   return <Wrapper>
     <Container>
-      <ContentWrapper className={!loading && !amtLoading && !isEmpty(get(paths, get(filterParams, 'initPath'), {})) ? 'divide' : ''}>
-        {(loading || amtLoading) ? <LoadingText>Fetching Paths</LoadingText> :
+      <ContentWrapper className={!loading && !loadingTheft && !isEmpty(get(paths, get(filterParams, 'initPath'), {})) ? 'divide' : ''}>
+        {(loading || loadingTheft) ? <LoadingText>Fetching Paths</LoadingText> :
           <UL>
             {Object.keys(allPaths).map((key) => {
               const isIssuePath = isEmpty(get(paths, get(filterParams, 'initPath'), {})[key])
               const childPaths = get(paths, get(filterParams, 'initPath'), {})[key] || {}
               const childPathsClone = Object.assign({}, childPaths);
               return <li>
-                <PathItem summary={summary} parent={true} to={isIssuePath ? `/path/${get(filterParams, 'initPath')}/issue/${key}` : `/path/${get(filterParams, 'initPath')}/${key}`} name={ allPaths[key]['display_name'] ? allPaths[key]['display_name'] : startCase(key || 'N/A')} />
+                <PathItem summary={summary} parent={true} to={isIssuePath ? `/path/${get(filterParams, 'initPath')}/issue/${key}` : `/path/${get(filterParams, 'initPath')}/${key}`} name={allPaths[key]['display_name'] ? allPaths[key]['display_name'] : startCase(key || 'N/A')} />
                 {!isEmpty(childPaths) ? <ul>
                   {delete childPathsClone.display_name}
                   {delete childPathsClone.umbrella}
@@ -35,7 +35,7 @@ const Paths = ({ summary = [], amtLoading }) => {
             })}
           </UL>
         }
-        {(!loading && !amtLoading && isEmpty(get(paths, get(filterParams, 'initPath'), {}))) ? <EmptyText>No Data Available</EmptyText> : null}
+        {(!loading && !loadingTheft && isEmpty(get(paths, get(filterParams, 'initPath'), {}))) ? <EmptyText>No Data Available</EmptyText> : null}
       </ContentWrapper>
       <Button onClick={() => window.open(`https://zerotheft.net/propose_problem?path=USA`)} plain width={280} height={52} style={{ margin: '30px auto 0', backgroundColor: 'transparent' }}>PROPOSE NEW PROBLEM AREA</Button>
     </Container>

@@ -13,19 +13,19 @@ import { getTheftInfo } from 'apis/reports'
 const AppContext = createContext()
 
 const AppProvider = ({ children }) => {
-  if(getParameterByName('year')) localStorage.setItem("filterYear", getParameterByName('year'))
-  if(!localStorage.getItem("filterYear")) localStorage.setItem("filterYear", getYear(new Date) - 1)
-  
+  if (getParameterByName('year')) localStorage.setItem("filterYear", getParameterByName('year'))
+  if (!localStorage.getItem("filterYear")) localStorage.setItem("filterYear", getYear(new Date) - 1)
+
   const [getPathsApi, loading, paths] = useFetch(getPaths)
   const [getUmbrellaPathsApi, fetchingUmbrella, umbrellaPaths] = useFetch(getUmbrellaPaths)
   const [getHolonApi, loadingHolon, holonInfo] = useFetch(getHolonInfo)
   const [filterParams, updateFilter] = useState({ year: localStorage.getItem("filterYear"), initPath: 'USA' }),
-  [selectedHolon, updateHolon] = useState(localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}),
-  [userInfo, updateUserInfo] = useState()
+    [selectedHolon, updateHolon] = useState(localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}),
+    [userInfo, updateUserInfo] = useState()
   const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem('address'))
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
   useEffect(() => {
-    getPathsApi({nation: filterParams.initPath})
+    getPathsApi({ nation: filterParams.initPath })
     getUmbrellaPathsApi()
   }, [filterParams.initPath])
 
@@ -40,7 +40,7 @@ const AppProvider = ({ children }) => {
       updateHolon(holon)
     }
 
-    updateUserInfo({address, voterId})
+    updateUserInfo({ address, voterId })
 
     if (selectedAddress !== address) {
       updateSelectedAddress(address)
@@ -54,11 +54,11 @@ const AppProvider = ({ children }) => {
     fetchFromApp()
     getHolonApi()
   }, [])
-  useEffect(()=> {
+  useEffect(() => {
     getTheftApi(filterParams['initPath'], true, get(filterParams, 'year'))
   }, [filterParams.year])
   return (
-    <AppContext.Provider value={{ ws, userInfo, filterParams, updateFilter, loading, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ ws, userInfo, filterParams, updateFilter, loading, loadingTheft, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
   )
 }
 
@@ -71,7 +71,7 @@ export { AppProvider, AppContext }
 let timeout = 2000
 const useWebSocket = (callback) => {
   const [ws, changeWs] = useState()
-  
+
   const check = () => {
     if (!ws || ws.readyState == WebSocket.CLOSED) connect(); //check if websocket instance is closed, if so call `connect` function.
   };
@@ -81,37 +81,37 @@ const useWebSocket = (callback) => {
     var connectInterval;
     // websocket onopen event listener
     wss.onopen = () => {
-        console.log("connected websocket main component");
-        changeWs(wss);
+      console.log("connected websocket main component");
+      changeWs(wss);
 
-        clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+      clearTimeout(connectInterval); // clear Interval on on open of websocket connection
     };
 
     wss.onmessage = (message) => {
-      if(callback) callback()
+      if (callback) callback()
     }
 
     // websocket onclose event listener
     wss.onclose = e => {
-        timeout = Math.min(10000, timeout + 2000)
-        console.log(
-            `Socket is closed. Reconnect will be attempted in ${(timeout) / 1000}
+      timeout = Math.min(10000, timeout + 2000)
+      console.log(
+        `Socket is closed. Reconnect will be attempted in ${(timeout) / 1000}
             second.`,
-            e.reason
-        );
-        
-        connectInterval = setTimeout(check, timeout); //call check function after timeout
+        e.reason
+      );
+
+      connectInterval = setTimeout(check, timeout); //call check function after timeout
     };
 
     // websocket onerror event listener
     wss.onerror = err => {
-        console.error(
-            "Socket encountered error: ",
-            err.message,
-            "Closing socket"
-        );
+      console.error(
+        "Socket encountered error: ",
+        err.message,
+        "Closing socket"
+      );
 
-        wss.close();
+      wss.close();
     };
   };
 
