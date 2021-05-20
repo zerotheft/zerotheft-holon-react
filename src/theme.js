@@ -3,6 +3,8 @@ export const colors = {
   solidBorder: '#C9C9C9',
   warningColor: '#890606',
   border: '#ececec',
+  lightPrimary: '#F4EFFB',
+  lightText: '#6A6078',
   borders: {
     table: '#f2f2f2',
     dropdown: '#E7E9F1',

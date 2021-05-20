@@ -47,7 +47,10 @@ wrapperStyle : PropTypes.object,
 }
 
 const Wrapper = styled.div`
-    display: flex;
+    display: none;
+    @media(min-width: 768px){
+        display: flex;
+    }
 `,
 TabWrapper = styled(NavLink)`
     text-decoration: none;

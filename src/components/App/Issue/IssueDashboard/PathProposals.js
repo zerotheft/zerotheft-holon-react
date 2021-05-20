@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { isEmpty, get } from 'lodash'
 import { colors } from 'theme'
-import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
 import { convertJSONtoString } from 'utils'
+import proposal from 'assets/icons/proposal.svg'
 
 const PathProposals = ({ regularProp, counterProp, theftData }) => {
     const [proposalNumber, updateProposal] = useState(0),
@@ -35,8 +35,19 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
         firstLeadingProp.id && getLeadingProposals(firstLeadingProp)
     }, [firstLeadingProp.id])
 
+    if (isEmpty(proposals)) return (
+        <Wrapper>
+            <div className="no-proposal">
+                <div>
+                    <img src={proposal} style={{height: 75, width: 60}} />
+                </div>
+                <div>
+                    <h2>No Proposal Found</h2>
+                    <span> No proposals for the path exists yet. </span>
+                </div>
+            </div>
+        </Wrapper>)
 
-    if (isEmpty(proposals)) return (<span> No proposals for the path exists yet. </span>)
     return <Wrapper>
         <h3>{proposals[proposalNumber].title}</h3>
         <div>{proposals[proposalNumber].description}
@@ -65,8 +76,31 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
 }
 
 const Wrapper = styled.div`
+    .no-proposal {
+        display: flex;
+        flex-direction: row;
+        background: ${colors.lightPrimary};
+        border-radius: 12px;
+        padding: 30px 60px 35px 30px;
+        min-width: 700px;
+        img {
+            margin-right: 25px;
+        }
+        h2 {
+            color: ${colors.primary};
+            font-size: 48px;
+            line-height: 50px;
+            font-weight: 700;
+        }
+        span {
+            color: ${colors.lightText};
+            font-size: 17px;
+            line-height: 26px;
+            font-weight: 400;
+        }
+    }
     h3 {
-            background: ${colors.primary};
+        background: ${colors.primary};
         border-radius: 12px;
         padding: 10px 35px;
         color: ${colors.text.white};
@@ -74,20 +108,20 @@ const Wrapper = styled.div`
         margin-bottom:10px;
     }
     h4 {
-            background: ${colors.textBackground};
+        background: ${colors.textBackground};
         padding: 10px 35px;
         color: ${colors.textTitle};
         margin-botton: 24px;
         font-size: 22px;
     }
     .proposal-list {
-            display: flex;
+        display: flex;
         margin-bottom: 50px;
         align-item: flex-end;
         justify-content: flex-end;
     }
     .proposal-list button{
-            background: ${colors.button.greyBackground};
+        background: ${colors.button.greyBackground};
         color: ${colors.button.blackText};
         border: none;
         font-weight: 300;
@@ -97,7 +131,7 @@ const Wrapper = styled.div`
         cursor: pointer;
     }
     .best-proposal{
-            padding: 24px 0px;
+        padding: 24px 0px;
     }
 `;
 export default PathProposals;

@@ -70,7 +70,7 @@ export const convertJSONtoString = (data) => {
   return <DataObject>
     {Object.keys(data).map((key) => <li>
       {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:</div>}
-      {isObject(data[key]) ? convertJSONtoString(data[key]) : <div className='dataValue' style={{ wordBreak: 'break-word' }}>
+      {isObject(data[key]) ? convertJSONtoString(data[key]) : <div className='dataValue' style={{wordBreak: 'break-word'}}>
         {data[key]}
       </div>}
     </li>)}
@@ -105,38 +105,44 @@ export const convertStringDollarToNumeric = (dollar) => {
   }
 }
 
+export const removeDecimelIfNeeded = (number) => {
+  const [num, decimel] = number.split('.')
+  return (parseInt(decimel)===0)? num : number;
+}
+
+
 export const convertDollarToString = (value, decimal = 1) => {
   let val = value
   let negative = false
-  if (!isNumber(val) || val === 0) return val
-
-  if (Math.sign(val) === -1) {
+  if(!isNumber(val) || val === 0) return val
+  
+  if(Math.sign(val) === -1) {
     val = -1 * val
     negative = true
   }
   if (val < 1e3) val = val.toFixed(decimal)
-  else if (val >= 1e3 && val < 1e6) val = (val / 1e3).toFixed(decimal) + "K"
-  else if (val >= 1e6 && val < 1e9) val = (val / 1e6).toFixed(decimal) + "M"
-  else if (val >= 1e9 && val < 1e12) val = (val / 1e9).toFixed(decimal) + "B"
-  else if (val >= 1e12 && val < 1e15) val = (val / 1e12).toFixed(decimal) + "T"
-  else val = parseFloat((val / 1e12).toFixed(0)).toLocaleString() + "T"
+  else if (val >= 1e3 && val < 1e6) val = removeDecimelIfNeeded((val / 1e3).toFixed(decimal)) + "K"
+  else if (val >= 1e6 && val < 1e9) val = removeDecimelIfNeeded((val / 1e6).toFixed(decimal)) + "M"
+  else if (val >= 1e9 && val < 1e12) val = removeDecimelIfNeeded((val / 1e9).toFixed(decimal)) + "B"
+  else if (val >= 1e12 && val < 1e15) val = removeDecimelIfNeeded((val / 1e12).toFixed(decimal)) + "T"
+  else val = removeDecimelIfNeeded(parseFloat((val / 1e12).toFixed(0))).toLocaleString() + "T"
 
-  if (negative) return "-" + val
+  if(negative) return "-" + val
   return val
 }
 
 export function getParameterByName(name, url = window.location.href) {
   name = name.replace(/[\[\]]/g, '\\$&');
   var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-    results = regex.exec(url);
+      results = regex.exec(url);
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-
 const DataObject = styled.ul`
-  font-size: 16px; margin-bottom: 5px;
+  font-size: 16px; 
+  margin-bottom: 5px;
   .dataValue {
     white-space: pre-line;
   }

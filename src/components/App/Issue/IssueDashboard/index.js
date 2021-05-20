@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { get, sortedUniqBy, meanBy, range, filter as filterArray } from 'lodash'
 import Select from 'react-select'
 import yaml from 'js-yaml'
@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 import { IssueContext } from '../IssueContext'
-import { getReport } from 'apis/reports'
+import { getReport, getTheftInfo } from 'apis/reports'
 import { getProposalTemplate } from 'apis/proposals'
 import { numberWithCommas } from 'utils'
 import useFetch from 'commons/hooks/useFetch'
@@ -26,7 +26,8 @@ const Dashboard = ({ history, location, match }) => {
   const { filter, updateFilter, issue, loading: issueLoading } = useContext(IssueContext)
   const [getReportApi, loading, report] = useFetch(getReport)
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
-  const { filterParams, theftInfo } = useContext(AppContext)
+  const { filterParams } = useContext(AppContext)
+  const [getTheftApi, infoLoading, theftInfo] = useFetch(getTheftInfo)
   const { pathname } = location
   const displayYaml = (template) => {
     let data
@@ -43,10 +44,12 @@ const Dashboard = ({ history, location, match }) => {
   }
 
   useEffect(() => {
-    if (get(match, 'params.pathname') && get(match, 'params.id') && get(filter, 'year')) {
-      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filter, 'year') || get(filterParams, 'year'))
+    if (get(match, 'params.pathname') && get(match, 'params.id') && get(filterParams, 'year')) {
+      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year') )
     }
-  }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filter, 'year')])
+    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year') )
+    updateFilter({ year: get(filterParams, 'year') || get(filter, 'year') })
+  }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
 
   useEffect(() => {
     const templatePath = `${decodedPath.replace('USA', 'proposals')}/${get(match, 'params.id')}`
@@ -72,7 +75,7 @@ const Dashboard = ({ history, location, match }) => {
                 <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
                   Add your proposal
             </CustomButton>}
-              <Select
+              {/* <Select
                 defaultValue={get(filter, 'year') ? { label: `Year: ${get(filter, 'year')}`, value: get(filter, 'year') } : null}
                 options={dateRange}
                 placeholder='Year'
@@ -133,11 +136,12 @@ const Dashboard = ({ history, location, match }) => {
                 }}
                 onChange={selected => {
                   updateFilter({ year: selected ? selected.value : null })
+                  updateMainFilter({ year: selected ? selected.value : null })
                 }}
-              />
+              /> */}
             </div>
 
-            {theftData && no && <TheftInfo>
+            {theftData && (no || yes) && <TheftInfo>
               <h2>Was There Theft?</h2>
               <div class="wrapLeftRightsec">
                 <div class="leftTheftSec">
