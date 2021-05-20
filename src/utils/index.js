@@ -105,6 +105,12 @@ export const convertStringDollarToNumeric = (dollar) => {
   }
 }
 
+export const removeDecimelIfNeeded = (number) => {
+  const [num, decimel] = number.split('.')
+  return (parseInt(decimel)===0)? num : number;
+}
+
+
 export const convertDollarToString = (value, decimal = 1) => {
   let val = value
   let negative = false
@@ -115,11 +121,11 @@ export const convertDollarToString = (value, decimal = 1) => {
     negative = true
   }
   if (val < 1e3) val = val.toFixed(decimal)
-  else if (val >= 1e3 && val < 1e6) val = (val / 1e3).toFixed(decimal) + "K"
-  else if (val >= 1e6 && val < 1e9) val = (val / 1e6).toFixed(decimal) + "M"
-  else if (val >= 1e9 && val < 1e12) val = (val / 1e9).toFixed(decimal) + "B"
-  else if (val >= 1e12 && val < 1e15) val = (val / 1e12).toFixed(decimal) + "T"
-  else val = parseFloat((val / 1e12).toFixed(0)).toLocaleString() + "T"
+  else if (val >= 1e3 && val < 1e6) val = removeDecimelIfNeeded((val / 1e3).toFixed(decimal)) + "K"
+  else if (val >= 1e6 && val < 1e9) val = removeDecimelIfNeeded((val / 1e6).toFixed(decimal)) + "M"
+  else if (val >= 1e9 && val < 1e12) val = removeDecimelIfNeeded((val / 1e9).toFixed(decimal)) + "B"
+  else if (val >= 1e12 && val < 1e15) val = removeDecimelIfNeeded((val / 1e12).toFixed(decimal)) + "T"
+  else val = removeDecimelIfNeeded(parseFloat((val / 1e12).toFixed(0))).toLocaleString() + "T"
 
   if(negative) return "-" + val
   return val

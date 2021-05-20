@@ -181,8 +181,11 @@ const Wrapper = styled(Container)`
   background: #fff;
   position: fixed;
   z-index: 1;
+  left: 50%;
   top: 60px;
+  max-width: 1920px;
   width: 100%;
+  transform: translateX(-50%);
   padding: 10px 20px;
   h3 {
     font-size: 45px;
@@ -279,7 +282,6 @@ const Wrapper = styled(Container)`
 `,
   CurrentDetails = styled.div`
   background: blue;
-  margin-right: 20px;
   padding: 10px;
   border-radius: 11px;
   display: flex;

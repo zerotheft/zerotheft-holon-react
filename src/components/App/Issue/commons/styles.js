@@ -54,7 +54,7 @@ export const
   flex-direction: row;
 `,
   Left = styled.div`
-  width: calc(100% - 500px);
+  max-width: calc(100% - 500px);
   padding-top: 70px;
   & > .header {
     display: flex;
@@ -85,6 +85,7 @@ export const
   Right = styled.div`
   width: 500px;
   padding: 70px 0px 0px 50px;
+
   &.apply-bg {
     padding: 70px 60px 60px;
     position: relative;

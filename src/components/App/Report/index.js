@@ -14,14 +14,15 @@ const Report = ({ match, history }) => {
   const { loading, filterParams } = useContext(AppContext)
 
   useEffect(() => {
+    console.log(get(filterParams, 'year'))
     if (pathName) {
       if (pathName === get(filterParams, 'initPath')) {
-        getNationReportApi(pathName, localStorage.getItem("filterYear"))
+        getNationReportApi(pathName, get(filterParams, 'year'))
       } else {
-        getReportApi(pathName, !!pathName, localStorage.getItem("filterYear"))
+        getReportApi(pathName, !!pathName, get(filterParams, 'year'))
       }
     }
-    if (leafName) getReportApi(leafName, false, localStorage.getItem("filterYear"))
+    if (leafName) getReportApi(leafName, false, get(filterParams, 'year'))
   }, [get(filterParams, 'year')])
 
   return (
@@ -67,6 +68,7 @@ export const Iframe = styled.iframe`
   width: 100%;
   color: ${colors.primary};
   font-weight: 500;
+  margin-top: -40px;
   text-align: right;
   padding: 20px 40px 0 0;
   > span {
