@@ -14,7 +14,7 @@ const AppContext = createContext()
 
 const AppProvider = ({ children }) => {
   if (getParameterByName('year')) localStorage.setItem("filterYear", getParameterByName('year'))
-  if (!localStorage.getItem("filterYear")) localStorage.setItem("filterYear", getYear(new Date) - 1)
+  if (!localStorage.getItem("filterYear")) localStorage.setItem("filterYear", getYear(new Date()) - 1)
 
   const [getPathsApi, loading, paths] = useFetch(getPaths)
   const [getUmbrellaPathsApi, fetchingUmbrella, umbrellaPaths] = useFetch(getUmbrellaPaths)

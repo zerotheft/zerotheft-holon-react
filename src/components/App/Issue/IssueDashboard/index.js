@@ -1,6 +1,5 @@
-import React, { useEffect, useContext, useState } from 'react'
-import { get, sortedUniqBy, meanBy, range, filter as filterArray } from 'lodash'
-import Select from 'react-select'
+import React, { useEffect, useContext } from 'react'
+import { get, sortedUniqBy, range, filter as filterArray } from 'lodash'
 import yaml from 'js-yaml'
 import styled from 'styled-components'
 import { convertDollarToString } from 'utils'
@@ -27,7 +26,7 @@ const Dashboard = ({ history, location, match }) => {
   const [getReportApi, loading, report] = useFetch(getReport)
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
   const { filterParams } = useContext(AppContext)
-  const [getTheftApi, infoLoading, theftInfo] = useFetch(getTheftInfo)
+  const [getTheftApi, theftInfo] = useFetch(getTheftInfo)
   const { pathname } = location
   const displayYaml = (template) => {
     let data
@@ -45,9 +44,9 @@ const Dashboard = ({ history, location, match }) => {
 
   useEffect(() => {
     if (get(match, 'params.pathname') && get(match, 'params.id') && get(filterParams, 'year')) {
-      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year') )
+      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year'))
     }
-    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year') )
+    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year'))
     updateFilter({ year: get(filterParams, 'year') || get(filter, 'year') })
   }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
 

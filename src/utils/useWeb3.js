@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import { Web3Context } from 'components/App/Web3Context'
 import { get } from 'utils/api'
 import config from 'config'

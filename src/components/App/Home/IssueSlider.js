@@ -16,7 +16,7 @@ import { Container, EmptyText } from 'commons/styles'
 const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
   if (!isObject(data)) return []
   let arr = []
-  Object.keys(data).map(i => {
+  Object.keys(data).forEach(i => {
 
     if (!data[i] || data[i].leaf) {
       if (!searchFilter) arr.push({ title: i, path: `${path}/issue/${i}` })

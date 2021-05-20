@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState, useRef } from 'react'
+import React, { useContext } from 'react'
 import { get, isEmpty, startCase, toNumber, last } from 'lodash'
 import { getYear } from 'date-fns'
 import Collapsible from 'react-collapsible';
@@ -13,14 +13,12 @@ import Button from 'commons/Buttons'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { AppContext } from 'components/App/AppContext'
 import PathDetails from './PathDetails'
-import BreadCrumb from './BreadCrumb'
 import { calculate } from 'components/App/commons/services'
 import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 
 const Path = ({ history, match, isIssuePath }) => {
   const { paths, loadingPaths: loading, loadingTheft, filterParams, updateFilter, theftInfo, umbrellaPaths = [] } = useContext(AppContext)
-  const nation = get(filterParams, 'initPath') || 'USA'
 
   const pathInTabs = paths && Object.keys(paths['USA']).map((path, index) => {
     if (paths['USA'][path] !== null)
@@ -93,7 +91,7 @@ const Path = ({ history, match, isIssuePath }) => {
         <CurrentDetails>
           <Select
             value={{ value: filterParams.year, label: filterParams.year }}
-            options={new Array(20).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
+            options={new Array(20).fill(undefined).map((val, index) => ({ label: getYear(new Date()) - (index + 1), value: getYear(new Date()) - (index + 1) }))}
             onChange={selected => {
               localStorage.setItem("filterYear", selected.value)
               updateFilter({ ...filterParams, year: selected.value })

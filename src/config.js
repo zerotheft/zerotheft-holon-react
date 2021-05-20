@@ -11,10 +11,10 @@ const tryRequire = (path) => {
 }
 let MODE = process.env.REACT_APP_MODE || process.env.NODE_ENV;
 if (!MODE) {
-  MODE = envConfig.MODE || 'development'
+  MODE = 'development'
 }
 
-const envConfig = !MODE || MODE === "development" ?  tryRequire('./config.json') : require(`./config.${MODE}.json`)
+const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
 const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
 
 const getProposalContract = async () => {

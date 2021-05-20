@@ -184,7 +184,7 @@ const ZeroTheft = () => {
                   placeholder='Enter Year'
                   label='Expiration Year'
                   type='number'
-                  min={getYear(new Date)}
+                  min={getYear(new Date())}
                   labelType='top'
                   style={{ margin: 10 }}
                 />

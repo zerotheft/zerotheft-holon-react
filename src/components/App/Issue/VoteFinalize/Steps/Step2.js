@@ -14,14 +14,14 @@ const networks = {
 }
 
 const Step2 = ({ updateCurrentStep }) => {
-  const { checkStep, voterInfo, buildUrl } = useContext(VoteContext)
+  const { voterInfo, buildUrl } = useContext(VoteContext)
 
   return <Wrapper>
     <div>
       <Header>Step #2: Make sure the app launches {voterInfo.network !== MODE && 'and select the right environment'}</Header>
       <Body>
-        <span style={{maxWidth: 500}}>Please open the Zero Theft Desktop App. You will likely need to give security permission. After you have successfully opened the Zero Theft Desktop App, please create your zerotheft account and click continue.</span>
-        {voterInfo.network !== MODE && <div style={{marginTop: 20}}>
+        <span style={{ maxWidth: 500 }}>Please open the Zero Theft Desktop App. You will likely need to give security permission. After you have successfully opened the Zero Theft Desktop App, please create your zerotheft account and click continue.</span>
+        {voterInfo.network !== MODE && <div style={{ marginTop: 20 }}>
           <SubHeader>Envirnoment Setup</SubHeader>
           <OrderedList>
             <li>Open settings page in zerotheft. <LinkText onClick={() => window.location.href = 'zerotheft://settings/environment?holonRedirectUrl=' + encodeURIComponent(buildUrl())}>Settings</LinkText></li>
@@ -31,8 +31,8 @@ const Step2 = ({ updateCurrentStep }) => {
         </div>}
       </Body>
       <ButtonsWrapper>
-        <Previous onClick={() => updateCurrentStep(1)}/>
-        <Next currentStep={2} updateCurrentStep={updateCurrentStep}/>
+        <Previous onClick={() => updateCurrentStep(1)} />
+        <Next currentStep={2} updateCurrentStep={updateCurrentStep} />
       </ButtonsWrapper>
     </div>
   </Wrapper>
