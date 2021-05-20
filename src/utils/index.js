@@ -140,9 +140,9 @@ export function getParameterByName(name, url = window.location.href) {
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
 
-
 const DataObject = styled.ul`
-  font-size: 16px; margin-bottom: 5px;
+  font-size: 16px; 
+  margin-bottom: 5px;
   .dataValue {
     white-space: pre-line;
   }

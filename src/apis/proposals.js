@@ -24,3 +24,12 @@ export const getPathProposalsByYear = async (path, year) => {
 
   return data
 }
+
+export const getExportedProposals = async () => {
+  try {
+    const { data } = await get(`api/exported-proposals`)
+    return data && data.content
+  } catch (e) {
+    return { status: lodGet(e, 'response.status'), error: lodGet(e, 'response.status') === 404 ? 'Record Not Found.' : e.message }
+  }
+}

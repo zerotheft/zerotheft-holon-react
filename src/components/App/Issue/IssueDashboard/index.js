@@ -28,7 +28,6 @@ const Dashboard = ({ history, location, match }) => {
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
   const { filterParams } = useContext(AppContext)
   const [getTheftApi, infoLoading, theftInfo] = useFetch(getTheftInfo)
-  console.log('ti',theftInfo)
   const { pathname } = location
   const displayYaml = (template) => {
     let data
