@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "baseUrl": "./src",
+    "module": "commonjs"
+  },
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*",
+    "config",
+    ".idea",
+    "scripts"
+  ],
+  "include": [
+    "src"
+  ]
+}
