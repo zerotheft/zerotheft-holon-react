@@ -19,14 +19,14 @@ const contracts = (MODE === "development" || MODE === "private") ? {} : require(
 
 const getProposalContract = async () => {
   if (MODE === 'private') {
-    const { data } = await get('ProposalHandler.json', null, `${envConfig.ZERO_THEFT_CONTRACT}`)
+    const { data } = await get('ZTMProposals.json', null, `${envConfig.ZERO_THEFT_CONTRACT}`)
     return data
   }
   if (MODE === 'development')
-    return tryRequire('./contracts/ProposalHandler.json')
+    return tryRequire('./contracts/ZTMProposals.json')
 
 
-  return contracts.ProposalHandler
+  return contracts.ZTMProposals
 }
 
 export default {

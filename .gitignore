@@ -38,6 +38,6 @@ src/contracts.json
 src/contracts.staging.json
 src/contracts.private.json
 src/contracts.production.json
-src/contracts/ProposalHandler.json
+src/contracts/ZTMProposals.json
 deployment
 Makefile
