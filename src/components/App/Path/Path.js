@@ -136,7 +136,7 @@ const Path = ({ history, match, isIssuePath }) => {
       }
       <div className='tabContent'>
         <ListWrapper>
-          {isIssuePath && <div style={{ margin: 25 }}>
+          {isIssuePath && currentPath.umbrella && <div style={{ margin: 25 }}>
             <h4 style={{ fontSize: 20 }}>Dive Deeper</h4>
           </div>}
           {populateList(currentPath, currentPathName.split('%2F'))}

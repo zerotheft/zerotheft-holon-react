@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { get, sortedUniqBy, range, filter as filterArray } from 'lodash'
+import { get, sortedUniqBy, range, isEmpty, filter as filterArray } from 'lodash'
 import yaml from 'js-yaml'
 import styled from 'styled-components'
 import { convertDollarToString } from 'utils'
@@ -26,7 +26,7 @@ const Dashboard = ({ history, location, match }) => {
   const [getReportApi, loading, report] = useFetch(getReport)
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
   const { filterParams } = useContext(AppContext)
-  const [getTheftApi, theftInfo] = useFetch(getTheftInfo)
+  const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
   const { pathname } = location
   const displayYaml = (template) => {
     let data
@@ -55,13 +55,16 @@ const Dashboard = ({ history, location, match }) => {
     getTemplateApi(templatePath)
   }, [get(match, 'params.id'), get(match, 'params.pathname')])
   const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]
-  const filteredProposals = sortedUniqBy(filter.year ? filterArray(allProposals, { year: filter.year }) : allProposals, 'description')
+
+  const filteredProposals = sortedUniqBy(isEmpty(filter.year) ? filterArray(allProposals, { year: filter.year }) : allProposals, 'description')
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
   const yes = theftData && (theftData.for / theftData.votes * 100).toFixed(0)
   const no = 100 - yes
+  console.log(issueLoading, templateLoading, loading, false)
+  console.log(issueLoading, templateLoading, loading, loadingTheft)
+  if((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
     <InnerWrapper>
-      {!issueLoading && <OverlaySpinner loading={templateLoading} />}
       <Left>
         <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
       </Left>
@@ -221,9 +224,8 @@ const InnerWrapper = styled.div`
 
         span {
           font-weight: bold;
-          font-size: 55px;
-          line-height: 82px;
-          text-align: center;
+          font-size: 40px;
+          line-height: 50px;
           letter-spacing: -0.025em;
         }
       }
