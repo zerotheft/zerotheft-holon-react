@@ -14,7 +14,6 @@ const TheftInfo = ({ summary = {} }) => {
   const history = useHistory()
   const { filterParams } = useContext(AppContext)
 
-  if (!summary.total) return null
 
   return <Wrapper>
     <Container>
@@ -23,23 +22,25 @@ const TheftInfo = ({ summary = {} }) => {
         <Button onClick={() => history.push(`/pathReport/${get(filterParams, 'initPath')}`)}
           height={44} width={170}>View Report</Button>
       </TitleContent>
-      <InfoWrapper>
-        <InfoBox>
-          <h5>Stolen this year</h5>
-          <h3>${convertDollarToString(summary.total)}</h3>
-          <h6>In USA</h6>
-        </InfoBox>
-        {/* <InfoBox>
+      {summary.total &&
+        <InfoWrapper>
+          <InfoBox>
+            <h5>Stolen this year</h5>
+            <h3>${convertDollarToString(summary.total)}</h3>
+            <h6>In USA</h6>
+          </InfoBox>
+          {/* <InfoBox>
           <h5>Stolen each year</h5>
           <h3>${convertDollarToString(summary.each_year)}</h3>
           <h6>Per Citizen in USA</h6>
         </InfoBox> */}
-        <InfoBox>
-          <h5>Stolen in {summary.between_years} years</h5>
-          <h3>${convertDollarToString(summary.many_years)}</h3>
-          <h6>In USA</h6>
-        </InfoBox>
-      </InfoWrapper>
+          <InfoBox>
+            <h5>Stolen in {summary.between_years} years</h5>
+            <h3>${convertDollarToString(summary.many_years)}</h3>
+            <h6>In USA</h6>
+          </InfoBox>
+        </InfoWrapper>
+      }
     </Container>
   </Wrapper>
 }
