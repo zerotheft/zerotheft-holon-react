@@ -6,7 +6,7 @@ import config from 'config'
 const { chainId, MODE } = config
 
 export default () => {
-  const chainID = chainId || 1338
+  const chainID = chainId || 1440
   const { web3, loadWeb3 } = useContext(Web3Context)
   const { userInfo } = useContext(AppContext)
   const [step, changeStep] = useState(0),

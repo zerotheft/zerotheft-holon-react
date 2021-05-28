@@ -21,7 +21,7 @@ const Step5 = ({ updateCurrentStep }) => {
           <Info>If you have already done the following steps, select '{name}' from network selector tab.</Info>
           <StyledOrderedList>
             <li>Open my accounts selector at the top right corner section of the metamask.</li>
-            <li>Click on settings and the go to networks setting.</li>
+            <li>Click on settings and then go to networks setting.</li>
             <li>Click 'Add Network' button and fill the details as:<br />
               <div><span>Network Name:</span> {name}</div>
               <div><span>New RPC URL:</span> {HTTP_PROVIDER}</div>
