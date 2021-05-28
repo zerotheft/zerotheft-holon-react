@@ -60,8 +60,6 @@ const Dashboard = ({ history, location, match }) => {
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
   const yes = theftData && (theftData.for / theftData.votes * 100).toFixed(0)
   const no = 100 - yes
-  console.log(issueLoading, templateLoading, loading, false)
-  console.log(issueLoading, templateLoading, loading, loadingTheft)
   if((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
     <InnerWrapper>
