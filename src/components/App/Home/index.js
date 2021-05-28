@@ -12,7 +12,6 @@ import { DESKTOP_APP_DOWNLOAD_LINK } from 'constants/index'
 
 const Home = () => {
   const { selectedHolon, theftInfo } = useContext(AppContext)
-
   return <React.Fragment>
     <IssueSlider />
     <TheftInfo summary={get(theftInfo, 'info')} />

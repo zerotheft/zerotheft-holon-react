@@ -16,7 +16,7 @@ const Proposals = ({ history, match }) => {
     [loading, updateLoading] = useState(false)
 
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '32%', margin: 0, display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
@@ -34,7 +34,7 @@ const Proposals = ({ history, match }) => {
         </div>
       </div>
     </Left>
-    <Right style={{ width: '68%', overflowY: 'auto' }} className='apply-bg'>
+    <Right style={{ width: '65%', overflowY: 'auto' }} className='apply-bg'>
       <div style={{ overflow: 'hidden' }}>
         <Header>
           <h5>Best Theft Case:</h5>
