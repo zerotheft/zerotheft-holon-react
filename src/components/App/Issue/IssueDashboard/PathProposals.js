@@ -5,6 +5,7 @@ import { colors } from 'theme'
 import { getProposal } from 'apis/proposals'
 import { convertJSONtoString } from 'utils'
 import proposal from 'assets/icons/proposal.svg'
+import OverlaySpinner from 'commons/OverlaySpinner'
 
 const PathProposals = ({ regularProp, counterProp, theftData }) => {
     const [proposalNumber, updateProposal] = useState(0),
@@ -33,8 +34,12 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
     }
     useEffect(() => {
         firstLeadingProp.id && getLeadingProposals(firstLeadingProp)
+        updateLoader(false)
     }, [firstLeadingProp.id])
-
+    if(proposalLoading)
+        return <Wrapper>
+                <OverlaySpinner loading/>
+            </Wrapper>
     if (isEmpty(proposals)) return (
         <Wrapper>
             <div className="no-proposal">
@@ -50,13 +55,12 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
 
     return <Wrapper>
         <h3>{proposals[proposalNumber].title}</h3>
-        <div>{proposals[proposalNumber].description}
-        </div>
+        <div className="description">{proposals[proposalNumber].description}</div>
         <div className="proposal-list">
             {proposalNumber !== 0 && <button onClick={() => { updateProposal(proposalNumber - 1) }}>Previous</button>}
             {proposalNumber !== (proposals.length - 1) && <button onClick={() => { updateProposal(proposalNumber + 1) }}>Next Description</button>}
         </div>
-        {!proposalLoading && leadingProps.length && <>
+        {leadingProps.length && <>
             <h3>Leading Proposal{leadingProps.length > 1 && 's'}</h3>
             {
                 leadingProps.map((prop, index) => {
@@ -76,6 +80,9 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
 }
 
 const Wrapper = styled.div`
+    .description{
+        white-space: pre-wrap;
+    }
     .no-proposal {
         display: flex;
         flex-direction: row;
