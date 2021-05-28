@@ -25,7 +25,7 @@ const Step5 = ({ updateCurrentStep }) => {
             <li>Click 'Add Network' button and fill the details as:<br />
               <div><span>Network Name:</span> {name}</div>
               <div><span>New RPC URL:</span> {HTTP_PROVIDER}</div>
-              <div><span>Chain ID:</span> {chainId || 1338} </div>
+              <div><span>Chain ID:</span> {chainId || 1440} </div>
               <div><span>Currency Symbol:</span> ETC</div>
             </li>
             <li>Click on save</li>
