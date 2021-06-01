@@ -6,7 +6,7 @@ import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { IssueContext } from '../IssueContext'
-import { VoteContext,VoteProvider } from './VoteContext'
+import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import useFetch from 'commons/hooks/useFetch'
 import { Row } from 'commons/Form/styles'
@@ -37,13 +37,13 @@ const VoteFinalize = ({ match, history, location }) => {
   }
 
   const checkQueryParams = async () => {
-    if(queryParams && getParameterByName('page') === 'steps') {
-      const {step } = await checkStep(true)
-      if(step > 6) return null
+    if (queryParams && getParameterByName('page') === 'steps') {
+      const { step } = await checkStep(true)
+      if (step > 6) return null
       showStepsPage(true)
-      if(getParameterByName('details')) {
+      if (getParameterByName('details')) {
         const details = localStorage.getItem('voteDetails')
-        if(details) {
+        if (details) {
           updateValues(JSON.parse(details))
         }
       }
@@ -63,10 +63,10 @@ const VoteFinalize = ({ match, history, location }) => {
   if (!loading && !get(selection, 'proposal') && !get(selection, 'counterProposal'))
     return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
 
-  if(stepsPage) return <Steps showStepsPage={showStepsPage} vote={() => {
+  if (stepsPage) return <Steps showStepsPage={showStepsPage} vote={() => {
     showStepsPage(false)
     vote(initialValues)
-  }}/>
+  }} />
 
   return <React.Fragment>
     <Wrapper>
@@ -86,9 +86,9 @@ const VoteFinalize = ({ match, history, location }) => {
                 toast.error('Please open on chrome browser to vote!!!')
                 return
               }
-              const {step : curStep} = await checkStep()
+              const { step: curStep } = await checkStep()
               localStorage.setItem('voteDetails', JSON.stringify(values))
-              history.push({search: '?page=steps'})
+              history.push({ search: '?page=steps' })
               if (curStep <= 6) {
                 updateValues(values)
                 showStepsPage(true)
@@ -118,11 +118,11 @@ const VoteFinalize = ({ match, history, location }) => {
                     }]}
                   />
                 </Row>
-                {finalVote === 'yes' && <Row style={{marginLeft: 140}}>
+                {finalVote === 'yes' && <Row style={{ marginLeft: 140 }}>
                   <Field
                     name="amount"
                     component={Radio}
-                    radioStyle={{marginRight: 0}}
+                    radioStyle={{ marginRight: 0 }}
                     values={[{
                       value: 'custom',
                       component: <Column style={{ flex: 1 }}>
@@ -173,7 +173,7 @@ const VoteFinalize = ({ match, history, location }) => {
               <span>Your Linked-in Account:</span>
               <a href={userInfo.linkedin} target="_blank" rel="noopener noreferrer">{userInfo.linkedin}</a>
             </p>
-            {priorVoteInfo && priorVoteInfo.success && <Button onClick={() => {}} style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }} height={62}>PRIOR VOTE</Button>}
+            {priorVoteInfo && priorVoteInfo.success && <Button onClick={() => { }} style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }} height={62}>PRIOR VOTE</Button>}
           </div>
           {priorVoteInfo && priorVoteInfo.success && <div className='content bottom'>
             <p className='data-row'>
@@ -196,7 +196,7 @@ const VoteFinalize = ({ match, history, location }) => {
       </div>
     </Wrapper>
     <ProposalWrapper>
-      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes'? 'proposals': 'counter-proposals', []), { year: filter.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'}/>
+      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes' ? 'proposals' : 'counter-proposals', []), { year: filter.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
     </ProposalWrapper>
   </React.Fragment>
 }
@@ -215,7 +215,7 @@ const Wrapper = styled.div`
     flex: 1;
   }
 `,
-FormWrapper = styled.div`
+  FormWrapper = styled.div`
   form {
     max-width: 500px;
   }
@@ -243,7 +243,7 @@ FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `,
-FinalizeContentWrapper = styled.div`
+  FinalizeContentWrapper = styled.div`
   margin-left: 75px;
   max-width: 580px;
   width: 100%;
@@ -289,7 +289,7 @@ FinalizeContentWrapper = styled.div`
     }
   }
 `,
-ProposalWrapper = styled.div`
+  ProposalWrapper = styled.div`
   margin-top: 30px; 
   padding: 30px;
   border-top: 1px solid #C9C9C9;
