@@ -14,6 +14,7 @@ const Proposals = ({ history, match }) => {
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
+
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>

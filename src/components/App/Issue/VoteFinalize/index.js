@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { get, capitalize, round, filter as Filter } from 'lodash'
+import EasyEdit from 'react-easy-edit';
+import { get, capitalize, filter as Filter } from 'lodash'
 import { Formik, Field, Form } from 'formik'
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -10,7 +11,7 @@ import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import useFetch from 'commons/hooks/useFetch'
 import { Row } from 'commons/Form/styles'
-import { TextField, TextAreaField, Radio } from 'commons/Form/InputFields'
+import { TextField, TextAreaField, Radio, EditableField } from 'commons/Form/InputFields'
 import Button from 'commons/Buttons'
 import { colors } from 'theme'
 import { isChrome, numberWithCommas, getParameterByName, convertUNIXtoDATETIME } from 'utils'
@@ -28,7 +29,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
   const amount = finalVote === 'yes' ? get(selection, 'proposal.amount') : get(selection, 'counterProposal.amount')
-
+  const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
   const getVotedIdeas = async () => {
     if (localStorage.getItem('address')) {
       //fetch user information
@@ -52,6 +53,8 @@ const VoteFinalize = ({ match, history, location }) => {
       checkStep()
     }
   }
+  const save = (value) => { alert(value) }
+  const cancel = () => { alert("Cancelled") }
   useEffect(() => {
     checkQueryParams()
   }, [queryParams])
@@ -71,6 +74,13 @@ const VoteFinalize = ({ match, history, location }) => {
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
+      <EasyEdit
+        type="number"
+        onSave={save}
+        onCancel={cancel}
+        saveButtonLabel="Save Me"
+        cancelButtonLabel="Cancel Me"
+      />
       <FormWrapper>
         <div>
           <h4>Do you consider this as theft via a rigged economy?</h4>
@@ -79,9 +89,15 @@ const VoteFinalize = ({ match, history, location }) => {
             initialValues={initialValues || {
               vote: capitalize(finalVote),
               amount: 'static',
-              custom_amount: 0
+              custom_amount: 0,
+              ...theftAmtYears
             }}
-            onSubmit={async values => {
+            onSubmit={async (values) => {
+              let altTheftAmounts = {}
+              Object.keys(theftAmtYears).map((yr) => {
+                if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
+                delete values[yr]
+              })
               if (!isChrome()) {
                 toast.error('Please open on chrome browser to vote!!!')
                 return
@@ -93,7 +109,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 updateValues(values)
                 showStepsPage(true)
               }
-              else vote(values)
+              else vote({ ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"') })
             }}
           >
             {({ values }) => {
@@ -108,7 +124,7 @@ const VoteFinalize = ({ match, history, location }) => {
                   <Field name="vote" component={TextField} label="Your Vote" labelWidth={110} readonly />
                 </Row>
                 <Row>
-                  <Label>Proposed Amount:</Label>
+                  <Label>Proposed Total Amount:</Label>
                   <Field
                     name="amount"
                     component={Radio}
@@ -118,28 +134,7 @@ const VoteFinalize = ({ match, history, location }) => {
                     }]}
                   />
                 </Row>
-                {finalVote === 'yes' && <Row style={{ marginLeft: 140 }}>
-                  <Field
-                    name="amount"
-                    component={Radio}
-                    radioStyle={{ marginRight: 0 }}
-                    values={[{
-                      value: 'custom',
-                      component: <Column style={{ flex: 1 }}>
-                        <Field
-                          name="custom_amount"
-                          component={TextField}
-                          type="number"
-                          min={0}
-                          label="Enter Custom"
-                          labelType="top"
-                          readonly={values.amount !== 'custom'}
-                        />
-                        {(amount && values.custom_amount) ? <Label full>Your amount is only {round((values.custom_amount * 100) / amount, 2)}% of the amount in the problem proposal</Label> : null}
-                      </Column>
-                    }]}
-                  />
-                </Row>}
+
                 <Row>
                   <Field
                     name="comment"
@@ -148,6 +143,19 @@ const VoteFinalize = ({ match, history, location }) => {
                     labelWidth={130}
                   />
                 </Row>
+                {finalVote === 'yes' && theftAmtYears &&
+                  Object.keys(theftAmtYears).map((y) =>
+                    <Row>
+                      <Field
+                        name={y}
+                        component={EditableField}
+                        type="number"
+                        min={0}
+                        label={y}
+                        labelWidth={130}
+                      />
+                    </Row>
+                  )}
                 <Row>
                   <Button type="submit" height={50}>I approve this vote</Button>
                 </Row>
@@ -198,7 +206,7 @@ const VoteFinalize = ({ match, history, location }) => {
     <ProposalWrapper>
       <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes' ? 'proposals' : 'counter-proposals', []), { year: filter.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
     </ProposalWrapper>
-  </React.Fragment>
+  </React.Fragment >
 }
 
 const FinalizeWrapper = (props) => {

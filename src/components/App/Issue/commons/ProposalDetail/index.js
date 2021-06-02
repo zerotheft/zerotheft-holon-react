@@ -20,7 +20,7 @@ const ProposalDetail = ({ item, type, show_details = false, chartData = null }) 
   const match = useRouteMatch()
   const { proposalDetails } = useContext(IssueContext)
   useEffect(() => {
-    getProposalApi(item.id)
+    item && getProposalApi(item.id)
   }, [item])
   if (isEmpty(item)) return null
   let theftAmt = [],
