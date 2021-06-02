@@ -23,12 +23,6 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     getProposalApi(item.id)
   },[item])
   if (isEmpty(item)) return null
-  let theftAmt = [],
-    votes = []
-  chartData && chartData.forEach(function(value, index) {
-    theftAmt.push(parseFloat((parseFloat(value['theftAmt'])/(10**9)).toFixed(1)))
-    votes.push(parseInt(value['votes']))
-  });
   const options = {
     title: {
         text: 'Theft Amount vs Votes'
@@ -36,14 +30,20 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     exporting: false,
     credits: false,
     xAxis: {
-        categories: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8'],
+        categories: chartData.bellCurveThefts,
         title: {
-          text: 'Proposals'
-      }
+          text: 'Theft Amounts'
+        },
+        labels: {
+          formatter: function () {
+              var label = this.axis.defaultLabelFormatter.call(this);
+              return `$${convertDollarToString(label)}`;
+          }
+        }
     },
     yAxis: {
       labels: {
-        format: '${value}B'
+        format: '{value}'
       },
       title: {
           text: 'No. of Votes'
@@ -55,11 +55,11 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     series: [{
         type: 'column',
         name: 'No. of Votes',
-        data: votes,
+        data: chartData.bellCurveVotes,
     }, {
         type: 'spline',
         name: 'Theft Amount',
-        data: theftAmt,
+        data: chartData.bellCurveVotes,
         marker: {
             lineWidth: 2,
             lineColor: Highcharts.getOptions().colors[3],

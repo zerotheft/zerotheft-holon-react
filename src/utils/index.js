@@ -65,14 +65,23 @@ export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) 
   return nodes
 }
 
+export const displayContent = (data) => {
+  console.log(data)
+  if(data && data.includes('http')){
+    return <div className='dataValue' style={{wordBreak: 'break-word'}}><a href={data} target='_blank'>{data}</a></div>
+  }
+  else{
+    return <div className='dataValue' style={{wordBreak: 'break-word'}}>{data}</div>
+  }
+}
+
 export const convertJSONtoString = (data) => {
   if (!data) return null
   return <DataObject>
     {Object.keys(data).map((key) => <li>
       {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:</div>}
-      {isObject(data[key]) ? convertJSONtoString(data[key]) : <div className='dataValue' style={{wordBreak: 'break-word'}}>
-        {data[key]}
-      </div>}
+      { isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key].toString())
+      }
     </li>)}
   </DataObject>
 }
@@ -110,9 +119,8 @@ export const removeDecimelIfNeeded = (number) => {
   return (parseInt(decimel)===0)? num : number;
 }
 
-
 export const convertDollarToString = (value, decimal = 1) => {
-  let val = value
+  let val = parseInt(value)
   let negative = false
   if(!isNumber(val) || val === 0) return val
   
@@ -126,7 +134,6 @@ export const convertDollarToString = (value, decimal = 1) => {
   else if (val >= 1e9 && val < 1e12) val = removeDecimelIfNeeded((val / 1e9).toFixed(decimal)) + "B"
   else if (val >= 1e12 && val < 1e15) val = removeDecimelIfNeeded((val / 1e12).toFixed(decimal)) + "T"
   else val = removeDecimelIfNeeded(parseFloat((val / 1e12).toFixed(0))).toLocaleString() + "T"
-
   if(negative) return "-" + val
   return val
 }

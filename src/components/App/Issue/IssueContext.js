@@ -96,14 +96,15 @@ const useIssueFetcher = (id, match) => {
     try {
       const path = await getPathProposalsByYear(`${match.params.pathname}%2F${match.params.id}`, filter.year) || []
       let issueDetails = {}
-      issueDetails.proposals = path.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
+      issueDetails.proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
         ...i, year: parseInt(get(i, 'year'))
       })) || []
 
-      issueDetails.counter_proposals = path.filter(i => (i && parseFloat(i.theftAmt) <= 0)).map(i => ({
+      issueDetails.counter_proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) <= 0)).map(i => ({
         ...i, year: parseInt(get(i, 'year'))
       })) || []
 
+      issueDetails.bellCurveData = path.chartData || {}
       updateIssue(issueDetails)
 
       updateLoading(false)
