@@ -66,7 +66,6 @@ export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) 
 }
 
 export const displayContent = (data) => {
-  console.log(data)
   if(data && data.includes('http')){
     return <div className='dataValue' style={{wordBreak: 'break-word'}}><a href={data} target='_blank'>{data}</a></div>
   }
