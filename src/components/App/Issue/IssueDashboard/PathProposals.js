@@ -60,7 +60,7 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
             {proposalNumber !== 0 && <button onClick={() => { updateProposal(proposalNumber - 1) }}>Previous</button>}
             {proposalNumber !== (proposals.length - 1) && <button onClick={() => { updateProposal(proposalNumber + 1) }}>Next Description</button>}
         </div>
-        {leadingProps.length && <>
+        {leadingProps.length>0 && <>
             <h3>Leading Proposal{leadingProps.length > 1 && 's'}</h3>
             {
                 leadingProps.map((prop, index) => {
