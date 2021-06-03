@@ -31,6 +31,7 @@ const getProposalContract = async () => {
 
 export default {
   DESKTOP_APP: envConfig.DESKTOP_APP,
+  CHAIN_ID: envConfig.CHAIN_ID,
   HTTP_PROVIDER: envConfig.HTTP_PROVIDER || 'http://localhost:7545',
   ZERO_THEFT_CONTRACT: envConfig.ZERO_THEFT_CONTRACT,
   getProposalContract,

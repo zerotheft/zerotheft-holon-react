@@ -3,10 +3,10 @@ import { getVoterInfos } from 'apis/desktopApp'
 import { Web3Context } from 'components/App/Web3Context'
 import { AppContext } from 'components/App/AppContext'
 import config from 'config'
-const { chainId, MODE } = config
+const { CHAIN_ID, MODE } = config
 
 export default () => {
-  const chainID = chainId || 1440
+  const chainID = CHAIN_ID
   const { web3, loadWeb3 } = useContext(Web3Context)
   const { userInfo } = useContext(AppContext)
   const [step, changeStep] = useState(0),
@@ -37,7 +37,7 @@ export default () => {
     try {
       const voterInfo = await getVoterInfo()
       const metamask = !!window.web3
-      console.log(voterInfo.network, MODE)
+      console.log("===voterInfo", voterInfo, MODE)
       if (!voterInfo || voterInfo.network !== MODE) {
         newStep = 2
         msg = 'Select correct environment in the desktop app'

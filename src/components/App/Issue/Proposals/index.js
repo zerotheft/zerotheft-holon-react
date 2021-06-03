@@ -14,7 +14,7 @@ const Proposals = ({ history, match }) => {
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
-
+  const bellCurveData = get(issue, 'bellCurveData') || {}
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
@@ -51,7 +51,7 @@ const Proposals = ({ history, match }) => {
             }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
           </div>
         </Header>
-        <ProposalDetail item={selectedItem} chartData={Filter(get(issue, 'proposals', []), { year: filter.year })} />
+        <ProposalDetail item={selectedItem} chartData={bellCurveData} />
       </div>
     </Right>
   </Wrapper>

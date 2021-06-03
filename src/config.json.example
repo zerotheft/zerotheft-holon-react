@@ -1,5 +1,6 @@
 {
   "DESKTOP_APP": "http://localhost:6549",
   "HTTP_PROVIDER": "http://localhost:8545",
-  "ZERO_THEFT_CONTRACT": "contracts"
+  "ZERO_THEFT_CONTRACT": "contracts",
+  "CHAIN_ID":1337
 }

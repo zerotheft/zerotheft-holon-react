@@ -74,13 +74,13 @@ const VoteFinalize = ({ match, history, location }) => {
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
-      <EasyEdit
+      {/* <EasyEdit
         type="number"
         onSave={save}
         onCancel={cancel}
         saveButtonLabel="Save Me"
         cancelButtonLabel="Cancel Me"
-      />
+      /> */}
       <FormWrapper>
         <div>
           <h4>Do you consider this as theft via a rigged economy?</h4>
@@ -89,7 +89,6 @@ const VoteFinalize = ({ match, history, location }) => {
             initialValues={initialValues || {
               vote: capitalize(finalVote),
               amount: 'static',
-              custom_amount: 0,
               ...theftAmtYears
             }}
             onSubmit={async (values) => {
@@ -130,7 +129,7 @@ const VoteFinalize = ({ match, history, location }) => {
                     component={Radio}
                     values={[{
                       value: 'static',
-                      label: `${amount ? `$${numberWithCommas(amount)}` : 'N/A'} (from Problem Proposal)`
+                      label: `${`$${numberWithCommas(amount)}`} (from Problem Proposal)`
                     }]}
                   />
                 </Row>
@@ -191,9 +190,9 @@ const VoteFinalize = ({ match, history, location }) => {
               Prior Vote: {get(priorVoteInfo, 'voteType') ? 'YES' : 'NO'}
             </p>
             <p className='data-row' style={{ fontWeight: '500' }}>
-              <span>
+              {/* <span>
                 Amount Stolen : ${get(priorVoteInfo, 'altTheftAmt') || get(priorVoteInfo, 'theftAmt')}
-              </span>
+              </span> */}
               <span>
                 Voted on : {convertUNIXtoDATETIME(get(priorVoteInfo, 'date'))}
               </span>
