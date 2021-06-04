@@ -166,6 +166,9 @@ const Wrapper = styled(Container)`
         top: 155px;
         padding: 25px 0px;
       }
+      @media(max-width: 1285px){
+        display: none;
+      }
     }
   }
 `,
@@ -179,10 +182,9 @@ const Wrapper = styled(Container)`
   z-index: 1;
   left: 50%;
   top: 60px;
-  max-width: 1920px;
   width: 100%;
   transform: translateX(-50%);
-  padding: 10px 20px;
+  padding: 10px 30px;
   h3 {
     font-size: 45px;
     color: #7F51C1;
