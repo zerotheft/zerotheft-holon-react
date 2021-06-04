@@ -15,6 +15,7 @@ const Proposals = ({ history, match }) => {
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
+  console.log(issue)
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>

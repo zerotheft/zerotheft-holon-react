@@ -37,7 +37,6 @@ export default () => {
     try {
       const voterInfo = await getVoterInfo()
       const metamask = !!window.web3
-      console.log("===voterInfo", voterInfo, MODE)
       if (!voterInfo || voterInfo.network !== MODE) {
         newStep = 2
         msg = 'Select correct environment in the desktop app'
