@@ -16,7 +16,7 @@ const CounterProposals = ({ history, match }) => {
     [loading, updateLoading] = useState(false)
 
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '650px', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
@@ -30,11 +30,11 @@ const CounterProposals = ({ history, match }) => {
       </div>
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
-          <Points data={filter.year ? Filter(get(issue, 'counter_proposals', []), { year: filter.year }) : get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          <Points data={filter.year ? Filter(get(issue, 'counter_proposals', []), { year: parseInt(filter.year) }) : get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>
-    <Right style={{ width: '65%', overflowY: 'auto' }} className='apply-bg'>
+    <Right style={{ width: '100%', overflowY: 'auto' }} className='apply-bg'>
       <div style={{ overflow: 'hidden' }}>
         <Header>
           <h5>Best Counter Point:</h5>
