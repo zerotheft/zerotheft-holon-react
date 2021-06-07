@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
@@ -14,7 +14,6 @@ const TheftInfo = ({ summary = {} }) => {
   const history = useHistory()
   const { filterParams } = useContext(AppContext)
 
-
   return <Wrapper>
     <Container>
       <TitleContent>
@@ -22,7 +21,7 @@ const TheftInfo = ({ summary = {} }) => {
         <Button onClick={() => history.push(`/pathReport/${get(filterParams, 'initPath')}`)}
           height={44} width={170}>View Report</Button>
       </TitleContent>
-      {summary.total>0 &&
+      {!isEmpty(summary) &&
         <InfoWrapper>
           <InfoBox>
             <h5>Stolen this year</h5>

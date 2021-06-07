@@ -1,19 +1,18 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
-import { toNumber } from 'lodash'
+import { toNumber, isEmpty } from 'lodash'
 import styled from 'styled-components'
 
 import { calculate } from 'components/App/commons/services'
 import { convertDollarToString } from 'utils'
 
 const PathItem = ({ to = '/', name = '', summary, parent = false }) => {
-  
+
   const realpath = to.replace('/issue', '').replaceAll('%2F', '/').replace('/path/', '')
   let summaryItem = summary[realpath] ? calculate(summary[realpath]) : {}
-
   return <Wrapper to={to} parent={parent}>
     <div className='name'>{name}</div>
-    {summaryItem.vote && <div className='details'>
+    {!isEmpty(summaryItem) && summaryItem.vote && <div className='details'>
       <div className={`vote ${summaryItem.vote === 'YES' ? 'active' : ''}`}>
         {summaryItem.vote} {summaryItem.votedPercent}%
       </div>
