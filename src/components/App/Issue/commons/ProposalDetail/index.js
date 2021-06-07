@@ -72,6 +72,9 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
         },
     }]
 }
+  if(proposalLoading){
+    return(<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
+  }
   return (<Body>
     <div className="bodyHeader">
       <HighchartsReact highcharts={Highcharts} options={options} />
@@ -114,8 +117,7 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     </div>
     <div className="bodyDescription">
       { proposalInfo ? <div className='detail-wrapper' style={{position: 'relative', minHeight: 50}}>
-        {proposalLoading ? <OverlaySpinner overlayParent loading={true} backgroundColor="transparent" />:
-        convertJSONtoString(get(proposalInfo, 'detail', {}))}
+         { convertJSONtoString(get(proposalInfo, 'detail', {})) }
       </div> : <React.Fragment>
         {get(item, 'title') && <h5>{get(item, 'title')}</h5>}
         <p>{get(item, 'description')}</p>
