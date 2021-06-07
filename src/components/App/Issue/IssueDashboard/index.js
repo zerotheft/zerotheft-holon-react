@@ -55,11 +55,12 @@ const Dashboard = ({ history, location, match }) => {
   }, [get(match, 'params.id'), get(match, 'params.pathname')])
   const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]
 
-  const filteredProposals = sortedUniqBy(isEmpty(filterParams.year) ? filterArray(allProposals, { year: filterParams.year }) : allProposals, 'description')
+  // const filteredProposals = sortedUniqBy(isEmpty(filterParams.year) ? filterArray(allProposals, { year: filterParams.year }) : allProposals, 'description')
+  const filteredProposals = sortedUniqBy(allProposals, 'description')
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
   const yes = theftData && (theftData.for / theftData.votes * 100).toFixed(0)
   const no = 100 - yes
-  if((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
+  if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
     <InnerWrapper>
       <Left>

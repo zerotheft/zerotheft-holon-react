@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
 import { get, isEmpty } from 'lodash'
 import PropTypes from 'prop-types'
+import { colors } from 'theme'
 import styled from 'styled-components'
 
 import { AppContext } from '../AppContext'
@@ -13,7 +14,7 @@ import { convertDollarToString } from 'utils'
 const TheftInfo = ({ summary = {} }) => {
   const history = useHistory()
   const { filterParams } = useContext(AppContext)
-
+  console.log(summary)
   return <Wrapper>
     <Container>
       <TitleContent>
@@ -25,7 +26,7 @@ const TheftInfo = ({ summary = {} }) => {
         <InfoWrapper>
           <InfoBox>
             <h5>Stolen this year</h5>
-            <h3>${convertDollarToString(summary.total)}</h3>
+            <h3>${convertDollarToString(summary.total)}{summary.proposals === 0 && summary.votes === 0 && <InfoText>(proposals and votes not available)</InfoText>}</h3>
             <h6>In USA</h6>
           </InfoBox>
           {/* <InfoBox>
@@ -105,4 +106,8 @@ const Wrapper = styled.section`
     font-weight: 500;
     color: #000;
   }
+`, InfoText = styled.span`
+    font-size: 14px;
+    font-weight: 500;
+    color: ${colors.text.gray};
 `
