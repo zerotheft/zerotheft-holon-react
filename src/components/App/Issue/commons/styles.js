@@ -104,6 +104,7 @@ export const
   }
 `,
   Body = styled.div`
+  min-height: 400px;
   position: relative;
   & > h4 {
     font-size: 20px;
