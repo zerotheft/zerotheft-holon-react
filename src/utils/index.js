@@ -66,11 +66,11 @@ export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) 
 }
 
 export const displayContent = (data) => {
-  if(data && data.includes('http')){
+  if(data && data.toString().includes('http')){
     return <div className='dataValue' style={{wordBreak: 'break-word'}}><a href={data} target='_blank'>{data}</a></div>
   }
   else{
-    return <div className='dataValue' style={{wordBreak: 'break-word'}}>{data}</div>
+    return <div className='dataValue' style={{wordBreak: 'break-word'}}>{data || ''}</div>
   }
 }
 
