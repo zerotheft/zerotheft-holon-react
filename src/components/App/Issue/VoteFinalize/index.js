@@ -7,6 +7,7 @@ import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { IssueContext } from '../IssueContext'
+import { AppContext } from '../../AppContext'
 import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import useFetch from 'commons/hooks/useFetch'
@@ -22,7 +23,8 @@ import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
-  const { issue, selection, priorVoteInfo, loading, filter } = useContext(IssueContext)
+  const { issue, selection, priorVoteInfo, loading } = useContext(IssueContext)
+  const { filterParams } = useContext(AppContext)
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
   const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
   const [initialValues, updateValues] = useState()
@@ -203,7 +205,7 @@ const VoteFinalize = ({ match, history, location }) => {
       </div>
     </Wrapper>
     <ProposalWrapper>
-      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes' ? 'proposals' : 'counter-proposals', []), { year: filter.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
+      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes' ? 'proposals' : 'counter-proposals', []), { year: filterParams.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
     </ProposalWrapper>
   </React.Fragment >
 }

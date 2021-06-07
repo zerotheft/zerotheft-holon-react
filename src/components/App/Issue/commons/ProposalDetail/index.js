@@ -29,6 +29,11 @@ const ProposalDetail = ({ item, type, show_details = false, chartData = null }) 
     },
     exporting: false,
     credits: false,
+    tooltip: {
+      formatter: function () {
+        return '<b>' + this.y + ' votes</b>';
+      }
+    },
     xAxis: {
       categories: chartData.bellCurveThefts,
       title: {
@@ -64,11 +69,6 @@ const ProposalDetail = ({ item, type, show_details = false, chartData = null }) 
         lineWidth: 2,
         lineColor: Highcharts.getOptions().colors[3],
         fillColor: 'white'
-      },
-      tooltip: {
-        pointFormatter: function () {
-          return 'Theft Amount: <b>$' + this.y + 'B</b>';
-        }
       },
     }]
   }
