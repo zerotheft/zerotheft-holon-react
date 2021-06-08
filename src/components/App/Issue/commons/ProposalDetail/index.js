@@ -72,6 +72,7 @@ const ProposalDetail = ({ item, type, show_details = false, chartData = null }) 
       },
     }]
   }
+  console.log(proposalInfo)
   return (<Body>
     <div className="bodyHeader">
       <HighchartsReact highcharts={Highcharts} options={options} />

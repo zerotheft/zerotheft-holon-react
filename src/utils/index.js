@@ -96,8 +96,7 @@ export const convertJSONtoString = (data) => {
   return <DataObject>
     {Object.keys(data).map((key) => <li>
       {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:</div>}
-      {isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key].toString())
-      }
+      {isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key] && data[key].toString())}
     </li>)}
   </DataObject>
 }
