@@ -68,7 +68,6 @@ export const displayContent = (data) => {
   if(!isEmpty(data) && data.toString().includes('http')){
     if(data.toString().split(' ').length > 1){
       let mainContent = ""
-      console.log('values', data.toString().split(' '))
       data.toString().split(' ').forEach((value) => {
         if(value.includes('http')){
           mainContent += `<a href={data} target='_blank'> ${value}</a>`
