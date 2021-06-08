@@ -1,7 +1,6 @@
 import React from 'react'
 import { fromUnixTime, format } from 'date-fns'
-import { isEmpty, isNumber } from 'lodash'
-import { startCase, isObject, isArray } from 'lodash'
+import { startCase, isObject, isArray, isEmpty, isNumber } from 'lodash'
 import styled from 'styled-components'
 
 export const truncateString = (str, num) => {
@@ -66,8 +65,23 @@ export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) 
 }
 
 export const displayContent = (data) => {
-  if(data && data.toString().includes('http')){
-    return <div className='dataValue' style={{wordBreak: 'break-word'}}><a href={data} target='_blank'>{data}</a></div>
+  if(!isEmpty(data) && data.toString().includes('http')){
+    if(data.toString().split(' ').length > 1){
+      let mainContent = ""
+      console.log('values', data.toString().split(' '))
+      data.toString().split(' ').forEach((value) => {
+        if(value.includes('http')){
+          mainContent += `<a href={data} target='_blank'> ${value}</a>`
+        }
+        else{
+          mainContent += ` ${value}`
+        }
+      })
+      return <div className='dataValue' style={{wordBreak: 'break-word'}} dangerouslySetInnerHTML={{__html: mainContent}} />
+    }
+    else{
+      return <div className='dataValue' style={{wordBreak: 'break-word'}}><a href={data} target='_blank'>{data}</a></div>
+    }
   }
   else{
     return <div className='dataValue' style={{wordBreak: 'break-word'}}>{data || ''}</div>
