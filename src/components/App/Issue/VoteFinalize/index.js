@@ -30,7 +30,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const [initialValues, updateValues] = useState()
 
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
-  const amount = finalVote === 'yes' ? get(selection, 'proposal.amount') : get(selection, 'counterProposal.amount')
+  const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
   const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
   const getVotedIdeas = async () => {
     if (localStorage.getItem('address')) {
