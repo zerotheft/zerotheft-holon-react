@@ -104,12 +104,19 @@ export const
   }
 `,
   Body = styled.div`
+  min-height: 400px;
   position: relative;
   & > h4 {
     font-size: 20px;
   }
   .bodyHeader {
+    display: flex;
+    flex-direction: row;
     margin-top: 25px;
+    & > div:first-child {
+      display: flex;
+      width: 65%;
+    }
     .detailWrapper {
       margin-top: 25px;
       display: flex;

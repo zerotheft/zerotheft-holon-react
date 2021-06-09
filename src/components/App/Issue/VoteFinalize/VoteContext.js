@@ -6,6 +6,7 @@ import config from 'config'
 import useWeb3 from 'utils/useWeb3'
 import { addHistory } from 'apis/desktopApp'
 import { IssueContext } from '../IssueContext'
+import { AppContext } from '../../AppContext'
 import { toast } from 'react-toastify'
 import { get } from 'lodash'
 import { getParameterByName } from 'utils'
@@ -18,7 +19,6 @@ const VoteProvider = ({ children }) => {
 
   const { voting, finalVote, popup, showErrorPopUp, vote, voteWithHolon } = useVote()
   const { selection } = useContext(IssueContext)
-
   const buildUrl = () => {
     let query = '?page=steps&details=true'
     if (finalVote) query = query + `&vote=${finalVote}`
@@ -57,12 +57,13 @@ const useVote = () => {
   const location = useLocation()
   const params = useParams()
 
+  const { filterParams } = useContext(AppContext)
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
   const { carryTransaction, getBalance, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
-  const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo, filter } = useContext(IssueContext)
+  const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
   const vote = async (values) => {
     updateVoting(true)
