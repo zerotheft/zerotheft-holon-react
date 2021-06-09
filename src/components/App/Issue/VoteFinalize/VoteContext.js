@@ -6,6 +6,7 @@ import config from 'config'
 import useWeb3 from 'utils/useWeb3'
 import { addHistory } from 'apis/desktopApp'
 import { IssueContext } from '../IssueContext'
+import { AppContext } from '../../AppContext'
 import { toast } from 'react-toastify'
 import { get } from 'lodash'
 import { getParameterByName } from 'utils'
@@ -18,7 +19,6 @@ const VoteProvider = ({ children }) => {
 
   const { voting, finalVote, popup, showErrorPopUp, vote, voteWithHolon } = useVote()
   const { selection } = useContext(IssueContext)
-
   const buildUrl = () => {
     let query = '?page=steps&details=true'
     if (finalVote) query = query + `&vote=${finalVote}`
@@ -57,17 +57,19 @@ const useVote = () => {
   const location = useLocation()
   const params = useParams()
 
+  const { filterParams } = useContext(AppContext)
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
   const { carryTransaction, getBalance, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
-  const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo, filter } = useContext(IssueContext)
+  const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
   const vote = async (values) => {
     updateVoting(true)
     const holonInfo = await getHolonInfo()
-    const proposalId = parseInt(finalVote === 'yes' ? get(selection, 'proposal.id') : get(selection, 'counterProposal.id'), 10)
+    const voteType = finalVote === 'yes'
+    const proposalId = parseInt(voteType ? get(selection, 'proposal.id') : get(selection, 'counterProposal.id'), 10)
     const contract = await getProposalContract()
     try {
       const balance = await getBalance()
@@ -75,7 +77,7 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      await carryTransaction(contract, 'selfVote', [finalVote, proposalId, (values.custom_amount || '').toString(), values.comment || '', holonInfo.address, false, 0, filter.year, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
+      await carryTransaction(contract, 'selfVote', [voteType, proposalId, (values.custom_amount || '').toString(), values.comment || '', holonInfo.address, false, 0, filterParams.year, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
 
       await afterVote(balance, { voteType: finalVote, proposalId, ...values })
     } catch (e) {
@@ -105,7 +107,7 @@ const useVote = () => {
         amount: values.custom_amount,
         signedMessage,
         voter: account,
-        year: filter.year,
+        year: filterParams.year,
         priorVoteId: parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)
       })
       await afterVote(balance, values)

@@ -4,19 +4,21 @@ import { get, isEmpty, filter as Filter } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { IssueContext } from '../IssueContext'
+import { AppContext } from '../../AppContext'
 import { Wrapper, Left, Right, Header } from '../commons/styles'
 import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 
 const CounterProposals = ({ history, match }) => {
-  const { issue, selection, updateSelection, refetchIssue, filter } = useContext(IssueContext)
+  const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
+  const { filterParams } = useContext(AppContext)
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'counterProposal') || {}),
     [loading, updateLoading] = useState(false)
 
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '650px', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
@@ -30,11 +32,11 @@ const CounterProposals = ({ history, match }) => {
       </div>
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
-          <Points data={filter.year ? Filter(get(issue, 'counter_proposals', []), { year: filter.year }) : get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          <Points data={filterParams.year ? Filter(get(issue, 'counter_proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>
-    <Right style={{ width: '65%', overflowY: 'auto' }} className='apply-bg'>
+    <Right style={{ width: '100%', overflowY: 'auto' }} className='apply-bg'>
       <div style={{ overflow: 'hidden' }}>
         <Header>
           <h5>Best Counter Point:</h5>
@@ -53,7 +55,7 @@ const CounterProposals = ({ history, match }) => {
             </>}
           </div>
         </Header>
-        <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filter.year })}/>
+        { !isEmpty(selectedItem) && <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })}/> }
       </div>
     </Right>
   </Wrapper>

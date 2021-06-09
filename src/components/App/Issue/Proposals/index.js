@@ -1,22 +1,25 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { get, isEmpty, filter as Filter } from 'lodash'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { IssueContext } from '../IssueContext'
+import { AppContext } from '../../AppContext'
 import { Wrapper, Left, Right, Header } from '../commons/styles'
 import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 
 const Proposals = ({ history, match }) => {
-  const { issue, selection, updateSelection, refetchIssue, filter } = useContext(IssueContext)
+  const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
+  const { filterParams } = useContext(AppContext)
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
-
+  const bellCurveData = get(issue, 'bellCurveData') || {}
+  console.log(selectedItem, 'assaas')
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '35%', margin: 0, display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '650px', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
@@ -30,11 +33,11 @@ const Proposals = ({ history, match }) => {
       </div>
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
-          <Points data={filter.year ? Filter(get(issue, 'proposals', []), { year: filter.year }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>
-    <Right style={{ width: '65%', overflowY: 'auto' }} className='apply-bg'>
+    <Right style={{ width: '100%', overflowY: 'auto' }} className='apply-bg'>
       <div style={{ overflow: 'hidden' }}>
         <Header>
           <h5>Best Theft Case:</h5>
@@ -51,7 +54,7 @@ const Proposals = ({ history, match }) => {
             }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
           </div>
         </Header>
-        <ProposalDetail item={selectedItem} chartData={Filter(get(issue, 'proposals', []), { year: filter.year })}/>
+        { !isEmpty(selectedItem) && <ProposalDetail item={selectedItem} chartData={bellCurveData}/> }
       </div>
     </Right>
   </Wrapper>

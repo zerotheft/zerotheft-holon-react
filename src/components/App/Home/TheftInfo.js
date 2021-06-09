@@ -22,7 +22,7 @@ const TheftInfo = ({ summary = {} }) => {
         <Button onClick={() => history.push(`/pathReport/${get(filterParams, 'initPath')}`)}
           height={44} width={170}>View Report</Button>
       </TitleContent>
-      {summary.total &&
+      {summary.total>0 &&
         <InfoWrapper>
           <InfoBox>
             <h5>Stolen this year</h5>

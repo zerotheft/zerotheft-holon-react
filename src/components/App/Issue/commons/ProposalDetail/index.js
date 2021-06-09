@@ -20,30 +20,35 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
   const match = useRouteMatch()
   const { proposalDetails } = useContext(IssueContext)
   useEffect(() => {
-    getProposalApi(item.id)
+    item && getProposalApi(item.id)
   },[item])
   if (isEmpty(item)) return null
-  let theftAmt = [],
-    votes = []
-  chartData && chartData.forEach(function(value, index) {
-    theftAmt.push(parseFloat((parseFloat(value['theftAmt'])/(10**9)).toFixed(1)))
-    votes.push(parseInt(value['votes']))
-  });
   const options = {
     title: {
         text: 'Theft Amount vs Votes'
     },
     exporting: false,
     credits: false,
-    xAxis: {
-        categories: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8'],
-        title: {
-          text: 'Proposals'
+    tooltip: {
+      formatter: function(){
+        return '<b>' + this.y + ' votes</b>';
       }
+    },
+    xAxis: {
+        categories: chartData.bellCurveThefts,
+        title: {
+          text: 'Theft Amounts'
+        },
+        labels: {
+          formatter: function () {
+              var label = this.axis.defaultLabelFormatter.call(this);
+              return `$${convertDollarToString(label)}`;
+          }
+        }
     },
     yAxis: {
       labels: {
-        format: '${value}B'
+        format: '{value}'
       },
       title: {
           text: 'No. of Votes'
@@ -55,23 +60,21 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     series: [{
         type: 'column',
         name: 'No. of Votes',
-        data: votes,
+        data: chartData.bellCurveVotes,
     }, {
         type: 'spline',
         name: 'Theft Amount',
-        data: theftAmt,
+        data: chartData.bellCurveVotes,
         marker: {
             lineWidth: 2,
             lineColor: Highcharts.getOptions().colors[3],
             fillColor: 'white'
         },
-        tooltip: {
-          pointFormatter: function () {
-              return 'Theft Amount: <b>$' + this.y + 'B</b>';
-          }
-        },
     }]
 }
+  if(proposalLoading){
+    return(<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
+  }
   return (<Body>
     <div className="bodyHeader">
       <HighchartsReact highcharts={Highcharts} options={options} />
@@ -114,8 +117,7 @@ const ProposalDetail = ({ item, type, show_details = false , chartData = null}) 
     </div>
     <div className="bodyDescription">
       { proposalInfo ? <div className='detail-wrapper' style={{position: 'relative', minHeight: 50}}>
-        {proposalLoading ? <OverlaySpinner overlayParent loading={true} backgroundColor="transparent" />:
-        convertJSONtoString(get(proposalInfo, 'detail', {}))}
+         { convertJSONtoString(get(proposalInfo, 'detail', {})) }
       </div> : <React.Fragment>
         {get(item, 'title') && <h5>{get(item, 'title')}</h5>}
         <p>{get(item, 'description')}</p>
