@@ -77,7 +77,7 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      await carryTransaction(contract, 'selfVote', [voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, false, 0, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
+      await carryTransaction(contract, 'selfVote', [voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, false, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
 
       await afterVote(balance, { voteType: finalVote, proposalId, ...values })
     } catch (e) {
