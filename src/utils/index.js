@@ -148,7 +148,7 @@ export const removeDecimelIfNeeded = (number) => {
   return (parseInt(decimel) === 0) ? num : number;
 }
 
-export const convertDollarToString = (value, decimal = 1) => {
+export const convertDollarToString = (value, decimal = 2) => {
   let val = parseInt(value)
   let negative = false
   if (!isNumber(val) || val === 0) return val

@@ -26,7 +26,7 @@ const TheftInfo = ({ summary = {} }) => {
         <InfoWrapper>
           <InfoBox>
             <h5>Stolen this year</h5>
-            <h3>${convertDollarToString(summary.total)}{summary.proposals === 0 && summary.votes === 0 && <InfoText>(proposals and votes not available)</InfoText>}</h3>
+            <h3>${convertDollarToString(summary.total, 2)}{summary.proposals === 0 && summary.votes === 0 && <InfoText>(proposals and votes not available)</InfoText>}</h3>
             <h6>In USA</h6>
           </InfoBox>
           {/* <InfoBox>
@@ -36,7 +36,7 @@ const TheftInfo = ({ summary = {} }) => {
         </InfoBox> */}
           <InfoBox>
             <h5>Stolen in {summary.between_years} years</h5>
-            <h3>${convertDollarToString(summary.many_years)}</h3>
+            <h3>${convertDollarToString(summary.many_years, 2)}</h3>
             <h6>In USA</h6>
           </InfoBox>
         </InfoWrapper>
