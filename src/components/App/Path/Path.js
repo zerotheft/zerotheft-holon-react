@@ -91,7 +91,7 @@ const Path = ({ history, match, isIssuePath }) => {
         <CurrentDetails>
           <Select
             value={{ value: filterParams.year, label: filterParams.year }}
-            options={new Array(20).fill(undefined).map((val, index) => ({ label: getYear(new Date()) - (index + 1), value: getYear(new Date()) - (index + 1) }))}
+            options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date()) - (index + 1), value: getYear(new Date()) - (index + 1) }))}
             onChange={selected => {
               localStorage.setItem("filterYear", selected.value)
               updateFilter({ ...filterParams, year: selected.value })
