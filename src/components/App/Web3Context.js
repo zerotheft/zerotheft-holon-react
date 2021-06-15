@@ -39,7 +39,7 @@ const useWeb3 = () => {
       console.log(web3R)
       updateWeb3(web3R)
       return web3R
-    } catch(e) {
+    } catch (e) {
       console.log(e, 'error')
       updateError(e)
     } finally {
@@ -51,7 +51,6 @@ const useWeb3 = () => {
 }
 
 const getWeb3 = () => new Promise(async (resolve, reject) => {
-  console.log(window.ethereum, window.web3)
   if (window.ethereum) {
     const web3 = new Web3(window.ethereum);
     try {

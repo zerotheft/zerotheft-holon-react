@@ -39,7 +39,7 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div>ID: <span style={{ fontWeight: '600' }}>{i.id || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
+          <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
           <div>
             {/*
             Author: {get(i, 'ratings.count', 0)}

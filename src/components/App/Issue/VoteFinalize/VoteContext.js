@@ -66,10 +66,11 @@ const useVote = () => {
   const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
   const vote = async (values) => {
+
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
-    const proposalId = parseInt(voteType ? get(selection, 'proposal.id') : get(selection, 'counterProposal.id'), 10)
+    const proposalId = voteType ? get(selection, 'proposal.id') : get(selection, 'counterProposal.id')
     const contract = await getProposalContract()
     try {
       const balance = await getBalance()
@@ -77,7 +78,8 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      await carryTransaction(contract, 'selfVote', [voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, false, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
+      console.log(voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0))
+      await carryTransaction(contract, 'selfVote', [voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
 
       await afterVote(balance, { voteType: finalVote, proposalId, ...values })
     } catch (e) {

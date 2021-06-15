@@ -24,6 +24,7 @@ export default () => {
 
   const getMetamaskAccount = async skipWaiting => {
     const web3R = (web3 || skipWaiting) ? web3 : await loadWeb3()
+
     if (!web3R) return null
 
     const accounts = await web3R.eth.getAccounts()
@@ -33,7 +34,6 @@ export default () => {
   const checkSteps = async (skipWaiting) => {
     let newStep = 1
     let msg = ''
-
     try {
       const voterInfo = await getVoterInfo()
       const metamask = !!window.web3
@@ -47,7 +47,9 @@ export default () => {
         newStep = 4
         msg = 'No metamask found'
       } else {
+
         const { account: metamaskAccount, web3 } = await getMetamaskAccount(skipWaiting) || {}
+
         if (!metamaskAccount) {
           newStep = 4
           msg = 'Please login to the metamask.'
@@ -64,7 +66,9 @@ export default () => {
           newStep = 7
         }
       }
+
     } catch (e) {
+
       console.log(e)
       newStep = 1
       msg = 'Please install, open and register into your zerotheft desktop app.'

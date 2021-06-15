@@ -18,92 +18,92 @@ import { colors } from 'theme'
 const AfterVote = ({ match }) => {
   const { vote, issue } = useContext(IssueContext)
   const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
-  
+
   useEffect(() => {
     getUserInfoApi(localStorage.getItem('address'))
   }, [])
-  
-  if(!vote) {
+
+  if (!vote) {
     return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
   }
 
   const proposal = ([...issue.proposals, ...issue.counter_proposals]).find(i => i.id == vote.proposalId)
-  const amount = vote.vote === 'Yes' ? (vote.custom_amount || proposal.amount) : 0
-  
+  const amount = vote.vote === 'Yes' ? proposal.theftAmt : 0
+
   const openRating = () => {
     window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/proposal-feedback/${get(proposal, 'id')}`
   }
 
   return (
     <>
-    <Wrapper>
-      <div>
-        <VotedInfo>
-          <h3>Do you Consider This Theft Via A Rigged Econnomy?</h3>
-          <div className='content bold'>
-            <p>
-              Your Vote : {vote.vote.toUpperCase()}
-            </p>
-            <p>
-              Your Comment : {vote.comment ? <><br />{vote.comment}</> : 'NONE'}
-            </p>
-            <p>
-              Amount Stolen : ${numberWithCommas(amount)}{vote.vote === 'Yes' && !vote.custom_amount && `(from Problem Proposal)`}
-            </p>
-            <p style={{ display: 'none' }}>
-              Chosen Proposal : ID 23412
-            </p>
-            <p style={{ fontSize: 23, fontWeight: '400' }}>
-              {get(proposal, 'ratings.count', 0)}
-              <span style={{ margin: '0 5px' }}><StarRatings
-                rating={get(proposal, 'ratings.rating', 0)}
-                starDimension="23px"
-                starSpacing="1px"
-                starRatedColor={colors.yellow}
-                numberOfStars={5}
-                name='author_rating'
-              /></span>
-              <FontAwesomeIcon icon={faFrown} color={colors.red} style={{ marginRight: 5 }}/>{get(proposal, 'complaints.count', 0)}
-            </p>
-            <Button onClick={() => {
-              window.location.href = `zerotheft://home/path/${get(match, 'params.pathname')}%2F${get(match, 'params.id')}/proposal-feedback/${get(proposal, 'id')}`
-            }} width={285} height={50} style={{ fontSize: 16 }}>Please Rate This Proposal</Button>
-          </div>
-        </VotedInfo>
+      <Wrapper>
+        <div>
+          <VotedInfo>
+            <h3>Do you Consider This Theft Via A Rigged Econnomy?</h3>
+            <div className='content bold'>
+              <p>
+                Your Vote : {vote.vote.toUpperCase()}
+              </p>
+              <p>
+                Your Comment : {vote.comment ? <><br />{vote.comment}</> : 'NONE'}
+              </p>
+              <p>
+                Amount Stolen : ${numberWithCommas(amount)}{vote.vote === 'Yes' && !vote.custom_amount && `(from Problem Proposal)`}
+              </p>
+              <p style={{ display: 'none' }}>
+                Chosen Proposal : ID 23412
+              </p>
+              <p style={{ fontSize: 23, fontWeight: '400' }}>
+                {get(proposal, 'ratings.count', 0)}
+                <span style={{ margin: '0 5px' }}><StarRatings
+                  rating={get(proposal, 'ratings.rating', 0)}
+                  starDimension="23px"
+                  starSpacing="1px"
+                  starRatedColor={colors.yellow}
+                  numberOfStars={5}
+                  name='author_rating'
+                /></span>
+                <FontAwesomeIcon icon={faFrown} color={colors.red} style={{ marginRight: 5 }} />{get(proposal, 'complaints.count', 0)}
+              </p>
+              <Button onClick={() => {
+                window.location.href = `zerotheft://home/path/${get(match, 'params.pathname')}%2F${get(match, 'params.id')}/proposal-feedback/${get(proposal, 'id')}`
+              }} width={285} height={50} style={{ fontSize: 16 }}>Please Rate This Proposal</Button>
+            </div>
+          </VotedInfo>
+        </div>
+        <div>
+          <ThankyouWrapper>
+            <h3>
+              <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: 10 }} />Thank You For Voting
+            </h3>
+            <h5>Your ZeroTheft Public Voter Registration:</h5>
+            {(userInfo && userInfo.success) && <div className='content'>
+              <p style={{ fontSize: 18, fontWeight: '500' }}>
+                <span>Your Voter ID:</span>
+                <span>{localStorage.getItem('address')}</span>
+              </p>
+              <p>
+                <span>Your Name:</span>
+                <span>{userInfo.name}</span>
+              </p>
+              <p>
+                <span>Your Linked-In Account:</span>
+                <a href={userInfo.linkedin} target='_blank' rel='noopener noreferrer'>{userInfo.linkedin}</a>
+              </p>
+            </div>}
+          </ThankyouWrapper>
+        </div>
+      </Wrapper>
+      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        <IssueSlider onlySlider />
       </div>
-      <div>
-        <ThankyouWrapper>
-          <h3>
-            <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: 10 }} />Thank You For Voting
-          </h3>
-          <h5>Your ZeroTheft Public Voter Registration:</h5>
-          {(userInfo && userInfo.success) && <div className='content'>
-            <p style={{ fontSize: 18, fontWeight: '500' }}>
-              <span>Your Voter ID:</span>
-              <span>{localStorage.getItem('address')}</span>
-            </p>
-            <p>
-              <span>Your Name:</span>
-              <span>{userInfo.name}</span>
-            </p>
-            <p>
-              <span>Your Linked-In Account:</span>
-              <a href={userInfo.linkedin} target='_blank' rel='noopener noreferrer'>{userInfo.linkedin}</a>
-            </p>
-          </div>}
-        </ThankyouWrapper>
-      </div>
-    </Wrapper>
-    <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-      <IssueSlider onlySlider />
-    </div>
     </>
   )
 }
 
 export default AfterVote
 
-const Wrapper = styled.div `
+const Wrapper = styled.div`
   padding-top: 80px;
   padding-bottom: 50px;
   display: flex;
@@ -140,7 +140,7 @@ const Wrapper = styled.div `
     }
   }
 `,
-VotedInfo = styled.div`
+  VotedInfo = styled.div`
   max-width: 600px;
   h3 {
     font-size: 29px;
@@ -148,7 +148,7 @@ VotedInfo = styled.div`
     color: ${colors.primary};
   }
 `,
-ThankyouWrapper = styled.div`
+  ThankyouWrapper = styled.div`
   width: 100%;
   max-width: 580px;
   margin-left: 75px;
