@@ -57,11 +57,11 @@ const useVote = () => {
   const location = useLocation()
   const params = useParams()
 
-  const { filterParams } = useContext(AppContext)
+  const { userInfo } = useContext(AppContext)
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
-  const { carryTransaction, getBalance, web3 } = useWeb3()
+  const { carryTransaction, getBalance, convertToAscii, convertStringToHash, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
   const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
@@ -78,8 +78,7 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      console.log(voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0))
-      await carryTransaction(contract, 'selfVote', [voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
+      await carryTransaction(contract, 'selfVote', [convertStringToHash(`${userInfo.address}${Date.now().toString()}`), voteType, proposalId, values.altTheftAmounts, values.comment || '', holonInfo.address, priorVoteInfo.success ? priorVoteInfo.id : convertToAscii(0)])
 
       await afterVote(balance, { voteType: finalVote, proposalId, ...values })
     } catch (e) {

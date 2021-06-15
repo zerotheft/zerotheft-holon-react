@@ -189,7 +189,7 @@ const VoteFinalize = ({ match, history, location }) => {
               You voted on this problem for this year already. Voting again will override your existing vote.
             </p>
             <p className='data-row' style={{ fontSize: 22 }}>
-              Prior Vote: {get(priorVoteInfo, 'voteType') ? 'YES' : 'NO'}
+              Prior Vote: {get(priorVoteInfo, 'voteIsTheft') ? 'YES' : 'NO'}
             </p>
             <p className='data-row' style={{ fontWeight: '500' }}>
               {/* <span>
