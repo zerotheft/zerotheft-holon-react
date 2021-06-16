@@ -97,20 +97,21 @@ const VoteFinalize = ({ match, history, location }) => {
               let altTheftAmounts = {}
               Object.keys(theftAmtYears).map((yr) => {
                 if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
-                delete values[yr]
+                // delete values[yr]
               })
               if (!isChrome()) {
                 toast.error('Please open on chrome browser to vote!!!')
                 return
               }
               const { step: curStep } = await checkStep()
-              localStorage.setItem('voteDetails', JSON.stringify(values))
+              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"') }
+              localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
               history.push({ search: '?page=steps' })
               if (curStep <= 6) {
-                updateValues(values)
+                updateValues(updatedVal)
                 showStepsPage(true)
               }
-              else vote({ ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"') })
+              else vote(updatedVal)
             }}
           >
             {({ values }) => {
