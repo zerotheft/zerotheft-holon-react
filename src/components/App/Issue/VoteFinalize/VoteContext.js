@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import useCanVote from './useCanVote'
-import { vote as voteByHolon, holonInfo as getHolonInfo } from 'apis/vote'
+import { vote as voteByHolon, holonInfo as getHolonInfo, voteDataRollups } from 'apis/vote'
 import config from 'config'
 import useWeb3 from 'utils/useWeb3'
 import { addHistory } from 'apis/desktopApp'
@@ -78,9 +78,13 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      await carryTransaction(contract, 'selfVote', [convertStringToHash(`${userInfo.address}${Date.now().toString()}`), voteType, proposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteInfo.success ? priorVoteInfo.id : convertToAscii(0)])
+      const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
+      const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : convertToAscii(0)
+      console.log('before vote', [voteID, voteType, proposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
+      await carryTransaction(contract, 'selfVote', [voteID, voteType, proposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
+      console.log('after vote')
 
-      await afterVote(balance, { voteType: finalVote, proposalId, ...values })
+      await afterVote(balance, { voteType: finalVote, proposalId, voteID, ...values })
     } catch (e) {
       console.log(e)
       if (holonInfo.canBeFunded)
@@ -122,6 +126,12 @@ const useVote = () => {
 
 
   const afterVote = async (balance, values) => {
+
+    //do voteData Rollups
+    const rollupsRes = await voteDataRollups({ voteID: values.voteID })
+    if (!rollupsRes.success)
+      toast.error('Error in  voting rollups')
+
     const newBalance = await getBalance()
 
     const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`

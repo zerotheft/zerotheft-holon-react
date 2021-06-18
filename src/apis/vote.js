@@ -20,3 +20,7 @@ export const getPriorVote = async body => {
   const { data } = await post(`api/prior-vote`, body)
   return data
 }
+export const voteDataRollups = async body => {
+  const { data } = await post('api/vote-rollups', body)
+  return data
+}
