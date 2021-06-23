@@ -89,7 +89,7 @@ const Path = ({ history, match, isIssuePath }) => {
       <h3>{startCase(last(get(match, 'params.pathname', '').split('%2F')))}</h3>
       {!isIssuePath && <>
         <CurrentDetails>
-          <Select
+          {/* <Select
             value={{ value: filterParams.year, label: filterParams.year }}
             options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date()) - (index + 1), value: getYear(new Date()) - (index + 1) }))}
             onChange={selected => {
@@ -113,7 +113,7 @@ const Path = ({ history, match, isIssuePath }) => {
                 display: 'none'
               })
             }}
-          />
+          /> */}
           <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(current_path_summary, 'vote', 'Yes')}  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
           <div className='amt'>${convertDollarToString(toNumber(get(current_path_summary, 'amount', 0)))}</div>
           <CustomButton onClick={() => {

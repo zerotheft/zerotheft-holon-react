@@ -109,7 +109,7 @@ const Header = () => {
             })
           }}
         />
-        <Select
+        {/* <Select
           defaultValue={{ value: filterParams.year, label: filterParams.year }}
           options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
           onChange={selected => {
@@ -133,7 +133,7 @@ const Header = () => {
               display: 'none'
             })
           }}
-        />
+        /> */}
       </RightWrapper>
     </Container>
   </Wrapper>

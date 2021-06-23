@@ -70,7 +70,9 @@ const useVote = () => {
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
-    const proposalId = voteType ? get(selection, 'proposal.id') : get(selection, 'counterProposal.id')
+    const yesTheftProposalId = get(selection, 'proposal.id')
+    const noTheftProposalId = get(selection, 'counterProposal.id')
+    const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
     const contract = await getProposalContract()
     try {
       const balance = await getBalance()
@@ -81,7 +83,7 @@ const useVote = () => {
       const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
       const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : convertToAscii(0)
       console.log('before vote', [voteID, voteType, proposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
-      await carryTransaction(contract, 'selfVote', [voteID, voteType, proposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
+      await carryTransaction(contract, 'selfVote', [voteID, voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
       console.log('after vote')
 
       await afterVote(balance, { voteType: finalVote, proposalId, voteID, ...values })
