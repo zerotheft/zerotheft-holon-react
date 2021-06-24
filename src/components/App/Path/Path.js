@@ -82,7 +82,6 @@ const Path = ({ history, match, isIssuePath }) => {
     currentPath = get(paths, currentPathName.split('%2F').join('.')) || {}
   if (!currentPath || !Object.keys(currentPath).length) return null
   const current_path_summary = !isEmpty(theftInfo) ? calculate(theftInfo[get(match, 'params.pathname', '').replaceAll("%2F", "/")]) : {}
-
   return <Wrapper>
     {(loading || loadingTheft) && <OverlaySpinner loading={loading || loadingTheft} />}
     {!get(match, 'params.id') && <Title>
@@ -114,7 +113,7 @@ const Path = ({ history, match, isIssuePath }) => {
               })
             }}
           /> */}
-          <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(current_path_summary, 'vote', 'Yes')}  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
+          <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(current_path_summary, 'vote') === 'YES' ? 'Yes Theft' : 'No Theft'}  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
           <div className='amt'>${convertDollarToString(toNumber(get(current_path_summary, 'amount', 0)))}</div>
           <CustomButton onClick={() => {
             const isUmbrellaPath = umbrellaPaths.includes(get(match, 'params.pathname', '').replace(/%2F/g, '/').replace('USA/', ''))

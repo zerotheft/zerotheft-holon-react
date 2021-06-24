@@ -14,7 +14,7 @@ const PathItem = ({ to = '/', name = '', summary, parent = false }) => {
     <div className='name'>{name}</div>
     {!isEmpty(summaryItem) && summaryItem.vote && <div className='details'>
       <div className={`vote ${summaryItem.vote === 'YES' ? 'active' : ''}`}>
-        {summaryItem.vote} {summaryItem.votedPercent}%
+        {summaryItem.vote === "NO" ? "NO THEFT" : "YES THEFT"} {summaryItem.votedPercent}%
       </div>
       <div className={`amount ${summaryItem.vote === 'NO' ? 'line' : ''}`}>${convertDollarToString(toNumber(summaryItem.amount))}</div>
     </div>}
