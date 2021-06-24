@@ -57,7 +57,7 @@ const Wrapper = styled(NavLink)`
   }
   .vote {
     display: flex;
-    width: 103px;
+    width: 135px;
     height: 37px;
     border-radius: 37px;
     align-items: center;

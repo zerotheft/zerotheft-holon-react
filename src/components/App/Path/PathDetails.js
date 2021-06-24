@@ -11,7 +11,6 @@ import { convertDollarToString } from 'utils'
 
 const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
   const summaryPath = summary && summary[url]
-  console.log(summaryPath, url)
 
   const voteDetails = summaryPath ? calculate(summaryPath) : null
   const history = useHistory()

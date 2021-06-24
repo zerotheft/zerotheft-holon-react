@@ -2,7 +2,7 @@ import React, { createContext, useState, useEffect, useContext } from 'react'
 import { get, sortedUniq, sortBy, reverse, toNumber } from 'lodash'
 
 import { getParameterByName } from 'utils'
-import { getPathProposalsByYear, getProposal } from 'apis/proposals'
+import { getPathProposalsByPath, getProposal } from 'apis/proposals'
 import { AppContext, filterParams } from 'components/App/AppContext'
 import { getPriorVote } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
@@ -91,7 +91,7 @@ const useIssueFetcher = (id, match) => {
   const fetchIssue = async () => {
     updateLoading(true)
     try {
-      const path = await getPathProposalsByYear(`${match.params.pathname}%2F${match.params.id}`, filterParams.year) || []
+      const path = await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`) || []
       let issueDetails = {}
       issueDetails.proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
         ...i, year: parseInt(get(i, 'year'))
