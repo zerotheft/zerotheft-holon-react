@@ -58,7 +58,7 @@ const Dashboard = ({ history, location, match }) => {
   // const filteredProposals = sortedUniqBy(isEmpty(filterParams.year) ? filterArray(allProposals, { year: filterParams.year }) : allProposals, 'description')
   const filteredProposals = sortedUniqBy(allProposals, 'description')
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
-  const yes = theftData && (theftData.for / theftData.votes * 100).toFixed(0)
+  const yes = theftData && (theftData.for / theftData.votes * 100).toFixed()
   const no = 100 - yes
   if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
@@ -74,7 +74,7 @@ const Dashboard = ({ history, location, match }) => {
               {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{ fontSize: 22 }}>Vote</Button> :
                 <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
                   Add your proposal
-            </CustomButton>}
+                </CustomButton>}
               {/* <Select
                 defaultValue={get(filter, 'year') ? { label: `Year: ${get(filter, 'year')}`, value: get(filter, 'year') } : null}
                 options={dateRange}
