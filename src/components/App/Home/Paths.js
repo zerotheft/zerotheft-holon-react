@@ -26,6 +26,7 @@ const Paths = ({ summary = [] }) => {
                   {delete childPathsClone.umbrella}
                   {delete childPathsClone.parent}
                   {delete childPathsClone.leaf}
+                  {delete childPathsClone.metadata}
                   {Object.keys(childPathsClone).map((innerKey) => {
                     const isIssue = childPaths[innerKey] && childPaths[innerKey].leaf
                     return <li><PathItem summary={summary} to={isIssue ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}` : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`} name={childPaths[innerKey]['display_name'] ? childPaths[innerKey]['display_name'] : startCase(startCase(innerKey) || 'N/A')} /></li>
