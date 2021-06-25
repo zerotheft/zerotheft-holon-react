@@ -42,8 +42,9 @@ const Wrapper = styled.div`
 BreadcrumbWrapper = styled.div`
   width: 100%;
   position: absolute;
-  top: 10px; left: 0;
-  width: 100%;
+  top: 0px; left: 0;
+  background: ${colors.background.white};
+  z-index: 2;
   ul.breadcrumb {
     display: flex;
     flex-direction: row;
