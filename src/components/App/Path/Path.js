@@ -33,25 +33,13 @@ const Path = ({ history, match, isIssuePath }) => {
     return Object.keys(master).map(i => {
 
       let masterClone = Object.assign({}, master[i])
-      if (masterClone) {
-        if (masterClone.umbrella)
-          delete masterClone.umbrella
-        if (masterClone.leaf)
-          delete masterClone.leaf
-        if (masterClone.display_name)
-          delete masterClone.display_name
-        if (masterClone.parent)
-          delete masterClone.parent
-        if (masterClone.metadata)
-          delete masterClone.metadata
-      }
-      console.log(masterClone)
+      masterClone && ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete masterClone[k])
+
       if ((!isEmpty(master[i]) && ((master[i]['metadata'] && master[i]['metadata']['umbrella']) || master[i]['parent']))) {
         let newParents = [...parents, i]
         let url = newParents.join('/')
-        let isUmbrellaPath = Object.keys(umbrellaPaths).includes(url.replace('USA/', ''))
         return <CollapsibleWrapper className='collapsiblewrapper'>
-          <h4 className='col-title'>{master[i]['display_name'] ? master[i]['display_name'] : startCase(i)}</h4>
+          <h4 className='col-title'>{(master[i]['metadata'] && master[i]['metadata']['display_name']) || master[i]['display_name'] || startCase(i)}</h4>
           <Collapsible containerElementProps={{ id: i }} open={true} trigger={<>
             {master[i]['metadata'] && master[i]['metadata']['umbrella'] && <ItemHead>
               <div className='item-title'>
@@ -70,11 +58,11 @@ const Path = ({ history, match, isIssuePath }) => {
         </CollapsibleWrapper>
       } else {
         let url = parents.join('/')
-        if (!['umbrella', 'leaf', 'display_name'].includes(i)) {
+        if (!['umbrella', 'leaf', 'display_name', 'metadata'].includes(i)) {
           return <ItemHead type='issue'>
             <div className='item-title'>
               <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 18, color: '#878688' }} />
-              <h5>{master[i] && master[i]['display_name'] ? master[i]['display_name'] : startCase(i) || 'N/A'}</h5>
+              <h5>{master[i] && ((master[i]['metadata'] && master[i]['metadata']['display_name']) || master[i]['display_name']) || startCase(i) || 'N/A'}</h5>
             </div>
             <PathDetails url={`${url}/${i}`} summary={theftInfo} index={i} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
           </ItemHead>

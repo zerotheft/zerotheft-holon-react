@@ -19,17 +19,13 @@ const Paths = ({ summary = [] }) => {
               const isIssuePath = isEmpty(get(paths, get(filterParams, 'initPath'), {})[key])
               const childPaths = get(paths, get(filterParams, 'initPath'), {})[key] || {}
               const childPathsClone = Object.assign({}, childPaths);
+              ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete childPathsClone[k])
               return <li>
                 <PathItem summary={summary} parent={true} to={isIssuePath ? `/path/${get(filterParams, 'initPath')}/issue/${key}` : `/path/${get(filterParams, 'initPath')}/${key}`} name={allPaths[key]['display_name'] ? allPaths[key]['display_name'] : startCase(key || 'N/A')} />
                 {!isEmpty(childPaths) ? <ul>
-                  {delete childPathsClone.display_name}
-                  {delete childPathsClone.umbrella}
-                  {delete childPathsClone.parent}
-                  {delete childPathsClone.leaf}
-                  {delete childPathsClone.metadata}
                   {Object.keys(childPathsClone).map((innerKey) => {
                     const isIssue = childPaths[innerKey] && childPaths[innerKey].leaf
-                    return <li><PathItem summary={summary} to={isIssue ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}` : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`} name={childPaths[innerKey]['display_name'] ? childPaths[innerKey]['display_name'] : startCase(startCase(innerKey) || 'N/A')} /></li>
+                    return <li><PathItem summary={summary} to={isIssue ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}` : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`} name={(childPaths[innerKey]['metadata'] && childPaths[innerKey]['metadata']['display_name']) || childPaths[innerKey]['display_name'] || startCase(innerKey || 'N/A')} /></li>
                   })}
                 </ul> : null}
               </li>
