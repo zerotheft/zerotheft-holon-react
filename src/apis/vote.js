@@ -1,7 +1,7 @@
 import { post, get } from 'utils/api'
 
-export const getUserInfo = async address => {
-  const { data } = await get(`api/user-info/${address}`)
+export const getCitizenInfo = async address => {
+  const { data } = await get(`api/citizen-info/${address}`)
   return data
 }
 
