@@ -18,7 +18,7 @@ import { colors } from 'theme'
 import { isChrome, numberWithCommas, getParameterByName, convertUNIXtoDATETIME } from 'utils'
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
-import { getUserInfo } from 'apis/vote'
+import { getCitizenInfo } from 'apis/vote'
 import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
@@ -26,7 +26,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const { issue, selection, priorVoteInfo, loading } = useContext(IssueContext)
   const { filterParams } = useContext(AppContext)
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
-  const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
+  const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [initialValues, updateValues] = useState()
 
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
@@ -36,7 +36,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const getVotedIdeas = async () => {
     if (localStorage.getItem('address')) {
       //fetch user information
-      await getUserInfoApi(localStorage.getItem('address'))
+      await getCitizenInfoApi(localStorage.getItem('address'))
     }
   }
 

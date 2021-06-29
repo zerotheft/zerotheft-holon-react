@@ -10,17 +10,17 @@ import { faFrown, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
 import { IssueContext } from '../IssueContext'
 import Button from 'commons/Buttons'
-import { getUserInfo } from 'apis/vote'
+import { getCitizenInfo } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
 import IssueSlider from 'components/App/Home/IssueSlider'
 import { colors } from 'theme'
 
 const AfterVote = ({ match }) => {
   const { vote, issue } = useContext(IssueContext)
-  const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
+  const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
 
   useEffect(() => {
-    getUserInfoApi(localStorage.getItem('address'))
+    getCitizenInfoApi(localStorage.getItem('address'))
   }, [])
 
   if (!vote) {
