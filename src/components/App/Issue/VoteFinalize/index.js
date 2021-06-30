@@ -28,6 +28,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [initialValues, updateValues] = useState()
+  const [commentState, showHideComment] = useState(false)
 
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
   const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
@@ -86,7 +87,8 @@ const VoteFinalize = ({ match, history, location }) => {
       /> */}
       <FormWrapper>
         <div>
-          <h4>Do you consider this as theft via a rigged economy?</h4>
+          <TitleSummary><h3>This Finalizes Your Vote That</h3><span>{finalVote === "yes" ? "Yes there is theft" : "No there is not theft"}</span><h3>In this Area</h3></TitleSummary>
+          {/* <h4>Do you consider this as theft via a rigged economy?</h4> */}
           <Formik
             enableReinitialize
             initialValues={initialValues || {
@@ -123,10 +125,10 @@ const VoteFinalize = ({ match, history, location }) => {
                     <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button>
                   </div>
                 </Modal>}
-                <Row>
+                {/* <Row>
                   <Field name="vote" component={TextField} label="Your Vote" labelWidth={110} readonly />
-                </Row>
-                <Row>
+                </Row> */}
+                {/* <Row>
                   <Label>Proposed Total Amount:</Label>
                   <Field
                     name="amount"
@@ -136,16 +138,9 @@ const VoteFinalize = ({ match, history, location }) => {
                       label: `${`$${numberWithCommas(amount)}`} (from Problem Proposal)`
                     }]}
                   />
-                </Row>
+                </Row> */}
 
-                <Row>
-                  <Field
-                    name="comment"
-                    component={TextAreaField}
-                    label="Add Comment"
-                    labelWidth={130}
-                  />
-                </Row>
+
                 {finalVote === 'yes' && theftAmtYears &&
                   Object.keys(theftAmtYears).map((y) =>
                     <Row>
@@ -155,13 +150,24 @@ const VoteFinalize = ({ match, history, location }) => {
                         type="number"
                         min={0}
                         label={y}
-                        labelWidth={130}
                       />
                     </Row>
                   )}
-                <Row>
-                  <Button type="submit" height={50}>I approve this vote</Button>
-                </Row>
+                {commentState &&
+                  <CommentBox>
+                    <span>Add Comment:</span>
+                    <Field
+                      name="comment"
+                      component={TextAreaField}
+                    />
+                  </CommentBox>
+                }
+                <BottomRow>
+                  <Button type="submit" height={50}>I approve & FINALIZE this vote</Button>
+                  <span onClick={() => {
+                    showHideComment(!commentState)
+                  }}>{!commentState ? `Add a comment` : `Do not add a comment`}</span>
+                </BottomRow>
               </Form>
             }}
           </Formik>
@@ -226,6 +232,19 @@ const Wrapper = styled.div`
     flex: 1;
   }
 `,
+  TitleSummary = styled.div`
+  display:flex;
+  align-items: center;
+  span {
+    padding: 10px;
+    background: ${colors.primary};
+    border-radius: 8px;
+    color: ${colors.text.white};
+    font-weight: bold;
+    margin:0 5px;
+    text-transform: uppercase;
+  }
+`,
   FormWrapper = styled.div`
   form {
     max-width: 500px;
@@ -235,6 +254,14 @@ const Wrapper = styled.div`
     font-weight: 600;
     color: ${colors.primary};
     margin-bottom: 10px;
+  }
+`,
+  CommentBox = styled(Row)`
+  display:flex;
+  flex-direction:column;
+  span{
+    font-weight:bold;
+    color:${colors.text.gray};
   }
 `,
   Label = styled.div`
@@ -253,6 +280,16 @@ const Wrapper = styled.div`
   Column = styled.div`
   display: flex;
   flex-direction: column;
+`,
+  BottomRow = styled(Row)`
+  align-items: center;
+  span{
+    color: ${colors.primary};
+    cursor: pointer;
+    :hover{
+
+    }
+  }
 `,
   FinalizeContentWrapper = styled.div`
   margin-left: 75px;

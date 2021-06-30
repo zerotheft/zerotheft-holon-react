@@ -23,11 +23,13 @@ const TheftInfo = ({ summary = {} }) => {
       </TitleContent>
       {!isEmpty(summary) &&
         <InfoWrapper>
-          <InfoBox>
-            <h5>Stolen this year</h5>
-            <h3>${convertDollarToString(summary.last_year_theft, 2)}{summary.proposals === 0 && summary.votes === 0 && <InfoText>(proposals and votes not available)</InfoText>}</h3>
-            <h6>In USA</h6>
-          </InfoBox>
+          {summary.last_year_theft &&
+            <InfoBox>
+              <h5>Stolen this year</h5>
+              <h3>${convertDollarToString(summary.last_year_theft, 2)}{summary.proposals === 0 && summary.votes === 0 && <InfoText>(proposals and votes not available)</InfoText>}</h3>
+              <h6>In USA</h6>
+            </InfoBox>
+          }
           {/* <InfoBox>
           <h5>Stolen each year</h5>
           <h3>${convertDollarToString(summary.each_year)}</h3>

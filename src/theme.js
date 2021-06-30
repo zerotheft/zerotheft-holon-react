@@ -20,6 +20,7 @@ export const colors = {
     body: '#fff',
     header: '#F2F4F9',
     fade: '#F2F4F9',
+    white: '#FFFFFF',
   },
   link: '#4169E1',
   externalLink: '#4f4f4f',
