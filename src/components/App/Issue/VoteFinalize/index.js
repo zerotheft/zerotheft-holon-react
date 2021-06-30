@@ -1,5 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react'
-import EasyEdit from 'react-easy-edit';
+import React, { useRef, useContext, useState, useEffect } from 'react'
 import { get, capitalize, filter as Filter } from 'lodash'
 import { Formik, Field, Form } from 'formik'
 import { Redirect } from 'react-router-dom'
@@ -23,6 +22,9 @@ import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
+  const inputRef = useRef();
+  const [task, setTask] = useState("");
+
   const { issue, selection, priorVoteInfo, loading } = useContext(IssueContext)
   const { filterParams } = useContext(AppContext)
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
@@ -74,7 +76,7 @@ const VoteFinalize = ({ match, history, location }) => {
     showStepsPage(false)
     vote(initialValues)
   }} />
-
+  console.log('init', initialValues)
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
@@ -85,6 +87,9 @@ const VoteFinalize = ({ match, history, location }) => {
         saveButtonLabel="Save Me"
         cancelButtonLabel="Cancel Me"
       /> */}
+      <Formik>
+
+      </Formik>
       <FormWrapper>
         <div>
           <TitleSummary><h3>This Finalizes Your Vote That</h3><span>{finalVote === "yes" ? "Yes there is theft" : "No there is not theft"}</span><h3>In this Area</h3></TitleSummary>
@@ -143,14 +148,43 @@ const VoteFinalize = ({ match, history, location }) => {
 
                 {finalVote === 'yes' && theftAmtYears &&
                   Object.keys(theftAmtYears).map((y) =>
+                    // <Row>
+                    //   <Field
+                    //     name={y}
+                    //     component={EditableField}
+                    //     type="number"
+                    //     min={0}
+                    //     label={y}
+                    //   />
+                    // </Row>
                     <Row>
-                      <Field
-                        name={y}
-                        component={EditableField}
-                        type="number"
-                        min={0}
-                        label={y}
-                      />
+                      <EditableField
+                        text={task}
+                        placeholder={y}
+                        value={theftAmtYears[y]}
+                        childRef={inputRef}
+                        type="input"
+                      >
+                        <Field
+                          ref={inputRef}
+                          name={y}
+                          component={TextField}
+                          type="number"
+                          min={0}
+                          label={y}
+                        // onChange={e => setTask(e.target.value)}
+
+                        />
+                        {/* <input
+                        ref={inputRef}
+                        type="text"
+                        name="task"
+                        placeholder="Write a task name"
+                        value={task}
+                        onChange={e => setTask(e.target.value)}
+                      /> */}
+                      </EditableField>
+
                     </Row>
                   )}
                 {commentState &&
