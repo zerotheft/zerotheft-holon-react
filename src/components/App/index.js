@@ -12,6 +12,7 @@ import Header from './commons/Header'
 import Footer from './commons/Footer'
 import ErrorBoundary from 'commons/ErrorBoundary'
 import Home from './Home'
+import Datatable from './Datatable'
 import Holon from './Holon'
 import AllProposals from './AllProposals'
 import Issue from './Issue'
@@ -62,6 +63,7 @@ const App = ({ history }) => {
         <Route path={ROUTES.LEAFREPORT} component={Report} />
         {/* <Route path={ROUTES.ALL_CITIZENS} component={AllCitizens} /> */}
         <Route path={ROUTES.ALL_PROPOSALS} component={AllProposals} />
+        <Route path={ROUTES.DATALIST} component={Datatable} />
         <Route path={ROUTES.HOME} component={Home} />
         <Route path="/" component={NotFound} />
       </Switch>
