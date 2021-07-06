@@ -16,12 +16,12 @@ import { IssueContext } from '../../IssueContext';
 const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = false }) => {
   const history = useHistory()
   const match = useRouteMatch()
-  const { proposalDetails} = useContext(IssueContext)
+  const { proposalDetails } = useContext(IssueContext)
 
   const details = data ? proposalDetails[data.id] : null
 
   if (lowerCase(vote) !== 'yes' && lowerCase(vote) !== 'no') return null
-  
+
   return <Wrapper style={{ background: vote === 'yes' ? '#EBF3F5' : 'white' }}>
     <Header>
       <div className="left">
@@ -36,14 +36,14 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
     {isEmpty(data) ? <div>
       <span style={{ color: colors.primary, fontSize: 15, fontWeight: '500', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'}`)}>select proposal</span>
     </div> : <React.Fragment>
-    <div style={{ fontSize: 20 }}>
-      This Proposal: ID {data.id}
-      <span style={{ marginLeft: 15, color: colors.primary, fontSize: 15, fontWeight: '500', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'}`)}>change proposal</span>
-    </div>
-    <div>
-      <p>Theft Amount : ${numberWithCommas(toNumber(data.theftAmt))}</p>
-    </div>
-    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+      <div style={{ fontSize: 20 }}>
+        This Proposal: ID {data.id}
+        <span style={{ marginLeft: 15, color: colors.primary, fontSize: 15, fontWeight: '500', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'}`)}>change proposal</span>
+      </div>
+      <div>
+        <p>Theft Amount : {data.summary}</p>
+      </div>
+      <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
         <p>
           <span style={{ color: '#8D8D8D' }}>AUTHOR</span> {get(data, 'author.name', 'Anonymous')}
         </p>
@@ -76,11 +76,11 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
           <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(data, 'complaints.count', 0)}
         </p>
       </div>
-    {(data && details) && <React.Fragment>
-      <div className="description" style={{position: 'relative', minHeight: 50}}>
-        {details.loading ? <OverlaySpinner overlayParent loading backgroundColor="transparent" /> : convertJSONtoString(details.detail)}
-      </div>
-    </React.Fragment>}
+      {(data && details) && <React.Fragment>
+        <div className="description" style={{ position: 'relative', minHeight: 50 }}>
+          {details.loading ? <OverlaySpinner overlayParent loading backgroundColor="transparent" /> : convertJSONtoString(details.detail)}
+        </div>
+      </React.Fragment>}
     </React.Fragment>}
   </Wrapper>
 }

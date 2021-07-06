@@ -13,6 +13,7 @@ const useWeb3 = () => {
     getBalance: address => getBalance(web3, address),
     callSmartContractGetFunc: (...args) => callSmartContractGetFunc(web3, ...args),
     convertStringToHash: (...args) => convertStringToHash(web3, ...args),
+    convertToAscii: (...args) => convertToAscii(web3, ...args),
     carryTransaction: (...args) => carryTransaction(web3, loadWeb3, ...args)
   }
 }
@@ -83,3 +84,8 @@ const instantiateContract = async (web3, contract) => {
 const convertStringToHash = (web3, item) => {
   return web3.utils.keccak256(item)
 }
+
+const convertToAscii = (web3, item) => {
+  return web3.utils.asciiToHex(item)
+}
+

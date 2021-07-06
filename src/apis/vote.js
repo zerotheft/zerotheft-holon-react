@@ -1,7 +1,7 @@
 import { post, get } from 'utils/api'
 
-export const getUserInfo = async address => {
-  const { data } = await get(`api/user-info/${address}`)
+export const getCitizenInfo = async address => {
+  const { data } = await get(`api/citizen-info/${address}`)
   return data
 }
 
@@ -18,5 +18,9 @@ export const holonInfo = async body => {
 
 export const getPriorVote = async body => {
   const { data } = await post(`api/prior-vote`, body)
+  return data
+}
+export const voteDataRollups = async body => {
+  const { data } = await post('api/vote-rollups', body)
   return data
 }

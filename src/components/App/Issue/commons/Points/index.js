@@ -17,13 +17,12 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
   const match = useRouteMatch()
   const history = useHistory()
   const { selection, updateSelection } = useContext(IssueContext)
-
   return <Wrapper>
     {loading && <OverlaySpinner loading overlayParent />}
     {data.length ? data.map((i, idx) => <Item className={data.length !== idx + 1 ? 'bottom-border' : ''} active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
       <div className='itemWrap'>
         <div>
-          <div>Theft Amount: <span style={{ fontWeight: '600' }}>${convertDollarToString(toNumber(i.theftAmt || 0))}</span></div>
+          <div>Theft Amount: <span style={{ fontWeight: '600' }}>{i.summary}</span></div>
           <div>Ratings:{get(i, 'ratings.count', 0) > 0 ? <span> {get(i, 'ratings.count', 0)}&nbsp;
             <StarRatings
               rating={get(i, 'ratings.rating', 0)}
@@ -40,7 +39,7 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div>ID: <span style={{ fontWeight: '600' }}>{i.id || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
+          <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
           <div>
             {/*
             Author: {get(i, 'ratings.count', 0)}
