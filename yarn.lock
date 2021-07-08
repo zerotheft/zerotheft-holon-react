@@ -9960,11 +9960,6 @@ react-dom@^16.13.1:
     prop-types "^15.6.2"
     scheduler "^0.19.1"
 
-react-easy-edit@^1.13.2:
-  version "1.13.2"
-  resolved "https://registry.yarnpkg.com/react-easy-edit/-/react-easy-edit-1.13.2.tgz#3e8870edd1d7bfc435b91a6c0a0f182925cad59c"
-  integrity sha512-4/xS/k1bnywqeuLzBoo0YhmE6wluHTbPRFmNYJYvHOA0UoQLaPiwb6FYJDs0lyNbd6fZIda6yEUzQWFlADAKrQ==
-
 react-elastic-carousel@^0.9.0:
   version "0.9.5"
   resolved "https://registry.yarnpkg.com/react-elastic-carousel/-/react-elastic-carousel-0.9.5.tgz#09fe1d82638d32d36e53847dfaef893329edc726"

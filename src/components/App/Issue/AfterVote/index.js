@@ -26,7 +26,6 @@ const AfterVote = ({ match }) => {
   if (!vote) {
     return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
   }
-
   const proposal = ([...issue.proposals, ...issue.counter_proposals]).find(i => i.id == vote.proposalId)
   const amount = vote.vote === 'Yes' ? proposal.theftAmt : 0
 

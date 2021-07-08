@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react'
-import EasyEdit from 'react-easy-edit';
 import { get, capitalize, filter as Filter } from 'lodash'
 import { Formik, Field, Form } from 'formik'
 import { Redirect } from 'react-router-dom'
