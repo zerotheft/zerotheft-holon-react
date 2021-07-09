@@ -5,6 +5,7 @@ export const colors = {
   border: '#ECECEC',
   lightPrimary: '#F4EFFB',
   lightText: '#6A6078',
+  greyText: '#796868',
   borders: {
     table: '#f2f2f2',
     dropdown: '#E7E9F1',
