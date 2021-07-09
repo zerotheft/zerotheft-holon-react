@@ -33,7 +33,7 @@ const VoteDatatable = ({history})=> {
                 one_eight_exchange: true,
                 share_buy_back: true
                 },
-            health: true,
+            healthcare: true,
             pharma: {
                 medicare: true
             }
@@ -43,7 +43,7 @@ const VoteDatatable = ({history})=> {
             '2008_mortgage': true,
             saving_and_loan_bails_out: true
         },
-        taxes: {
+        tax: {
             capital_gain_low: true,
             corp_gain_low: true,
             corporate_tax_evasopn: true,
