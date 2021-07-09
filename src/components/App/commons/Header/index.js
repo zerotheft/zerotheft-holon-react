@@ -69,6 +69,14 @@ const Header = () => {
             Donate
           </NavLink>
           </li>}
+          <li className='more'>
+              <PathIcon />
+            More
+              <ul>
+                <li><NavLink to={`${ROUTES.DATALIST}`} activeClassName='active'>Citizens/Proposals</NavLink></li>
+                <li><NavLink to={`${ROUTES.VOTELIST}`} activeClassName='active'>Votes</NavLink></li>
+              </ul>
+          </li>
         </MenuWrapper>
       </LeftWrapper>
       <RightWrapper>
@@ -190,6 +198,32 @@ const RightWrapper = styled.div`
 const MenuWrapper = styled.ul`
   display: flex;
   flex-direction: row;
+  .more {
+    cursor: pointer;
+    color: #8C8989;
+    position: relative;
+    ul {
+      opacity:0;
+      visibility:visible;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      background: #fff;
+      transition: 0.5s ease-in-out;
+      top: 10px;
+      position: absolute;
+      li {
+        margin: 0;
+        a {
+          padding: 3px 10px;
+        }
+      }
+    }
+  }
+  li.more:hover ul {
+    opacity:1;
+    visibility:visible;
+    top: 50px;
+  }
   li {
     margin: 0 20px;
     display: flex;

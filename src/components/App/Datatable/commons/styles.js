@@ -12,8 +12,8 @@ export const customStyles = {
       style: {
         paddingLeft: '30px', // override the cell padding for head cells
         paddingRight: '30px',
-        background: '#7F58BF',
-        color: '#F2F2F2',
+        background: colors.textTitle,
+        color: colors.border.table,
         fontFamily: 'Poppins',
         fontWeight: '500',
         fontSize: '15px',
@@ -60,16 +60,32 @@ export const TableWrapper = styled.div`
   position: relative;
   ul {
       background: white;
-      min-width: 175px;
+      min-width: 215px;
+      box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.25);
+      border-radius: 10px;
+      margin-left: 5px;
       li {
-          padding: 5px 10px;
-    a{
-        color: black;
-        font-size: 17px;
-        line-height: 48px;
-        text-decoration: none;
-    }
-    }
+          display: block;
+          width: 100%;
+        span{
+            display: block;
+            overflow: hidden;
+            transition: 0.5s ease-in-out;
+            padding: 5px 10px;
+            font-family: Poppins;
+            font-style: normal;
+            font-weight: normal;
+            color: ${colors.greyText};
+            font-size: 18px;
+            line-height: 228%;
+            text-decoration: none;
+            &:hover {
+              color: ${colors.background.body};
+              background: ${colors.textTitle}              ;
+            }
+        }
+
+      }
     }
   & > ul {
       position: absolute;
@@ -85,12 +101,12 @@ export const TableWrapper = styled.div`
               display: block;
           }
       }
-  }
-  &:hover {
-      & > ul {
-          display: block;
-      }
-  }
+    }
+    &:hover {
+        & > ul {
+            display: block;
+        }
+    }
   `
   
   export const TabWrapper = styled(NavLink)`
