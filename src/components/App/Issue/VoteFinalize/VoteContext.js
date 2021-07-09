@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { get } from 'lodash'
 import { getParameterByName } from 'utils'
 
-const { getProposalContract } = config
+const { getVoteContract } = config
 const VoteContext = createContext()
 
 const VoteProvider = ({ children }) => {
@@ -61,7 +61,7 @@ const useVote = () => {
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
-  const { carryTransaction, getBalance, convertToAscii, convertStringToHash, web3 } = useWeb3()
+  const { carryTransaction, callSmartContractGetFunc, getBalance, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
   const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
@@ -70,23 +70,25 @@ const useVote = () => {
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
-    const yesTheftProposalId = get(selection, 'proposal.id')
-    const noTheftProposalId = get(selection, 'counterProposal.id')
+    let yesTheftProposalId = get(selection, 'proposal.id', "")
+    let noTheftProposalId = get(selection, 'counterProposal.id', "")
+
     const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
-    const contract = await getProposalContract()
+    const contract = await getVoteContract()
     try {
       const balance = await getBalance()
       if (balance === 0 && holonInfo.canBeFunded) {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
-      const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : convertToAscii(0)
-      console.log('before vote', [voteID, voteType, proposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
-      await carryTransaction(contract, 'selfVote', [voteID, voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
+      // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
+      const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : ""
+      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
+      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
       console.log('after vote')
 
-      await afterVote(balance, { voteType: finalVote, proposalId, voteID, ...values })
+      const voteIndex = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
+      await afterVote(balance, { voteType: finalVote, voteIndex, proposalId, ...values })
     } catch (e) {
       console.log(e)
       if (holonInfo.canBeFunded)
@@ -130,7 +132,7 @@ const useVote = () => {
   const afterVote = async (balance, values) => {
 
     //do voteData Rollups
-    const rollupsRes = await voteDataRollups({ voteID: values.voteID })
+    const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
     if (!rollupsRes.success)
       toast.error('Error in  voting rollups')
 
