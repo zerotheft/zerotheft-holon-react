@@ -60,7 +60,7 @@ const IssueSlider = ({ onlySlider = false }) => {
   const [allIssues, setIssues] = useState([])
 
   useEffect(() => {
-    if (localStorage.getItem('address')) getCitizenInfoApi(localStorage.getItem('address'))
+    if (localStorage.getItem('citizenID')) getCitizenInfoApi(localStorage.getItem('citizenID'))
     prepareCarouselData(paths)
 
   }, [paths])

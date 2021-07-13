@@ -34,9 +34,9 @@ const VoteFinalize = ({ match, history, location }) => {
   const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
 
   const getVotedIdeas = async () => {
-    if (localStorage.getItem('address')) {
+    if (localStorage.getItem('citizenID')) {
       //fetch user information
-      await getCitizenInfoApi(localStorage.getItem('address'))
+      await getCitizenInfoApi(localStorage.getItem('citizenID'))
     }
   }
 
@@ -178,8 +178,12 @@ const VoteFinalize = ({ match, history, location }) => {
             <h3>Finalize your vote</h3>
             <h5>Your Zerotheft Public Voter Registeration:</h5>
             <p className='data-row' style={{ fontSize: 18, fontWeight: '500' }}>
-              <span>Your Voter ID:</span>
+              <span>Your Voter Address:</span>
               <span>{localStorage.getItem('address')}</span>
+            </p>
+            <p className='data-row' style={{ fontSize: 18, fontWeight: '500' }}>
+              <span>Your Citizen ID:</span>
+              <span>{localStorage.getItem('citizenID')}</span>
             </p>
             <p className='data-row'>
               <span>Your Name:</span>

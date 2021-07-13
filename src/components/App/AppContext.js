@@ -45,6 +45,7 @@ const AppProvider = ({ children }) => {
     if (selectedAddress !== address) {
       updateSelectedAddress(address)
       localStorage.setItem('address', address)
+      localStorage.setItem('citizenID', voterId)
     }
   }
 

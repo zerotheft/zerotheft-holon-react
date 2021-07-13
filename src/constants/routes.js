@@ -1,5 +1,6 @@
 export const HOME = '/'
 export const DATALIST = '/datalist'
+export const VOTELIST = '/votelist'
 export const
   PATH = '/path',
   PATH_DETAIL = `${PATH}/:pathname`

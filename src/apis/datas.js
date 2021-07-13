@@ -5,8 +5,8 @@ export const getCitizensInfo = async () => {
   return data
 }
 
-export const getVotesInfo = async () => {
-  const { data } = await get(`api/votes-data`)
+export const getVotesInfo = async (path) => {
+  const { data } = await get(`api/votes-data/`, path)
   return data
 }
 
