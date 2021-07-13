@@ -20,7 +20,7 @@ const AfterVote = ({ match }) => {
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
 
   useEffect(() => {
-    getCitizenInfoApi(localStorage.getItem('address'))
+    getCitizenInfoApi(localStorage.getItem('citizenID'))
   }, [])
 
   if (!vote) {
@@ -78,8 +78,12 @@ const AfterVote = ({ match }) => {
             <h5>Your ZeroTheft Public Voter Registration:</h5>
             {(userInfo && userInfo.success) && <div className='content'>
               <p style={{ fontSize: 18, fontWeight: '500' }}>
-                <span>Your Voter ID:</span>
+                <span>Your Voter Address:</span>
                 <span>{localStorage.getItem('address')}</span>
+              </p>
+              <p style={{ fontSize: 18, fontWeight: '500' }}>
+                <span>Your Citizen ID:</span>
+                <span>{localStorage.getItem('citizenID')}</span>
               </p>
               <p>
                 <span>Your Name:</span>
