@@ -83,8 +83,8 @@ const useVote = () => {
       }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
       const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : ""
-      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
-      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.address, priorVoteID])
+      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID])
+      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID])
       console.log('after vote')
 
       const voteIndex = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
