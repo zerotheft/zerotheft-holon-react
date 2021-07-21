@@ -81,6 +81,10 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
+      if (!holonInfo.holonID) {
+        showErrorPopUp({ message: 'Holon information missing. Please select holon first', holonInfo, proposalId, voteType: finalVote, ...values })
+        return
+      }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
       const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : ""
       console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID])

@@ -121,7 +121,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 {popup && <Modal onClose={() => showErrorPopUp(false)}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 30 }}>
                     {get(popup, 'message') || 'There was some error while trying to vote.'}
-                    <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button>
+                    {/* <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button> */}
                   </div>
                 </Modal>}
                 {/* <Row>
