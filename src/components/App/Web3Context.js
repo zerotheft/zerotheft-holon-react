@@ -53,6 +53,12 @@ const useWeb3 = () => {
 const getWeb3 = () => new Promise(async (resolve, reject) => {
   if (window.ethereum) {
     const web3 = new Web3(window.ethereum);
+    let pvtKey = "3b3f4c1b9cc3fcf4b096be31ef9ad0f6cad2a855b9a4a4e3270d086726115478"
+    let signedMessage = await web3.eth.sign("0x5fe7f977e71dba2ea1a68e21057beebb9be2ac30c6410aa38d4f3fbe41dcffd2", "CD4f2b154dd0553bfC51cCE4356a23956d97490d")
+    console.log("vitra", signedMessage)
+    const recoer = await web3.eth.accounts.recover("0x5fe7f977e71dba2ea1a68e21057beebb9be2ac30c6410aa38d4f3fbe41dcffd2", signedMessage);
+    console.log("recover", recoer)
+
     try {
       await window.ethereum.enable();
       resolve(web3);

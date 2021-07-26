@@ -81,14 +81,28 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      if (!holonInfo.holonID) {
+      if (!holonInfo.holonID || holonInfo.holonID === "") {
         showErrorPopUp({ message: 'Holon information missing. Please select holon first', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
       const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : ""
-      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID])
-      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID])
+
+      const accounts = await web3.eth.getAccounts()
+      const account = accounts[0]
+      const messageParams = [{ t: 'bool', v: voteType },
+      { t: 'string', v: yesTheftProposalId },
+      { t: 'string', v: noTheftProposalId },
+      { t: 'string', v: (values.altTheftAmounts || '') },
+      { t: 'string', v: (values.comment || '') },
+      { t: 'string', v: holonInfo.holonID },
+      { t: "string", v: priorVoteID },
+      { t: "address", v: account }]
+      const sha3 = web3.utils.soliditySha3(...messageParams)
+      const signedMessage = await web3.eth.sign(sha3, account)
+      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, account, signedMessage])
+
+      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
       console.log('after vote')
 
       const voteIndex = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
