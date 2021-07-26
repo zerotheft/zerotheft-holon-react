@@ -99,14 +99,14 @@ const useVote = () => {
       { t: "string", v: priorVoteID },
       { t: "address", v: account }]
       const sha3 = web3.utils.soliditySha3(...messageParams)
-      const signedMessage = await web3.eth.sign(sha3, account)
+      const signedMessage = await web3.eth.personal.sign(sha3, account)
       console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, account, signedMessage])
 
       await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
       console.log('after vote')
 
-      const voteIndex = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
-      await afterVote(balance, { voteType: finalVote, voteIndex, proposalId, ...values })
+      const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
+      await afterVote(balance, { voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
       console.log(e)
       if (holonInfo.canBeFunded)
