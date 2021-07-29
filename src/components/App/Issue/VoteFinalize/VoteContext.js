@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
 import useCanVote from './useCanVote'
-import { vote as voteByHolon, holonInfo as getHolonInfo } from 'apis/vote'
+import { vote as voteByHolon, holonInfo as getHolonInfo, voteDataRollups } from 'apis/vote'
 import config from 'config'
 import useWeb3 from 'utils/useWeb3'
 import { addHistory } from 'apis/desktopApp'
@@ -11,7 +11,7 @@ import { toast } from 'react-toastify'
 import { get } from 'lodash'
 import { getParameterByName } from 'utils'
 
-const { getProposalContract } = config
+const { getVoteContract } = config
 const VoteContext = createContext()
 
 const VoteProvider = ({ children }) => {
@@ -57,29 +57,56 @@ const useVote = () => {
   const location = useLocation()
   const params = useParams()
 
-  const { filterParams } = useContext(AppContext)
+  const { userInfo } = useContext(AppContext)
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
-  const { carryTransaction, getBalance, web3 } = useWeb3()
+  const { carryTransaction, callSmartContractGetFunc, getBalance, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
   const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
   const vote = async (values) => {
+
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
-    const proposalId = parseInt(voteType ? get(selection, 'proposal.id') : get(selection, 'counterProposal.id'), 10)
-    const contract = await getProposalContract()
+    let yesTheftProposalId = get(selection, 'proposal.id', "")
+    let noTheftProposalId = get(selection, 'counterProposal.id', "")
+
+    const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
+    const contract = await getVoteContract()
     try {
       const balance = await getBalance()
       if (balance === 0 && holonInfo.canBeFunded) {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      await carryTransaction(contract, 'selfVote', [voteType, proposalId, (values.custom_amount || '').toString(), values.comment || '', holonInfo.address, false, filterParams.year, parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)])
+      if (!holonInfo.holonID || holonInfo.holonID === "") {
+        showErrorPopUp({ message: 'Holon information missing. Please select holon first', holonInfo, proposalId, voteType: finalVote, ...values })
+        return
+      }
+      // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
+      const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : ""
 
-      await afterVote(balance, { voteType: finalVote, proposalId, ...values })
+      const accounts = await web3.eth.getAccounts()
+      const account = accounts[0]
+      const messageParams = [{ t: 'bool', v: voteType },
+      { t: 'string', v: yesTheftProposalId },
+      { t: 'string', v: noTheftProposalId },
+      { t: 'string', v: (values.altTheftAmounts || '') },
+      { t: 'string', v: (values.comment || '') },
+      { t: 'string', v: holonInfo.holonID },
+      { t: "string", v: priorVoteID },
+      { t: "address", v: account }]
+      const sha3 = web3.utils.soliditySha3(...messageParams)
+      const signedMessage = await web3.eth.personal.sign(sha3, account)
+      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, account, signedMessage])
+
+      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
+      console.log('after vote')
+
+      const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
+      await afterVote(balance, { voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
       console.log(e)
       if (holonInfo.canBeFunded)
@@ -104,10 +131,9 @@ const useVote = () => {
         proposalId,
         voteType: values.voteType,
         comment: values.comment,
-        amount: values.custom_amount,
+        altTheftAmounts: values.altTheftAmounts,
         signedMessage,
         voter: account,
-        year: filterParams.year,
         priorVoteId: parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)
       })
       await afterVote(balance, values)
@@ -122,6 +148,12 @@ const useVote = () => {
 
 
   const afterVote = async (balance, values) => {
+
+    //do voteData Rollups
+    const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
+    if (!rollupsRes.success)
+      toast.error('Error in  voting rollups')
+
     const newBalance = await getBalance()
 
     const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`

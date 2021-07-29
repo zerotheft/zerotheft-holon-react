@@ -17,7 +17,6 @@ const Proposals = ({ history, match }) => {
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
-  console.log(selectedItem, 'assaas')
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <Left style={{ width: '650px', margin: 0, display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
@@ -33,7 +32,8 @@ const Proposals = ({ history, match }) => {
       </div>
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
-          <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
+          <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>
@@ -54,10 +54,10 @@ const Proposals = ({ history, match }) => {
             }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
           </div>
         </Header>
-        { !isEmpty(selectedItem) && <ProposalDetail item={selectedItem} chartData={bellCurveData}/> }
+        {!isEmpty(selectedItem) && <ProposalDetail item={selectedItem} chartData={bellCurveData} />}
       </div>
     </Right>
-  </Wrapper>
+  </Wrapper >
 }
 
 export default Proposals

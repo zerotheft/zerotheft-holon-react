@@ -11,13 +11,13 @@ import { convertDollarToString } from 'utils'
 
 const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
   const summaryPath = summary && summary[url]
+
   const voteDetails = summaryPath ? calculate(summaryPath) : null
   const history = useHistory()
-
   return <Wrapper>
     {voteDetails ?
       <div className='details-wrapper'>
-        <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote', 'Yes')} ${get(voteDetails, 'votedPercent', '0')}%`}</div>
+        <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote') === "NO" ? "No Theft" : "Yes theft"} ${get(voteDetails, 'votedPercent', '0')}%`}</div>
         <div className={`amt ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>${convertDollarToString(toNumber(get(voteDetails, 'amount', 1)))}</div>
       </div> : <div style={{ fontSize: 14, minWidth: 190 }}>Need votes</div>}
     <div className="button-wrapper">

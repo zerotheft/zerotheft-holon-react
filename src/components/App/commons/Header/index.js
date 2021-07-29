@@ -48,26 +48,26 @@ const Header = () => {
           <li>
             <NavLink to={'/'} activeClassName='active1'>
               <HomeIcon />
-            Home
-          </NavLink>
+              Home
+            </NavLink>
           </li>
           <li>
             <a href="zerotheft://holon">
               <HolonIcon />
-            Holons
-          </a>
+              Holons
+            </a>
           </li>
           <li>
             <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName='active'>
               <PathIcon />
-            Paths
-          </NavLink>
+              Paths
+            </NavLink>
           </li>
           {selectedHolon.id && <li>
             <NavLink to={ROUTES.DONATE} activeClassName='active'>
               <DonateIcon />
-            Donate
-          </NavLink>
+              Donate
+            </NavLink>
           </li>}
           <li className='more'>
               <PathIcon />
@@ -118,9 +118,9 @@ const Header = () => {
             })
           }}
         />
-        <Select
+        {/* <Select
           defaultValue={{ value: filterParams.year, label: filterParams.year }}
-          options={new Array(20).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
+          options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
           onChange={selected => {
             localStorage.setItem("filterYear", selected.value)
             updateFilter({ ...filterParams, year: selected.value })
@@ -142,7 +142,7 @@ const Header = () => {
               display: 'none'
             })
           }}
-        />
+        /> */}
       </RightWrapper>
     </Container>
   </Wrapper>

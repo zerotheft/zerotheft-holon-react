@@ -21,6 +21,7 @@ export const colors = {
     body: '#FFF',
     header: '#F2F4F9',
     fade: '#F2F4F9',
+    white: '#FFFFFF',
   },
   datatable: {
     row: {

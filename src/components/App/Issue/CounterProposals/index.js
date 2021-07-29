@@ -32,7 +32,7 @@ const CounterProposals = ({ history, match }) => {
       </div>
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
-          <Points data={filterParams.year ? Filter(get(issue, 'counter_proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          <Points data={get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>
@@ -55,7 +55,7 @@ const CounterProposals = ({ history, match }) => {
             </>}
           </div>
         </Header>
-        { !isEmpty(selectedItem) && <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })}/> }
+        {!isEmpty(selectedItem) && <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })} />}
       </div>
     </Right>
   </Wrapper>
