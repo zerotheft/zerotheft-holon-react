@@ -1,4 +1,5 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import moment from 'moment'
 
 
@@ -7,6 +8,7 @@ import moment from 'moment'
       name: 'ID',
       selector: 'id',
       sortable: true,
+      cell: (row) =>  <a href={`/vote/${row.id}`} target="_blank">{(row.id.slice(0,15) + '...')}</a>  
     },
     {
       name: 'Vote Type',
