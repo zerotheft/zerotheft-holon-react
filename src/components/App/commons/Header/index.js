@@ -73,8 +73,9 @@ const Header = () => {
               <PathIcon />
             More
               <ul>
-                <li><NavLink to={`${ROUTES.DATALIST}`} activeClassName='active'>Citizens/Proposals</NavLink></li>
-                <li><NavLink to={`${ROUTES.VOTELIST}`} activeClassName='active'>Votes</NavLink></li>
+                <li><NavLink to={ROUTES.DATALIST} activeClassName='active'>Citizens/Proposals</NavLink></li>
+                <li><NavLink to={ROUTES.VOTELIST} activeClassName='active'>Votes</NavLink></li>
+                <li><NavLink to={ROUTES.HIERARCHY} activeClassName='active'>HierarchyYaml</NavLink></li>
               </ul>
           </li>
         </MenuWrapper>

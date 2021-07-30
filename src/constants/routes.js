@@ -1,6 +1,9 @@
 export const HOME = '/'
 export const DATALIST = '/datalist'
-export const VOTELIST = '/votelist'
+export const HIERARCHY = '/hierarchy'
+export const VOTELIST = '/votelist/economic_crisis/2008_mortgage'
+export const CITIZEN_VIEW = '/citizen/:id'
+export const VOTE_VIEW = '/vote/:id'
 export const
   PATH = '/path',
   PATH_DETAIL = `${PATH}/:pathname`
