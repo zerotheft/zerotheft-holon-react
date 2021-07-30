@@ -48,7 +48,7 @@ const citizenColumns = [
         name: 'Theft Amount',
         selector: 'theft_amount',
         sortable: true,
-        cell: ({theft_amount}) => `${convertDollarToString(theft_amount)}`
+        cell: ({theft_amount}) => `$${convertDollarToString(theft_amount)}`
     },
     {
         name: 'Date',
