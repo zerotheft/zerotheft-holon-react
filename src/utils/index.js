@@ -144,7 +144,7 @@ export const convertStringDollarToNumeric = (dollar) => {
 }
 
 export const removeDecimelIfNeeded = (number) => {
-  const [num, decimel] = number.split('.')
+  const [num, decimel] = number.toString().split('.')
   return (parseInt(decimel) === 0) ? num : number;
 }
 

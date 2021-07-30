@@ -18,7 +18,8 @@ import moment from 'moment'
     {
         name: 'Holon Url',
         selector: 'holon_url',
-        sortable: true
+        sortable: true,
+        cell: ({holon_url}) =>  <a href={holon_url} target="_blank">{holon_url}</a>  
     },
     {
         name: 'Voter ID',
