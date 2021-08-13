@@ -18,7 +18,7 @@ const Proposals = ({ history, match }) => {
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '480px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
