@@ -2,6 +2,7 @@ export const colors = {
   primary: '#7F51C1',
   solidBorder: '#C9C9C9',
   warningColor: '#890606',
+  warningBGColor: '#EB5757',
   border: '#ECECEC',
   lightPrimary: '#F4EFFB',
   lightText: '#6A6078',
@@ -15,7 +16,7 @@ export const colors = {
   textTitle: "#7F58BF",
   button: {
     blackText: "#000",
-     greyBackground: "#C4C4C4"
+    greyBackground: "#C4C4C4"
   },
   background: {
     body: '#FFF',

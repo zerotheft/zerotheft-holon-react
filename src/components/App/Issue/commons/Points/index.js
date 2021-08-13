@@ -76,35 +76,20 @@ export default Points
 
 const Item = styled.div`
   & > .itemWrap {
-    width: calc(100% - 75px);
     background: transparent;
     padding: 11px 30px 11px 15px;
     color: #000;
-    border-radius: 8px 0 0 8px;
+    border-radius: 2px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    &::after {
-      content: '';
-      display: none;
-      position: absolute;
-      top: 0;
-      right: -46px;
-      width: 0; 
-      height: 0; 
-      border-top: 36px solid transparent;
-      border-bottom: 36px solid transparent;
-      border-left: 46px solid ${colors.primary};
-      z-index: 1;
-    } 
   }
   &.bottom-border {
     &::after {
       content: '';
       display: block;
-      width: calc(100% - 75px);
       height: 1px;
       background: #D3D0D0;
       margin: 10px 15px;
