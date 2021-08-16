@@ -63,7 +63,7 @@ const Dashboard = ({ history, location, match }) => {
   if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
     <InnerWrapper>
-      <Left>
+      <Left style={{ marginRight: 30 }}>
         <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
       </Left>
       <Right>
