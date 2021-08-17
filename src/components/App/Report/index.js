@@ -14,7 +14,6 @@ const Report = ({ match, history }) => {
   const { loading, filterParams } = useContext(AppContext)
 
   useEffect(() => {
-    console.log(get(filterParams, 'year'))
     if (pathName) {
       if (pathName === get(filterParams, 'initPath')) {
         getNationReportApi(pathName, get(filterParams, 'year'))

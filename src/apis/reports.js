@@ -18,7 +18,7 @@ export const getReport = async (param, path = false, year) => {
 
 export const getTheftInfo = async (param, path = false, year) => {
   try {
-    const { data } = await getAPI(`api/issues/${param}${year ? `/${year}` : ''}/theftInfo`)
+    const { data } = await getAPI(`api/issues/${param}/theftInfo`)
     return data
   } catch (e) {
     return { status: get(e, 'response.status'), error: get(e, 'response.status') === 404 ? 'Record Not Found.' : e.message }

@@ -5,7 +5,7 @@ import { get, shuffle, take, takeRight, isArray, uniqBy, lowerCase, isObject, re
 import { colors } from 'theme'
 import styled from 'styled-components'
 import yaml from 'js-yaml'
-import { getUserInfo } from 'apis/vote'
+import { getCitizenInfo } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
 import { getProposalTemplate } from 'apis/proposals'
 import { AppContext } from '../AppContext'
@@ -55,12 +55,12 @@ const getRelatedEndNodes = (issues, name, path) => {
 const IssueSlider = ({ onlySlider = false }) => {
   const history = useHistory()
   const { paths, loadingPaths: loading, filterParams } = useContext(AppContext)
-  const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
+  const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
   const [allIssues, setIssues] = useState([])
 
   useEffect(() => {
-    if (localStorage.getItem('address')) getUserInfoApi(localStorage.getItem('address'))
+    if (localStorage.getItem('citizenID')) getCitizenInfoApi(localStorage.getItem('citizenID'))
     prepareCarouselData(paths)
 
   }, [paths])
@@ -107,7 +107,7 @@ const IssueSlider = ({ onlySlider = false }) => {
           <h2>Welcome Citizen!</h2>
           <p>
             You can now explore the areas where your fellow citizens believe the rigged economy is resulting in THEFT. Get Started by learning, voting, and even proposing your own areas of theft.
-        </p>
+          </p>
         </Welcome>}
       <SliderContent className={!onlySlider ? '' : 'full'}>
         {loading ? <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} /> : <React.Fragment>

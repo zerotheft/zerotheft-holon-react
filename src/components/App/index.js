@@ -12,6 +12,11 @@ import Header from './commons/Header'
 import Footer from './commons/Footer'
 import ErrorBoundary from 'commons/ErrorBoundary'
 import Home from './Home'
+import Datatable from './Datatable'
+import VoteDatatable from './Datatable/VoteDatatable'
+import HierarchyYaml from './Datatable/hierarchy'
+import Citizen from './View/Citizen'
+import Vote from './View/Vote'
 import Holon from './Holon'
 import AllProposals from './AllProposals'
 import Issue from './Issue'
@@ -62,6 +67,11 @@ const App = ({ history }) => {
         <Route path={ROUTES.LEAFREPORT} component={Report} />
         {/* <Route path={ROUTES.ALL_CITIZENS} component={AllCitizens} /> */}
         <Route path={ROUTES.ALL_PROPOSALS} component={AllProposals} />
+        <Route path={ROUTES.DATALIST} component={Datatable} />
+        <Route path={ROUTES.VOTELIST} component={VoteDatatable} />
+        <Route path={ROUTES.CITIZEN_VIEW} component={Citizen} />
+        <Route path={ROUTES.VOTE_VIEW} component={Vote} />
+        <Route path={ROUTES.HIERARCHY} component={HierarchyYaml} />
         <Route path={ROUTES.HOME} component={Home} />
         <Route path="/" component={NotFound} />
       </Switch>

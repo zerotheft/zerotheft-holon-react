@@ -17,13 +17,12 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
   const match = useRouteMatch()
   const history = useHistory()
   const { selection, updateSelection } = useContext(IssueContext)
-
   return <Wrapper>
     {loading && <OverlaySpinner loading overlayParent />}
     {data.length ? data.map((i, idx) => <Item className={data.length !== idx + 1 ? 'bottom-border' : ''} active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
       <div className='itemWrap'>
         <div>
-          <div>Theft Amount: <span style={{ fontWeight: '600' }}>${convertDollarToString(toNumber(i.theftAmt || 0))}</span></div>
+          <div>Theft Amount: <span style={{ fontWeight: '600' }}>{i.summary}</span></div>
           <div>Ratings:{get(i, 'ratings.count', 0) > 0 ? <span> {get(i, 'ratings.count', 0)}&nbsp;
             <StarRatings
               rating={get(i, 'ratings.rating', 0)}
@@ -40,7 +39,7 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div>ID: <span style={{ fontWeight: '600' }}>{i.id || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
+          <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
           <div>
             {/*
             Author: {get(i, 'ratings.count', 0)}
@@ -77,35 +76,20 @@ export default Points
 
 const Item = styled.div`
   & > .itemWrap {
-    width: calc(100% - 75px);
     background: transparent;
     padding: 11px 30px 11px 15px;
     color: #000;
-    border-radius: 8px 0 0 8px;
+    border-radius: 2px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     position: relative;
-    &::after {
-      content: '';
-      display: none;
-      position: absolute;
-      top: 0;
-      right: -46px;
-      width: 0; 
-      height: 0; 
-      border-top: 36px solid transparent;
-      border-bottom: 36px solid transparent;
-      border-left: 46px solid ${colors.primary};
-      z-index: 1;
-    } 
   }
   &.bottom-border {
     &::after {
       content: '';
       display: block;
-      width: calc(100% - 75px);
       height: 1px;
       background: #D3D0D0;
       margin: 10px 15px;

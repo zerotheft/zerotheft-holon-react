@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { get, capitalize, round, filter as Filter } from 'lodash'
+import { get, capitalize, filter as Filter } from 'lodash'
 import { Formik, Field, Form } from 'formik'
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -7,17 +7,17 @@ import styled from 'styled-components'
 
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
-import { VoteContext,VoteProvider } from './VoteContext'
+import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import useFetch from 'commons/hooks/useFetch'
 import { Row } from 'commons/Form/styles'
-import { TextField, TextAreaField, Radio } from 'commons/Form/InputFields'
+import { TextField, TextAreaField, Radio, EditableField } from 'commons/Form/InputFields'
 import Button from 'commons/Buttons'
 import { colors } from 'theme'
 import { isChrome, numberWithCommas, getParameterByName, convertUNIXtoDATETIME } from 'utils'
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
-import { getUserInfo } from 'apis/vote'
+import { getCitizenInfo } from 'apis/vote'
 import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
@@ -25,27 +25,29 @@ const VoteFinalize = ({ match, history, location }) => {
   const { issue, selection, priorVoteInfo, loading } = useContext(IssueContext)
   const { filterParams } = useContext(AppContext)
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
-  const [getUserInfoApi, loadingUser, userInfo] = useFetch(getUserInfo)
+  const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [initialValues, updateValues] = useState()
+  const [commentState, showHideComment] = useState(false)
 
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
-  const amount = finalVote === 'yes' ? get(selection, 'proposal.amount') : get(selection, 'counterProposal.amount')
+  const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
+  const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
 
   const getVotedIdeas = async () => {
-    if (localStorage.getItem('address')) {
+    if (localStorage.getItem('citizenID')) {
       //fetch user information
-      await getUserInfoApi(localStorage.getItem('address'))
+      await getCitizenInfoApi(localStorage.getItem('citizenID'))
     }
   }
 
   const checkQueryParams = async () => {
-    if(queryParams && getParameterByName('page') === 'steps') {
-      const {step } = await checkStep(true)
-      if(step > 6) return null
+    if (queryParams && getParameterByName('page') === 'steps') {
+      const { step } = await checkStep(true)
+      if (step > 6) return null
       showStepsPage(true)
-      if(getParameterByName('details')) {
+      if (getParameterByName('details')) {
         const details = localStorage.getItem('voteDetails')
-        if(details) {
+        if (details) {
           updateValues(JSON.parse(details))
         }
       }
@@ -54,6 +56,8 @@ const VoteFinalize = ({ match, history, location }) => {
       checkStep()
     }
   }
+  const save = (value) => { alert(value) }
+  const cancel = () => { alert("Cancelled") }
   useEffect(() => {
     checkQueryParams()
   }, [queryParams])
@@ -65,37 +69,51 @@ const VoteFinalize = ({ match, history, location }) => {
   if (!loading && !get(selection, 'proposal') && !get(selection, 'counterProposal'))
     return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
 
-  if(stepsPage) return <Steps showStepsPage={showStepsPage} vote={() => {
+  if (stepsPage) return <Steps showStepsPage={showStepsPage} vote={() => {
     showStepsPage(false)
     vote(initialValues)
-  }}/>
+  }} />
 
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
+      {/* <EasyEdit
+        type="number"
+        onSave={save}
+        onCancel={cancel}
+        saveButtonLabel="Save Me"
+        cancelButtonLabel="Cancel Me"
+      /> */}
       <FormWrapper>
         <div>
-          <h4>Do you consider this as theft via a rigged economy?</h4>
+          <TitleSummary><h3>This Finalizes Your Vote That</h3><span>{finalVote === "yes" ? "Yes there is theft" : "No there is not theft"}</span><h3>In this Area</h3></TitleSummary>
+          {/* <h4>Do you consider this as theft via a rigged economy?</h4> */}
           <Formik
             enableReinitialize
             initialValues={initialValues || {
               vote: capitalize(finalVote),
               amount: 'static',
-              custom_amount: 0
+              ...theftAmtYears
             }}
-            onSubmit={async values => {
+            onSubmit={async (values) => {
+              let altTheftAmounts = {}
+              Object.keys(theftAmtYears).map((yr) => {
+                if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
+                // delete values[yr]
+              })
               if (!isChrome()) {
                 toast.error('Please open on chrome browser to vote!!!')
                 return
               }
-              const {step : curStep} = await checkStep()
-              localStorage.setItem('voteDetails', JSON.stringify(values))
-              history.push({search: '?page=steps'})
+              const { step: curStep } = await checkStep()
+              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"') }
+              localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
+              history.push({ search: '?page=steps' })
               if (curStep <= 6) {
-                updateValues(values)
+                updateValues(updatedVal)
                 showStepsPage(true)
               }
-              else vote(values)
+              else vote(updatedVal)
             }}
           >
             {({ values }) => {
@@ -103,56 +121,52 @@ const VoteFinalize = ({ match, history, location }) => {
                 {popup && <Modal onClose={() => showErrorPopUp(false)}>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: 30 }}>
                     {get(popup, 'message') || 'There was some error while trying to vote.'}
-                    <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button>
+                    {/* <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button> */}
                   </div>
                 </Modal>}
-                <Row>
+                {/* <Row>
                   <Field name="vote" component={TextField} label="Your Vote" labelWidth={110} readonly />
-                </Row>
-                <Row>
-                  <Label>Proposed Amount:</Label>
+                </Row> */}
+                {/* <Row>
+                  <Label>Proposed Total Amount:</Label>
                   <Field
                     name="amount"
                     component={Radio}
                     values={[{
                       value: 'static',
-                      label: `${amount ? `$${numberWithCommas(amount)}` : 'N/A'} (from Problem Proposal)`
+                      label: `${`$${numberWithCommas(amount)}`} (from Problem Proposal)`
                     }]}
                   />
-                </Row>
-                {finalVote === 'yes' && <Row style={{marginLeft: 140}}>
-                  <Field
-                    name="amount"
-                    component={Radio}
-                    radioStyle={{marginRight: 0}}
-                    values={[{
-                      value: 'custom',
-                      component: <Column style={{ flex: 1 }}>
-                        <Field
-                          name="custom_amount"
-                          component={TextField}
-                          type="number"
-                          min={0}
-                          label="Enter Custom"
-                          labelType="top"
-                          readonly={values.amount !== 'custom'}
-                        />
-                        {(amount && values.custom_amount) ? <Label full>Your amount is only {round((values.custom_amount * 100) / amount, 2)}% of the amount in the problem proposal</Label> : null}
-                      </Column>
-                    }]}
-                  />
-                </Row>}
-                <Row>
-                  <Field
-                    name="comment"
-                    component={TextAreaField}
-                    label="Add Comment"
-                    labelWidth={130}
-                  />
-                </Row>
-                <Row>
-                  <Button type="submit" height={50}>I approve this vote</Button>
-                </Row>
+                </Row> */}
+
+
+                {finalVote === 'yes' && theftAmtYears &&
+                  Object.keys(theftAmtYears).map((y) =>
+                    <Row>
+                      <Field
+                        name={y}
+                        component={EditableField}
+                        type="number"
+                        min={0}
+                        label={y}
+                      />
+                    </Row>
+                  )}
+                {commentState &&
+                  <CommentBox>
+                    <span>Add Comment:</span>
+                    <Field
+                      name="comment"
+                      component={TextAreaField}
+                    />
+                  </CommentBox>
+                }
+                <BottomRow>
+                  <Button type="submit" height={50}>I approve & FINALIZE this vote</Button>
+                  <span onClick={() => {
+                    showHideComment(!commentState)
+                  }}>{!commentState ? `Add a comment` : `Do not add a comment`}</span>
+                </BottomRow>
               </Form>
             }}
           </Formik>
@@ -164,8 +178,12 @@ const VoteFinalize = ({ match, history, location }) => {
             <h3>Finalize your vote</h3>
             <h5>Your Zerotheft Public Voter Registeration:</h5>
             <p className='data-row' style={{ fontSize: 18, fontWeight: '500' }}>
-              <span>Your Voter ID:</span>
+              <span>Your Voter Address:</span>
               <span>{localStorage.getItem('address')}</span>
+            </p>
+            <p className='data-row' style={{ fontSize: 18, fontWeight: '500' }}>
+              <span>Your Citizen ID:</span>
+              <span>{localStorage.getItem('citizenID')}</span>
             </p>
             <p className='data-row'>
               <span>Your Name:</span>
@@ -175,19 +193,19 @@ const VoteFinalize = ({ match, history, location }) => {
               <span>Your Linked-in Account:</span>
               <a href={userInfo.linkedin} target="_blank" rel="noopener noreferrer">{userInfo.linkedin}</a>
             </p>
-            {priorVoteInfo && priorVoteInfo.success && <Button onClick={() => {}} style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }} height={62}>PRIOR VOTE</Button>}
+            {priorVoteInfo && priorVoteInfo.success && <Button onClick={() => { }} style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }} height={62}>PRIOR VOTE</Button>}
           </div>
           {priorVoteInfo && priorVoteInfo.success && <div className='content bottom'>
             <p className='data-row'>
               You voted on this problem for this year already. Voting again will override your existing vote.
             </p>
             <p className='data-row' style={{ fontSize: 22 }}>
-              Prior Vote: {get(priorVoteInfo, 'voteType') ? 'YES' : 'NO'}
+              Prior Vote: {get(priorVoteInfo, 'voteIsTheft') ? 'YES' : 'NO'}
             </p>
             <p className='data-row' style={{ fontWeight: '500' }}>
-              <span>
+              {/* <span>
                 Amount Stolen : ${get(priorVoteInfo, 'altTheftAmt') || get(priorVoteInfo, 'theftAmt')}
-              </span>
+              </span> */}
               <span>
                 Voted on : {convertUNIXtoDATETIME(get(priorVoteInfo, 'date'))}
               </span>
@@ -198,9 +216,9 @@ const VoteFinalize = ({ match, history, location }) => {
       </div>
     </Wrapper>
     <ProposalWrapper>
-      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes'? 'proposals': 'counter-proposals', []), { year: filterParams.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'}/>
+      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes' ? 'proposals' : 'counter-proposals', []), { year: filterParams.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
     </ProposalWrapper>
-  </React.Fragment>
+  </React.Fragment >
 }
 
 const FinalizeWrapper = (props) => {
@@ -217,7 +235,20 @@ const Wrapper = styled.div`
     flex: 1;
   }
 `,
-FormWrapper = styled.div`
+  TitleSummary = styled.div`
+  display:flex;
+  align-items: center;
+  span {
+    padding: 10px;
+    background: ${colors.primary};
+    border-radius: 8px;
+    color: ${colors.text.white};
+    font-weight: bold;
+    margin:0 5px;
+    text-transform: uppercase;
+  }
+`,
+  FormWrapper = styled.div`
   form {
     max-width: 500px;
   }
@@ -226,6 +257,14 @@ FormWrapper = styled.div`
     font-weight: 600;
     color: ${colors.primary};
     margin-bottom: 10px;
+  }
+`,
+  CommentBox = styled(Row)`
+  display:flex;
+  flex-direction:column;
+  span{
+    font-weight:bold;
+    color:${colors.text.gray};
   }
 `,
   Label = styled.div`
@@ -245,7 +284,17 @@ FormWrapper = styled.div`
   display: flex;
   flex-direction: column;
 `,
-FinalizeContentWrapper = styled.div`
+  BottomRow = styled(Row)`
+  align-items: center;
+  span{
+    color: ${colors.primary};
+    cursor: pointer;
+    :hover{
+
+    }
+  }
+`,
+  FinalizeContentWrapper = styled.div`
   margin-left: 75px;
   max-width: 580px;
   width: 100%;
@@ -291,7 +340,7 @@ FinalizeContentWrapper = styled.div`
     }
   }
 `,
-ProposalWrapper = styled.div`
+  ProposalWrapper = styled.div`
   margin-top: 30px; 
   padding: 30px;
   border-top: 1px solid #C9C9C9;

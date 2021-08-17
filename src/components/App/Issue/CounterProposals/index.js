@@ -18,7 +18,7 @@ const CounterProposals = ({ history, match }) => {
     [loading, updateLoading] = useState(false)
 
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '650px', margin: 0, display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
@@ -32,30 +32,13 @@ const CounterProposals = ({ history, match }) => {
       </div>
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
-          <Points data={filterParams.year ? Filter(get(issue, 'counter_proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          <Points data={get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>
-    <Right style={{ width: '100%', overflowY: 'auto' }} className='apply-bg'>
+    <Right style={{ flex: '1', overflowY: 'auto' }}>
       <div style={{ overflow: 'hidden' }}>
-        <Header>
-          <h5>Best Counter Point:</h5>
-          <h4>IF there was theft, which makes the best case.</h4>
-          <h5>This is used to compare against, for when you make your final decision</h5>
-          <div className="btns">
-            <Button width={170} height={44} onClick={() => {
-              updateSelection({ ...selection, counterProposal: selectedItem })
-              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/vote`)
-            }} disabled={isEmpty(selectedItem)}>Select This One</Button>
-            {!!get(selection, 'proposal') && <>
-              <Button height={44} width={125} onClick={() => {
-                updateSelection({ ...selection, counterProposal: null })
-                history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/vote`)
-              }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }} plain>Skip This</Button>
-            </>}
-          </div>
-        </Header>
-        { !isEmpty(selectedItem) && <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })}/> }
+        <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })} />
       </div>
     </Right>
   </Wrapper>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { fromUnixTime, format } from 'date-fns'
-import { startCase, isObject, isArray, isEmpty, isNumber } from 'lodash'
+import { startCase, isObject, isArray, isEmpty, isNumber, isEqual, transform } from 'lodash'
 import styled from 'styled-components'
 
 export const truncateString = (str, num) => {
@@ -14,7 +14,24 @@ export const numberWithCommas = number => {
   if (!number || number < 0) return 0
   return number.toLocaleString()
 }
-
+/**
+ * Find difference between two objects
+ * @param  {object} origObj - Source object to compare newObj against
+ * @param  {object} newObj  - New object with potential changes
+ * @return {object} differences
+ */
+export const objDifference = (origObj, newObj) => {
+  const changes = (newObj, origObj) => {
+    let arrayIndexCounter = 0
+    return transform(newObj, (result, value, key) => {
+      if (!isEqual(value, origObj[key])) {
+        let resultKey = isArray(origObj) ? arrayIndexCounter++ : key
+        result[resultKey] = (isObject(value) && isObject(origObj[key])) ? changes(value, origObj[key]) : value
+      }
+    })
+  }
+  return changes(newObj, origObj)
+}
 export const isChrome = () => {
   let isChromium = window.chrome;
   let winNav = window.navigator;
@@ -65,25 +82,25 @@ export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) 
 }
 
 export const displayContent = (data) => {
-  if(!isEmpty(data) && data.toString().includes('http')){
-    if(data.toString().split(' ').length > 1){
+  if (!isEmpty(data) && data.toString().includes('http')) {
+    if (data.toString().split(' ').length > 1) {
       let mainContent = ""
       data.toString().split(' ').forEach((value) => {
-        if(value.includes('http')){
+        if (value.includes('http')) {
           mainContent += `<a href={data} target='_blank'> ${value}</a>`
         }
-        else{
+        else {
           mainContent += ` ${value}`
         }
       })
-      return <div className='dataValue' style={{wordBreak: 'break-word'}} dangerouslySetInnerHTML={{__html: mainContent}} />
+      return <div className='dataValue' style={{ wordBreak: 'break-word' }} dangerouslySetInnerHTML={{ __html: mainContent }} />
     }
-    else{
-      return <div className='dataValue' style={{wordBreak: 'break-word'}}><a href={data} target='_blank'>{data}</a></div>
+    else {
+      return <div className='dataValue' style={{ wordBreak: 'break-word' }}><a href={data} target='_blank'>{data}</a></div>
     }
   }
-  else{
-    return <div className='dataValue' style={{wordBreak: 'break-word'}}>{data || ''}</div>
+  else {
+    return <div className='dataValue' style={{ wordBreak: 'break-word' }}>{data || ''}</div>
   }
 }
 
@@ -92,10 +109,10 @@ export const convertJSONtoString = (data) => {
   return <DataObject>
     {Object.keys(data).map((key) => <li>
       {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:</div>}
-      { isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key])
+      {isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key])
       }
-    </li>)}
-  </DataObject>
+    </li >)}
+  </DataObject >
 }
 
 export const convertStringDollarToNumeric = (dollar) => {
@@ -127,16 +144,16 @@ export const convertStringDollarToNumeric = (dollar) => {
 }
 
 export const removeDecimelIfNeeded = (number) => {
-  const [num, decimel] = number.split('.')
-  return (parseInt(decimel)===0)? num : number;
+  const [num, decimel] = number.toString().split('.')
+  return (parseInt(decimel) === 0) ? num : number;
 }
 
-export const convertDollarToString = (value, decimal = 1) => {
+export const convertDollarToString = (value, decimal = 2) => {
   let val = parseInt(value)
   let negative = false
-  if(!isNumber(val) || val === 0) return val
-  
-  if(Math.sign(val) === -1) {
+  if (!isNumber(val) || val === 0) return val
+
+  if (Math.sign(val) === -1) {
     val = -1 * val
     negative = true
   }
@@ -146,14 +163,14 @@ export const convertDollarToString = (value, decimal = 1) => {
   else if (val >= 1e9 && val < 1e12) val = removeDecimelIfNeeded((val / 1e9).toFixed(decimal)) + "B"
   else if (val >= 1e12 && val < 1e15) val = removeDecimelIfNeeded((val / 1e12).toFixed(decimal)) + "T"
   else val = removeDecimelIfNeeded(parseFloat((val / 1e12).toFixed(0))).toLocaleString() + "T"
-  if(negative) return "-" + val
+  if (negative) return "-" + val
   return val
 }
 
 export function getParameterByName(name, url = window.location.href) {
   name = name.replace(/[\[\]]/g, '\\$&');
   var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
-      results = regex.exec(url);
+    results = regex.exec(url);
   if (!results) return null;
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
