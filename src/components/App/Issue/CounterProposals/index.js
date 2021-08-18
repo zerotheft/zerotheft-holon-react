@@ -38,7 +38,7 @@ const CounterProposals = ({ history, match }) => {
     </Left>
     <Right style={{ flex: '1', overflowY: 'auto' }}>
       <div style={{ overflow: 'hidden' }}>
-        <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })} />
+        <ProposalDetail item={selectedItem} type="counter" selection={selection} history={history} updateSelection={updateSelection} chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })} />
       </div>
     </Right>
   </Wrapper>

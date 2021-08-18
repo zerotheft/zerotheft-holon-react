@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { API_URL } from 'constants/index'
 import { get, isEmpty, filter as Filter } from 'lodash'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,11 +13,17 @@ import ProposalDetail from '../commons/ProposalDetail'
 
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
-  const { filterParams } = useContext(AppContext)
+  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
+
+  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
+  const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
+
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
@@ -39,7 +46,7 @@ const Proposals = ({ history, match }) => {
     </Left>
     <Right style={{ flex: '1', overflowY: 'auto' }}>
       <div style={{ overflow: 'hidden' }}>
-        <ProposalDetail item={selectedItem} selection={selection} updateSelection={updateSelection} history={history} chartData={bellCurveData} />
+        <ProposalDetail item={selectedItem} selection={selection} updateSelection={updateSelection} history={history} reportPath={reportPath} chartData={bellCurveData} />
       </div>
     </Right>
   </Wrapper >
