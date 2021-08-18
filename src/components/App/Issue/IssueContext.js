@@ -17,6 +17,7 @@ const IssueProvider = ({ children, id, match, params, location }) => {
   const [proposalDetails, updateProposalDetails] = useState({})
 
   useEffect(() => {
+    // console.log(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
     getPriorVoteApi({
       year: filterParams.year,
       address: userInfo.address || localStorage.getItem('address'),

@@ -17,7 +17,7 @@ import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
 import { FlexRow } from 'commons/styles';
 
-const ProposalDetail = ({ item, selection, updateSelection, history, type, show_details = false, chartData = null }) => {
+const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, show_details = false, chartData = null }) => {
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
   const { proposalDetails } = useContext(IssueContext)
@@ -25,55 +25,55 @@ const ProposalDetail = ({ item, selection, updateSelection, history, type, show_
     item && getProposalApi(item.id)
   }, [item])
 
-  const options = {
-    title: {
-      text: 'Theft Amount vs Votes'
-    },
-    exporting: false,
-    credits: false,
-    tooltip: {
-      formatter: function () {
-        return '<b>' + this.y + ' votes</b>';
-      }
-    },
-    xAxis: {
-      categories: chartData.bellCurveThefts,
-      title: {
-        text: 'Theft Amounts'
-      },
-      labels: {
-        formatter: function () {
-          var label = this.axis.defaultLabelFormatter.call(this);
-          return `$${convertDollarToString(label)}`;
-        }
-      }
-    },
-    yAxis: {
-      labels: {
-        format: '{value}'
-      },
-      title: {
-        text: 'No. of Votes'
-      }
-    },
-    legend: {
-      enabled: false
-    },
-    series: [{
-      type: 'column',
-      name: 'No. of Votes',
-      data: chartData.bellCurveVotes,
-    }, {
-      type: 'spline',
-      name: 'Theft Amount',
-      data: chartData.bellCurveVotes,
-      marker: {
-        lineWidth: 2,
-        lineColor: Highcharts.getOptions().colors[3],
-        fillColor: 'white'
-      },
-    }]
-  }
+  // const options = {
+  //   title: {
+  //     text: 'Theft Amount vs Votes'
+  //   },
+  //   exporting: false,
+  //   credits: false,
+  //   tooltip: {
+  //     formatter: function () {
+  //       return '<b>' + this.y + ' votes</b>';
+  //     }
+  //   },
+  //   xAxis: {
+  //     categories: chartData.bellCurveThefts,
+  //     title: {
+  //       text: 'Theft Amounts'
+  //     },
+  //     labels: {
+  //       formatter: function () {
+  //         var label = this.axis.defaultLabelFormatter.call(this);
+  //         return `$${convertDollarToString(label)}`;
+  //       }
+  //     }
+  //   },
+  //   yAxis: {
+  //     labels: {
+  //       format: '{value}'
+  //     },
+  //     title: {
+  //       text: 'No. of Votes'
+  //     }
+  //   },
+  //   legend: {
+  //     enabled: false
+  //   },
+  //   series: [{
+  //     type: 'column',
+  //     name: 'No. of Votes',
+  //     data: chartData.bellCurveVotes,
+  //   }, {
+  //     type: 'spline',
+  //     name: 'Theft Amount',
+  //     data: chartData.bellCurveVotes,
+  //     marker: {
+  //       lineWidth: 2,
+  //       lineColor: Highcharts.getOptions().colors[3],
+  //       fillColor: 'white'
+  //     },
+  //   }]
+  // }
   if (proposalLoading) {
     return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
   }
@@ -94,19 +94,19 @@ const ProposalDetail = ({ item, selection, updateSelection, history, type, show_
         <h5 className='plain'>This is used to compare against, for when you make your final decision</h5>
         <div className="btns">
           <Button width={170} height={44} onClick={() => {
-            updateSelection({ ...selection, proposal: item })
-            history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/counter-proposals`)
+            updateSelection(type === "counter" ? { ...selection, counterProposal: item } : { ...selection, proposal: item })
+            history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
           }} disabled={isEmpty(item)}>Select This One</Button>
           <Button plain height={44} width={125} onClick={() => {
-            updateSelection({ ...selection, proposal: null })
-            history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/counter-proposals`)
+            updateSelection(type === "counter" ? { ...selection, counterProposal: null } : { ...selection, proposal: null })
+            history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
           }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
         </div>
       </Header>
 
       {!isEmpty(item) && <>
         <div className="imageWrapper">
-          <img src="http://localhost:3010/public/exports/2021/8/13/12_hrs_0_mins_10_secs/reports/ztReport/USA-industries-finance-high_frequency-theftValue-view.svg" style={{ width: '100%', height: 'auto' }} />
+          <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} />
         </div>
 
         <div className="bodyHeader">
@@ -143,7 +143,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, type, show_
         </div>
 
         <div className="imageWrapper">
-          <img src="http://localhost:3010/public/exports/2021/8/13/12_hrs_0_mins_10_secs/reports/ztReport/USA-industries-finance-high_frequency-votesForTheftAmount.svg" style={{ width: '100%', height: 'auto' }} />
+          <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
         </div>
       </>}
     </div>

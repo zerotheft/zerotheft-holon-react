@@ -32,6 +32,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
   const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
   const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
+  const hierarchyPath = (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
 
   const getVotedIdeas = async () => {
     if (localStorage.getItem('citizenID')) {
@@ -73,7 +74,6 @@ const VoteFinalize = ({ match, history, location }) => {
     showStepsPage(false)
     vote(initialValues)
   }} />
-
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
@@ -106,7 +106,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 return
               }
               const { step: curStep } = await checkStep()
-              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"') }
+              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"'), hierarchyPath }
               localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
               history.push({ search: '?page=steps' })
               if (curStep <= 6) {
