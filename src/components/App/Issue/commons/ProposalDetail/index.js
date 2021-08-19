@@ -20,60 +20,12 @@ import { FlexRow } from 'commons/styles';
 const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, show_details = false, chartData = null }) => {
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
-  const { proposalDetails } = useContext(IssueContext)
+  // const { proposalDetails } = useContext(IssueContext)
   useEffect(() => {
     item && getProposalApi(item.id)
   }, [item])
 
-  // const options = {
-  //   title: {
-  //     text: 'Theft Amount vs Votes'
-  //   },
-  //   exporting: false,
-  //   credits: false,
-  //   tooltip: {
-  //     formatter: function () {
-  //       return '<b>' + this.y + ' votes</b>';
-  //     }
-  //   },
-  //   xAxis: {
-  //     categories: chartData.bellCurveThefts,
-  //     title: {
-  //       text: 'Theft Amounts'
-  //     },
-  //     labels: {
-  //       formatter: function () {
-  //         var label = this.axis.defaultLabelFormatter.call(this);
-  //         return `$${convertDollarToString(label)}`;
-  //       }
-  //     }
-  //   },
-  //   yAxis: {
-  //     labels: {
-  //       format: '{value}'
-  //     },
-  //     title: {
-  //       text: 'No. of Votes'
-  //     }
-  //   },
-  //   legend: {
-  //     enabled: false
-  //   },
-  //   series: [{
-  //     type: 'column',
-  //     name: 'No. of Votes',
-  //     data: chartData.bellCurveVotes,
-  //   }, {
-  //     type: 'spline',
-  //     name: 'Theft Amount',
-  //     data: chartData.bellCurveVotes,
-  //     marker: {
-  //       lineWidth: 2,
-  //       lineColor: Highcharts.getOptions().colors[3],
-  //       fillColor: 'white'
-  //     },
-  //   }]
-  // }
+
   if (proposalLoading) {
     return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
   }
