@@ -61,7 +61,7 @@ const useVote = () => {
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
-  const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, web3 } = useWeb3()
+  const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
   const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
@@ -92,7 +92,7 @@ const useVote = () => {
       const account = accounts[0]
 
       const votingArea = await convertToAscii("RiggedEconomy")
-      const hierarchyPath = await convertToAscii(values.hierarchyPath)
+      const hierarchyPath = convertStringToHash(values.hierarchyPath)
       const voteTypeDetail = await convertToAscii("TrueFalse_AmountsPerYear")
       const voteValue = voteType ? "True" : "False"
       const verificationOnVote = await convertToAscii("RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured")
