@@ -22,28 +22,30 @@ const Step6 = ({ updateCurrentStep }) => {
         <div>
           <SubHeader>Register Public Voter</SubHeader>
           <OrderedList>
-            <li>Navigate to register voter. <LinkText onClick={() => window.location.href = 'zerotheft://register-voter?holonRedirectUrl=' + encodeURIComponent(buildUrl())}>Register Voter</LinkText></li>
+            <li>Navigate to register voter. <LinkText onClick={() => window.open('https://app.zerotheft.net/steps/')}>Register Voter</LinkText></li>
             <li>Select your country and enter your country's zip code.</li>
             <li>Enter your linkedin ID and linkedin full name. Click continue button.</li>
             <li>Login to your linkedin account so that we can verify you.</li>
-            <li>Get back to the desktop app and check all the boxes and click on register button.</li>
             <li>Switch back to this page and click vote.</li>
           </OrderedList>
         </div>
         <ButtonsWrapper>
-        <Button disabled={false && shouldCheck && voterInfo.voterId} onClick={async () => {
-          const {msg, step} = await checkStep()
-          if(step < 6) updateCurrentStep(step)
-          else {
-            if(msg) {
-              toast.error(msg)
+          <Button disabled={false && shouldCheck && voterInfo.address} onClick={async () => {
+            const { msg, step } = await checkStep()
+            console.log(voterInfo);
+            console.log(msg);
+            console.log(step)
+            if (step < 6) updateCurrentStep(step)
+            else {
+              if (msg) {
+                toast.error(msg)
+              }
             }
-          }
-        }}>Vote</Button>
-      </ButtonsWrapper>
+          }}>Vote</Button>
+        </ButtonsWrapper>
       </Body>
     </InnerWrapper>
-    <img src={metamaskIcon} style={{height: 300}} />
+    <img src={metamaskIcon} style={{ height: 300 }} />
   </Wrapper>
 }
 

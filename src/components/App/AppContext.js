@@ -7,7 +7,7 @@ import { getParameterByName } from 'utils'
 import { getPaths, getUmbrellaPaths } from '../../apis/path'
 import useFetch from 'commons/hooks/useFetch'
 import { holonInfo as getHolonInfo } from 'apis/vote'
-import { getVoterInfos } from 'apis/desktopApp'
+import { getVoterInfos } from 'apis/centralizedServer'
 import { getTheftInfo } from 'apis/reports'
 
 const AppContext = createContext()
