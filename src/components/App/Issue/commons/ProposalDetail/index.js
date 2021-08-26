@@ -8,10 +8,9 @@ import { faFrown } from '@fortawesome/free-regular-svg-icons'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official'
 import { colors } from 'theme'
-import { Body, Header } from '../styles'
+import { Body, Header,NoChartText } from '../styles'
 import Button from 'commons/Buttons'
-import { convertDollarToString, convertJSONtoString } from 'utils'
-import { IssueContext } from '../../IssueContext'
+import { imageExists, convertJSONtoString } from 'utils'
 import OverlaySpinner from 'commons/OverlaySpinner';
 import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
@@ -29,7 +28,6 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
   if (proposalLoading) {
     return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
   }
-
   return (<Body>
     <div className="bodyDescription">
       {proposalInfo ? <div className='detail-wrapper' style={{ position: 'relative', minHeight: 50 }}>
@@ -57,9 +55,11 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
       </Header>
 
       {!isEmpty(item) && <>
-        <div className="imageWrapper">
-          <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} />
-        </div>
+        {imageExists(`${reportPath}-theftValue-view.svg`) ?
+          <div className="imageWrapper">
+            <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} />
+          </div>:<NoChartText>Report is not available yet.</NoChartText>
+        }
 
         <div className="bodyHeader">
           <div className="detailWrapper">
@@ -93,10 +93,11 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
             <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>Rate/Complaint</span>
           </div>
         </div>
-
-        <div className="imageWrapper">
-          <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
-        </div>
+        {imageExists(`${reportPath}-votesForTheftAmount.svg`)?
+          <div className="imageWrapper">
+            <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
+          </div>:<NoChartText>Report is not available yet.</NoChartText>
+        }
       </>}
     </div>
   </Body>

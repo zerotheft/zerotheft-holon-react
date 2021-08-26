@@ -33,6 +33,12 @@ export const
   font-size: 22px;
   color: #99;
 `,
+NoChartText = styled.div`
+  background: ${colors.warningBGColor};
+  border-radius: 5px;
+  padding: 6px;
+  color: ${colors.text.white};
+`,
   CustomButton = styled.a`
   font-family: Poppins;
   background: #4169E1;
