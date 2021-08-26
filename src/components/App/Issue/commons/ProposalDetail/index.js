@@ -8,7 +8,7 @@ import { faFrown } from '@fortawesome/free-regular-svg-icons'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official'
 import { colors } from 'theme'
-import { Body, Header } from '../styles'
+import { Body, Header,NoChartText } from '../styles'
 import Button from 'commons/Buttons'
 import { imageExists, convertJSONtoString } from 'utils'
 import OverlaySpinner from 'commons/OverlaySpinner';
@@ -55,10 +55,10 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
       </Header>
 
       {!isEmpty(item) && <>
-        {imageExists(`${reportPath}-theftValue-view.svg`) &&
+        {imageExists(`${reportPath}-theftValue-view.svg`) ?
           <div className="imageWrapper">
             <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} />
-          </div>
+          </div>:<NoChartText>Report is not available yet.</NoChartText>
         }
 
         <div className="bodyHeader">
@@ -93,10 +93,10 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
             <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>Rate/Complaint</span>
           </div>
         </div>
-        {imageExists(`${reportPath}-votesForTheftAmount.svg`) &&
+        {imageExists(`${reportPath}-votesForTheftAmount.svg`)?
           <div className="imageWrapper">
             <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
-          </div>
+          </div>:<NoChartText>Report is not available yet.</NoChartText>
         }
       </>}
     </div>
