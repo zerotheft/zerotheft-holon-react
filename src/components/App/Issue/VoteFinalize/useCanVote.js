@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react'
-import { getVoterInfos } from 'apis/desktopApp'
+import { getVoterInfos } from 'apis/centralizedServer'
 import { Web3Context } from 'components/App/Web3Context'
 import { AppContext } from 'components/App/AppContext'
 import config from 'config'
@@ -14,7 +14,6 @@ export default () => {
 
   const getVoterInfo = async () => {
     const { data } = await getVoterInfos()
-    updateVoterInfo(data)
     return data
   }
 
@@ -53,7 +52,7 @@ export default () => {
         if (!metamaskAccount) {
           newStep = 4
           msg = 'Please login to the metamask.'
-        } else if (metamaskAccount.toLowerCase() !== voterInfo.address.toLowerCase()) {
+        } else if (metamaskAccount.toLowerCase() !== voterInfo.ethereumAddress.toLowerCase()) {
           newStep = 4
           msg = 'Metamask wallet doesn\'t match with the zerotheft wallet.'
         } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {

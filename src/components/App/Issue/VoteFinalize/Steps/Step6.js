@@ -30,9 +30,9 @@ const Step6 = ({ updateCurrentStep }) => {
           </OrderedList>
         </div>
         <ButtonsWrapper>
-          <Button disabled={false && shouldCheck && voterInfo.address} onClick={async () => {
+          <Button disabled={false && shouldCheck && voterInfo.ethereumAddress} onClick={async () => {
             const { msg, step } = await checkStep()
-            console.log(voterInfo);
+            console.log(voterInfo.ethereumAddress);
             console.log(msg);
             console.log(step)
             if (step < 6) updateCurrentStep(step)
