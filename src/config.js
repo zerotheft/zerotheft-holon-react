@@ -15,18 +15,17 @@ if (!MODE) {
 }
 
 const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
-const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
+// const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
+const contracts = {}
 
 const getVoteContract = async () => {
-  if (MODE === 'private') {
-    const { data } = await get('ZTMVotes.json', null, `${envConfig.ZERO_THEFT_CONTRACT}`)
-    return data
-  }
+
   if (MODE === 'development')
     return tryRequire('./contracts/ZTMVotes.json')
 
+  const { data } = await get('ZTMVotes.json', null, `${envConfig.ZERO_THEFT_CONTRACT}/${envConfig.NETWORK_NAME}`)
+  return data
 
-  return contracts.ZTMVotes
 }
 
 export default {

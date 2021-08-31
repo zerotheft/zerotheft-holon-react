@@ -3,6 +3,7 @@ import { get, isEmpty, filter as Filter } from 'lodash'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
+import { API_URL } from 'constants/index'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
 import { Wrapper, Left, Right, Header } from '../commons/styles'
@@ -12,10 +13,15 @@ import ProposalDetail from '../commons/ProposalDetail'
 
 const CounterProposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
-  const { filterParams } = useContext(AppContext)
+  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'counterProposal') || {}),
     [loading, updateLoading] = useState(false)
+
+  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
+  const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
 
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
@@ -38,7 +44,7 @@ const CounterProposals = ({ history, match }) => {
     </Left>
     <Right style={{ flex: '1', overflowY: 'auto' }}>
       <div style={{ overflow: 'hidden' }}>
-        <ProposalDetail item={selectedItem} type="counter" chartData={Filter(get(issue, 'counter_proposals', []), { year: filterParams.year })} />
+        <ProposalDetail item={selectedItem} type="counter" selection={selection} reportPath={reportPath} history={history} updateSelection={updateSelection} />
       </div>
     </Right>
   </Wrapper>

@@ -61,7 +61,7 @@ const useVote = () => {
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
-  const { carryTransaction, callSmartContractGetFunc, getBalance, web3 } = useWeb3()
+  const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
   const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
 
@@ -90,19 +90,31 @@ const useVote = () => {
 
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
-      const messageParams = [{ t: 'bool', v: voteType },
-      { t: 'string', v: yesTheftProposalId },
-      { t: 'string', v: noTheftProposalId },
-      { t: 'string', v: (values.altTheftAmounts || '') },
-      { t: 'string', v: (values.comment || '') },
-      { t: 'string', v: holonInfo.holonID },
-      { t: "string", v: priorVoteID },
-      { t: "address", v: account }]
+
+      const votingArea = await convertToAscii("RiggedEconomy")
+      const hierarchyPath = convertStringToHash(values.hierarchyPath)
+      const voteTypeDetail = await convertToAscii("TrueFalse_AmountsPerYear")
+      const voteValue = voteType ? "True" : "False"
+      const verificationOnVote = await convertToAscii("RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured")
+      const amountValue = values.altTheftAmounts || ''
+
+      const messageParams = [
+        { t: 'bytes32', v: votingArea },
+        { t: 'bytes32', v: hierarchyPath },
+        { t: 'bytes32', v: voteTypeDetail },
+        { t: 'string', v: voteValue },
+        { t: 'string', v: amountValue }, //custom amount added by citizen
+        { t: "address", v: account },
+        { t: 'string', v: yesTheftProposalId },
+        { t: 'string', v: noTheftProposalId },
+        { t: "string", v: priorVoteID }
+      ]
       const sha3 = web3.utils.soliditySha3(...messageParams)
       const signedMessage = await web3.eth.personal.sign(sha3, account)
-      console.log('before vote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, account, signedMessage])
 
-      await carryTransaction(contract, 'createVote', [voteType, yesTheftProposalId, noTheftProposalId, values.altTheftAmounts || '', values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
+      console.log('before vote', [votingArea, hierarchyPath, values.hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
+
+      await carryTransaction(contract, 'createVote', [votingArea, hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
       console.log('after vote')
 
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
