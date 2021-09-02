@@ -22,7 +22,7 @@ import PathProposals from './PathProposals';
 const dateRange = range(1999, (new Date()).getFullYear()).reverse().map(i => ({ label: i, value: i }))
 const Dashboard = ({ history, location, match }) => {
   const decodedPath = decodeURIComponent(get(match, 'params.pathname'));
-  const { filter, updateFilter, issue, loading: issueLoading } = useContext(IssueContext)
+  const { issue, loading: issueLoading } = useContext(IssueContext)
   const [getReportApi, loading, report] = useFetch(getReport)
   const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
   const { filterParams } = useContext(AppContext)
@@ -44,10 +44,9 @@ const Dashboard = ({ history, location, match }) => {
 
   useEffect(() => {
     if (get(match, 'params.pathname') && get(match, 'params.id') && get(filterParams, 'year')) {
-      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year'))
+      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year'))
     }
-    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year') || get(filter, 'year'))
-    updateFilter({ year: get(filterParams, 'year') || get(filter, 'year') })
+    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year'))
   }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
 
   useEffect(() => {
@@ -56,14 +55,15 @@ const Dashboard = ({ history, location, match }) => {
   }, [get(match, 'params.id'), get(match, 'params.pathname')])
   const allProposals = [...get(issue, 'proposals') || [], ...get(issue, 'counter_proposals') || []]
 
-  const filteredProposals = sortedUniqBy(isEmpty(filter.year) ? filterArray(allProposals, { year: filter.year }) : allProposals, 'description')
+  // const filteredProposals = sortedUniqBy(isEmpty(filterParams.year) ? filterArray(allProposals, { year: filterParams.year }) : allProposals, 'description')
+  const filteredProposals = sortedUniqBy(allProposals, 'description')
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
-  const yes = theftData && (theftData.for / theftData.votes * 100).toFixed(0)
+  const yes = theftData && (theftData.for / theftData.votes * 100).toFixed()
   const no = 100 - yes
-  if((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
+  if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
     <InnerWrapper>
-      <Left>
+      <Left style={{ marginRight: 30 }}>
         <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
       </Left>
       <Right>
@@ -74,7 +74,7 @@ const Dashboard = ({ history, location, match }) => {
               {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{ fontSize: 22 }}>Vote</Button> :
                 <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
                   Add your proposal
-            </CustomButton>}
+                </CustomButton>}
               {/* <Select
                 defaultValue={get(filter, 'year') ? { label: `Year: ${get(filter, 'year')}`, value: get(filter, 'year') } : null}
                 options={dateRange}
@@ -164,7 +164,7 @@ const Dashboard = ({ history, location, match }) => {
             }
           </SelectWrapper>
         </Header>
-        {(filteredProposals.length && get(filter, 'year')) ? <IWrapper style={{ flex: get(report, 'report') ? 1 : 'initial' }}>
+        {(filteredProposals.length && get(filterParams, 'year')) ? <IWrapper style={{ flex: get(report, 'report') ? 1 : 'initial' }}>
           <OverlaySpinner loading={loading} overlayParent />
           {get(report, 'report') && <SummaryReport url={report.report} />}
           {(!loading && !get(report, 'report') && (get(issue, 'proposals', []).length || get(issue, 'counter_proposals', []).length)) ? <EmptyText></EmptyText> : null}

@@ -48,27 +48,37 @@ const Header = () => {
           <li>
             <NavLink to={'/'} activeClassName='active1'>
               <HomeIcon />
-            Home
-          </NavLink>
+              Home
+            </NavLink>
           </li>
           <li>
             <a href="zerotheft://holon">
               <HolonIcon />
-            Holons
-          </a>
+              Holons
+            </a>
           </li>
           <li>
             <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName='active'>
               <PathIcon />
-            Paths
-          </NavLink>
+              Paths
+            </NavLink>
           </li>
           {selectedHolon.id && <li>
             <NavLink to={ROUTES.DONATE} activeClassName='active'>
               <DonateIcon />
-            Donate
-          </NavLink>
+              Donate
+            </NavLink>
           </li>}
+          <li className='more'>
+              <PathIcon />
+            More
+              <ul>
+                <li><NavLink to={ROUTES.DATALIST} activeClassName='active'>Citizens/Proposals</NavLink></li>
+                <li><NavLink to={ROUTES.VOTELIST} activeClassName='active'>Votes</NavLink></li>
+                <li><NavLink to={ROUTES.HIERARCHY} activeClassName='active'>HierarchyYaml</NavLink></li>
+                <li><a href={ROUTES.EXPORT_LOCATION} activeClassName='active' target='_blank'>Exported Data</a></li>
+              </ul>
+          </li>
         </MenuWrapper>
       </LeftWrapper>
       <RightWrapper>
@@ -109,9 +119,9 @@ const Header = () => {
             })
           }}
         />
-        <Select
+        {/* <Select
           defaultValue={{ value: filterParams.year, label: filterParams.year }}
-          options={new Array(20).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
+          options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
           onChange={selected => {
             localStorage.setItem("filterYear", selected.value)
             updateFilter({ ...filterParams, year: selected.value })
@@ -133,7 +143,7 @@ const Header = () => {
               display: 'none'
             })
           }}
-        />
+        /> */}
       </RightWrapper>
     </Container>
   </Wrapper>
@@ -190,6 +200,32 @@ const RightWrapper = styled.div`
 const MenuWrapper = styled.ul`
   display: flex;
   flex-direction: row;
+  .more {
+    cursor: pointer;
+    color: #8C8989;
+    position: relative;
+    ul {
+      opacity:0;
+      visibility:visible;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      border-radius: 4px;
+      background: #fff;
+      transition: 0.5s ease-in-out;
+      top: 10px;
+      position: absolute;
+      li {
+        margin: 0;
+        a {
+          padding: 3px 10px;
+        }
+      }
+    }
+  }
+  li.more:hover ul {
+    opacity:1;
+    visibility:visible;
+    top: 50px;
+  }
   li {
     margin: 0 20px;
     display: flex;

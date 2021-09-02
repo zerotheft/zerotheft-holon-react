@@ -2,27 +2,28 @@ import React, { createContext, useState, useEffect, useContext } from 'react'
 import { get, sortedUniq, sortBy, reverse, toNumber } from 'lodash'
 
 import { getParameterByName } from 'utils'
-import { getPathProposalsByYear, getProposal } from 'apis/proposals'
-import { AppContext } from 'components/App/AppContext'
+import { getPathProposalsByPath, getProposal } from 'apis/proposals'
+import { AppContext, filterParams } from 'components/App/AppContext'
 import { getPriorVote } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
 
 const IssueContext = createContext()
 
 const IssueProvider = ({ children, id, match, params, location }) => {
-  const [issue, error, loading, fetchIssue, selection, updateSelection, filter, updateFilter] = useIssueFetcher(id, match)
+  const [issue, error, loading, fetchIssue, selection, updateSelection] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
   const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
-  const { userInfo = {} } = useContext(AppContext)
+  const { userInfo = {}, filterParams } = useContext(AppContext)
   const [proposalDetails, updateProposalDetails] = useState({})
 
   useEffect(() => {
+    // console.log(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
     getPriorVoteApi({
-      year: filter.year,
+      year: filterParams.year,
       address: userInfo.address || localStorage.getItem('address'),
       url: (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
     })
-  }, [filter.year, userInfo.address])
+  }, [filterParams.year, userInfo.address])
 
   useEffect(() => {
     if (!issue || selection.proposal || selection.counterProposal) return
@@ -72,8 +73,6 @@ const IssueProvider = ({ children, id, match, params, location }) => {
         updateVote,
         updateSelection,
         proposalDetails,
-        filter,
-        updateFilter
       }}
     >
       {children}
@@ -88,22 +87,22 @@ const useIssueFetcher = (id, match) => {
   const [issue, updateIssue] = useState(),
     [selection, updateSelection] = useState({ proposal: null, counterProposal: null }),
     [loading, updateLoading] = useState(true),
-    [error, updateError] = useState(),
-    [filter, updateFilter] = useState({ year: toNumber(filterParams.year) })
+    [error, updateError] = useState()
 
   const fetchIssue = async () => {
     updateLoading(true)
     try {
-      const path = await getPathProposalsByYear(`${match.params.pathname}%2F${match.params.id}`, filter.year) || []
+      const path = await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`) || []
       let issueDetails = {}
-      issueDetails.proposals = path.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
+      issueDetails.proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
         ...i, year: parseInt(get(i, 'year'))
       })) || []
 
-      issueDetails.counter_proposals = path.filter(i => (i && parseFloat(i.theftAmt) <= 0)).map(i => ({
+      issueDetails.counter_proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) <= 0)).map(i => ({
         ...i, year: parseInt(get(i, 'year'))
       })) || []
 
+      issueDetails.bellCurveData = path.chartData || {}
       updateIssue(issueDetails)
 
       updateLoading(false)
@@ -116,7 +115,7 @@ const useIssueFetcher = (id, match) => {
 
   useEffect(() => {
     fetchIssue()
-  }, [get(match, 'params.pathname'), get(match, 'params.id'), filter.year])
+  }, [get(match, 'params.pathname'), get(match, 'params.id'), filterParams.year])
 
-  return [issue, error, loading, fetchIssue, selection, updateSelection, filter, updateFilter]
+  return [issue, error, loading, fetchIssue, selection, updateSelection]
 }

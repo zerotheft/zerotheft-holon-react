@@ -2,13 +2,17 @@ import styled from 'styled-components'
 
 import Button from 'commons/Buttons'
 import { colors } from 'theme'
+import { color } from 'highcharts'
 
 export const
   Header = styled.div`
+  margin-bottom: 15px;
   h4 {
-    font-size: 29px;
+    font-size: 22px;
     margin: 10px 0;
-    font-weight: 500;
+    font-weight: 600;
+    line-height: 120%;
+    color: ${colors.primary}
   }
   h5 {
     font-size: 15px;
@@ -28,6 +32,12 @@ export const
   margin: 0 15px;
   font-size: 22px;
   color: #99;
+`,
+NoChartText = styled.div`
+  background: ${colors.warningBGColor};
+  border-radius: 5px;
+  padding: 6px;
+  color: ${colors.text.white};
 `,
   CustomButton = styled.a`
   font-family: Poppins;
@@ -71,8 +81,9 @@ export const
     }
     .refresh {
       position: absolute;
-      right: 10px;
+      right: 0px;
       bottom: 20px;
+      padding: 10px 12px;
     }
   }
   h3 {
@@ -83,8 +94,7 @@ export const
   }
 `,
   Right = styled.div`
-  width: 500px;
-  padding: 70px 0px 0px 50px;
+  padding: 70px 0 0;
   &.apply-bg {
     padding: 70px 60px 60px;
     position: relative;
@@ -104,44 +114,39 @@ export const
   }
 `,
   Body = styled.div`
+  min-height: 400px;
   position: relative;
+  display: flex;
   & > h4 {
     font-size: 20px;
   }
   .bodyHeader {
     margin-top: 25px;
     .detailWrapper {
-      margin-top: 25px;
       display: flex;
-      flex: 1;
-      flex-direction: column;
-      margin-left: 12px;
+      flex-direction: row;
+      margin-bottom: 15px;
     }
     .warning {
       font-size: 16px;
-      color: ${colors.warningColor};
-      border: 1px solid ${colors.solidBorder};
+      color: ${colors.text.white};
+      border: 1px solid ${colors.warningBGColor};
+      background-color: ${colors.warningBGColor};
       border-radius: 6px;
-      padding: 7px;
-      margin: 7px 0px;
+      padding: 10px;
+      flex: 1;
       span {
         font-size: 16px;
         font-weight: 700;
-        color: #C11D1D;
       }
     }
     .theftInfo{
-      display: flex:
-      flex: 1;
-      flex-direction: column;
+      flex-grow: 0;
       border: 1px solid ${colors.solidBorder};
       border-radius: 6px;
-      padding: 7px;
+      padding: 10px;
+      margin-right: 10px;
       & > div{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
         h4 {
           font-size: 16px;
           font-weight: 400;
@@ -175,6 +180,8 @@ export const
   .bodyDescription {
     font-family: Poppins;
     margin-top: 20px;
+    flex: 1;
+    margin-right: 30px;
     h5 {
       margin-bottom: 10px;
       font-size: 18px;
@@ -196,6 +203,15 @@ export const
 
         }
       }
+    }
+  }
+  .detailsWithCharts {
+    width: 400px;
+    padding-right: 5px;
+    .imageWrapper {
+      box-shadow: 0 0 3px 0px rgb(0, 0, 0, 0.2);
+      border-radius: 3px;
+      margin-bottom: 15px;
     }
   }
 `

@@ -14,7 +14,6 @@ const Report = ({ match, history }) => {
   const { loading, filterParams } = useContext(AppContext)
 
   useEffect(() => {
-    console.log(get(filterParams, 'year'))
     if (pathName) {
       if (pathName === get(filterParams, 'initPath')) {
         getNationReportApi(pathName, get(filterParams, 'year'))
@@ -39,7 +38,7 @@ const Report = ({ match, history }) => {
             <IframeWrapper>
               <Iframe src={get(reportResponse, 'report') || get(nationReportResponse, 'report')} width="100%" height="100%" />
             </IframeWrapper> :
-            (<NoReportWrapper>{get(reportResponse, 'message') || get(nationReportResponse, 'message') || 'Reports not Available for the Selected Year. Please Select Another Year'}</NoReportWrapper>)
+            (<NoReportWrapper>{get(reportResponse, 'message') || get(nationReportResponse, 'message') || 'Report is not available yet. Please come back later or error encountered.'}</NoReportWrapper>)
           }
         </>
       }

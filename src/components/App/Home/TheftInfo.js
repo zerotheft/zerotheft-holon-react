@@ -1,7 +1,8 @@
 import React, { useContext } from 'react'
 import { useHistory } from 'react-router-dom'
-import { get } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import PropTypes from 'prop-types'
+import { colors } from 'theme'
 import styled from 'styled-components'
 
 import { AppContext } from '../AppContext'
@@ -13,8 +14,6 @@ import { convertDollarToString } from 'utils'
 const TheftInfo = ({ summary = {} }) => {
   const history = useHistory()
   const { filterParams } = useContext(AppContext)
-
-
   return <Wrapper>
     <Container>
       <TitleContent>
@@ -22,13 +21,15 @@ const TheftInfo = ({ summary = {} }) => {
         <Button onClick={() => history.push(`/pathReport/${get(filterParams, 'initPath')}`)}
           height={44} width={170}>View Report</Button>
       </TitleContent>
-      {summary.total &&
+      {!isEmpty(summary) &&
         <InfoWrapper>
-          <InfoBox>
-            <h5>Stolen this year</h5>
-            <h3>${convertDollarToString(summary.total)}</h3>
-            <h6>In USA</h6>
-          </InfoBox>
+          {summary.last_year_theft &&
+            <InfoBox>
+              <h5>Stolen this year</h5>
+              <h3>${convertDollarToString(summary.last_year_theft, 2)}{summary.proposals === 0 && summary.votes === 0 && <InfoText>(proposals and votes not available)</InfoText>}</h3>
+              <h6>In USA</h6>
+            </InfoBox>
+          }
           {/* <InfoBox>
           <h5>Stolen each year</h5>
           <h3>${convertDollarToString(summary.each_year)}</h3>
@@ -36,7 +37,7 @@ const TheftInfo = ({ summary = {} }) => {
         </InfoBox> */}
           <InfoBox>
             <h5>Stolen in {summary.between_years} years</h5>
-            <h3>${convertDollarToString(summary.many_years)}</h3>
+            <h3>${convertDollarToString(summary.many_years, 2)}</h3>
             <h6>In USA</h6>
           </InfoBox>
         </InfoWrapper>
@@ -106,4 +107,8 @@ const Wrapper = styled.section`
     font-weight: 500;
     color: #000;
   }
+`, InfoText = styled.span`
+    font-size: 14px;
+    font-weight: 500;
+    color: ${colors.text.gray};
 `

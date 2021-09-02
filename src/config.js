@@ -15,25 +15,25 @@ if (!MODE) {
 }
 
 const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
-const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
+// const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
+const contracts = {}
 
-const getProposalContract = async () => {
-  if (MODE === 'private') {
-    const { data } = await get('ZTMProposals.json', null, `${envConfig.ZERO_THEFT_CONTRACT}`)
-    return data
-  }
+const getVoteContract = async () => {
+
   if (MODE === 'development')
-    return tryRequire('./contracts/ZTMProposals.json')
+    return tryRequire('./contracts/ZTMVotes.json')
 
+  const { data } = await get('ZTMVotes.json', null, `${envConfig.ZERO_THEFT_CONTRACT}/${envConfig.NETWORK_NAME}`)
+  return data
 
-  return contracts.ZTMProposals
 }
 
 export default {
   DESKTOP_APP: envConfig.DESKTOP_APP,
+  CHAIN_ID: envConfig.CHAIN_ID,
   HTTP_PROVIDER: envConfig.HTTP_PROVIDER || 'http://localhost:7545',
   ZERO_THEFT_CONTRACT: envConfig.ZERO_THEFT_CONTRACT,
-  getProposalContract,
+  getVoteContract,
   ...contracts,
   MODE: MODE || 'development',
   HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY

@@ -5,7 +5,7 @@ import metamaskIcon from 'assets/icons/metamask.svg'
 import styled from 'styled-components'
 import config from 'config'
 
-const { MODE, chainId, HTTP_PROVIDER } = config
+const { MODE, CHAIN_ID, HTTP_PROVIDER } = config
 
 const Step5 = ({ updateCurrentStep }) => {
   const name = MODE === 'private' ? 'ETC Private' : 'ETC'
@@ -25,7 +25,7 @@ const Step5 = ({ updateCurrentStep }) => {
             <li>Click 'Add Network' button and fill the details as:<br />
               <div><span>Network Name:</span> {name}</div>
               <div><span>New RPC URL:</span> {HTTP_PROVIDER}</div>
-              <div><span>Chain ID:</span> {chainId || 1440} </div>
+              <div><span>Chain ID:</span> {CHAIN_ID} </div>
               <div><span>Currency Symbol:</span> ETC</div>
             </li>
             <li>Click on save</li>

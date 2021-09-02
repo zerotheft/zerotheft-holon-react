@@ -1,5 +1,8 @@
 {
     "DESKTOP_APP": "http://localhost:6549",
     "HTTP_PROVIDER": "http://privatenet.zerotheft.net",
-    "ZERO_THEFT_CONTRACT": "https://zerotheft-private-blockchain.s3.amazonaws.com/contracts"
+    "ZERO_THEFT_CONTRACT": "https://zerotheft-contract-artifacts.s3.amazonaws.com",
+    "CHAIN_ID":1440,
+    "NETWORK_ID":1440,
+    "NETWORK_NAME":"privatenet"
 }
