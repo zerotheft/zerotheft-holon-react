@@ -68,6 +68,11 @@ const callSmartContractGetFunc = async (web3, contract, methodName, args = []) =
   return await instance.methods[methodName](...args).call();
 }
 
+/**
+ * Read the contract abi and return the instance of a contract.
+ * @param {Object} web3 - instance of a web3 to get the network id
+ * @param {Object} contract - it could be any smartcontract as ZTMCitizens,ZTMHolons, ZTMProposals and so on.
+ */
 const instantiateContract = async (web3, contract) => {
   // if (MODE === 'development' || MODE === 'private') {
   const networkId = await web3.eth.net.getId()
