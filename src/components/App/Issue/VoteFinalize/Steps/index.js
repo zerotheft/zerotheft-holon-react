@@ -18,7 +18,7 @@ import { VoteContext } from '../VoteContext'
 // import { vote } from 'apis/vote'
 
 const steps = range(1, 8)
-const stepComponents = [Step6, Step7]
+const stepComponents = [Step5, Step6, Step7]
 
 const Steps = (props) => {
   const { step } = useContext(VoteContext)

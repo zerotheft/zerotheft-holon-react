@@ -137,6 +137,7 @@ const useVote = () => {
       const sha3 = web3.utils.soliditySha3({ t: 'uint256', v: proposalId }, { t: 'string', v: values.comment || '' }, { t: 'string', v: (values.custom_amount || '').toString() })
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
+      console.log(account);
       const signedMessage = await web3.eth.sign(sha3, account)
       const balance = await getBalance()
       await voteByHolon({

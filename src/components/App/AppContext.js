@@ -7,7 +7,7 @@ import { getParameterByName } from 'utils'
 import { getPaths, getUmbrellaPaths } from '../../apis/path'
 import useFetch from 'commons/hooks/useFetch'
 import { holonInfo as getHolonInfo } from 'apis/vote'
-import { getVoterInfos } from 'apis/centralizedServer'
+import { getVoterInfos } from 'apis/desktopApp'
 import { getTheftInfo } from 'apis/reports'
 
 const AppContext = createContext()
@@ -30,7 +30,7 @@ const AppProvider = ({ children }) => {
   }, [filterParams.initPath])
 
   const fetchFromApp = async () => {
-    const res = await getVoterInfos()
+    const res = await getVoterInfos('data.address') || ''
     const holon = get(res, 'data.selectedHolon')
     const address = get(res, 'data.address') || ''
     const voterId = get(res, 'data.voterId') || ''

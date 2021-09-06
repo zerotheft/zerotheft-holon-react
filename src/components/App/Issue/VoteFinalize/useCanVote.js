@@ -12,8 +12,9 @@ export default () => {
   const [step, changeStep] = useState(0),
     [voterInfo, updateVoterInfo] = useState()
 
-  const getVoterInfo = async () => {
-    const { data } = await getVoterInfos()
+  const getVoterInfo = async (skipWaiting) => {
+    const { account: metamaskAccount, web3 } = await getMetamaskAccount(skipWaiting) || {}
+    const { data } = await getVoterInfos(metamaskAccount.toLowerCase())
     return data
   }
 
@@ -23,9 +24,7 @@ export default () => {
 
   const getMetamaskAccount = async skipWaiting => {
     const web3R = (web3 || skipWaiting) ? web3 : await loadWeb3()
-
     if (!web3R) return null
-
     const accounts = await web3R.eth.getAccounts()
     return { account: accounts[0], web3: web3R }
   }

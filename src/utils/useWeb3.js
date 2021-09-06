@@ -70,7 +70,9 @@ const callSmartContractGetFunc = async (web3, contract, methodName, args = []) =
 
 const instantiateContract = async (web3, contract) => {
   // if (MODE === 'development' || MODE === 'private') {
+  console.log("mode is", MODE);
   const networkId = await web3.eth.net.getId()
+  console.log("network id", networkId);
   const deployedNetwork = contract.networks[networkId]
   return [new web3.eth.Contract(contract.abi, deployedNetwork && deployedNetwork.address), deployedNetwork.address]
   // } else {
