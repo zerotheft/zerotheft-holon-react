@@ -37,5 +37,5 @@ export default {
   ...contracts,
   MODE: MODE || 'development',
   HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY,
-  CENTRALIZED_SERVER: 'http://localhost:8000'
+  CENTRALIZED_SERVER: 'http://app.zerotheft.net'
 }
