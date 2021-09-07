@@ -18,7 +18,7 @@ import { VoteContext } from '../VoteContext'
 // import { vote } from 'apis/vote'
 
 const steps = range(1, 8)
-const stepComponents = [Step5, Step6, Step7]
+const stepComponents = [Step6, Step7]
 
 const Steps = (props) => {
   const { step } = useContext(VoteContext)
@@ -85,7 +85,7 @@ const Header = styled.div`
   color: #fff;
   font-size: 30px;
   font-weight: 600;
-  background-color: ${props => props.active ? colors.primary : '#D8D8D8'};
+  background-color: ${props => props.active ? colors.primary : colors.backgroundColor};
   border-radius: 50%;
 `,
   Body = styled.div`
