@@ -5,6 +5,7 @@ export const colors = {
   warningBGColor: '#EB5757',
   border: '#ECECEC',
   lightPrimary: '#F4EFFB',
+  backgroundColor: '#D8D8D8',
   lightText: '#6A6078',
   greyText: '#796868',
   borders: {

@@ -14,7 +14,7 @@ if (!MODE) {
   MODE = 'development'
 }
 
-const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
+const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`);
 // const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
 const contracts = {}
 
@@ -36,5 +36,6 @@ export default {
   getVoteContract,
   ...contracts,
   MODE: MODE || 'development',
-  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY
+  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY,
+  CENTRALIZED_SERVER: envConfig.CENTRALIZED_SERVER,
 }
