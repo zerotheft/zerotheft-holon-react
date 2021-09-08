@@ -11,9 +11,9 @@ import config from 'config'
 
 const Step6 = ({ updateCurrentStep }) => {
   const { ws } = useContext(AppContext)
-  const { checkStep, voterInfo, buildUrl } = useContext(VoteContext)
+  const { checkStep, voterInfo } = useContext(VoteContext)
   const shouldCheck = ws && ws.readyState === 1
-  const { CENTRALIZED_SERVER } = config
+  const { CENTRALIZED_SERVER_FRONTEND } = config
   return <Wrapper>
     <InnerWrapper>
       <Header>Step #6: Register your public voter ID</Header>
@@ -22,8 +22,9 @@ const Step6 = ({ updateCurrentStep }) => {
         </BodyInfo>
         <div>
           <SubHeader>Register Public Voter</SubHeader>
+
           <OrderedList>
-            <li>Navigate to register voter. <LinkText onClick={() => window.open(CENTRALIZED_SERVER)}>Register Voter</LinkText></li>
+            <li>Navigate to register voter. <LinkText onClick={() => window.open(CENTRALIZED_SERVER_FRONTEND)}>Register Voter</LinkText></li>
             <li>Select your country and enter your country's zip code.</li>
             <li>Enter your linkedin ID and linkedin full name. Click continue button.</li>
             <li>Login to your linkedin account so that we can verify you.</li>

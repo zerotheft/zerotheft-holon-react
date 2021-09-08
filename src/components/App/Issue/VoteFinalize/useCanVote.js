@@ -13,7 +13,7 @@ export default () => {
     [voterInfo, updateVoterInfo] = useState()
 
   const getVoterInfo = async (skipWaiting) => {
-    const { account: metamaskAccount, web3 } = await getMetamaskAccount(skipWaiting) || {}
+    const { account: metamaskAccount } = await getMetamaskAccount(skipWaiting) || {}
     const { data } = await getVoterInfos(metamaskAccount.toLowerCase())
     return data
   }
@@ -57,7 +57,7 @@ export default () => {
         } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
           newStep = 5
           msg = 'Select the correct network.'
-        } else if (!voterInfo.voterId) {
+        } else if (!voterInfo.ethereumAddress) {
           newStep = 6
           msg = 'Voter id has not been created yet.'
         } else {

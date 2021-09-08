@@ -3,5 +3,6 @@
   "HTTP_PROVIDER": "http://localhost:8545",
   "ZERO_THEFT_CONTRACT": "contracts",
   "CHAIN_ID":1337,
-  "CENTRALIZED_SERVER" : "http://localhost:3000"
+  "CENTRALIZED_SERVER" : "http://localhost:3000",
+  "CENTRALIZED_SERVER_FRONTEND" : "http://localhost:3001"
 }
