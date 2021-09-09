@@ -175,6 +175,17 @@ export function getParameterByName(name, url = window.location.href) {
   if (!results[2]) return '';
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }
+/**
+ * Check if image exists or not based on image url
+ * @params URL of a image for existence check
+ * @returns true/false based on image existence
+ * */
+export const imageExists = (image_url) => {
+  const http = new XMLHttpRequest();
+  http.open('HEAD', image_url, false);
+  http.send();
+  return http.status != 404;
+}
 
 const DataObject = styled.ul`
   font-size: 16px; 

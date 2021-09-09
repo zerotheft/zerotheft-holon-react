@@ -16,8 +16,8 @@ const ViewProposal = ({ match, history }) => {
     getProposalApi(match.params.id)
   }, [])
 
-  if(loading) return <OverlaySpinner loading={true}/>
-  if(!proposal || !proposal.detail) return <div style={{padding: 40}}>Proposal is not available.</div>
+  if (loading) return <OverlaySpinner loading={true} />
+  if (!proposal || !proposal.detail) return <div style={{ padding: 40 }}>Proposal is not available.</div>
 
   const hierarchy = proposal.detail.Hierarchy || proposal.detail.hierarchy || ''
   let pathArray = compact(hierarchy.split('/'))
@@ -26,10 +26,10 @@ const ViewProposal = ({ match, history }) => {
 
   return <Wrapper>
     <Container>
-    {hierarchy && <HeaderContainer>
-      <Header>Proposal for {startCase(issue)}</Header>
-      <Button onClick={() => history.push(`/path/${path}/issue/${issue}`)}>View Path</Button>
-    </HeaderContainer>}
+      {hierarchy && <HeaderContainer>
+        <Header>Proposal for {startCase(issue)}</Header>
+        <Button onClick={() => history.push(`/path/${path}/issue/${issue}`)}>View Path</Button>
+      </HeaderContainer>}
       {convertJSONtoString(proposal.detail)}
     </Container>
   </Wrapper>
@@ -37,14 +37,14 @@ const ViewProposal = ({ match, history }) => {
 
 export default ViewProposal
 
-const HeaderContainer = styled.div `
+const HeaderContainer = styled.div`
   display: flex;
   width: 100%;
   margin-bottom: 20px;
   align-items: center;
   justify-content: space-between;
 `,
-Header = styled.div `
+  Header = styled.div`
   font-size: 26px;
   font-weight: 600;
 `

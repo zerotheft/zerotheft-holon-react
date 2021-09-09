@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
+import { API_URL } from 'constants/index'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
 import { VoteContext, VoteProvider } from './VoteContext'
@@ -23,7 +24,7 @@ import Steps from './Steps'
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
   const { issue, selection, priorVoteInfo, loading } = useContext(IssueContext)
-  const { filterParams } = useContext(AppContext)
+  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
   const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [initialValues, updateValues] = useState()
@@ -32,6 +33,13 @@ const VoteFinalize = ({ match, history, location }) => {
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
   const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
   const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
+  const hierarchyPath = (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
+
+  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
+  const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
+
 
   const getVotedIdeas = async () => {
     if (localStorage.getItem('citizenID')) {
@@ -73,7 +81,6 @@ const VoteFinalize = ({ match, history, location }) => {
     showStepsPage(false)
     vote(initialValues)
   }} />
-
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
@@ -106,7 +113,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 return
               }
               const { step: curStep } = await checkStep()
-              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"') }
+              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"'), hierarchyPath }
               localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
               history.push({ search: '?page=steps' })
               if (curStep <= 6) {
@@ -216,7 +223,7 @@ const VoteFinalize = ({ match, history, location }) => {
       </div>
     </Wrapper>
     <ProposalWrapper>
-      <ProposalDetail show_details chartData={Filter(get(issue, finalVote === 'yes' ? 'proposals' : 'counter-proposals', []), { year: filterParams.year })} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
+      <ProposalDetail allowSelect={false} reportPath={reportPath} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
     </ProposalWrapper>
   </React.Fragment >
 }

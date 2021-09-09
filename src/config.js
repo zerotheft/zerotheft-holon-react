@@ -18,15 +18,13 @@ const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') 
 const contracts = (MODE === "development" || MODE === "private" || MODE === "production") ? {} : require(`./contracts.${MODE}.json`)
 
 const getVoteContract = async () => {
-  if (MODE === 'private') {
-    const { data } = await get('ZTMVotes.json', null, `${envConfig.ZERO_THEFT_CONTRACT}`)
-    return data
-  }
+
   if (MODE === 'development')
     return tryRequire('./contracts/ZTMVotes.json')
 
+  const { data } = await get('ZTMVotes.json', null, `${envConfig.ZERO_THEFT_CONTRACT}/${envConfig.NETWORK_NAME}`)
+  return data
 
-  return contracts.ZTMVotes
 }
 
 export default {
@@ -37,5 +35,7 @@ export default {
   getVoteContract,
   ...contracts,
   MODE: MODE || 'development',
-  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY
+  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY,
+  CENTRALIZED_SERVER: envConfig.CENTRALIZED_SERVER,
+  CENTRALIZED_SERVER_FRONTEND: envConfig.CENTRALIZED_SERVER_FRONTEND
 }

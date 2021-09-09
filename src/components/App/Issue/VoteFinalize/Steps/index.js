@@ -18,7 +18,7 @@ import { VoteContext } from '../VoteContext'
 // import { vote } from 'apis/vote'
 
 const steps = range(1, 8)
-const stepComponents = [Step1, Step2, Step3, Step4, Step5, Step6, Step7]
+const stepComponents = [Step6, Step7]
 
 const Steps = (props) => {
   const { step } = useContext(VoteContext)
@@ -30,22 +30,22 @@ const Steps = (props) => {
     updateCurrentStep(step)
   }, [step])
 
-  if(!currentStep || currentStep > 7) return <div>Loading...</div>
+  if (!currentStep || currentStep > 7) return <div>Loading...</div>
   return (
     <div>
       <Header>
         <HeaderTitle>Complete all the steps, <br /> so you can vote</HeaderTitle>
         <StyledSteps>
           {steps.map(i => <StepWrapper>
-            <Circle active={currentStep>=i}>
-              {currentStep > i ? <img src={check} style={{height: 28, width: 28}} /> : `0${i}`}
+            <Circle active={currentStep >= i}>
+              {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i}`}
             </Circle>
             <img src={stepsArrow} alt="" />
           </StepWrapper>)}
         </StyledSteps>
       </Header>
       <Body>
-          <Step updateCurrentStep={updateCurrentStep} {...props}/>
+        <Step updateCurrentStep={updateCurrentStep} {...props} />
       </Body>
     </div>
   )
@@ -53,15 +53,15 @@ const Steps = (props) => {
 
 export default Steps
 
-const Header = styled.div `
+const Header = styled.div`
   display: flex;
   justify-content: space-between;
 `,
-HeaderTitle = styled.div `
+  HeaderTitle = styled.div`
   font-size: 30px;
   font-weight: 600;
 `,
-StyledSteps = styled.div `
+  StyledSteps = styled.div`
   display: flex;
   img {
     height: 30px;
@@ -72,11 +72,11 @@ StyledSteps = styled.div `
     }
   }
 `,
-StepWrapper = styled.div `
+  StepWrapper = styled.div`
   display: flex;
   align-items: center;
 `,
-Circle = styled.div `
+  Circle = styled.div`
   height: 70px;
   width: 70px;
   display: flex;
@@ -85,10 +85,10 @@ Circle = styled.div `
   color: #fff;
   font-size: 30px;
   font-weight: 600;
-  background-color: ${props => props.active ? colors.primary : '#D8D8D8'};
+  background-color: ${props => props.active ? colors.primary : colors.backgroundColor};
   border-radius: 50%;
 `,
-Body = styled.div `
+  Body = styled.div`
   box-shadow: 0px -1px 15px rgba(0, 0, 0, 0.12);
   border-radius: 8px;
   padding: 58px 80px;

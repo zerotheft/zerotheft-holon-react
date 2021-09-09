@@ -1,24 +1,31 @@
 import React, { useState, useContext, useEffect } from 'react'
+import { API_URL } from 'constants/index'
 import { get, isEmpty, filter as Filter } from 'lodash'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
-import { Wrapper, Left, Right, Header } from '../commons/styles'
+import { Wrapper, Left, Right } from '../commons/styles'
 import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
-  const { filterParams } = useContext(AppContext)
+  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
   const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
+
+  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
+  const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
+
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '650px', margin: 0, display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
       <div className='header'>
         <h3>
           Select which below has the best<br />
@@ -37,24 +44,9 @@ const Proposals = ({ history, match }) => {
         </div>
       </div>
     </Left>
-    <Right style={{ width: '100%', overflowY: 'auto' }} className='apply-bg'>
+    <Right style={{ flex: '1', overflowY: 'auto' }}>
       <div style={{ overflow: 'hidden' }}>
-        <Header>
-          <h5>Best Theft Case:</h5>
-          <h4>If there was theft, which makes the best case.</h4>
-          <h5 className='plain'>This is used to compare against, for when you make your final decision</h5>
-          <div className="btns">
-            <Button width={170} height={44} onClick={() => {
-              updateSelection({ ...selection, proposal: selectedItem })
-              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/counter-proposals`)
-            }} disabled={isEmpty(selectedItem)}>Select This One</Button>
-            <Button plain height={44} width={125} onClick={() => {
-              updateSelection({ ...selection, proposal: null })
-              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/counter-proposals`)
-            }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
-          </div>
-        </Header>
-        {!isEmpty(selectedItem) && <ProposalDetail item={selectedItem} chartData={bellCurveData} />}
+        <ProposalDetail item={selectedItem} selection={selection} updateSelection={updateSelection} history={history} reportPath={reportPath} chartData={bellCurveData} />
       </div>
     </Right>
   </Wrapper >

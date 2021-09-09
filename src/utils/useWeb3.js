@@ -68,17 +68,22 @@ const callSmartContractGetFunc = async (web3, contract, methodName, args = []) =
   return await instance.methods[methodName](...args).call();
 }
 
+/**
+ * Read the contract abi and return the instance of a contract.
+ * @param {Object} web3 - instance of a web3 to get the network id
+ * @param {Object} contract - it could be any smartcontract as ZTMCitizens,ZTMHolons, ZTMProposals and so on.
+ */
 const instantiateContract = async (web3, contract) => {
-  if (MODE === 'development' || MODE === 'private') {
-    const networkId = await web3.eth.net.getId()
-    const deployedNetwork = contract.networks[networkId]
-    return [new web3.eth.Contract(contract.abi, deployedNetwork && deployedNetwork.address), deployedNetwork.address]
-  } else {
-    const { address, implementation } = contract
-    const res = await get(`api?module=contract&action=getabi&address=${implementation}`, null, `https://blockscout.com/etc/${config.network}`)
-    // const res = await get(`api?module=contract&action=getabi&address=${implementation}&apikey=${ETHERSCAN_API_KEY}`, null, `https://api${network ? `-${network}` : ''}.etherscan.io`)
-    return [new web3.eth.Contract(JSON.parse(res.data.result), address), address]
-  }
+  // if (MODE === 'development' || MODE === 'private') {
+  const networkId = await web3.eth.net.getId()
+  const deployedNetwork = contract.networks[networkId]
+  return [new web3.eth.Contract(contract.abi, deployedNetwork && deployedNetwork.address), deployedNetwork.address]
+  // } else {
+  //   const { address, implementation } = contract
+  //   const res = await get(`api?module=contract&action=getabi&address=${implementation}`, null, `https://blockscout.com/etc/${config.network}`)
+  //   // const res = await get(`api?module=contract&action=getabi&address=${implementation}&apikey=${ETHERSCAN_API_KEY}`, null, `https://api${network ? `-${network}` : ''}.etherscan.io`)
+  //   return [new web3.eth.Contract(JSON.parse(res.data.result), address), address]
+  // }
 }
 
 const convertStringToHash = (web3, item) => {
