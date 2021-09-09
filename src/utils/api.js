@@ -35,6 +35,9 @@ export const get = (path, params, apiUrl = API_URL) => {
   return axios(url, {
     method: 'get',
     params,
+    headers: {
+      "Access-Control-Request-Headers": "access-control-allow-origin"
+    },
   }).catch(e => checkForError(e, 'get'))
 }
 
