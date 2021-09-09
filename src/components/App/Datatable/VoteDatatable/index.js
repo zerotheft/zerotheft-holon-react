@@ -46,7 +46,7 @@ const VoteDatatable = ({history})=> {
         tax: {
             capital_gain_low: true,
             corp_gain_low: true,
-            corporate_tax_evasopn: true,
+            corporate_tax_evason: true,
             tax_evasion_by_offshore: true,
             other_way: true
         }

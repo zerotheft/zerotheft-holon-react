@@ -15,7 +15,7 @@ if (!MODE) {
 }
 
 const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
-const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
+const contracts = (MODE === "development" || MODE === "private" || MODE === "production") ? {} : require(`./contracts.${MODE}.json`)
 
 const getVoteContract = async () => {
   if (MODE === 'private') {
