@@ -35,10 +35,7 @@ export const get = (path, params, apiUrl = API_URL) => {
   return axios(url, {
     method: 'get',
     params,
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
+    headers: getToken(),
   }).catch(e => checkForError(e, 'get'))
 }
 
@@ -61,4 +58,13 @@ export const deleteApi = (path, data) => {
     method: 'delete',
     data,
   }).catch(e => checkForError(e, 'delete'))
+}
+
+export const getToken = () => {
+  try {
+    const token = localStorage.getItem('x-access-token')
+    return token ? { 'x-access-token': token } : {}
+  } catch (e) {
+    return {}
+  }
 }
