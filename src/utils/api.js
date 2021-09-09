@@ -36,7 +36,7 @@ export const get = (path, params, apiUrl = API_URL) => {
     method: 'get',
     params,
     headers: {
-      "Access-Control-Request-Headers": "access-control-allow-origin"
+      "Access-Control-Request-Headers": "application/json"
     },
   }).catch(e => checkForError(e, 'get'))
 }
