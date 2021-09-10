@@ -3,7 +3,7 @@ import { getVoterInfos } from 'apis/centralizedServer'
 import { Web3Context } from 'components/App/Web3Context'
 import { AppContext } from 'components/App/AppContext'
 import config from 'config'
-const { CHAIN_ID, MODE } = config
+const { CHAIN_ID, MODE, CENTRALIZED_SERVER } = config
 
 export default () => {
   const chainID = CHAIN_ID
@@ -57,7 +57,7 @@ export default () => {
         } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
           newStep = 5
           msg = 'Select the correct network.'
-        } else if (!voterInfo.ethereumAddress) {
+        } else if (voterInfo.unverifiedCitizen) {
           newStep = 6
           msg = 'Voter id has not been created yet.'
         } else {
