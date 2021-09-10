@@ -8,7 +8,7 @@ import { faFrown } from '@fortawesome/free-regular-svg-icons'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official'
 import { colors } from 'theme'
-import { Body, Header,NoChartText } from '../styles'
+import { Body, Header, NoChartText } from '../styles'
 import Button from 'commons/Buttons'
 import { imageExists, convertJSONtoString } from 'utils'
 import OverlaySpinner from 'commons/OverlaySpinner';
@@ -16,7 +16,7 @@ import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
 import { FlexRow } from 'commons/styles';
 
-const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, show_details = false, chartData = null }) => {
+const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, allowSelect = true, chartData = null }) => {
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
   // const { proposalDetails } = useContext(IssueContext)
@@ -42,23 +42,25 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
         <h5>Best Theft Case:</h5>
         <h4>If there was theft, which makes the best case.</h4>
         <h5 className='plain'>This is used to compare against, for when you make your final decision</h5>
-        <div className="btns">
-          <Button width={170} height={44} onClick={() => {
-            updateSelection(type === "counter" ? { ...selection, counterProposal: item } : { ...selection, proposal: item })
-            history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
-          }} disabled={isEmpty(item)}>Select This One</Button>
-          <Button plain height={44} width={125} onClick={() => {
-            updateSelection(type === "counter" ? { ...selection, counterProposal: null } : { ...selection, proposal: null })
-            history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
-          }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
-        </div>
+        {allowSelect &&
+          <div className="btns">
+            <Button width={170} height={44} onClick={() => {
+              updateSelection(type === "counter" ? { ...selection, counterProposal: item } : { ...selection, proposal: item })
+              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
+            }} disabled={isEmpty(item)}>Select This One</Button>
+            <Button plain height={44} width={125} onClick={() => {
+              updateSelection(type === "counter" ? { ...selection, counterProposal: null } : { ...selection, proposal: null })
+              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
+            }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
+          </div>
+        }
       </Header>
 
       {!isEmpty(item) && <>
         {imageExists(`${reportPath}-theftValue-view.svg`) ?
           <div className="imageWrapper">
             <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} />
-          </div>:<NoChartText>Report is not available yet.</NoChartText>
+          </div> : <NoChartText>Report is not available yet.</NoChartText>
         }
 
         <div className="bodyHeader">
@@ -93,10 +95,10 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
             <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>Rate/Complaint</span>
           </div>
         </div>
-        {imageExists(`${reportPath}-votesForTheftAmount.svg`)?
+        {imageExists(`${reportPath}-votesForTheftAmount.svg`) ?
           <div className="imageWrapper">
             <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
-          </div>:<NoChartText>Report is not available yet.</NoChartText>
+          </div> : <NoChartText>Report is not available yet.</NoChartText>
         }
       </>}
     </div>

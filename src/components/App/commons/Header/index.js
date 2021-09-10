@@ -206,7 +206,7 @@ const MenuWrapper = styled.ul`
     position: relative;
     ul {
       opacity:0;
-      visibility:visible;
+      visibility:hidden;
       box-shadow: 0 0 8px rgba(0,0,0,0.2);
       border-radius: 4px;
       background: #fff;

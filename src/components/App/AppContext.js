@@ -30,7 +30,7 @@ const AppProvider = ({ children }) => {
   }, [filterParams.initPath])
 
   const fetchFromApp = async () => {
-    const res = await getVoterInfos()
+    const res = await getVoterInfos('data.address') || ''
     const holon = get(res, 'data.selectedHolon')
     const address = get(res, 'data.address') || ''
     const voterId = get(res, 'data.voterId') || ''

@@ -15,8 +15,7 @@ if (!MODE) {
 }
 
 const envConfig = !MODE || MODE === "development" ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
-// const contracts = (MODE === "development" || MODE === "private") ? {} : require(`./contracts.${MODE}.json`)
-const contracts = {}
+const contracts = (MODE === "development" || MODE === "private" || MODE === "production") ? {} : require(`./contracts.${MODE}.json`)
 
 const getVoteContract = async () => {
 
@@ -36,5 +35,7 @@ export default {
   getVoteContract,
   ...contracts,
   MODE: MODE || 'development',
-  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY
+  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY,
+  CENTRALIZED_SERVER: envConfig.CENTRALIZED_SERVER,
+  CENTRALIZED_SERVER_FRONTEND: envConfig.CENTRALIZED_SERVER_FRONTEND
 }
