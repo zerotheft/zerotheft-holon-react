@@ -61,10 +61,11 @@ export default () => {
       }
 
     } catch (e) {
-
+      console.log(e)
+      newStep = 4
       msg = 'Please install, open and register into your zerotheft desktop app.'
     } finally {
-      changeStep(newStep);
+      changeStep(newStep)
       return { step: newStep, msg }
     }
   }

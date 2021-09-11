@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom'
 import stepsArrow from 'assets/icons/step-arrow.svg'
 import check from 'assets/icons/check.svg'
 import { colors } from 'theme'
-// import useCanVote from '../useCanVote'
 
 import Step1 from './Step1'
 import Step2 from './Step2'
