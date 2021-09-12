@@ -12,9 +12,20 @@ export default () => {
   const [step, changeStep] = useState(0),
     [voterInfo, updateVoterInfo] = useState()
 
+  const getMetamaskAccount = async skipWaiting => {
+    const web3R = (web3 || skipWaiting) ? web3 : await loadWeb3()
+
+    if (!web3R) return null
+
+    const accounts = await web3R.eth.getAccounts()
+    console.log(accounts[0])
+    return { account: accounts[0], web3: web3R }
+  }
+
   const getVoterInfo = async (skipWaiting) => {
     const { account: metamaskAccount } = await getMetamaskAccount(skipWaiting) || {}
     const { data } = await getVoterInfos(metamaskAccount.toLowerCase())
+    updateVoterInfo(data)
     return data
   }
 
@@ -22,53 +33,36 @@ export default () => {
     updateVoterInfo(userInfo)
   }, [userInfo])
 
-  const getMetamaskAccount = async skipWaiting => {
-    const web3R = (web3 || skipWaiting) ? web3 : await loadWeb3()
-    if (!web3R) return null
-    const accounts = await web3R.eth.getAccounts()
-    return { account: accounts[0], web3: web3R }
-  }
-
   const checkSteps = async (skipWaiting) => {
-    let newStep = 1
+    let newStep = 4
     let msg = ''
     try {
       const voterInfo = await getVoterInfo()
       const metamask = !!window.web3
-      if (!voterInfo || voterInfo.network !== MODE) {
-        newStep = 2
-        msg = 'Select correct environment in the desktop app'
-      } else if (!voterInfo.address) {
-        newStep = 3
-        msg = 'Please create wallet in zerotheft desktop app.'
-      } else if (!metamask) {
+      if (!metamask) {
         newStep = 4
         msg = 'No metamask found'
       } else {
-
         const { account: metamaskAccount, web3 } = await getMetamaskAccount(skipWaiting) || {}
-
         if (!metamaskAccount) {
           newStep = 4
           msg = 'Please login to the metamask.'
-        } else if (metamaskAccount.toLowerCase() !== voterInfo.ethereumAddress.toLowerCase()) {
+        } else if (metamaskAccount.toLowerCase() !== voterInfo.ethereumAddress) {
           newStep = 4
           msg = 'Metamask wallet doesn\'t match with the zerotheft wallet.'
         } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
           newStep = 5
           msg = 'Select the correct network.'
-        } else if (!voterInfo.ethereumAddress) {
+        } else if (!voterInfo.unverifiedCitizen) {
           newStep = 6
-          msg = 'Voter id has not been created yet.'
         } else {
           newStep = 7
         }
       }
 
     } catch (e) {
-
       console.log(e)
-      newStep = 1
+      newStep = 4
       msg = 'Please install, open and register into your zerotheft desktop app.'
     } finally {
       changeStep(newStep)
