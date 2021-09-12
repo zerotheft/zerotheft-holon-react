@@ -17,12 +17,12 @@ import { VoteContext } from '../VoteContext'
 // import { vote } from 'apis/vote'
 
 const steps = range(4, 8)
-const stepComponents = [Step4, Step5, Step6, Step7]
+const stepComponents = [Step5, Step6, Step7]
 
 const Steps = (props) => {
   const { step } = useContext(VoteContext)
   const [currentStep, updateCurrentStep] = useState(step)
-  const Step = stepComponents[currentStep - 4]
+  const Step = stepComponents[currentStep - 5]
   const history = useHistory()
   useEffect(() => {
     updateCurrentStep(step)
