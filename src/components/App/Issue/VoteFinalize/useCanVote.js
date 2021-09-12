@@ -47,10 +47,7 @@ export default () => {
         if (!metamaskAccount) {
           newStep = 4
           msg = 'Please login to the metamask.'
-        } else if (metamaskAccount.toLowerCase() !== voterInfo.ethereumAddress.toLowerCase()) {
-          newStep = 4
-          msg = 'Metamask wallet doesn\'t match with the zerotheft wallet.'
-        } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
+        } else if (web3.givenProvider.chainId !== `0x${chainID.toString(16)}`) {
           newStep = 5
           msg = 'Select the correct network.'
         } else if (!voterInfo.unverifiedCitizen) {
