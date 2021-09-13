@@ -65,7 +65,6 @@ const getWeb3 = () => new Promise(async (resolve, reject) => {
     resolve(web3);
   }
   else {
-    console.log('no metamask')
     reject('No Metamask')
   }
 });
