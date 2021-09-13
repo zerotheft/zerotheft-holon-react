@@ -118,7 +118,7 @@ const useVote = () => {
       console.log('after vote')
 
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
-      await afterVote(balance, { voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
+      await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
       console.log(e)
       if (holonInfo.canBeFunded)
@@ -186,6 +186,9 @@ const useVote = () => {
     }
 
     updateVoteStore(values)
+    //save voter address in local storage
+    localStorage.setItem('address', values.account)
+
     // await refetchIssue()
     history.push(`/path/${get(params, 'pathname')}/issue/${get(params, 'id')}/voted`)
     toast.success('You have voted to the proposal successfully')
