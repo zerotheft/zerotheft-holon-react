@@ -23,10 +23,10 @@ import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
-  const { issue, selection, priorVoteInfo, loading } = useContext(IssueContext)
+  const { issue, selection, loading } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  const { checkStep, finalVote, popup, showErrorPopUp, voting, vote, voteWithHolon } = useContext(VoteContext)
-  const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
+  const { checkStep, voterInfo: userInfo, finalVote, popup, showErrorPopUp, voting, vote, priorVoteInfo } = useContext(VoteContext)
+  // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [initialValues, updateValues] = useState()
   const [commentState, showHideComment] = useState(false)
 
@@ -41,16 +41,18 @@ const VoteFinalize = ({ match, history, location }) => {
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
 
 
-  const getVotedIdeas = async () => {
-    if (localStorage.getItem('citizenID')) {
-      //fetch user information
-      await getCitizenInfoApi(localStorage.getItem('citizenID'))
-    }
-  }
+  // const getVotedIdeas = async () => {
+  //   if (localStorage.getItem('citizenID')) {
+  //     //fetch user information
+  //     await getCitizenInfoApi(localStorage.getItem('citizenID'))
+  //   }
+
+  // }
 
   const checkQueryParams = async () => {
+    const hierarchyPath = (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
     if (queryParams && getParameterByName('page') === 'steps') {
-      const { step } = await checkStep(true)
+      const { step } = await checkStep(hierarchyPath, true)
       if (step > 6) return null
       showStepsPage(true)
       if (getParameterByName('details')) {
@@ -61,36 +63,29 @@ const VoteFinalize = ({ match, history, location }) => {
       }
     } else {
       showStepsPage(false)
-      checkStep()
+      checkStep(hierarchyPath)
     }
   }
-  const save = (value) => { alert(value) }
-  const cancel = () => { alert("Cancelled") }
+
   useEffect(() => {
     checkQueryParams()
   }, [queryParams])
 
-  useEffect(() => {
-    getVotedIdeas()
-  }, [])
+  // useEffect(() => {
+  //   getVotedIdeas()
+  // }, [])
 
   if (!loading && !get(selection, 'proposal') && !get(selection, 'counterProposal'))
     return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
-
   if (stepsPage) return <Steps showStepsPage={showStepsPage} vote={() => {
     showStepsPage(false)
     vote(initialValues)
   }} />
+  console.log("priorVoteInfo", priorVoteInfo, userInfo)
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
-      {/* <EasyEdit
-        type="number"
-        onSave={save}
-        onCancel={cancel}
-        saveButtonLabel="Save Me"
-        cancelButtonLabel="Cancel Me"
-      /> */}
+
       <FormWrapper>
         <div>
           <TitleSummary><h3>This Finalizes Your Vote That</h3><span>{finalVote === "yes" ? "Yes there is theft" : "No there is not theft"}</span><h3>In this Area</h3></TitleSummary>
@@ -113,7 +108,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 return
               }
               const { step: curStep } = await checkStep()
-              const updatedVal = { ...values, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"'), hierarchyPath }
+              const updatedVal = { ...values, priorVoteInfo, altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '\"'), hierarchyPath }
               localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
               history.push({ search: '?page=steps' })
               if (curStep <= 6) {
@@ -180,21 +175,21 @@ const VoteFinalize = ({ match, history, location }) => {
         </div>
       </FormWrapper>
       <div>
-        {userInfo && userInfo.success && <FinalizeContentWrapper>
+        {userInfo && userInfo.unverifiedCitizen && <FinalizeContentWrapper>
           <div className='content'>
             <h3>Finalize your vote</h3>
             <h5>Your Zerotheft Public Voter Registeration:</h5>
             <p className='data-row' style={{ fontSize: 18, fontWeight: '500' }}>
               <span>Your Voter Address:</span>
-              <span>{localStorage.getItem('address')}</span>
+              <span>{userInfo.ethereumAddress}</span>
             </p>
             <p className='data-row' style={{ fontSize: 18, fontWeight: '500' }}>
               <span>Your Citizen ID:</span>
-              <span>{localStorage.getItem('citizenID')}</span>
+              <span>{userInfo.unverifiedCitizen}</span>
             </p>
             <p className='data-row'>
               <span>Your Name:</span>
-              <span className='max'>{userInfo.name}</span>
+              <span className='max'>{userInfo.firstName} {userInfo.middleName} {userInfo.lastName}</span>
             </p>
             <p className='data-row'>
               <span>Your Linked-in Account:</span>

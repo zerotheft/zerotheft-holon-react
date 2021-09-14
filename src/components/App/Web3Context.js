@@ -36,7 +36,6 @@ const useWeb3 = () => {
     try {
       updateLoading(true)
       const web3R = await getWeb3()
-      console.log(web3R)
       updateWeb3(web3R)
       return web3R
     } catch (e) {

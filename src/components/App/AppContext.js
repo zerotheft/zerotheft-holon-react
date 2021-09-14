@@ -49,17 +49,17 @@ const AppProvider = ({ children }) => {
     }
   }
 
-  const [ws] = useWebSocket(fetchFromApp)
+  // const [ws] = useWebSocket(fetchFromApp)
 
   useEffect(() => {
-    fetchFromApp()
+    // fetchFromApp()
     getHolonApi()
   }, [])
   useEffect(() => {
     getTheftApi(filterParams['initPath'], true, get(filterParams, 'year'))
   }, [filterParams.year])
   return (
-    <AppContext.Provider value={{ ws, userInfo, filterParams, updateFilter, loading, loadingTheft, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{ userInfo, filterParams, updateFilter, loading, loadingTheft, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
   )
 }
 
@@ -70,62 +70,62 @@ AppProvider.propTypes = {
 export { AppProvider, AppContext }
 
 let timeout = 2000
-const useWebSocket = (callback) => {
-  const [ws, changeWs] = useState()
+// const useWebSocket = (callback) => {
+//   const [ws, changeWs] = useState()
 
-  const check = () => {
-    if (!ws || ws.readyState == WebSocket.CLOSED) connect(); //check if websocket instance is closed, if so call `connect` function.
-  };
+//   const check = () => {
+//     if (!ws || ws.readyState == WebSocket.CLOSED) connect(); //check if websocket instance is closed, if so call `connect` function.
+//   };
 
-  const connect = () => {
-    var wss = new WebSocket("ws://localhost:6549/ws");
-    var connectInterval;
-    // websocket onopen event listener
-    wss.onopen = () => {
-      console.log("connected websocket main component");
-      changeWs(wss);
+//   const connect = () => {
+//     var wss = new WebSocket("ws://localhost:6549/ws");
+//     var connectInterval;
+//     // websocket onopen event listener
+//     wss.onopen = () => {
+//       console.log("connected websocket main component");
+//       changeWs(wss);
 
-      clearTimeout(connectInterval); // clear Interval on on open of websocket connection
-    };
+//       clearTimeout(connectInterval); // clear Interval on on open of websocket connection
+//     };
 
-    wss.onmessage = (message) => {
-      if (callback) callback()
-    }
+//     wss.onmessage = (message) => {
+//       if (callback) callback()
+//     }
 
-    // websocket onclose event listener
-    wss.onclose = e => {
-      timeout = Math.min(10000, timeout + 2000)
-      console.log(
-        `Socket is closed. Reconnect will be attempted in ${(timeout) / 1000}
-            second.`,
-        e.reason
-      );
+//     // websocket onclose event listener
+//     wss.onclose = e => {
+//       timeout = Math.min(10000, timeout + 2000)
+//       console.log(
+//         `Socket is closed. Reconnect will be attempted in ${(timeout) / 1000}
+//             second.`,
+//         e.reason
+//       );
 
-      connectInterval = setTimeout(check, timeout); //call check function after timeout
-    };
+//       connectInterval = setTimeout(check, timeout); //call check function after timeout
+//     };
 
-    // websocket onerror event listener
-    wss.onerror = err => {
-      console.error(
-        "Socket encountered error: ",
-        err.message,
-        "Closing socket"
-      );
+//     // websocket onerror event listener
+//     wss.onerror = err => {
+//       console.error(
+//         "Socket encountered error: ",
+//         err.message,
+//         "Closing socket"
+//       );
 
-      wss.close();
-    };
-  };
+//       wss.close();
+//     };
+//   };
 
-  const close = () => {
-    ws.close()
-  }
+//   const close = () => {
+//     ws.close()
+//   }
 
-  useEffect(() => {
-    connect()
-    return () => {
-      ws && ws.close()
-    }
-  }, [])
+//   useEffect(() => {
+//     connect()
+//     return () => {
+//       ws && ws.close()
+//     }
+//   }, [])
 
-  return [ws, close, connect]
-}
+//   return [ws, close, connect]
+// }
