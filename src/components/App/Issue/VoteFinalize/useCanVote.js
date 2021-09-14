@@ -33,7 +33,6 @@ export default () => {
   }
 
   const fetchPriorVoteInfo = async (path, metamaskAccount) => {
-    console.log("fetchPriorVoteInfo", path)
     getPriorVoteApi({
       address: metamaskAccount,
       url: path

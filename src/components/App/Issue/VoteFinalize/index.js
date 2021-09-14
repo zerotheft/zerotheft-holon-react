@@ -81,7 +81,6 @@ const VoteFinalize = ({ match, history, location }) => {
     showStepsPage(false)
     vote(initialValues)
   }} />
-  console.log("priorVoteInfo", priorVoteInfo, userInfo)
   return <React.Fragment>
     <Wrapper>
       <OverlaySpinner loading={voting} />
