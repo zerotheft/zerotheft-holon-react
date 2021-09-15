@@ -26,7 +26,7 @@ const Step4 = ({ updateCurrentStep }) => {
   const hasMnemonic = voterInfo ? voterInfo.hasMnemonic : false
   return <Wrapper>
     <InnerWrapper>
-      <Header>Step #4: Import these keys to metamask</Header>
+      <Header>Step #1: Import these keys to metamask</Header>
       <Body>
         <BodyInfo>Your voting will be stored on the blockchain. We need these wallet settings to match between the Zero Theft software/wallet and the Metamaks Wallet.
         </BodyInfo>

@@ -16,7 +16,7 @@ const Step6 = ({ updateCurrentStep }) => {
   const { CENTRALIZED_SERVER_FRONTEND } = config
   return <Wrapper>
     <InnerWrapper>
-      <Header>Step #6: Register your public voter ID</Header>
+      <Header>Step #3: Register your public voter ID</Header>
       <Body>
         <BodyInfo>We need your public voter ID so that we can keep track of your votes.
         </BodyInfo>
