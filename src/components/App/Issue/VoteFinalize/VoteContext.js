@@ -15,9 +15,9 @@ const { getVoteContract } = config
 const VoteContext = createContext()
 
 const VoteProvider = ({ children }) => {
-  const [step, checkStep, voterInfo, web3, loadWeb3] = useCanVote()
+  const [step, checkStep, voterInfo, web3, loadWeb3, priorVoteInfo] = useCanVote()
 
-  const { voting, finalVote, popup, showErrorPopUp, vote, voteWithHolon } = useVote()
+  const { voting, finalVote, popup, showErrorPopUp, vote } = useVote()
   const { selection } = useContext(IssueContext)
   const buildUrl = () => {
     let query = '?page=steps&details=true'
@@ -42,7 +42,7 @@ const VoteProvider = ({ children }) => {
         popup,
         showErrorPopUp,
         vote,
-        voteWithHolon
+        priorVoteInfo
       }}
     >
       {children}
@@ -63,10 +63,16 @@ const useVote = () => {
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
   const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } = useWeb3()
   const [popup, showErrorPopUp] = useState()
-  const { selection, refetchIssue, updateVote: updateVoteStore, priorVoteInfo } = useContext(IssueContext)
+  const { selection, refetchIssue, updateVote: updateVoteStore } = useContext(IssueContext)
+
+  // const fetchPriorVoteInfo = async (metamaskAccount) => {
+  //   getPriorVoteApi({
+  //     address: metamaskAccount,
+  //     url: (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
+  //   })
+  // }
 
   const vote = async (values) => {
-
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
@@ -86,7 +92,7 @@ const useVote = () => {
         return
       }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
-      const priorVoteID = priorVoteInfo.success ? priorVoteInfo.id : ""
+      const priorVoteID = values.priorVoteInfo.success ? values.priorVoteInfo.id : ""
 
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
@@ -120,7 +126,6 @@ const useVote = () => {
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
       await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
-      console.log(e)
       if (holonInfo.canBeFunded)
         showErrorPopUp({ message: '', holonInfo, proposalId, voteType: finalVote, ...values })
       toast.error('Error while voting on this proposal.')
@@ -128,35 +133,35 @@ const useVote = () => {
       updateVoting(false)
     }
   }
+  //TODO: We might need this later. So just keeping it with comments
+  // const voteWithHolon = async () => {
+  //   try {
+  //     const values = popup
+  //     updateVoting(true)
+  //     const proposalId = values.proposalId
+  //     const sha3 = web3.utils.soliditySha3({ t: 'uint256', v: proposalId }, { t: 'string', v: values.comment || '' }, { t: 'string', v: (values.custom_amount || '').toString() })
+  //     const accounts = await web3.eth.getAccounts()
+  //     const account = accounts[0]
+  //     const signedMessage = await web3.eth.sign(sha3, account)
+  //     const balance = await getBalance()
+  //     await voteByHolon({
+  //       proposalId,
+  //       voteType: values.voteType,
+  //       comment: values.comment,
+  //       altTheftAmounts: values.altTheftAmounts,
+  //       signedMessage,
+  //       voter: account,
+  //       priorVoteId: parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)
+  //     })
+  //     await afterVote(balance, values)
+  //   } catch (e) {
+  //     const msg = get(e, 'response.data.error')
 
-  const voteWithHolon = async () => {
-    try {
-      const values = popup
-      updateVoting(true)
-      const proposalId = values.proposalId
-      const sha3 = web3.utils.soliditySha3({ t: 'uint256', v: proposalId }, { t: 'string', v: values.comment || '' }, { t: 'string', v: (values.custom_amount || '').toString() })
-      const accounts = await web3.eth.getAccounts()
-      const account = accounts[0]
-      const signedMessage = await web3.eth.sign(sha3, account)
-      const balance = await getBalance()
-      await voteByHolon({
-        proposalId,
-        voteType: values.voteType,
-        comment: values.comment,
-        altTheftAmounts: values.altTheftAmounts,
-        signedMessage,
-        voter: account,
-        priorVoteId: parseInt(priorVoteInfo.success ? priorVoteInfo.id : 0)
-      })
-      await afterVote(balance, values)
-    } catch (e) {
-      const msg = get(e, 'response.data.error')
-
-      toast.error((msg && !msg.includes('reverted')) ? msg : 'Error while voting on this proposal.')
-    } finally {
-      updateVoting(false)
-    }
-  }
+  //     toast.error((msg && !msg.includes('reverted')) ? msg : 'Error while voting on this proposal.')
+  //   } finally {
+  //     updateVoting(false)
+  //   }
+  // }
 
 
   const afterVote = async (balance, values) => {
@@ -199,8 +204,7 @@ const useVote = () => {
     finalVote,
     popup,
     showErrorPopUp,
-    vote,
-    voteWithHolon
+    vote
   }
 }
 

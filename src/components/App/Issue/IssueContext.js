@@ -12,18 +12,17 @@ const IssueContext = createContext()
 const IssueProvider = ({ children, id, match, params, location }) => {
   const [issue, error, loading, fetchIssue, selection, updateSelection] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
-  const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
+  // const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
   const { userInfo = {}, filterParams } = useContext(AppContext)
   const [proposalDetails, updateProposalDetails] = useState({})
 
-  useEffect(() => {
-    // console.log(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
-    getPriorVoteApi({
-      year: filterParams.year,
-      address: userInfo.address || localStorage.getItem('address'),
-      url: (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
-    })
-  }, [filterParams.year, userInfo.address])
+  // useEffect(() => {
+  //   // console.log(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
+  //   getPriorVoteApi({
+  //     address: userInfo.address || localStorage.getItem('address'),
+  //     url: (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
+  //   })
+  // }, [userInfo.address])
 
   useEffect(() => {
     if (!issue || selection.proposal || selection.counterProposal) return
@@ -66,7 +65,7 @@ const IssueProvider = ({ children, id, match, params, location }) => {
         issue,
         error,
         loading,
-        priorVoteInfo,
+        // priorVoteInfo,
         refetchIssue: () => fetchIssue(),
         selection,
         vote,
