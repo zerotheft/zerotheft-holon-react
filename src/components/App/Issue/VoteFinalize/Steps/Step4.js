@@ -26,10 +26,8 @@ const Step4 = ({ updateCurrentStep }) => {
   const hasMnemonic = voterInfo ? voterInfo.hasMnemonic : false
   return <Wrapper>
     <InnerWrapper>
-      <Header>Step #1: Import these keys to metamask</Header>
+      <Header>Step #1: Setup metamask</Header>
       <Body>
-        <BodyInfo>Your voting will be stored on the blockchain. We need these wallet settings to match between the Zero Theft software/wallet and the Metamaks Wallet.
-        </BodyInfo>
         {!userType ? <Question>
           Have you worked with metamask before?
           <ButtonsWrapper style={{ marginTop: 10 }}>
@@ -48,30 +46,14 @@ const Step4 = ({ updateCurrentStep }) => {
           </FlexBox>
           <OrderedList>
             {userType === 'newUser' ? <>
-              <li>Go to your desktop app and open key/phrase section in wallet tab.<LinkText onClick={() => window.location.href = 'zerotheft://wallet/export'}>Open desktop app</LinkText></li>
-              <li>Enter your password there and click reveal button. Copy the {hasMnemonic ? 'seed phrase' : 'private key'} from there and get back here.</li>
               <li>Download and open Metamask <LinkText onClick={() => window.open('https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn', '_blank')}>Download Metamask</LinkText></li>
               {hasMnemonic ? <>
-                <li>Click import wallet button in metamask and paste the copied phrase and follow necessary steps.</li>
               </> : <>
                 <li>Create your metamask account by clicking create wallet button and follow necessary steps.</li>
-                <li>After that, click import account in the account settings icon that you can find at the top right corner in the metamask.</li>
-                <li>Paste your private key and click import.</li>
               </>}
-              {(!window.ethereum || !window.ethereum.selectedAddress) && <li>Connect metamask to our holon. <LinkText onClick={() => {
-                connectMetamask()
-              }}>Connect</LinkText></li>}
-              <li>If another account is selected in metamask, select the account that matches your desktop wallet account and click on connect button in the metamask.</li>
-              <li>If you see not connected info in your metamask wallet, click there and connect the wallet.</li>
             </> :
               <>
-                <li>Go to your desktop app and open key/phrase section in wallet tab.<LinkText onClick={() => window.location.href = 'zerotheft://wallet/export'}>Open desktop app</LinkText></li>
-                <li>Enter your password there and click reveal button. Copy the private key from there and get back to your metamask.</li>
-                <li>Open metamask and log in to your metamask.</li>
-                <li>In metamask, click import account in the account settings icon that you can find at the top right corner.</li>
-                <li>Paste your private key and click import.</li>
                 {(!window.ethereum || !window.ethereum.selectedAddress) && <li>Connect metamask to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText></li>}
-                <li>If another account is selected in metamask, select the account that matches your desktop wallet account and click on connect button in the metamask.</li>
                 <li>If you see not connected info in your metamask wallet, click there and connect the wallet.</li>
               </>}
           </OrderedList>
