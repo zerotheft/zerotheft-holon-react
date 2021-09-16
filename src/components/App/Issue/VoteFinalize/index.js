@@ -201,7 +201,7 @@ const VoteFinalize = ({ match, history, location }) => {
               You voted on this problem for this year already. Voting again will override your existing vote.
             </p>
             <p className='data-row' style={{ fontSize: 22 }}>
-              Prior Vote: {get(priorVoteInfo, 'voteIsTheft') ? 'YES' : 'NO'}
+              Prior Vote: {get(priorVoteInfo, 'voteIsTheft') === "True" ? 'YES' : 'NO'}
             </p>
             <p className='data-row' style={{ fontWeight: '500' }}>
               {/* <span>
@@ -211,7 +211,8 @@ const VoteFinalize = ({ match, history, location }) => {
                 Voted on : {convertUNIXtoDATETIME(get(priorVoteInfo, 'date'))}
               </span>
             </p>
-            <Button plain onClick={() => window.open('zerotheft://settings/history')} style={{ width: '100%', fontSize: 20, fontWeight: '500', background: 'transparent', borderWidth: 2 }} height={62}>View Voting History</Button>
+            {/* TODO: When we maintain the proper historical data then we will show this button            
+            <Button plain onClick={() => window.open('zerotheft://settings/history')} style={{ width: '100%', fontSize: 20, fontWeight: '500', background: 'transparent', borderWidth: 2 }} height={62}>View Voting History</Button> */}
           </div>}
         </FinalizeContentWrapper>}
       </div>
