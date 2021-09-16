@@ -27,9 +27,11 @@ export default () => {
   }
 
   const getVoterInfo = async (metamaskAccount) => {
-    const { data } = await getVoterInfos(metamaskAccount.toLowerCase())
-    updateVoterInfo(data)
-    return data
+    if (metamaskAccount) {
+      const { data } = await getVoterInfos(metamaskAccount.toLowerCase())
+      updateVoterInfo(data)
+      return data
+    }
   }
 
   const fetchPriorVoteInfo = async (path, metamaskAccount) => {
