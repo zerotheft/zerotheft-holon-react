@@ -26,7 +26,6 @@ const Step4 = ({ updateCurrentStep }) => {
 
   const hasMnemonic = voterInfo ? voterInfo.hasMnemonic : false
 
-  console.log(hasMnemonic);
   return <Wrapper>
     <InnerWrapper>
       <Header>Step #1: Setup metamask</Header>
