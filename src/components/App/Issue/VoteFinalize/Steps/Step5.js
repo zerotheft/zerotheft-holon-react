@@ -29,6 +29,7 @@ const Step5 = ({ updateCurrentStep }) => {
               <div><span>Currency Symbol:</span> ETC</div>
             </li>
             <li>Click on save</li>
+            <li>Reload this page.</li>
           </StyledOrderedList>
         </div>
         <ButtonsWrapper>

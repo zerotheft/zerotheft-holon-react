@@ -23,7 +23,10 @@ const Step4 = ({ updateCurrentStep }) => {
       window.location.href = buildUrl()
     }
   }
+
   const hasMnemonic = voterInfo ? voterInfo.hasMnemonic : false
+
+  console.log(hasMnemonic);
   return <Wrapper>
     <InnerWrapper>
       <Header>Step #1: Setup metamask</Header>
@@ -50,10 +53,11 @@ const Step4 = ({ updateCurrentStep }) => {
               {hasMnemonic ? <>
               </> : <>
                 <li>Create your metamask account by clicking create wallet button and follow necessary steps.</li>
+                <li>Connect metamask to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText></li>
               </>}
             </> :
               <>
-                {(!window.ethereum || !window.ethereum.selectedAddress) && <li>Connect metamask to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText></li>}
+                <li>Connect metamask to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText></li>
                 <li>If you see not connected info in your metamask wallet, click there and connect the wallet.</li>
               </>}
           </OrderedList>
