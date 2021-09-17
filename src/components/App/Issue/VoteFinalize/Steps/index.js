@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom'
 import stepsArrow from 'assets/icons/step-arrow.svg'
 import check from 'assets/icons/check.svg'
 import { colors } from 'theme'
-import useCanVote from '../useCanVote'
 
 import Step1 from './Step1'
 import Step2 from './Step2'
@@ -17,14 +16,13 @@ import Step7 from './Step7'
 import { VoteContext } from '../VoteContext'
 // import { vote } from 'apis/vote'
 
-const steps = range(1, 8)
-const stepComponents = [Step6, Step7]
+const steps = range(4, 8)
+const stepComponents = [Step4, Step5, Step6, Step7]
 
 const Steps = (props) => {
   const { step } = useContext(VoteContext)
   const [currentStep, updateCurrentStep] = useState(step)
-  const Step = stepComponents[currentStep - 1]
-
+  const Step = stepComponents[currentStep - 4]
   const history = useHistory()
   useEffect(() => {
     updateCurrentStep(step)
@@ -38,7 +36,7 @@ const Steps = (props) => {
         <StyledSteps>
           {steps.map(i => <StepWrapper>
             <Circle active={currentStep >= i}>
-              {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i}`}
+              {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i - 3}`}
             </Circle>
             <img src={stepsArrow} alt="" />
           </StepWrapper>)}
