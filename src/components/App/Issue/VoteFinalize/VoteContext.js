@@ -92,7 +92,12 @@ const useVote = () => {
         return
       }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
-      const priorVoteID = values.priorVoteInfo.success ? values.priorVoteInfo.id : ""
+      if (values.priorVoteInfo) {
+        var priorVoteID = values.priorVoteInfo.success ? values.priorVoteInfo.id : ""
+      }
+      else {
+        var priorVoteID = ""
+      }
 
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
