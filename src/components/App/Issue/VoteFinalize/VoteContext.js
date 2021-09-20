@@ -131,7 +131,6 @@ const useVote = () => {
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
       await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
-      console.log(e);
       if (holonInfo.canBeFunded)
         showErrorPopUp({ message: '', holonInfo, proposalId, voteType: finalVote, ...values })
       toast.error('Error while voting on this proposal.')
