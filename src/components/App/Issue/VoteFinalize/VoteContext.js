@@ -92,7 +92,12 @@ const useVote = () => {
         return
       }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
-      const priorVoteID = values.priorVoteInfo.success ? values.priorVoteInfo.id : ""
+      if (values.priorVoteInfo) {
+        var priorVoteID = values.priorVoteInfo.success ? values.priorVoteInfo.id : ""
+      }
+      else {
+        var priorVoteID = ""
+      }
 
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
@@ -126,6 +131,7 @@ const useVote = () => {
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
       await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
+      console.log(e);
       if (holonInfo.canBeFunded)
         showErrorPopUp({ message: '', holonInfo, proposalId, voteType: finalVote, ...values })
       toast.error('Error while voting on this proposal.')
