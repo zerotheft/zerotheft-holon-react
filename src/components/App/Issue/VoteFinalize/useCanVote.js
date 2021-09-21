@@ -55,7 +55,7 @@ export default () => {
       const metamask = !!window.web3
       if (!metamask) {
         newStep = 4
-        msg = 'No metamask found'
+        msg = 'Please install metamask!'
       } else {
         if (!metamaskAccount) {
           newStep = 4
