@@ -52,7 +52,7 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div> */}
         </div>
         <div style={{ textAlign: 'right', width: '150px' }}>
-          <div style={{borderStyle: 'solid', borderWidth: 'thin'}}><Progress completed={75} color={'yellow'} /></div>
+          <div style={{borderStyle: 'solid', borderWidth: 'thin', backgroundColor: 'white'}}><Progress completed={75} color={'#BBBE26'} /></div>
           {/* <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div> */}
           <div><span style={{ fontWeight: '600' }}>{i.summary}</span></div>
           <div>
