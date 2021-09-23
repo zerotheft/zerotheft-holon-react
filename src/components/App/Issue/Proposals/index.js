@@ -30,7 +30,7 @@ const Proposals = ({ history, match }) => {
     }
   }
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '30%', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
+    <Left style={{ width: '370px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
       {/* <div className='header'>
         <h3>
           Select which below has the best<br />
