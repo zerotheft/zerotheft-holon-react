@@ -12,7 +12,7 @@ const Step5 = ({ updateCurrentStep }) => {
 
   return <Wrapper>
     <InnerWrapper>
-      <Header>Step #5: Configure metamask to ethereum classic</Header>
+      <Header>Step #2: Configure metamask to ethereum classic</Header>
       <Body>
         <BodyInfo>We need to configure metamask to connect to ETC network.
         </BodyInfo>

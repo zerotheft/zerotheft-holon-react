@@ -4,7 +4,6 @@ import { get as getLodash } from 'lodash'
 import { API_URL } from 'constants/index'
 
 const checkForError = (e, type) => {
-  console.log(getLodash(e, 'response.data') || e.response)
 
   if (process.env.NODE_ENV === 'development' || type !== 'get') throw e
   // switch (e.response.status) {
