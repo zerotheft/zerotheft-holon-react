@@ -14,7 +14,7 @@ import ProposalDetail from '../commons/ProposalDetail'
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  const
+  let
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
@@ -23,10 +23,15 @@ const Proposals = ({ history, match }) => {
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
-
+  if (!selectedItem.id) {
+    let data = get(issue, 'proposals');
+    if (data && data.length > 0) {
+      selectedItem = data[0];
+    }
+  }
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
-      <div className='header'>
+    <Left style={{ width: '370px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
+      {/* <div className='header'>
         <h3>
           Select which below has the best<br />
           <span style={{ fontSize: 22 }}>analysis, accuracy & estimated amount</span>
@@ -36,7 +41,7 @@ const Proposals = ({ history, match }) => {
           await refetchIssue()
           updateLoading(false)
         }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
-      </div>
+      </div> */}
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
           {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}

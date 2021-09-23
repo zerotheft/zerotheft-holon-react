@@ -26,7 +26,7 @@ const MainWrapper = ({ title, stepsPage, pathname, children, }) => {
               <li><Link to={`/path/${currentPath}`}>{startCase(crumb)}</Link></li>
           })}
         </ul>
-        <h4>{history.location.pathname.includes('voted') ? 'You Added Your Vote on:' : 'Add your vote on:'} <span>{title ? startCase(title) : 'N/A'}</span></h4>
+        {/* <h4>{history.location.pathname.includes('voted') ? 'You Added Your Vote on:' : 'Add your vote on:'} <span>{title ? startCase(title) : 'N/A'}</span></h4> */}
       </Container>
     </BreadcrumbWrapper>}
     <Container>{children}</Container>
@@ -49,8 +49,9 @@ BreadcrumbWrapper = styled.div`
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-family: Poppins;
     li {
-      font-size: 18px;
+      font-size: 15px;
       font-weight: 500;
       color: ${colors.primary};
       a {
