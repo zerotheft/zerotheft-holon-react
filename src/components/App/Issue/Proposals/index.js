@@ -30,8 +30,8 @@ const Proposals = ({ history, match }) => {
     }
   }
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
-      <div className='header'>
+    <Left style={{ width: '30%', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
+      {/* <div className='header'>
         <h3>
           Select which below has the best<br />
           <span style={{ fontSize: 22 }}>analysis, accuracy & estimated amount</span>
@@ -41,7 +41,7 @@ const Proposals = ({ history, match }) => {
           await refetchIssue()
           updateLoading(false)
         }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
-      </div>
+      </div> */}
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
           {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
