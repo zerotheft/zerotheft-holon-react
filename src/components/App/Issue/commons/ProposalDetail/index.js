@@ -39,7 +39,6 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
     </div>
     <div className="detailsWithCharts">
       <Header>
-        <h5>Best Theft Case:</h5>
         <h4>If there was theft, which makes the best case.</h4>
         <h5 className='plain'>This is used to compare against, for when you make your final decision</h5>
         {allowSelect &&
@@ -67,13 +66,13 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
           <div className="detailWrapper">
             <div className="theftInfo">
               <div>
-                <h4>Theft Amount: </h4>
-                <h6>ID: {item.id}</h6>
+                {/* <h4>Theft Amount: </h4>
+                <h6 style={{ fontSize: '17px' }}>ID: {item.id}</h6> */}
+                <h3>{item.summary}</h3>
               </div>
-              <h3>{item.summary}</h3>
             </div>
             <div className="warning">
-              WARNING: The amount claimed to be stolen in this area is <span>{item.summary}</span> lower than the average of <span>$291B</span>
+              Warning: <br/> The amount claimed to be stolen in this area is <span style={{fontSize:'20px'}}>{item.summary}</span> lower than the average of <span style={{fontSize:'20px'}}>$291B</span>
             </div>
           </div>
           <div>
@@ -91,8 +90,10 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                 name='rating'
               />
             </span>
+            <span style={{float: 'right'}}>
             <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(item, 'complaints.count', 0)}
             <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>Rate/Complaint</span>
+            </span>
           </div>
         </div>
         {imageExists(`${reportPath}-votesForTheftAmount.svg`) ?

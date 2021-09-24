@@ -14,7 +14,7 @@ import ProposalDetail from '../commons/ProposalDetail'
 const CounterProposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  const
+  let
     [selectedItem, updateSelectedItem] = useState(get(selection, 'counterProposal') || {}),
     [loading, updateLoading] = useState(false)
 
@@ -23,9 +23,18 @@ const CounterProposals = ({ history, match }) => {
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
 
+  if (!selectedItem.id) {
+    let data = get(issue, 'counter_proposals');
+    console.log("COunter proposals");
+    console.log(data);
+    if (data && data.length > 0) {
+      selectedItem = data[0];
+    }
+  }
+  
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-    <Left style={{ width: '440px', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column' }}>
-      <div className='header'>
+    <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
+      {/* <div className='header'>
         <h3>
           Select which below has the best<br />
           <span style={{ fontSize: 22 }}>counterpoint that there is little or no rigged economic theft</span>
@@ -35,7 +44,7 @@ const CounterProposals = ({ history, match }) => {
           await refetchIssue()
           updateLoading(false)
         }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
-      </div>
+      </div> */}
       <div style={{ overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
           <Points data={get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />

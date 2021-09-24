@@ -20,10 +20,11 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
   const { selection, updateSelection } = useContext(IssueContext)
   return <Wrapper>
     {loading && <OverlaySpinner loading overlayParent />}
-    {data.length ? data.map((i, idx) => <Item className={data.length !== idx + 1 ? 'bottom-border' : ''} active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
+    {data.length ? data.map((i, idx) => <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)} style={{marginBottom: '8px', border: '1px solid rgb(221, 221, 221)', borderRadius: '5px'}} >
       <div className='itemWrap' style={{ borderRadius: '5px' , cursor: 'pointer'}}>
         <div>
-          <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div>
+          {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
+          <div style={{fontWeight: '200'}}>#{i.id} </div>
           {/* <div>Theft Amount: </div> */}
           <StarRatings
                   rating={get(i, 'ratings.rating', 0)}
@@ -51,10 +52,10 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
             }
           </div> */}
         </div>
-        <div style={{ textAlign: 'right', width: '150px' }}>
-          <div style={{borderStyle: 'solid', borderWidth: 'thin'}}><Progress completed={75} color={'yellow'} /></div>
+        <div style={{ textAlign: 'right', width: 'auto', maxWidth: '150px', minWidth: '65px', marginLeft: '15px' }}>
+          <div style={{border: '1px solid #D5C9C9', borderRadius: '2px'}}><Progress completed={75} color={'yellow'} height={'15px'} /></div>
           {/* <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div> */}
-          <div><span style={{ fontWeight: '600' }}>{i.summary}</span></div>
+          <div><span style={{ fontWeight: '600' }}>{i.summary}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
           <div>
             {/*
             Author: {get(i, 'ratings.count', 0)}
@@ -78,11 +79,13 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
         <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${counter ? 'counter-' : ''}proposal`}>
           ADD YOUR PROPOSAL
         </a>
+      </div>
+      {/* <div style={{ marginTop: '10px' }}>
         {(counter && !get(selection, 'proposal')) ? null : <Button onClick={() => {
           updateSelection({ ...selection, [counter ? 'counterProposal' : 'proposal']: null })
           history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${counter ? 'vote' : 'counter-proposals'}`)
         }} plain width={150} height={44} style={{ marginLeft: 10 }}>Skip This</Button>}
-      </div>
+      </div> */}
     </ButtonWrapper>
   </Wrapper>
 }
@@ -92,7 +95,7 @@ export default Points
 const Item = styled.div`
   & > .itemWrap {
     background: transparent;
-    padding: 11px 30px 11px 15px;
+    padding: 11px;
     color: #000;
     border-radius: 2px;
     display: flex;
