@@ -5,6 +5,6 @@
     "CHAIN_ID":1440,
     "NETWORK_ID":1440,
     "NETWORK_NAME":"privatenet",
-    "CENTRALIZED_SERVER" : "https://ethereum.zerotheft.net",
-    "CENTRALIZED_SERVER_FRONTEND" : "https://app.zerotheft.net"
+    "CENTRALIZED_SERVER" : "https://testingapi.zerotheft.net",
+    "CENTRALIZED_SERVER_FRONTEND" : "https://testingapp.zerotheft.net"
 }
