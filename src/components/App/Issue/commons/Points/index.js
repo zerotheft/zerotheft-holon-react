@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import StarRatings from 'react-star-ratings';
+import Progress from 'react-progressbar';
 import { get, toNumber } from 'lodash'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
@@ -20,26 +21,40 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
   return <Wrapper>
     {loading && <OverlaySpinner loading overlayParent />}
     {data.length ? data.map((i, idx) => <Item className={data.length !== idx + 1 ? 'bottom-border' : ''} active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
-      <div className='itemWrap'>
+      <div className='itemWrap' style={{ borderRadius: '5px' , cursor: 'pointer'}}>
         <div>
-          <div>Theft Amount: <span style={{ fontWeight: '600' }}>{i.summary}</span></div>
-          <div>Ratings:{get(i, 'ratings.count', 0) > 0 ? <span> {get(i, 'ratings.count', 0)}&nbsp;
-            <StarRatings
-              rating={get(i, 'ratings.rating', 0)}
-              starDimension="20px"
-              starSpacing="1px"
-              starRatedColor={colors.yellow}
-              numberOfStars={5}
-              name='proposal_rating'
+          <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div>
+          {/* <div>Theft Amount: </div> */}
+          <StarRatings
+                  rating={get(i, 'ratings.rating', 0)}
+                  starDimension="20px"
+                  starSpacing="1px"
+                  starRatedColor={colors.yellow}
+                  numberOfStars={5}
+                  name='proposal_rating'
+            />
+          {/* <div>Ratings:{
+            get(i, 'ratings.count', 0) > 0 ?
+              <span> {get(i, 'ratings.count', 0)}&nbsp;
+                <StarRatings
+                  rating={get(i, 'ratings.rating', 0)}
+                  starDimension="20px"
+                  starSpacing="1px"
+                  starRatedColor={colors.yellow}
+                  numberOfStars={5}
+                  name='proposal_rating'
             />&nbsp;
-          </span> : ' N/A'}
+          </span>
+            : ' N/A'}
             {get(i, 'complaints.count', 0) > 0 &&
               <span><FontAwesomeIcon icon={faFrown} color={colors.red} className='icon' /> {get(i, 'complaints.count', 0)}</span>
             }
-          </div>
+          </div> */}
         </div>
-        <div style={{ textAlign: 'right' }}>
-          <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div>
+        <div style={{ textAlign: 'right', width: '150px' }}>
+          <div style={{borderStyle: 'solid', borderWidth: 'thin', backgroundColor: 'white'}}><Progress completed={75} color={'#BBBE26'} /></div>
+          {/* <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div> */}
+          <div><span style={{ fontWeight: '600' }}>{i.summary}</span></div>
           <div>
             {/*
             Author: {get(i, 'ratings.count', 0)}
