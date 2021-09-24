@@ -8,7 +8,7 @@ export const
   Header = styled.div`
   margin-bottom: 15px;
   h4 {
-    font-size: 22px;
+    font-size: 18px;
     margin: 10px 0;
     font-weight: 600;
     line-height: 120%;
@@ -65,7 +65,7 @@ NoChartText = styled.div`
 `,
   Left = styled.div`
   width: calc(100% - 500px);
-  padding-top: 70px;
+  padding-top: 40px;
   & > .header {
     display: flex;
     flex-direction: row;
@@ -94,7 +94,7 @@ NoChartText = styled.div`
   }
 `,
   Right = styled.div`
-  padding: 70px 0 0;
+  padding: 20px 0 0;
   &.apply-bg {
     padding: 70px 60px 60px;
     position: relative;
@@ -141,6 +141,9 @@ NoChartText = styled.div`
       }
     }
     .theftInfo{
+      display: flex;
+      justify-content: center;
+      align-items: center; 
       flex-grow: 0;
       border: 1px solid ${colors.solidBorder};
       border-radius: 6px;
@@ -148,14 +151,19 @@ NoChartText = styled.div`
       margin-right: 10px;
       & > div{
         h4 {
-          font-size: 16px;
-          font-weight: 400;
+          font-size: 17px;
+          font-weight: 600;
           color: ${colors.primary};
         }
         h6 {
           font-size: 13x;
           font-weight: 300;
           color: #606060;
+        }
+        h3 {
+          font-size: 40px;
+          font-weight: 600;
+          color: ${colors.primary};
         }
       }
       h3 {
