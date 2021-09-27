@@ -17,7 +17,6 @@ import { IssueContext } from '../../IssueContext'
 const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, counter = false, loading = false }) => {
   const match = useRouteMatch()
   const history = useHistory()
-  const test = '123456'
   const { selection, updateSelection } = useContext(IssueContext)
   return <Wrapper>
     {loading && <OverlaySpinner loading overlayParent />}
