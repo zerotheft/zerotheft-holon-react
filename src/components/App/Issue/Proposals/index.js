@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
-import { Wrapper, Left, Right } from '../commons/styles'
+import { Wrapper, Left, Right, WarningWrapper } from '../commons/styles'
 import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
@@ -30,6 +30,9 @@ const Proposals = ({ history, match }) => {
     }
   }
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
+    <WarningWrapper>
+      <p>WARNING: The amounts and reasoning comes from citizens. Not from the ZTM company or this website.</p>
+    </WarningWrapper>
     <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
       {/* <div className='header'>
         <h3>
@@ -49,7 +52,7 @@ const Proposals = ({ history, match }) => {
         </div>
       </div>
     </Left>
-    <Right style={{ flex: '1', overflowY: 'auto' }}>
+    <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
       <div style={{ overflow: 'hidden' }}>
         <ProposalDetail item={selectedItem} selection={selection} updateSelection={updateSelection} history={history} reportPath={reportPath} chartData={bellCurveData} />
       </div>
