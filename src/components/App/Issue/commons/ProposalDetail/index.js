@@ -66,9 +66,9 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
           <div className="detailWrapper">
             <div className="theftInfo">
               <div>
-                {/* <h4>Theft Amount: </h4>
-                <h6 style={{ fontSize: '17px' }}>ID: {item.id}</h6> */}
+                <h4>Theft Amount: </h4>
                 <h3>{item.summary}</h3>
+                <h6 style={{ fontSize: '17px' }}>ID: {item.id}</h6>
               </div>
             </div>
             <div className="warning">

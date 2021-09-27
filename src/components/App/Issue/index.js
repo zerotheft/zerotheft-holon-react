@@ -25,7 +25,10 @@ const Issue = ({ match }) => {
   const { loading } = useContext(IssueContext)
   const stepsPage = getParameterByName('page') === 'steps'
 
-  return <MainWrapper pathname={match.params.pathname} stepsPage={stepsPage} pathCrumbs={match.params.pathname.split('%2F')} title={match.params.id}>
+  let pathCrumbsTemp = match.params.pathname.split('%2F');
+  pathCrumbsTemp.push(match.params.id)
+
+  return <MainWrapper pathname={match.params.pathname} stepsPage={stepsPage} pathCrumbs={pathCrumbsTemp} pathCrumbTemp={pathCrumbsTemp} title={match.params.id}>
     {loading && <OverlaySpinner loading />}
     <Switch>
       <Route exact path={ROUTES.PROPOSALS} component={Proposals} />

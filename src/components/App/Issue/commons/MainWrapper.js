@@ -12,9 +12,9 @@ import { colors } from 'theme'
 //   return false
 // }
 
-const MainWrapper = ({ title, stepsPage, pathname, children, }) => {
+const MainWrapper = ({ title, stepsPage, pathname, children, pathCrumbTemp }) => {
   const history = useHistory()
-  const pathCrumbs = pathname.split('%2F')
+  const pathCrumbs = (pathCrumbTemp && pathCrumbTemp.length > 0)? pathCrumbTemp: pathname.split('%2F')
 
   return <Wrapper>
     {!stepsPage && <BreadcrumbWrapper>
