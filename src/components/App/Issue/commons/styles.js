@@ -102,7 +102,7 @@ NoChartText = styled.div`
       padding: 3px 10px;
       font-size: 15px;
       margin: 0 auto;
-      background: #F4E4AB;
+      background: ${colors.warningWrapper.backgroundColor};
       border-radius: 5px;
       width: fit-content;
     }
@@ -242,7 +242,7 @@ NoChartText = styled.div`
       h6 {
         font-size: 17px;
         font-weight: 400;
-        color: #606060;
+        color: ${colors.idWrapper.text};
       }
     }
   }
