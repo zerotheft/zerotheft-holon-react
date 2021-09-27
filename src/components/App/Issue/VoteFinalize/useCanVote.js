@@ -62,7 +62,7 @@ export default () => {
           msg = 'Please login to the metamask.'
         } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
           newStep = 5
-          msg = 'Select the correct network.'
+          msg = 'Please select the correct network.'
         } else if (!voterInfo.unverifiedCitizen) {
           newStep = 6
         } else {

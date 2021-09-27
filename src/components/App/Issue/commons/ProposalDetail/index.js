@@ -76,7 +76,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
             </div>
           </div>
           <div>
-            <span style={{ color: '#8D8D8D', marginRight: 5 }}>AUTHOR:</span> <span style={{ fontWeight: 500 }}>{get(item, 'author.name', 'Anonymous')}</span>
+            <span style={{ color: '#8D8D8D', marginRight: 5 }}>AUTHOR:</span> <span style={{ fontWeight: 500, marginLeft: '5px' }}>{get(item, 'author.name', 'Anonymous')}</span>
           </div>
           <div style={{ fontSize: 22, cursor: 'pointer', marginBottom: 15 }} onClick={() => window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/proposal-feedback/${get(item, 'id')}`}>
             {get(item, 'ratings.count', 0)}
@@ -91,8 +91,8 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               />
             </span>
             <span style={{float: 'right'}}>
-            <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(item, 'complaints.count', 0)}
-            <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>Rate/Complaint</span>
+              <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(item, 'complaints.count', 0)}
+              <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>Rate/Complaint</span>
             </span>
           </div>
         </div>
