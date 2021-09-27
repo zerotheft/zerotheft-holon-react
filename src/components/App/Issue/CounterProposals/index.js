@@ -25,8 +25,6 @@ const CounterProposals = ({ history, match }) => {
 
   if (!selectedItem.id) {
     let data = get(issue, 'counter_proposals');
-    console.log("COunter proposals");
-    console.log(data);
     if (data && data.length > 0) {
       selectedItem = data[0];
     }
