@@ -93,6 +93,20 @@ NoChartText = styled.div`
     }
   }
 `,
+  WarningWrapper = styled.div`
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    z-index: 5;
+    & > p {
+      padding: 3px 10px;
+      font-size: 15px;
+      margin: 0 auto;
+      background: ${colors.warningWrapper.backgroundColor};
+      border-radius: 5px;
+      width: fit-content;
+    }
+  `,
   Right = styled.div`
   padding: 20px 0 0;
   &.apply-bg {
@@ -128,6 +142,7 @@ NoChartText = styled.div`
       margin-bottom: 15px;
     }
     .warning {
+      width: 50%;
       font-size: 16px;
       color: ${colors.text.white};
       border: 1px solid ${colors.warningBGColor};
@@ -141,6 +156,7 @@ NoChartText = styled.div`
       }
     }
     .theftInfo{
+      width: 50%;
       display: flex;
       justify-content: center;
       align-items: center; 
@@ -161,7 +177,7 @@ NoChartText = styled.div`
           color: #606060;
         }
         h3 {
-          font-size: 40px;
+          font-size: 35px;
           font-weight: 600;
           color: ${colors.primary};
         }
@@ -220,6 +236,14 @@ NoChartText = styled.div`
       box-shadow: 0 0 3px 0px rgb(0, 0, 0, 0.2);
       border-radius: 3px;
       margin-bottom: 15px;
+    }
+    .idWrapper {
+      margin-top: 10px;
+      h6 {
+        font-size: 17px;
+        font-weight: 400;
+        color: ${colors.idWrapper.text};
+      }
     }
   }
 `

@@ -68,7 +68,6 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               <div>
                 <h4>Theft Amount: </h4>
                 <h3>{item.summary}</h3>
-                <h6 style={{ fontSize: '17px' }}>ID: {item.id}</h6>
               </div>
             </div>
             <div className="warning">
@@ -101,6 +100,10 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
             <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
           </div> : <NoChartText>Report is not available yet.</NoChartText>
         }
+
+        <div className='idWrapper'>
+          <h6>ID: {item.id}</h6>
+        </div>
       </>}
     </div>
   </Body>

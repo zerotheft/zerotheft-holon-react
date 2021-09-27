@@ -72,12 +72,12 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div>
         </div>
       </div>
-    </Item>) : <EmptyText>No Data Available.</EmptyText>}
+    </Item>) : <EmptyText>No { (counter)? 'counter': '' } proposals are available. Please add new { (counter)? 'counter': '' } proposal.</EmptyText>}
     <ButtonWrapper>
       {data.length ? <div className='none'>None of these are accurate</div> : null}
       <div className='btns'>
         <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${counter ? 'counter-' : ''}proposal`}>
-          ADD YOUR PROPOSAL
+          Add { (counter)? 'Counter': '' } Proposal
         </a>
       </div>
       {/* <div style={{ marginTop: '10px' }}>
@@ -152,11 +152,12 @@ const Item = styled.div`
       color: #fff;
       font-size: 15px;
       font-weight: 500;
-      width: 200px;
+      width: auto;
       line-height: 44px;
-      height: 44px;
+      height: auto;
       background: #7F51C1;
       border-radius: 8px;
+      padding: 0 20px;
     }
   }
 `
