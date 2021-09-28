@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { get } from 'lodash'
-import { getYear } from 'date-fns'
 import { NavLink, Link } from 'react-router-dom'
 import Select from 'react-select'
 import styled from 'styled-components'
 
+import config from 'config'
 import BRANDLOGO from 'assets/icons/zerotheft.svg'
 import HomeIcon from './svgs/home'
 import DonateIcon from './svgs/donate'
@@ -19,6 +19,8 @@ import OverlaySpinner from 'commons/OverlaySpinner'
 import { Container } from 'commons/styles'
 import { colors } from 'theme'
 import { AppContext } from '../../AppContext'
+
+const { CENTRALIZED_SERVER_FRONTEND } = config
 
 const Header = () => {
   const [getNationsApi, loading, nations] = useFetch(getNations)
@@ -52,7 +54,7 @@ const Header = () => {
             </NavLink>
           </li>
           <li>
-            <a href="zerotheft://holon">
+            <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank">
               <HolonIcon />
               Holons
             </a>
@@ -70,14 +72,14 @@ const Header = () => {
             </NavLink>
           </li>}
           <li className='more'>
-              <PathIcon />
+            <PathIcon />
             More
-              <ul>
-                <li><NavLink to={ROUTES.DATALIST} activeClassName='active'>Citizens/Proposals</NavLink></li>
-                <li><NavLink to={ROUTES.VOTELIST} activeClassName='active'>Votes</NavLink></li>
-                <li><NavLink to={ROUTES.HIERARCHY} activeClassName='active'>HierarchyYaml</NavLink></li>
-                <li><a href={ROUTES.EXPORT_LOCATION} activeClassName='active' target='_blank'>Exported Data</a></li>
-              </ul>
+            <ul>
+              <li><NavLink to={ROUTES.DATALIST} activeClassName='active'>Citizens/Proposals</NavLink></li>
+              <li><NavLink to={ROUTES.VOTELIST} activeClassName='active'>Votes</NavLink></li>
+              <li><NavLink to={ROUTES.HIERARCHY} activeClassName='active'>HierarchyYaml</NavLink></li>
+              <li><a href={ROUTES.EXPORT_LOCATION} activeClassName='active' target='_blank'>Exported Data</a></li>
+            </ul>
           </li>
         </MenuWrapper>
       </LeftWrapper>
