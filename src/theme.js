@@ -50,6 +50,12 @@ export const colors = {
   red: '#F00',
   fadeRed: '#Fda9a9',
   yellow: '#F6ea40',
+  warningWrapper: {
+    backgroundColor: '#F4E4AB',
+  },
+  idWrapper: {
+    text: '#606060'
+  }
 },
   height = {
     header: 100,

@@ -8,7 +8,7 @@ export const
   Header = styled.div`
   margin-bottom: 15px;
   h4 {
-    font-size: 22px;
+    font-size: 18px;
     margin: 10px 0;
     font-weight: 600;
     line-height: 120%;
@@ -65,7 +65,7 @@ NoChartText = styled.div`
 `,
   Left = styled.div`
   width: calc(100% - 500px);
-  padding-top: 70px;
+  padding-top: 40px;
   & > .header {
     display: flex;
     flex-direction: row;
@@ -93,8 +93,22 @@ NoChartText = styled.div`
     }
   }
 `,
+  WarningWrapper = styled.div`
+    position: absolute;
+    top: 0px;
+    right: 10px;
+    z-index: 5;
+    & > p {
+      padding: 3px 10px;
+      font-size: 15px;
+      margin: 0 auto;
+      background: ${colors.warningWrapper.backgroundColor};
+      border-radius: 5px;
+      width: fit-content;
+    }
+  `,
   Right = styled.div`
-  padding: 70px 0 0;
+  padding: 20px 0 0;
   &.apply-bg {
     padding: 70px 60px 60px;
     position: relative;
@@ -128,6 +142,7 @@ NoChartText = styled.div`
       margin-bottom: 15px;
     }
     .warning {
+      width: 50%;
       font-size: 16px;
       color: ${colors.text.white};
       border: 1px solid ${colors.warningBGColor};
@@ -141,6 +156,10 @@ NoChartText = styled.div`
       }
     }
     .theftInfo{
+      width: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center; 
       flex-grow: 0;
       border: 1px solid ${colors.solidBorder};
       border-radius: 6px;
@@ -148,14 +167,19 @@ NoChartText = styled.div`
       margin-right: 10px;
       & > div{
         h4 {
-          font-size: 16px;
-          font-weight: 400;
+          font-size: 17px;
+          font-weight: 600;
           color: ${colors.primary};
         }
         h6 {
           font-size: 13x;
           font-weight: 300;
           color: #606060;
+        }
+        h3 {
+          font-size: 35px;
+          font-weight: 600;
+          color: ${colors.primary};
         }
       }
       h3 {
@@ -212,6 +236,14 @@ NoChartText = styled.div`
       box-shadow: 0 0 3px 0px rgb(0, 0, 0, 0.2);
       border-radius: 3px;
       margin-bottom: 15px;
+    }
+    .idWrapper {
+      margin-top: 10px;
+      h6 {
+        font-size: 17px;
+        font-weight: 400;
+        color: ${colors.idWrapper.text};
+      }
     }
   }
 `
