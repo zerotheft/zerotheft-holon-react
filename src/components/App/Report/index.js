@@ -36,7 +36,7 @@ const Report = ({ match, history }) => {
           <GoBackDiv><span onClick={() => history.goBack()}>&#60;Go Back</span></GoBackDiv>
           {(get(reportResponse, 'report') || get(nationReportResponse, 'report')) ?
             <IframeWrapper>
-              <Iframe src={get(reportResponse, 'report') || get(nationReportResponse, 'report')} width="100%" height="100%" />
+              <Iframe src={get(reportResponse, 'report') || get(nationReportResponse, 'report')} width="100%" height="100%" ></Iframe>
             </IframeWrapper> :
             (<NoReportWrapper>{get(reportResponse, 'message') || get(nationReportResponse, 'message') || 'Report is not available yet. Please come back later or error encountered.'}</NoReportWrapper>)
           }
@@ -49,9 +49,9 @@ const Report = ({ match, history }) => {
 
 export const Iframe = styled.iframe`
   overflow: auto;
-  width: 102%;
+  width: calc(100% + 17px);
   border: ${props => props.border || '2px solid var(--lighterGrey)'};
-  height: 100vh;
+  height:calc(100vh - 60px - 45px - 20px);
   scrolling: no;
 `,
   IframeWrapper = styled.div`
