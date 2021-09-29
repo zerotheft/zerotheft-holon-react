@@ -45,8 +45,8 @@ const Proposals = ({ history, match }) => {
           updateLoading(false)
         }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
       </div> */}
-      <div style={{ overflowY: 'auto' }}>
-        <div style={{ overflow: 'hidden' }}>
+      <div style={{ overflowY: 'auto', height: '100%' }}>
+        <div style={{ overflow: 'hidden', height: '100%' }}>
           {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
           <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>

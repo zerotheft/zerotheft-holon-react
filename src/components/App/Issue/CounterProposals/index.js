@@ -43,8 +43,8 @@ const CounterProposals = ({ history, match }) => {
           updateLoading(false)
         }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
       </div> */}
-      <div style={{ overflowY: 'auto' }}>
-        <div style={{ overflow: 'hidden' }}>
+      <div style={{ overflowY: 'auto', height: '100%' }}>
+        <div style={{ overflow: 'hidden', height: '100%' }}>
           <Points data={get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>

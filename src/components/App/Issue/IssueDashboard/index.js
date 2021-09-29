@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react'
+import React, { useEffect, useContext, useState } from 'react'
 import { get, sortedUniqBy, range, isEmpty, filter as filterArray } from 'lodash'
 import yaml from 'js-yaml'
 import styled from 'styled-components'
@@ -18,6 +18,7 @@ import { AppContext } from 'components/App/AppContext'
 import Path from '../../Path/Path'
 import SummaryReport from './SummaryReport';
 import PathProposals from './PathProposals';
+import Points from '../commons/Points'
 
 const dateRange = range(1999, (new Date()).getFullYear()).reverse().map(i => ({ label: i, value: i }))
 const Dashboard = ({ history, location, match }) => {
@@ -28,6 +29,8 @@ const Dashboard = ({ history, location, match }) => {
   const { filterParams } = useContext(AppContext)
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
   const { pathname } = location
+  const { selection, updateSelection, refetchIssue } = useContext(IssueContext)
+  let[selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {})
   const displayYaml = (template) => {
     let data
     try {
@@ -63,14 +66,22 @@ const Dashboard = ({ history, location, match }) => {
   if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
   return <div>
     <InnerWrapper>
-      <Left style={{ marginRight: 30 }}>
-        <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
+      <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
+      <div style={{ overflowY: 'auto', height: '100%' }}>
+        <div style={{ overflow: 'hidden', height: '100%' }}>
+          {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
+          <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage={true} />
+        </div>
+        </div>
       </Left>
-      <Right>
+      <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
+      <div style={{ overflow: 'hidden' }}>
+      <div style={{width: '75%'}}>
+          <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} style={{float: 'left', paddingRight: '20px'}} />
+        </div>        
         <Header>
-          <h3 style={{ fontSize: 45, fontWeight: '600', textAlign: 'left', color: colors.primary }}>Please Vote</h3>
           <SelectWrapper>
-            <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
+            {/* <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
               {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{ fontSize: 22 }}>Vote</Button> :
                 <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
                   Add your proposal
@@ -138,8 +149,8 @@ const Dashboard = ({ history, location, match }) => {
                   updateFilter({ year: selected ? selected.value : null })
                   updateMainFilter({ year: selected ? selected.value : null })
                 }}
-              /> */}
-            </div>
+              /> 
+            </div> */}
 
             {theftData && (no || yes) && <TheftInfo>
               <h2>Was There Theft?</h2>
@@ -153,7 +164,7 @@ const Dashboard = ({ history, location, match }) => {
                   </TheftBlockSec>
                 </div>
                 <div class="rightTheftSec">
-                  <h2>How Much <span>${(convertDollarToString(parseFloat(get(theftData, 'theft'))))}</span></h2>
+                  <h2>Amount of theft: <span>${(convertDollarToString(parseFloat(get(theftData, 'theft'))))}</span></h2>
                 </div>
               </div>
 
@@ -169,6 +180,7 @@ const Dashboard = ({ history, location, match }) => {
           {get(report, 'report') && <SummaryReport url={report.report} />}
           {(!loading && !get(report, 'report') && (get(issue, 'proposals', []).length || get(issue, 'counter_proposals', []).length)) ? <EmptyText></EmptyText> : null}
         </IWrapper> : null}
+        </div>
       </Right>
     </InnerWrapper>
     <Path history={history} match={match} isIssuePath={true} />
@@ -194,7 +206,7 @@ const InnerWrapper = styled.div`
     font-family: Poppins;
     font-style: normal;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 18px;
     line-height: 39px;
     letter-spacing: 0.01em;
   }
@@ -216,7 +228,7 @@ const InnerWrapper = styled.div`
         font-family: Poppins;
         font-style: normal;
         font-weight: 500;
-        font-size: 23px;
+        font-size: 20px;
         line-height: 34px;
         color: ${colors.primary};
 
