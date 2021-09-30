@@ -20,11 +20,11 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
   const { selection, updateSelection } = useContext(IssueContext)
   return <Wrapper style={{height: '100%'}}>
     {loading && <OverlaySpinner loading overlayParent />}
-    <div style={{ height: '80%', overflowY: 'auto' }}>
+    <div style={{ height: '90%', overflowY: 'auto' }}>
       <div style={{overflow: 'hidden'}}>
       {data.length ? data.map((i, idx) =>
       <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)} >
-      <div className='itemWrap' style={{ cursor: 'pointer'}}>
+      <div className='itemWrap'>
         <div>
           {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
           <div style={{fontWeight: '200'}}>#{i.id} </div>
@@ -105,8 +105,9 @@ const Item = styled.div`
   border-color: rgb(221, 221, 221);
   border-bottom-style: solid;
   & > .itemWrap {
+    cursor: pointer;
     background: transparent;
-    padding: 8px;
+    padding: 8px 8px 2px 8px;
     color: #000;
     border-radius: 2px;
     display: flex;
@@ -142,8 +143,8 @@ const Item = styled.div`
   position: relative;
 `,
   ButtonWrapper = styled.div`
-  position: absolute;
-  bottom: 10px;
+  position: fixed;
+  bottom: 20px;
   height: 10%;
   display: flex;
   flex-direction: column;
