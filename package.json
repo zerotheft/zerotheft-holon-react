@@ -60,8 +60,7 @@
     "eject": "react-scripts eject",
     "lint:js": "eslint src --ext .js,.jsx; exit 0",
     "lint:fix": "eslint src --ext .js,.jsx --fix",
-    "prettify": "prettier --write --no-semi --print-width 120 --single-quote 'src/**/*.js'",
-    "precommit": "lint-staged"
+    "prettify": "prettier --write --no-semi --print-width 120 --single-quote 'src/**/*.js'"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
@@ -81,13 +80,6 @@
   },
   "eslintConfig": {
     "extends": "react-app"
-  },
-  "lint-staged": {
-    "src/**/*.{js,jsx}": [
-      "eslint --fix",
-      "prettier --write --no-semi --print-width 120 --single-quote",
-      "git add ."
-    ]
   },
   "browserslist": {
     "production": [
