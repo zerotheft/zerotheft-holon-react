@@ -98,7 +98,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
         {imageExists(`${reportPath}-votesForTheftAmount.svg`) ?
           <div className="imageWrapper">
             <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
-          </div> : <NoChartText>Report is not available yet.</NoChartText>
+          </div> : <NoChartText>Unable to meet criteria for chart.</NoChartText>
         }
 
         <div className='idWrapper'>
