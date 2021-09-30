@@ -108,7 +108,7 @@ export const convertJSONtoString = (data) => {
   if (!data) return null
   return <DataObject>
     {Object.keys(data).map((key) => <li>
-      {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:</div>}
+      {isArray(data) ? null : <div className='dataKey'>{startCase(key)}:&nbsp;</div>}
       {isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key])
       }
     </li >)}
@@ -195,6 +195,10 @@ const DataObject = styled.ul`
   }
   .dataKey {
     font-weight: bold;
+    float: left;
+  }
+  .datakey li .datakey {
+    float: none;
   }
   li {
     margin-bottom: 5px;
