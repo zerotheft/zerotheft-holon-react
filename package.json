@@ -57,7 +57,11 @@
     "build-private": "REACT_APP_MODE=private react-scripts build",
     "build-staging": "REACT_APP_MODE=staging yarn fetch-contract && REACT_APP_MODE=staging react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint:js": "eslint src --ext .js,.jsx; exit 0",
+    "lint:fix": "eslint src --ext .js,.jsx --fix",
+    "prettify": "prettier --write --no-semi --print-width 120 --single-quote 'src/**/*.js'",
+    "precommit": "lint-staged"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
