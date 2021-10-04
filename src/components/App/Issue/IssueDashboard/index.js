@@ -13,7 +13,7 @@ import OverlaySpinner from 'commons/OverlaySpinner'
 import Button from 'commons/Buttons'
 import SeeMore from 'commons/SeeMore'
 import { EmptyText, } from 'commons/styles'
-import { Header, Left, Right } from '../commons/styles'
+import { Header, Left, Right, Wrapper, WarningWrapper } from '../commons/styles'
 import { AppContext } from 'components/App/AppContext'
 import Path from '../../Path/Path'
 import SummaryReport from './SummaryReport';
@@ -64,23 +64,68 @@ const Dashboard = ({ history, location, match }) => {
   const yes = theftData && (theftData.for / theftData.votes * 100).toFixed()
   const no = 100 - yes
   if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
-  return <div>
-    <InnerWrapper>
-      <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
-      <div style={{ overflowY: 'auto', height: '100%' }}>
+  return  <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
+  <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
+    <div style={{ overflowY: 'auto', height: '100%' }}>
         <div style={{ overflow: 'hidden', height: '100%' }}>
           {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
           <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage={true} />
         </div>
+      </div>
+    </Left>
+    <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
+      <div style={{ overflow: 'hidden' }}>
+        <div style={{width: '80%', float: 'left'}}>
+          <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
         </div>
+        <div style={{width: '20%', float: 'right'}}>
+          <SelectWrapper>
+          {theftData && (no || yes) && <TheftInfo>
+              <h2>Was there theft?</h2>
+              <div class="wrapLeftRightsec">
+                <div class="leftTheftSec">
+                  <TheftBlockSec className="yesTheftsec" width={yes}>
+                    <span>Yes {yes}%</span>
+                  </TheftBlockSec>
+                  <TheftBlockSec className="noTheftsec" width={no}>
+                    <span>No {no}%</span>
+                  </TheftBlockSec>
+                </div>
+                <div class="rightTheftSec">
+                  <h2>Amount of theft: <span>${(convertDollarToString(parseFloat(get(theftData, 'theft'))))}</span></h2>
+                </div>
+              </div>
+
+              <div class="totlVotersSec">
+                Total Voters : {numberWithCommas(get(theftData, 'votes'))}
+              </div>
+            </TheftInfo>
+            }
+          </SelectWrapper>
+        </div>
+      </div>
+    </Right>
+</Wrapper>
+
+
+    {/* <InnerWrapper>
+      <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}> */}
+      {/* <div style={{ overflowY: 'auto', height: '100%' }}>
+        <div style={{ overflow: 'hidden', height: '100%' }}>
+          {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> 
+        
+        </div>
+        </div> */}
+          {/* <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage={true} />
       </Left>
       <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
       <div style={{ overflow: 'hidden' }}>
       <div style={{width: '75%'}}>
           <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} style={{float: 'left', paddingRight: '20px'}} />
-        </div>        
+          
+          </div>
         <Header>
-          <SelectWrapper>
+          <SelectWrapper> */}
             {/* <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
               {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{ fontSize: 22 }}>Vote</Button> :
                 <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
@@ -152,7 +197,7 @@ const Dashboard = ({ history, location, match }) => {
               /> 
             </div> */}
 
-            {theftData && (no || yes) && <TheftInfo>
+            {/* {theftData && (no || yes) && <TheftInfo>
               <h2>Was There Theft?</h2>
               <div class="wrapLeftRightsec">
                 <div class="leftTheftSec">
@@ -184,7 +229,7 @@ const Dashboard = ({ history, location, match }) => {
       </Right>
     </InnerWrapper>
     <Path history={history} match={match} isIssuePath={true} />
-  </div>
+  </div> */}
 }
 
 export default Dashboard
@@ -206,7 +251,7 @@ const InnerWrapper = styled.div`
     font-family: Poppins;
     font-style: normal;
     font-weight: 600;
-    font-size: 18px;
+    font-size: 15px;
     line-height: 39px;
     letter-spacing: 0.01em;
   }
@@ -217,10 +262,12 @@ const InnerWrapper = styled.div`
     display:flex;
     flex-flow: row wrap;
     .leftTheftSec {
-      width:calc(100% - 209px);
+      // width:calc(100% - 209px);
+      width: auto;
     }
     .rightTheftSec {
-      width: 209px;
+      // width: 209px;
+      width: auto;
       padding-left: 20px;
       h2 {
         display:flex;
@@ -228,14 +275,13 @@ const InnerWrapper = styled.div`
         font-family: Poppins;
         font-style: normal;
         font-weight: 500;
-        font-size: 20px;
+        font-size: 18px;
         line-height: 34px;
         color: ${colors.primary};
 
         span {
           font-weight: bold;
-          font-size: 40px;
-          line-height: 50px;
+          font-size: 20px;
           letter-spacing: -0.025em;
         }
       }
@@ -245,12 +291,12 @@ const InnerWrapper = styled.div`
   TheftBlockSec = styled.div`
     display:flex;
     flex-flow: column;
-    height: 50px;
+    height: auto;
     margin-bottom: 10px;
     align-item: center;
     background: ${colors.button.greyBackground};
     font-family: Poppins;
-    font-size: 25px;
+    font-size: 18px;
     position: relative;
     span{
       display: flex;
