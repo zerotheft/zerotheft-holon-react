@@ -21,13 +21,14 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
   const match = useRouteMatch()
   // const { proposalDetails } = useContext(IssueContext)
   let theftYears = item.theftYears
-  let maxTheftYear = 0;
+  let maxTheftYear = null;
   if (theftYears) {
     let theftYearKeys = Object.keys(theftYears);
     theftYearKeys = theftYearKeys.map(function (item) {
       return parseInt(item)
     })
-    maxTheftYear = Math.max(...theftYearKeys);
+
+    maxTheftYear = (theftYearKeys.length > 0)? Math.max(...theftYearKeys): null;
   }
   useEffect(() => {
     item && getProposalApi(item.id)
@@ -76,7 +77,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               <div>
                 <h4>Theft Amount: </h4>
                 <h3>{item.summary}</h3>
-                <h4>(in {maxTheftYear})</h4>
+                {(maxTheftYear) ? <h4>(in {maxTheftYear})</h4>: null }
               </div>
             </div>
             <div className="warning">

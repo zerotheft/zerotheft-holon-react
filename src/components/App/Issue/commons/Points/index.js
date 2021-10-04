@@ -77,18 +77,20 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div>
         </div>
       </div>
-    </Item>) : <EmptyText>No { (counter)? 'counter': '' } proposals are available. Please add new { (counter)? 'counter': '' } proposal.</EmptyText>}
+    </Item>) : ''}
       </div>
     </div>
     {viewPage
       ? '' :
       <ButtonWrapper>
-      {data.length ? <div className='none'>None of these are accurate</div> : null}
+        {data.length ? <div className='none'>None of these are accurate</div> : null}
+        {data.length ? 
       <div className='btns'>
         <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${counter ? 'counter-' : ''}proposal`}>
           Add { (counter)? 'Counter': '' } Proposal
         </a>
-      </div>
+        </div>: null
+        }
       {/* <div style={{ marginTop: '10px' }}>
         {(counter && !get(selection, 'proposal')) ? null : <Button onClick={() => {
           updateSelection({ ...selection, [counter ? 'counterProposal' : 'proposal']: null })

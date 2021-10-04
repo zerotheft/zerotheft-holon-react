@@ -159,11 +159,10 @@ const Wrapper = styled.header`
   position: fixed;
   top: 0; left: 0;
   box-shadow: 0px 1px 0px 0px #CDDADD;
-  z-index: 4;
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 2;
+  z-index: 5;
   background: #fff;
   & > ${Container} {
     display: flex;

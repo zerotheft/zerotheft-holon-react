@@ -6,7 +6,7 @@ import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { API_URL } from 'constants/index'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
-import { Wrapper, Left, Right, Header } from '../commons/styles'
+import { Wrapper, Left, Right, Header, EmptyProposalWrapper, WarningWrapper } from '../commons/styles'
 import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
@@ -23,14 +23,27 @@ const CounterProposals = ({ history, match }) => {
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
 
+  let data = get(issue, 'counter_proposals');
   if (!selectedItem.id) {
-    let data = get(issue, 'counter_proposals');
     if (data && data.length > 0) {
       selectedItem = data[0];
     }
   }
+  let proposalLength = (data && data.length > 0)? data.length: 0;
   
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
+    <WarningWrapper>
+      <p>WARNING: The amounts and reasoning comes from citizens. Not from the ZTM company or this website.</p>
+    </WarningWrapper>
+
+    {(proposalLength === 0) ?
+      <EmptyProposalWrapper>
+        <p>
+          No counter proposals are available. Please 
+          <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-counter-proposal`} style={{cursor: 'pointer'}}> add new </a>
+          counter proposal.
+        </p>
+      </EmptyProposalWrapper>: null }
     <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
       {/* <div className='header'>
         <h3>
