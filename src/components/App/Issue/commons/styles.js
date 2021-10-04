@@ -246,4 +246,12 @@ NoChartText = styled.div`
       }
     }
   }
+  .overlayTextWrapper {
+    width: 100%;
+    position: absolute;
+    top: 65%;
+    .overlayText {
+      text-align: center;
+    }
+  }
 `

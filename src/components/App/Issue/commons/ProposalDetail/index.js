@@ -20,13 +20,21 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
   // const { proposalDetails } = useContext(IssueContext)
+  let theftYears = item.theftYears
+  let maxTheftYear = 0;
+  if (theftYears) {
+    let theftYearKeys = Object.keys(theftYears);
+    theftYearKeys = theftYearKeys.map(function (item) {
+      return parseInt(item)
+    })
+    maxTheftYear = Math.max(...theftYearKeys);
+  }
   useEffect(() => {
     item && getProposalApi(item.id)
   }, [item])
 
-
   if (proposalLoading) {
-    return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
+    return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /> <div className="overlayTextWrapper"> <p className="overlayText"> Please wait. The details are being fetched from the server. </p> </div> </Body>)
   }
   return (<Body>
     <div className="bodyDescription">
@@ -68,6 +76,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               <div>
                 <h4>Theft Amount: </h4>
                 <h3>{item.summary}</h3>
+                <h4>(in {maxTheftYear})</h4>
               </div>
             </div>
             <div className="warning">

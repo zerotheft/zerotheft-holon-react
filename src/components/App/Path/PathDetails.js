@@ -23,7 +23,7 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
     <div className="button-wrapper">
       <CustomButton onClick={e => {
         e.stopPropagation()
-        history.push(viewLink)
+        history.push(`${viewLink}/proposals`)
       }} plain style={{ color: '#777373' }} width={90} height={34}><FontAwesomeIcon icon={faEye} />View</CustomButton>
       <CustomButton onClick={e => {
         e.stopPropagation()
