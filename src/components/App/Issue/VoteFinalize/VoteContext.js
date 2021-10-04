@@ -92,12 +92,6 @@ const useVote = () => {
         return
       }
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
-      if (values.priorVoteInfo) {
-        var priorVoteID = values.priorVoteInfo.success ? values.priorVoteInfo.id : ""
-      }
-      else {
-        var priorVoteID = ""
-      }
 
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
@@ -117,15 +111,14 @@ const useVote = () => {
         { t: 'string', v: amountValue }, //custom amount added by citizen
         { t: "address", v: account },
         { t: 'string', v: yesTheftProposalId },
-        { t: 'string', v: noTheftProposalId },
-        { t: "string", v: priorVoteID }
+        { t: 'string', v: noTheftProposalId }
       ]
       const sha3 = web3.utils.soliditySha3(...messageParams)
       const signedMessage = await web3.eth.personal.sign(sha3, account)
 
-      console.log('before vote', [votingArea, hierarchyPath, values.hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
+      console.log('before vote', [votingArea, hierarchyPath, values.hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, signedMessage])
 
-      await carryTransaction(contract, 'createVote', [votingArea, hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, priorVoteID, signedMessage])
+      await carryTransaction(contract, 'createVote', [votingArea, hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, signedMessage])
       console.log('after vote')
 
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
