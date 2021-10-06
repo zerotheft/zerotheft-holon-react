@@ -80,6 +80,8 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
 }
 
 const Wrapper = styled.div`
+    float: left;
+    margin-right: 10px;
     .description{
         white-space: pre-wrap;
     }

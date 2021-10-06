@@ -3,6 +3,9 @@ import { get as lodGet } from 'lodash'
 
 export const getProposal = async id => {
   try {
+    if (!id) {
+      return;
+    }
     const { data } = await get(`api/proposal-detail/${id}`)
     return data
   } catch (e) {

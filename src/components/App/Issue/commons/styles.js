@@ -107,6 +107,15 @@ NoChartText = styled.div`
       width: fit-content;
     }
   `,
+  EmptyProposalWrapper = styled.div`
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    z-index: 5;
+    & > p {
+      text-align: center;
+    }
+  `,
   Right = styled.div`
   padding: 20px 0 0;
   &.apply-bg {
@@ -244,6 +253,14 @@ NoChartText = styled.div`
         font-weight: 400;
         color: ${colors.idWrapper.text};
       }
+    }
+  }
+  .overlayTextWrapper {
+    width: 100%;
+    position: absolute;
+    top: 65%;
+    .overlayText {
+      text-align: center;
     }
   }
 `

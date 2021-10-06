@@ -14,14 +14,19 @@ import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 import { IssueContext } from '../../IssueContext'
 
-const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, counter = false, loading = false }) => {
+const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, counter = false, loading = false, viewPage=false }) => {
   const match = useRouteMatch()
   const history = useHistory()
+
   const { selection, updateSelection } = useContext(IssueContext)
-  return <Wrapper>
+  
+  return <Wrapper style={{height: '100%'}}>
     {loading && <OverlaySpinner loading overlayParent />}
-    {data.length ? data.map((i, idx) => <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)} style={{marginBottom: '8px', border: '1px solid rgb(221, 221, 221)', borderRadius: '5px'}} >
-      <div className='itemWrap' style={{ borderRadius: '5px' , cursor: 'pointer'}}>
+    <div style={{ height: '90%', overflowY: 'auto' }}>
+      <div style={{overflow: 'hidden'}}>
+      {data.length ? data.map((i, idx) =>
+      <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)} >
+      <div className='itemWrap'>
         <div>
           {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
           <div style={{fontWeight: '200'}}>#{i.id} </div>
@@ -72,30 +77,41 @@ const Points = ({ data = [], selectedItem = {}, updateSelectedItem, issue = {}, 
           </div>
         </div>
       </div>
-    </Item>) : <EmptyText>No { (counter)? 'counter': '' } proposals are available. Please add new { (counter)? 'counter': '' } proposal.</EmptyText>}
-    <ButtonWrapper>
-      {data.length ? <div className='none'>None of these are accurate</div> : null}
+    </Item>) : ''}
+      </div>
+    </div>
+    {viewPage
+      ? '' :
+      <ButtonWrapper>
+        {data.length ? <div className='none'>None of these are accurate</div> : null}
+        {data.length ? 
       <div className='btns'>
         <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${counter ? 'counter-' : ''}proposal`}>
           Add { (counter)? 'Counter': '' } Proposal
         </a>
-      </div>
+        </div>: null
+        }
       {/* <div style={{ marginTop: '10px' }}>
         {(counter && !get(selection, 'proposal')) ? null : <Button onClick={() => {
           updateSelection({ ...selection, [counter ? 'counterProposal' : 'proposal']: null })
           history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${counter ? 'vote' : 'counter-proposals'}`)
         }} plain width={150} height={44} style={{ marginLeft: 10 }}>Skip This</Button>}
       </div> */}
-    </ButtonWrapper>
+      </ButtonWrapper>
+    }
   </Wrapper>
 }
 
 export default Points
 
 const Item = styled.div`
+  border-bottom-width: 1px;
+  border-color: rgb(221, 221, 221);
+  border-bottom-style: solid;
   & > .itemWrap {
+    cursor: pointer;
     background: transparent;
-    padding: 11px;
+    padding: 8px 8px 2px 8px;
     color: #000;
     border-radius: 2px;
     display: flex;
@@ -131,6 +147,9 @@ const Item = styled.div`
   position: relative;
 `,
   ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 20px;
+  height: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -141,7 +160,7 @@ const Item = styled.div`
     font-size: 16px;
     font-weight: 600;
     text-transform: uppercase;
-    margin-bottom: 15px;
+    margin-bottom: 5px;
   }
   .btns {
     display: flex;

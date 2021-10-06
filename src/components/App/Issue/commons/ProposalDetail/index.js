@@ -15,18 +15,45 @@ import OverlaySpinner from 'commons/OverlaySpinner';
 import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
 import { FlexRow } from 'commons/styles';
+import { getTheftInfo } from 'apis/reports';
+import { AppContext } from 'components/App/AppContext'
+import TheftInfo from 'components/App/Home/TheftInfo';
+import { convertDollarToString, numberWithCommas } from 'utils'
+import styled from 'styled-components';
 
 const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, allowSelect = true, chartData = null }) => {
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
   // const { proposalDetails } = useContext(IssueContext)
+  let theftYears = item.theftYears
+  let maxTheftYear = null;
+  if (theftYears) {
+    let theftYearKeys = Object.keys(theftYears);
+    theftYearKeys = theftYearKeys.map(function (item) {
+      return parseInt(item)
+    })
+
+    maxTheftYear = (theftYearKeys.length > 0)? Math.max(...theftYearKeys): null;
+  }
+
+  const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
+  const { filterParams } = useContext(AppContext)
+
+  useEffect(() => {
+    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year'))
+  }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
+
   useEffect(() => {
     item && getProposalApi(item.id)
   }, [item])
 
+  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
+  const yes = theftData && (theftData.for / theftData.votes * 100).toFixed()
+  const no = 100 - yes
+
 
   if (proposalLoading) {
-    return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /></Body>)
+    return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /> <div className="overlayTextWrapper"> <p className="overlayText"> Please wait. The details are being fetched from the server. </p> </div> </Body>)
   }
   return (<Body>
     <div className="bodyDescription">
@@ -39,6 +66,23 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
     </div>
     <div className="detailsWithCharts">
       <Header>
+        {theftData && (no || yes) && <SelectWrapper>
+          <h4>Was there theft?</h4>
+          <div class="wrapLeftRightsec">
+            <div class="leftTheftSec">
+              <TheftBlockSec className="yesTheftsec" width={yes}>
+                <span>Yes {yes}%</span>
+              </TheftBlockSec>
+              <TheftBlockSec className="noTheftsec" width={no}>
+                <span>No {no}%</span>
+              </TheftBlockSec>
+            </div>
+          </div>
+          <div class="totlVotersSec">
+            Total Voters : {numberWithCommas(get(theftData, 'votes'))}
+          </div>
+        </SelectWrapper>
+        }
         <h4>If there was theft, which makes the best case.</h4>
         <h5 className='plain'>This is used to compare against, for when you make your final decision</h5>
         {allowSelect &&
@@ -68,6 +112,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               <div>
                 <h4>Theft Amount: </h4>
                 <h3>{item.summary}</h3>
+                {(maxTheftYear) ? <h4>(in {maxTheftYear})</h4>: null }
               </div>
             </div>
             <div className="warning">
@@ -98,7 +143,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
         {imageExists(`${reportPath}-votesForTheftAmount.svg`) ?
           <div className="imageWrapper">
             <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
-          </div> : <NoChartText>Report is not available yet.</NoChartText>
+          </div> : <NoChartText>Unable to meet criteria for chart.</NoChartText>
         }
 
         <div className='idWrapper'>
@@ -111,3 +156,115 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
 }
 
 export default ProposalDetail
+
+const TheftBlockSec = styled.div`
+    display:flex;
+    flex-flow: column;
+    height: auto;
+    margin-bottom: 10px;
+    align-item: center;
+    background: ${colors.button.greyBackground};
+    font-family: Poppins;
+    font-size: 18px;
+    position: relative;
+    span{
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      white-space: nowrap;
+      justify-content: center;
+      color: white;
+      padding-left: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: ${props => props.width || 0}%;
+      background: green;
+    }
+    &.noTheftsec {
+      &::before {
+        background: red;
+      }
+    }
+  `,
+  SelectWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-self: flex-start;
+  .btns {
+    display: flex;
+    justify-content: flex-start;
+    align-self: flex-start;
+    border-radius: 8px;
+    margin-right: 10px;
+  }
+  & > span {
+    font-size: 15px;
+    font-weight: 500;
+    color: #000;
+    margin-right: 10px;
+  }
+`,
+TitleContent = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  h3 {
+    font-size: 29px;
+    font-weight: 500;
+    color: 39313F;
+  }
+  button {
+    font-size: 18px;
+    font-weight: 600;
+  }
+  margin-bottom: 35px;
+`,
+  InfoWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+`,
+  InfoBox = styled.div`
+  width: calc((100% - 86px)/2);
+  background: #C5EEE4;
+  border-radius: 23px;
+  padding: 25px 40px;
+  box-shadow: 0px 4px 23px rgba(0, 0, 0, 0.08);
+  &:first-of-type {
+    background: #EBE0F3;
+    margin-right: 43px;
+  }
+  &:last-of-type {
+    background: #EEE5C5;
+    margin-left: 43px;
+  }
+  h3 {
+    font-size: 75px;
+    font-weight: 700;
+    color: #000;
+  }
+  h5 {
+    font-size: 23px;
+    font-weight: 500;
+    color: #000;
+  }
+  h6 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #000;
+  }
+`, InfoText = styled.span`
+    font-size: 14px;
+    font-weight: 500;
+    color: ${colors.text.gray};
+`
