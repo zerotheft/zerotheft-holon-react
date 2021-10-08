@@ -109,7 +109,7 @@ NoChartText = styled.div`
   `,
   EmptyProposalWrapper = styled.div`
     position: absolute;
-    top: 50%;
+    top: 65%;
     width: 100%;
     z-index: 5;
     & > p {
