@@ -160,7 +160,7 @@ const Wrapper = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 5;
+  z-index: 6;
   background: #fff;
   & > ${Container} {
     display: flex;
