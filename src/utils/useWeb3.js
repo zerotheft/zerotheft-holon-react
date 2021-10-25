@@ -11,11 +11,11 @@ const useWeb3 = () => {
   // useEffect(() => {loadWeb3()}, [])
   return {
     web3,
-    getBalance: address => getBalance(web3, address),
+    getBalance: (address) => getBalance(web3, address),
     callSmartContractGetFunc: (...args) => callSmartContractGetFunc(web3, ...args),
     convertStringToHash: (...args) => convertStringToHash(web3, ...args),
     convertToAscii: (...args) => convertToAscii(web3, ...args),
-    carryTransaction: (...args) => carryTransaction(web3, loadWeb3, ...args)
+    carryTransaction: (...args) => carryTransaction(web3, loadWeb3, ...args),
   }
 }
 
@@ -53,8 +53,9 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
       ...{
         nonce: web3.utils.toHex(txCount),
         gasLimit: web3.utils.toHex(300000),
-        gasPrice: web3.utils.toHex(web3.utils.toWei(GAS_PRICE.toString() || '30', 'gwei'))
-      }, ...obj
+        gasPrice: web3.utils.toHex(web3.utils.toWei(GAS_PRICE.toString() || '30', 'gwei')),
+      },
+      ...obj,
     }
 
     return web3.eth.sendTransaction(txObject)
@@ -66,7 +67,7 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
 const callSmartContractGetFunc = async (web3, contract, methodName, args = []) => {
   const [instance] = await instantiateContract(web3, contract)
 
-  return await instance.methods[methodName](...args).call();
+  return await instance.methods[methodName](...args).call()
 }
 
 /**
@@ -95,4 +96,3 @@ const convertStringToHash = (web3, item) => {
 const convertToAscii = (web3, item) => {
   return web3.utils.asciiToHex(item)
 }
-

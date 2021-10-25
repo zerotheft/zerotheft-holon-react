@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import Carousel from 'react-elastic-carousel';
+import Carousel from 'react-elastic-carousel'
 import { get, shuffle, take, takeRight, isArray, uniqBy, lowerCase, isObject, remove } from 'lodash'
 import { colors } from 'theme'
 import styled from 'styled-components'
@@ -16,12 +16,11 @@ import { AppContext } from '../AppContext'
 const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
   if (!isObject(data)) return []
   const arr = []
-  Object.keys(data).forEach(i => {
+  Object.keys(data).forEach((i) => {
     if (!data[i] || data[i].leaf) {
       if (!searchFilter) arr.push({ title: i, path: `${path}/issue/${i}` })
       else if (searchFilter === lowerCase(i).charAt(0)) arr.push({ title: i, path: `${path}/issue/${i}` })
-    }
-    else {
+    } else {
       arr.push(...getLeafNodes(data[i], `${path}%2F${i}`, searchFilter))
     }
   })
@@ -37,7 +36,7 @@ const getRelatedEndNodes = (issues, name, path) => {
   const username = [...take(name, 2), ...takeRight(name, 2)] // get first 2 and last 2 characters
 
   for (const u of username) {
-    const letters = remove([...username], i => i !== u) || []
+    const letters = remove([...username], (i) => i !== u) || []
     for (const letter of letters) {
       for (const i in issues) {
         if (u === lowerCase(i).charAt(0)) {
@@ -63,19 +62,35 @@ const IssueSlider = ({ onlySlider = false }) => {
     prepareCarouselData(paths)
   }, [paths])
 
-  const prepareCarouselData = async paths => {
-    const username = uniqBy(lowerCase(get(userInfo, 'name', '')).replace(/[^a-zA-Z0-9]/g, '').split(''))
-    let issues = getRelatedEndNodes(get(paths, get(filterParams, 'initPath'), {}), userInfo ? username : null, `/path/${get(filterParams, 'initPath', 'USA')}`)
+  const prepareCarouselData = async (paths) => {
+    const username = uniqBy(
+      lowerCase(get(userInfo, 'name', ''))
+        .replace(/[^a-zA-Z0-9]/g, '')
+        .split('')
+    )
+    let issues = getRelatedEndNodes(
+      get(paths, get(filterParams, 'initPath'), {}),
+      userInfo ? username : null,
+      `/path/${get(filterParams, 'initPath', 'USA')}`
+    )
     if (issues.length < 3) {
-      issues = getRelatedEndNodes(get(paths, get(filterParams, 'initPath'), {}), null, `/path/${get(filterParams, 'initPath', 'USA')}`)
+      issues = getRelatedEndNodes(
+        get(paths, get(filterParams, 'initPath'), {}),
+        null,
+        `/path/${get(filterParams, 'initPath', 'USA')}`
+      )
     }
-    const mappedIssues = (await Promise.all(issues.map(async i => {
-      let path = get(i, 'path', '').split('/')[2] || ''
-      const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/') }/${ i.title}`
-      const template = await getTemplateApi(templatePath)
-      path = path.replace(/%2F/g, ' > ')
-      return { title: i.title, path, rawPath: i.path, description: displayYaml(template, i.path) }
-    }))).filter(i => i.description)
+    const mappedIssues = (
+      await Promise.all(
+        issues.map(async (i) => {
+          let path = get(i, 'path', '').split('/')[2] || ''
+          const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${i.title}`
+          const template = await getTemplateApi(templatePath)
+          path = path.replace(/%2F/g, ' > ')
+          return { title: i.title, path, rawPath: i.path, description: displayYaml(template, i.path) }
+        })
+      )
+    ).filter((i) => i.description)
     setIssues(mappedIssues)
   }
 
@@ -83,50 +98,64 @@ const IssueSlider = ({ onlySlider = false }) => {
     if (num && str && str.length > num) {
       return `${str.slice(0, num)}...`
     }
-    return str;
+    return str
   }
 
   const displayYaml = (template, path) => {
     let data
     try {
       data = yaml.safeLoad(template)
-    }
-    catch (e) {
+    } catch (e) {
       console.log('loading yaml', e.message)
     }
 
     const details = get(data, 'describe_problem_area') || ''
     return truncateString(details, 100)
   }
-  return <Wrapper>
-    <Container>
-      {!onlySlider &&
-        <Welcome>
-          <h2>Welcome Citizen!</h2>
-          <p>
-            You can now explore the areas where your fellow citizens believe the rigged economy is resulting in THEFT. Get Started by learning, voting, and even proposing your own areas of theft.
-          </p>
-        </Welcome>}
-      <SliderContent className={!onlySlider ? '' : 'full'}>
-        {loading ? <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} /> : <>
-          <h3>For you to vote on next:</h3>
-          {allIssues.length ? <Carousel pagination={false} enableMouseSwipe={false} style={{ height: '160px' }}>
-            {allIssues.map(element => {
-              return <Item>
-                <Path>{get(element, 'path', '').replace(/_/g, ' ')} {'>'} {get(element, 'title', '').replace(/_/g, ' ')}</Path>
-                <div style={{ fontSize: '15px' }}>{element.description}</div>
-                <Button onClick={() => history.push(element.rawPath)} plain>Read More</Button>
-              </Item>
-            })}
-          </Carousel> : null}
-        </>}
-        {(!loading && !allIssues.length) ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
-      </SliderContent>
-    </Container>
-  </Wrapper>
+  return (
+    <Wrapper>
+      <Container>
+        {!onlySlider && (
+          <Welcome>
+            <h2>Welcome Citizen!</h2>
+            <p>
+              You can now explore the areas where your fellow citizens believe the rigged economy is resulting in THEFT.
+              Get Started by learning, voting, and even proposing your own areas of theft.
+            </p>
+          </Welcome>
+        )}
+        <SliderContent className={!onlySlider ? '' : 'full'}>
+          {loading ? (
+            <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} />
+          ) : (
+            <>
+              <h3>For you to vote on next:</h3>
+              {allIssues.length ? (
+                <Carousel pagination={false} enableMouseSwipe={false} style={{ height: '160px' }}>
+                  {allIssues.map((element) => {
+                    return (
+                      <Item>
+                        <Path>
+                          {get(element, 'path', '').replace(/_/g, ' ')} {'>'}{' '}
+                          {get(element, 'title', '').replace(/_/g, ' ')}
+                        </Path>
+                        <div style={{ fontSize: '15px' }}>{element.description}</div>
+                        <Button onClick={() => history.push(element.rawPath)} plain>
+                          Read More
+                        </Button>
+                      </Item>
+                    )
+                  })}
+                </Carousel>
+              ) : null}
+            </>
+          )}
+          {!loading && !allIssues.length ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
+        </SliderContent>
+      </Container>
+    </Wrapper>
+  )
 }
-
-
 
 export default IssueSlider
 
@@ -156,8 +185,8 @@ const Wrapper = styled.section`
     width: 100%;
     max-width: 47%;
     min-height: 256px;
-    background: #FFFFFF;
-    box-shadow: 0px 0px 16px 1px #E2EDEA;
+    background: #ffffff;
+    box-shadow: 0px 0px 16px 1px #e2edea;
     border-radius: 17px;
     position: relative;
     padding: 20px 50px;
@@ -205,4 +234,4 @@ const Wrapper = styled.section`
     color: #333;
     font-weight: 500;
     text-transform: capitalize;
-  `;
+  `

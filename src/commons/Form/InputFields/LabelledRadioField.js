@@ -12,7 +12,7 @@ const LabelledRadioField = ({ field, readonly = false, values = [], style, inner
   return (
     <Field
       name={field.name}
-      render={RadioField => (
+      render={(RadioField) => (
         <CustomFieldWrapper style={style}>
           <div className="innerform-wrapper" style={innerStyle}>
             <RadioItemsWrapper>
@@ -38,36 +38,38 @@ const LabelledRadioField = ({ field, readonly = false, values = [], style, inner
 }
 
 LabelledRadioField.propTypes = {
-  field     : PropTypes.object,
+  field: PropTypes.object,
   innerStyle: PropTypes.object,
   radioStyle: PropTypes.object,
-  readonly  : PropTypes.bool,
-  style     : PropTypes.object,
-  values    : PropTypes.array,
+  readonly: PropTypes.bool,
+  style: PropTypes.object,
+  values: PropTypes.array,
 }
 
 export default LabelledRadioField
 
 const RadioItemsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`,
+    display: flex;
+    flex-direction: row;
+  `,
   RadioItem = styled.div`
-  input[type = radio] { display: none; }
-  input[type = radio] ~ label {
-    border: 2px solid #ccc;
-    color: #4d4a50;
-    font-size: 17px;
-    font-weight: 500;
-    padding: 5px 16px;
-    margin-right: 12px;
-    min-width: 85px;
-    display: inline-block;
-    user-select: none;
-  }
-  input[type=radio]:checked ~ label {
-    background: ${colors.primary};
-    color: #fff;
-    border-color: ${colors.primary};
-  }
-`
+    input[type='radio'] {
+      display: none;
+    }
+    input[type='radio'] ~ label {
+      border: 2px solid #ccc;
+      color: #4d4a50;
+      font-size: 17px;
+      font-weight: 500;
+      padding: 5px 16px;
+      margin-right: 12px;
+      min-width: 85px;
+      display: inline-block;
+      user-select: none;
+    }
+    input[type='radio']:checked ~ label {
+      background: ${colors.primary};
+      color: #fff;
+      border-color: ${colors.primary};
+    }
+  `

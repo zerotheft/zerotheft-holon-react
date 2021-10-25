@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 import Button from 'commons/Buttons'
 import { VoteContext } from '../VoteContext'
 
-export const ButtonsWrapper = styled.div `
+export const ButtonsWrapper = styled.div`
   display: flex;
   margin-top: 30px;
   ${Button} {
@@ -17,23 +17,34 @@ export const ButtonsWrapper = styled.div `
   }
 `
 
-export const Previous = props => {
-  return <Button plain {...props}><FontAwesomeIcon icon={faLongArrowAltLeft} style={{ marginRight: 10 }} />Previous</Button>
+export const Previous = (props) => {
+  return (
+    <Button plain {...props}>
+      <FontAwesomeIcon icon={faLongArrowAltLeft} style={{ marginRight: 10 }} />
+      Previous
+    </Button>
+  )
 }
 
 export const Next = ({ currentStep, updateCurrentStep, ...props }) => {
   const { checkStep } = useContext(VoteContext)
 
-  return <Button
-    onClick={async() => {
-      const { msg, step } = await checkStep()
-      if(step === 7) {
-        return
-      }
-      if(step !== currentStep) updateCurrentStep(step)
-      else if(msg) {
-        toast.error(msg)
-      }
-    }}
-    {...props}>Continue<FontAwesomeIcon icon={faLongArrowAltRight} style={{ marginLeft: 10 }} /></Button>
+  return (
+    <Button
+      onClick={async () => {
+        const { msg, step } = await checkStep()
+        if (step === 7) {
+          return
+        }
+        if (step !== currentStep) updateCurrentStep(step)
+        else if (msg) {
+          toast.error(msg)
+        }
+      }}
+      {...props}
+    >
+      Continue
+      <FontAwesomeIcon icon={faLongArrowAltRight} style={{ marginLeft: 10 }} />
+    </Button>
+  )
 }

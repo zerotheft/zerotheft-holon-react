@@ -1,5 +1,4 @@
 import { useState, useEffect, useContext } from 'react'
-import { get } from 'lodash'
 import { getVoterInfos } from 'apis/centralizedServer'
 import { Web3Context } from 'components/App/Web3Context'
 import { AppContext } from 'components/App/AppContext'
@@ -18,8 +17,8 @@ export default () => {
   const [step, changeStep] = useState(0),
     [voterInfo, updateVoterInfo] = useState()
 
-  const getMetamaskAccount = async skipWaiting => {
-    const web3R = (web3 || skipWaiting) ? web3 : await loadWeb3()
+  const getMetamaskAccount = async (skipWaiting) => {
+    const web3R = web3 || skipWaiting ? web3 : await loadWeb3()
 
     if (!web3R) return null
 
@@ -27,7 +26,7 @@ export default () => {
     return { account: accounts[0], web3: web3R }
   }
 
-  const getVoterInfo = async metamaskAccount => {
+  const getVoterInfo = async (metamaskAccount) => {
     if (metamaskAccount) {
       const { data } = await getVoterInfos(metamaskAccount.toLowerCase())
       updateVoterInfo(data)
@@ -35,10 +34,10 @@ export default () => {
     }
   }
 
-  const fetchPriorVoteInfo = async(path, metamaskAccount) => {
+  const fetchPriorVoteInfo = async (path, metamaskAccount) => {
     getPriorVoteApi({
       address: metamaskAccount,
-      url    : path
+      url: path,
     })
   }
 
@@ -46,10 +45,10 @@ export default () => {
     updateVoterInfo(userInfo)
   }, [userInfo])
 
-  const checkSteps = async(path, skipWaiting) => {
+  const checkSteps = async (path, skipWaiting) => {
     let newStep = 4
     let msg = ''
-    const { account: metamaskAccount, web3 } = await getMetamaskAccount(skipWaiting) || {}
+    const { account: metamaskAccount, web3 } = (await getMetamaskAccount(skipWaiting)) || {}
     try {
       // Get the voter Information from central server
       const voterInfo = await getVoterInfo(metamaskAccount)

@@ -9,15 +9,21 @@ import { convertDollarToString } from 'utils'
 const PathItem = ({ to = '/', name = '', summary, parent = false }) => {
   const realpath = to.replace('/issue', '').replaceAll('%2F', '/').replace('/path/', '')
   const summaryItem = summary[realpath] ? calculate(summary[realpath]) : {}
-  return <Wrapper to={to} parent={parent}>
-    <div className='name'>{name}</div>
-    {!isEmpty(summaryItem) && summaryItem.vote && <div className='details'>
-      <div className={`vote ${summaryItem.vote === 'YES' ? 'active' : ''}`}>
-        {summaryItem.vote === 'NO' ? 'NO THEFT' : 'YES THEFT'} {summaryItem.votedPercent}%
-      </div>
-      <div className={`amount ${summaryItem.vote === 'NO' ? 'line' : ''}`}>${convertDollarToString(toNumber(summaryItem.amount))}</div>
-    </div>}
-  </Wrapper>
+  return (
+    <Wrapper to={to} parent={parent}>
+      <div className="name">{name}</div>
+      {!isEmpty(summaryItem) && summaryItem.vote && (
+        <div className="details">
+          <div className={`vote ${summaryItem.vote === 'YES' ? 'active' : ''}`}>
+            {summaryItem.vote === 'NO' ? 'NO THEFT' : 'YES THEFT'} {summaryItem.votedPercent}%
+          </div>
+          <div className={`amount ${summaryItem.vote === 'NO' ? 'line' : ''}`}>
+            ${convertDollarToString(toNumber(summaryItem.amount))}
+          </div>
+        </div>
+      )}
+    </Wrapper>
+  )
 }
 
 export default PathItem
@@ -77,7 +83,9 @@ const Wrapper = styled(NavLink)`
       text-decoration: line-through;
     }
   }
-  ${props => props.parent && `
+  ${(props) =>
+    props.parent &&
+    `
     .name {
       font-size: 18px;
       font-weight: 500;

@@ -9,25 +9,24 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
   return (
     <Wrapper style={wrapperStyle}>
       <Container style={{ display: 'flex', flexDirection: 'column', ...tabInnerStyle }}>
-        {tabs.map(tab => {
+        {tabs.map((tab) => {
           return (
             <TabWrapper
               key={tab.id}
               to={tab.path}
-              active={activeTab==tab.pathId}
-              onClick={()=>{
-                const elementPosition = document.getElementById(tab.pathId).offsetTop;
-                const offsetPosition = elementPosition - 130;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+              active={activeTab == tab.pathId}
+              onClick={() => {
+                const elementPosition = document.getElementById(tab.pathId).offsetTop
+                const offsetPosition = elementPosition - 130
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
               }}
               style={tabStyle}
               activeStyle={{
                 fontWeight: '600',
                 background: '#7F51C1',
-                color     : 'white',
+                color: 'white',
                 ...activeStyle,
-              }
-              }
+              }}
             >
               {tab.name}
             </TabWrapper>
@@ -39,19 +38,19 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
 }
 
 Tabs.propTypes = {
-  activeStyle  : PropTypes.object,
+  activeStyle: PropTypes.object,
   tabInnerStyle: PropTypes.object,
-  tabs         : PropTypes.array.isRequired,
-  tabStyle     : PropTypes.object,
-  wrapperStyle : PropTypes.object,
+  tabs: PropTypes.array.isRequired,
+  tabStyle: PropTypes.object,
+  wrapperStyle: PropTypes.object,
 }
 
 const Wrapper = styled.div`
     display: none;
-    @media(min-width: 768px){
-        display: flex;
+    @media (min-width: 768px) {
+      display: flex;
     }
-`,
+  `,
   TabWrapper = styled(NavLink)`
     text-decoration: none;
     color: #000;
@@ -59,6 +58,6 @@ const Wrapper = styled.div`
     font-size: 17px;
     line-height: 48px;
     padding: 0 15px;
-`
+  `
 
 export default Tabs

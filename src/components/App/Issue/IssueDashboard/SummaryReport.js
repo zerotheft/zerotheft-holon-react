@@ -1,33 +1,32 @@
-import React, { useEffect } from 'react';
-import { get as getAPI } from 'utils/api';
+import React, { useEffect } from 'react'
+import { get as getAPI } from 'utils/api'
 
-const SummaryReport = url => {
-  const getSummaryReportInfo = async() => {
-    const summaryReportInfo = await getAPI( null,'',url);    
-    
+const SummaryReport = (url) => {
+  const getSummaryReportInfo = async () => {
+    const summaryReportInfo = await getAPI(null, '', url)
+
     if (summaryReportInfo.data) {
-      const div = document.createElement('div');
-      const parser = new DOMParser();
-      const htmlDoc = parser.parseFromString(summaryReportInfo.data, 'text/html');
+      const div = document.createElement('div')
+      const parser = new DOMParser()
+      const htmlDoc = parser.parseFromString(summaryReportInfo.data, 'text/html')
 
-      const getCellOrJpCell = parentClass => {
-        const parent = htmlDoc.getElementById(parentClass);
-        if (!parent) return '';
+      const getCellOrJpCell = (parentClass) => {
+        const parent = htmlDoc.getElementById(parentClass)
+        if (!parent) return ''
 
-        const closestCell = parent.closest('.cell');
-        if (closestCell) return closestCell.outerHTML;
+        const closestCell = parent.closest('.cell')
+        if (closestCell) return closestCell.outerHTML
 
-        const closestJPCell = parent.closest('.jp-Cell');
-        if (closestJPCell) return closestJPCell.outerHTML;
-      };
+        const closestJPCell = parent.closest('.jp-Cell')
+        if (closestJPCell) return closestJPCell.outerHTML
+      }
 
-      const bar = getCellOrJpCell('bar_issue');
-      let summary = getCellOrJpCell('summary_issue');
+      const bar = getCellOrJpCell('bar_issue')
+      let summary = getCellOrJpCell('summary_issue')
 
-      summary += bar;
+      summary += bar
 
-      summary +=
-        `<style>
+      summary += `<style>
           .boxWrapper {
             display: flex;
             justify-content: space-around;
@@ -73,20 +72,20 @@ const SummaryReport = url => {
             margin: -40px 0;
           }
           div#view-summary-report img, div#view-summary-report #summary_issue {width:100%;} div#view-summary-report > div {display: flex;justify-content: center;} div#view-summary-report
-        </style>`;
-      div.innerHTML = summary;
+        </style>`
+      div.innerHTML = summary
 
       while (div.firstChild) {
-        document.getElementById('view-summary-report').appendChild(div.firstChild);
+        document.getElementById('view-summary-report').appendChild(div.firstChild)
       }
     }
-  };
+  }
 
   useEffect(() => {
-    getSummaryReportInfo();
-  }, []);
+    getSummaryReportInfo()
+  }, [])
 
-  return <div id="view-summary-report" />;
-};
+  return <div id="view-summary-report" />
+}
 
-export default SummaryReport;
+export default SummaryReport

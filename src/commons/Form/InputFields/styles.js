@@ -12,7 +12,7 @@ export const CustomFieldWrapper = styled.div`
       align-items: center;
       width: 100%;
       & > label {
-        width: ${props => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
+        width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
         text-align: right;
         text-align: end;
         margin-right: 10px;
@@ -21,12 +21,11 @@ export const CustomFieldWrapper = styled.div`
         font-size: 16px;
         line-height: 23px;
         white-space: nowrap;
-
       }
       & > input {
         display: flex;
         min-width: 0;
-        border: 1px solid #E2DCDC;
+        border: 1px solid #e2dcdc;
         padding: 8px 12px;
         font-size: 15px;
         border-radius: 8px;
@@ -45,7 +44,7 @@ export const CustomFieldWrapper = styled.div`
           min-height: 47px;
         }
         ::placeholder {
-          color: #9E9B9B;
+          color: #9e9b9b;
         }
       }
       & > input[type='checkbox'],
@@ -61,17 +60,18 @@ export const CustomFieldWrapper = styled.div`
       }
       & > textarea {
         width: 100%;
-        font-family: 'Poppins', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        font-family: 'Poppins', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell',
+          'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
         resize: vertical;
         flex: 1 1 0%;
         min-width: 0;
         min-height: 200px;
-        border: 1px solid #E2DCDC;
+        border: 1px solid #e2dcdc;
         padding: 8px 12px;
         font-size: 16px;
         border-radius: 8px;
         ::placeholder {
-          color: #9E9B9B;
+          color: #9e9b9b;
         }
         &:disabled {
           background: #f2f2f2;
@@ -90,8 +90,8 @@ export const CustomFieldWrapper = styled.div`
         border-color: red;
       }
     }
-    ${props =>
-    props.labelType === 'top' &&
+    ${(props) =>
+      props.labelType === 'top' &&
       `
       & > div.innerform-wrapper {
         flex-direction: column;
@@ -104,7 +104,7 @@ export const CustomFieldWrapper = styled.div`
     `}
   `,
   Label = styled.div`
-    width: ${props => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
+    width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
     font-weight: 500;
     color: #797979;
     font-size: 16px;
@@ -172,8 +172,8 @@ export const CustomFieldWrapper = styled.div`
         box-shadow: 0px 0px 0px 2px ${colors.primary}, inset 0px 0px 0px 2px #fff;
       }
     }
-    ${props =>
-    props.disabled &&
+    ${(props) =>
+      props.disabled &&
       `
       & > label {
         color: #bcbcbc;

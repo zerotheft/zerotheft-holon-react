@@ -25,103 +25,127 @@ const { CENTRALIZED_SERVER_FRONTEND } = config
 const Header = () => {
   const [getNationsApi, loading, nations] = useFetch(getNations)
   const { selectedHolon, filterParams, updateFilter } = useContext(AppContext)
-  const [country, selectCountry] = useState({ value: get(filterParams, 'initPath', 'USA'), label: get(filterParams, 'initPath', 'USA') })
+  const [country, selectCountry] = useState({
+    value: get(filterParams, 'initPath', 'USA'),
+    label: get(filterParams, 'initPath', 'USA'),
+  })
 
   useEffect(() => {
     getNationsApi()
   }, [])
 
-  return <Wrapper>
-    {loading && <OverlaySpinner loading />}
-    {/* <Container>
+  return (
+    <Wrapper>
+      {loading && <OverlaySpinner loading />}
+      {/* <Container>
       <TopHeader>
         {selectedHolon.id ? `Connected to: ${selectedHolon.port}` : 'Not connected to any holons'}
         <a href="zerotheft://holon"><span style={{ marginLeft: 15 }}>{selectedHolon.id ? 'Change' : 'Select'} Holon</span></a>
       </TopHeader>
     </Container> */}
-    <Container>
-      <LeftWrapper>
-        <BrandLogo>
-          <Link to='/'>
-            <img src={BRANDLOGO} alt='brand logo' />
-          </Link>
-        </BrandLogo>
-        <MenuWrapper>
-          <li>
-            <NavLink to="/" activeClassName='active1'>
-              <HomeIcon />
-              Home
-            </NavLink>
-          </li>
-          <li>
-            <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
-              <HolonIcon />
-              Holons
-            </a>
-          </li>
-          <li>
-            <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName='active'>
+      <Container>
+        <LeftWrapper>
+          <BrandLogo>
+            <Link to="/">
+              <img src={BRANDLOGO} alt="brand logo" />
+            </Link>
+          </BrandLogo>
+          <MenuWrapper>
+            <li>
+              <NavLink to="/" activeClassName="active1">
+                <HomeIcon />
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
+                <HolonIcon />
+                Holons
+              </a>
+            </li>
+            <li>
+              <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active">
+                <PathIcon />
+                Paths
+              </NavLink>
+            </li>
+            {selectedHolon.id && (
+              <li>
+                <NavLink to={ROUTES.DONATE} activeClassName="active">
+                  <DonateIcon />
+                  Donate
+                </NavLink>
+              </li>
+            )}
+            <li className="more">
               <PathIcon />
-              Paths
-            </NavLink>
-          </li>
-          {selectedHolon.id && <li>
-            <NavLink to={ROUTES.DONATE} activeClassName='active'>
-              <DonateIcon />
-              Donate
-            </NavLink>
-          </li>}
-          <li className='more'>
-            <PathIcon />
-            More
-            <ul>
-              <li><NavLink to={ROUTES.DATALIST} activeClassName='active'>Citizens/Proposals</NavLink></li>
-              <li><NavLink to={ROUTES.VOTELIST} activeClassName='active'>Votes</NavLink></li>
-              <li><NavLink to={ROUTES.HIERARCHY} activeClassName='active'>HierarchyYaml</NavLink></li>
-              <li><a href={ROUTES.EXPORT_LOCATION} activeClassName='active' target='_blank' rel="noreferrer">Exported Data</a></li>
-            </ul>
-          </li>
-        </MenuWrapper>
-      </LeftWrapper>
-      <RightWrapper>
-        <Select
-          value={country}
-          isSearchable={false}
-          options={[...get(nations, 'data', []).map(i => ({ label: i.nation, value: i.nation })), { value: 'none', label: 'Select Another Country' }]}
-          onChange={async i => {
-            if (i.value === 'none') {
-              await selectCountry({ value: 'USA', label: 'USA' })
-              window.open('https://zerotheft.net/the-zt-global-expansion/', true)
-            }
-            else selectCountry(i)
-          }}
-          styles={{
-            container: styles => ({
-              ...styles,
-              marginRight: 5
-            }),
-            menu: styles => ({
-              ...styles,
-              width: 210
-            }),
-            control: styles => ({
-              ...styles,
-              width      : 90,
-              borderColor: 'transparent !important',
-              border     : 'none !important',
-            }),
-            singleValue: styles => ({
-              ...styles,
-              fontSize  : 15,
-              fontWeight: 500,
-              color     : '#77707D'
-            }),
-            indicatorSeparator: () => ({
-              display: 'none'
-            })
-          }}
-        />
-        {/* <Select
+              More
+              <ul>
+                <li>
+                  <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                    Citizens/Proposals
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                    Votes
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                    HierarchyYaml
+                  </NavLink>
+                </li>
+                <li>
+                  <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                    Exported Data
+                  </a>
+                </li>
+              </ul>
+            </li>
+          </MenuWrapper>
+        </LeftWrapper>
+        <RightWrapper>
+          <Select
+            value={country}
+            isSearchable={false}
+            options={[
+              ...get(nations, 'data', []).map((i) => ({ label: i.nation, value: i.nation })),
+              { value: 'none', label: 'Select Another Country' },
+            ]}
+            onChange={async (i) => {
+              if (i.value === 'none') {
+                await selectCountry({ value: 'USA', label: 'USA' })
+                window.open('https://zerotheft.net/the-zt-global-expansion/', true)
+              } else selectCountry(i)
+            }}
+            styles={{
+              container: (styles) => ({
+                ...styles,
+                marginRight: 5,
+              }),
+              menu: (styles) => ({
+                ...styles,
+                width: 210,
+              }),
+              control: (styles) => ({
+                ...styles,
+                width: 90,
+                borderColor: 'transparent !important',
+                border: 'none !important',
+              }),
+              singleValue: (styles) => ({
+                ...styles,
+                fontSize: 15,
+                fontWeight: 500,
+                color: '#77707D',
+              }),
+              indicatorSeparator: () => ({
+                display: 'none',
+              }),
+            }}
+          />
+          {/* <Select
           defaultValue={{ value: filterParams.year, label: filterParams.year }}
           options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
           onChange={selected => {
@@ -146,69 +170,71 @@ const Header = () => {
             })
           }}
         /> */}
-      </RightWrapper>
-    </Container>
-  </Wrapper>
+        </RightWrapper>
+      </Container>
+    </Wrapper>
+  )
 }
 
 export default Header
 
 const Wrapper = styled.header`
-  height: 60px;
-  width: 100%;
-  position: fixed;
-  top: 0; left: 0;
-  box-shadow: 0px 1px 0px 0px #CDDADD;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 6;
-  background: #fff;
-  & > ${Container} {
+    height: 60px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0px 1px 0px 0px #cddadd;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 6;
+    background: #fff;
+    & > ${Container} {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 10px;
+    }
+  `,
+  TopHeader = styled.div`
     display: flex;
     flex-direction: row;
+    margin: 5px 0;
     align-items: center;
-    justify-content: space-between;
-    padding-top:10px;
-  }
-`,
-  TopHeader = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 5px 0;
-  align-items: center;
-  a {
-    color: ${colors.primary};
-  }
-`
+    a {
+      color: ${colors.primary};
+    }
+  `
 const BrandLogo = styled.div`
   img {
-    display: block
+    display: block;
   }
-`;
+`
 const LeftWrapper = styled.div`
   display: flex;
   flex-direction: row;
   flex: 1;
   max-width: 750px;
   justify-content: space-between;
-`;
+`
 const RightWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-`;
+`
 const MenuWrapper = styled.ul`
   display: flex;
   flex-direction: row;
   .more {
     cursor: pointer;
-    color: #8C8989;
+    color: #8c8989;
     position: relative;
     ul {
-      opacity:0;
-      visibility:hidden;
-      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      opacity: 0;
+      visibility: hidden;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
       border-radius: 4px;
       background: #fff;
       transition: 0.5s ease-in-out;
@@ -223,8 +249,8 @@ const MenuWrapper = styled.ul`
     }
   }
   li.more:hover ul {
-    opacity:1;
-    visibility:visible;
+    opacity: 1;
+    visibility: visible;
     top: 50px;
   }
   li {
@@ -234,7 +260,7 @@ const MenuWrapper = styled.ul`
     align-items: center;
     a {
       text-decoration: none;
-      color: #8C8989;
+      color: #8c8989;
       font-size: 15px;
       font-weight: 500;
       display: flex;
@@ -253,4 +279,4 @@ const MenuWrapper = styled.ul`
       }
     }
   }
-`;
+`

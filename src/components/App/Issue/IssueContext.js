@@ -32,8 +32,8 @@ const IssueProvider = ({ children, id, match, params, location }) => {
     const counterProposalId = getParameterByName('c')
 
     if (proposalId || counterProposalId) {
-      const proposal = issue.proposals.find(i => i.id === proposalId)
-      const counterProposal = issue.counter_proposals.find(i => i.id === counterProposalId)
+      const proposal = issue.proposals.find((i) => i.id === proposalId)
+      const counterProposal = issue.counter_proposals.find((i) => i.id === counterProposalId)
       updateSelection({ proposal, counterProposal })
     }
   }, [issue, location.search])
@@ -41,7 +41,7 @@ const IssueProvider = ({ children, id, match, params, location }) => {
   const selectedProposalId = get(selection, 'proposal.id')
   const selectedCounterProposalId = get(selection, 'counterProposal.id')
 
-  const fetchProposal = async proposalId => {
+  const fetchProposal = async (proposalId) => {
     if (proposalDetails[proposalId] || !proposalId) return
     try {
       updateProposalDetails({ ...proposalDetails, [proposalId]: { loading: true } })
@@ -90,18 +90,26 @@ const useIssueFetcher = (id, match) => {
     [loading, updateLoading] = useState(true),
     [error, updateError] = useState()
 
-  const fetchIssue = async() => {
+  const fetchIssue = async () => {
     updateLoading(true)
     try {
-      const path = await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`) || []
+      const path = (await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`)) || []
       const issueDetails = {}
-      issueDetails.proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
-        ...i, year: parseInt(get(i, 'year'))
-      })) || []
+      issueDetails.proposals =
+        path.data
+          .filter((i) => i && parseFloat(i.theftAmt) > 0)
+          .map((i) => ({
+            ...i,
+            year: parseInt(get(i, 'year')),
+          })) || []
 
-      issueDetails.counter_proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) <= 0)).map(i => ({
-        ...i, year: parseInt(get(i, 'year'))
-      })) || []
+      issueDetails.counter_proposals =
+        path.data
+          .filter((i) => i && parseFloat(i.theftAmt) <= 0)
+          .map((i) => ({
+            ...i,
+            year: parseInt(get(i, 'year')),
+          })) || []
 
       issueDetails.bellCurveData = path.chartData || {}
       updateIssue(issueDetails)

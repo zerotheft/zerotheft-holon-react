@@ -18,7 +18,7 @@ const EditableField = ({
   type = 'text',
   labelType = 'side',
   style,
-  inputStyles = {}
+  inputStyles = {},
 }) => (
   <CustomFieldWrapper
     style={style}
@@ -50,18 +50,18 @@ const EditableField = ({
 )
 
 EditableField.propTypes = {
-  field      : PropTypes.object,
-  form       : PropTypes.object,
-  label      : PropTypes.string,
-  labelWidth : PropTypes.string,
+  field: PropTypes.object,
+  form: PropTypes.object,
+  label: PropTypes.string,
+  labelWidth: PropTypes.string,
   inputStyles: PropTypes.object,
-  max        : PropTypes.number,
-  min        : PropTypes.number,
+  max: PropTypes.number,
+  min: PropTypes.number,
   placeholder: PropTypes.string,
-  readonly   : PropTypes.bool,
-  required   : PropTypes.bool,
-  style      : PropTypes.object,
-  type       : PropTypes.string,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  style: PropTypes.object,
+  type: PropTypes.string,
 }
 
 export default EditableField

@@ -20,7 +20,7 @@ import { VoteContext } from '../VoteContext'
 const steps = range(4, 8)
 const stepComponents = [Step4, Step5, Step6, Step7]
 
-const Steps = props => {
+const Steps = (props) => {
   const { step } = useContext(VoteContext)
   const [currentStep, updateCurrentStep] = useState(step)
   const Step = stepComponents[currentStep - 4]
@@ -33,14 +33,18 @@ const Steps = props => {
   return (
     <div>
       <Header>
-        <HeaderTitle>Complete all the steps, <br /> so you can vote</HeaderTitle>
+        <HeaderTitle>
+          Complete all the steps, <br /> so you can vote
+        </HeaderTitle>
         <StyledSteps>
-          {steps.map(i => <StepWrapper>
-            <Circle active={currentStep >= i}>
-              {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i - 3}`}
-            </Circle>
-            <img src={stepsArrow} alt="" />
-          </StepWrapper>)}
+          {steps.map((i) => (
+            <StepWrapper>
+              <Circle active={currentStep >= i}>
+                {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i - 3}`}
+              </Circle>
+              <img src={stepsArrow} alt="" />
+            </StepWrapper>
+          ))}
         </StyledSteps>
       </Header>
       <Body>
@@ -53,43 +57,43 @@ const Steps = props => {
 export default Steps
 
 const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-`,
+    display: flex;
+    justify-content: space-between;
+  `,
   HeaderTitle = styled.div`
-  font-size: 30px;
-  font-weight: 600;
-`,
+    font-size: 30px;
+    font-weight: 600;
+  `,
   StyledSteps = styled.div`
-  display: flex;
-  img {
-    height: 30px;
-  }
-  div:last-child {
+    display: flex;
     img {
-      display: none;
+      height: 30px;
     }
-  }
-`,
+    div:last-child {
+      img {
+        display: none;
+      }
+    }
+  `,
   StepWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`,
+    display: flex;
+    align-items: center;
+  `,
   Circle = styled.div`
-  height: 70px;
-  width: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-size: 30px;
-  font-weight: 600;
-  background-color: ${props => props.active ? colors.primary : colors.backgroundColor};
-  border-radius: 50%;
-`,
+    height: 70px;
+    width: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 600;
+    background-color: ${(props) => (props.active ? colors.primary : colors.backgroundColor)};
+    border-radius: 50%;
+  `,
   Body = styled.div`
-  box-shadow: 0px -1px 15px rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-  padding: 58px 80px;
-  margin: 40px 0;
-`
+    box-shadow: 0px -1px 15px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    padding: 58px 80px;
+    margin: 40px 0;
+  `

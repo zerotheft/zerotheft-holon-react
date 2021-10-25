@@ -26,55 +26,63 @@ const Report = ({ match, history }) => {
 
   return (
     <>
-      {(fetching || loading || nationFetching) ? (
+      {fetching || loading || nationFetching ? (
         <>
           <OverlaySpinner loading={fetching || loading || nationFetching} />
           <NoReportWrapper>Generating Report...</NoReportWrapper>
         </>
-      ) :
+      ) : (
         <>
-          <GoBackDiv><span onClick={() => history.goBack()}>&#60;Go Back</span></GoBackDiv>
-          {(get(reportResponse, 'report') || get(nationReportResponse, 'report')) ?
+          <GoBackDiv>
+            <span onClick={() => history.goBack()}>&#60;Go Back</span>
+          </GoBackDiv>
+          {get(reportResponse, 'report') || get(nationReportResponse, 'report') ? (
             <IframeWrapper>
-              <Iframe src={get(reportResponse, 'report') || get(nationReportResponse, 'report')} width="100%" height="100%" />
-            </IframeWrapper> :
-            (<NoReportWrapper>{get(reportResponse, 'message') || get(nationReportResponse, 'message') || 'Report is not available yet. Please come back later or error encountered.'}</NoReportWrapper>)
-          }
+              <Iframe
+                src={get(reportResponse, 'report') || get(nationReportResponse, 'report')}
+                width="100%"
+                height="100%"
+              />
+            </IframeWrapper>
+          ) : (
+            <NoReportWrapper>
+              {get(reportResponse, 'message') ||
+                get(nationReportResponse, 'message') ||
+                'Report is not available yet. Please come back later or error encountered.'}
+            </NoReportWrapper>
+          )}
         </>
-      }
+      )}
     </>
   )
 }
 
-
 export const Iframe = styled.iframe`
-  overflow: auto;
-  width: calc(100% + 17px);
-  border: ${props => props.border || '2px solid var(--lighterGrey)'};
-  height:calc(100vh - 60px - 45px - 20px);
-  scrolling: no;
-`,
+    overflow: auto;
+    width: calc(100% + 17px);
+    border: ${(props) => props.border || '2px solid var(--lighterGrey)'};
+    height: calc(100vh - 60px - 45px - 20px);
+    scrolling: no;
+  `,
   IframeWrapper = styled.div`
-  overflow: hidden;
+    overflow: hidden;
   `,
   NoReportWrapper = styled.div`
-  padding: 30px 10px;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
+    padding: 30px 10px;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
   `,
   GoBackDiv = styled.div`
-  width: 100%;
-  color: ${colors.primary};
-  font-weight: 500;
-  margin-top: -40px;
-  text-align: right;
-  padding: 20px 40px 0 0;
-  > span {
-    cursor: pointer;
-  }
+    width: 100%;
+    color: ${colors.primary};
+    font-weight: 500;
+    margin-top: -40px;
+    text-align: right;
+    padding: 20px 40px 0 0;
+    > span {
+      cursor: pointer;
+    }
   `
-  ;
-
 
 export default Report

@@ -11,47 +11,52 @@ import { AppContext } from '../../../AppContext'
 const MainWrapper = ({ loading, children }) => {
   const { selectedHolon } = useContext(AppContext)
 
-  return <Wrapper>
-    <Container>
-      <TitleHead>
-        <h4>Donate to the Zero Theft Movement</h4>
-        <ul>
-          <li>
-            <NavLink
-              to={`${DONATE_TO}/zerotheft`}
-              activeClassName="active"
-            >
-              To Zero Theft Movement
-            </NavLink>
-          </li>
-          <li>
-            <a href={`zerotheft://home/holon/holon-donate/${selectedHolon.id}`} target='_blank' rel='noopener noreferrer'>Holon</a>
-          </li>
-          <li>
-            <a href={`zerotheft://home/holon/holon-donate/${selectedHolon.id}`} target='_blank' rel='noopener noreferrer'>
-              Pay-it-Forward Fund
-            </a>
-          </li>
-        </ul>
-      </TitleHead>
+  return (
+    <Wrapper>
+      <Container>
+        <TitleHead>
+          <h4>Donate to the Zero Theft Movement</h4>
+          <ul>
+            <li>
+              <NavLink to={`${DONATE_TO}/zerotheft`} activeClassName="active">
+                To Zero Theft Movement
+              </NavLink>
+            </li>
+            <li>
+              <a
+                href={`zerotheft://home/holon/holon-donate/${selectedHolon.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Holon
+              </a>
+            </li>
+            <li>
+              <a
+                href={`zerotheft://home/holon/holon-donate/${selectedHolon.id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Pay-it-Forward Fund
+              </a>
+            </li>
+          </ul>
+        </TitleHead>
 
-      <Content>
-        {loading ? <OverlaySpinner loading overlayParent /> : children}
-      </Content>
-    </Container>
-  </Wrapper>
+        <Content>{loading ? <OverlaySpinner loading overlayParent /> : children}</Content>
+      </Container>
+    </Wrapper>
+  )
 }
 
 export default MainWrapper
 
-const
-  Wrapper = styled.div`
-  `,
+const Wrapper = styled.div``,
   TitleHead = styled.div`
     display: flex;
     flex-direction: row;
-    justify-content:space-between;
-    align-items:center;
+    justify-content: space-between;
+    align-items: center;
     h4 {
       font-size: 25px;
       color: ${colors.primary};
@@ -70,7 +75,8 @@ const
         width: 100%;
         height: 6px;
         position: absolute;
-        top: 50%; left: 0;
+        top: 50%;
+        left: 0;
         margin-top: -3px;
       }
       li {
@@ -80,19 +86,18 @@ const
           font-weight: 600;
           display: block;
           padding: 15px 20px;
-          color:#000;
-          text-decoration:none;
+          color: #000;
+          text-decoration: none;
           &.active {
             text-decoration: underline;
-            color:${colors.primary};
+            color: ${colors.primary};
           }
         }
       }
     }
   `,
-
   Content = styled.div`
-    padding:25px;
+    padding: 25px;
     border-radius: 13px;
     box-shadow: 0px 0px 16px 0px rgba(0, 0, 0, 0.15);
     position: relative;
