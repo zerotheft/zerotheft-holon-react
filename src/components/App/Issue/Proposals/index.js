@@ -15,25 +15,25 @@ import ProposalDetail from '../commons/ProposalDetail'
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  const
+  let
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
 
-  const issuePath = (`${match.params.pathname }/${ match.params.id}`).replace(/%2F/g, '/')
+  const issuePath = (`${match.params.pathname}/${match.params.id}`).replace(/%2F/g, '/')
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
-  
-  const data = get(issue, 'proposals')
+
+  let data = get(issue, 'proposals')
   if (!selectedItem.id) {
     if (data && data.length > 0) {
       selectedItem = data[0];
     }
   }
 
-  const proposalLength = (data && data.length > 0)? data.length: 0;
-  
+  const proposalLength = (data && data.length > 0) ? data.length : 0;
+
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <WarningWrapper>
       <p>WARNING: The amounts and reasoning comes from citizens. Not from the ZTM company or this website.</p>
@@ -41,11 +41,11 @@ const Proposals = ({ history, match }) => {
     {(proposalLength === 0) ?
       <EmptyProposalWrapper>
         <p>
-          No proposals are available. Please 
+          No proposals are available. Please
           <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`} style={{ cursor: 'pointer' }}> add new </a>
           proposal.
         </p>
-      </EmptyProposalWrapper>: null }
+      </EmptyProposalWrapper> : null}
     <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
       {/* <div className='header'>
         <h3>
