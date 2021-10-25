@@ -100,7 +100,7 @@ export const displayContent = (data) => {
     }
   }
   else {
-    return <div className='dataValue' style={{ wordBreak: 'break-word' }}>{data || ''}</div>
+    return <div className='dataValue' style={{ wordBreak: 'break-word', display: 'inline-block', width: 'auto' }}>{data || ''} </div>
   }
 }
 
@@ -195,7 +195,8 @@ const DataObject = styled.ul`
   }
   .dataKey {
     font-weight: bold;
-    float: left;
+    display: inline-block;
+    width: auto;
   }
   .datakey li .datakey {
     float: none;
