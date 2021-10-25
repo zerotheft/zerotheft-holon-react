@@ -8,7 +8,6 @@ import { colors, height } from 'theme'
 import { Container } from 'commons/styles'
 
 const Footer = () => {
-
   return (
     <Wrapper>
       <Container>

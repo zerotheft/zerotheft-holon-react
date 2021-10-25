@@ -1,11 +1,12 @@
 import axios from 'axios'
 import { get as getLodash } from 'lodash'
+
 // import { toast } from 'react-toastify'
 import { API_URL } from 'constants/index'
 
 const checkForError = (e, type) => {
-
   if (process.env.NODE_ENV === 'development' || type !== 'get') throw e
+
   // switch (e.response.status) {
   //   // case 401:
   //   //   if (
@@ -37,7 +38,7 @@ export const get = (path, params, apiUrl = API_URL) => {
   }).catch(e => checkForError(e, 'get'))
 }
 
-export const post = async (path, data, apiUrl = API_URL) => {
+export const post = async(path, data, apiUrl = API_URL) => {
   return axios(`${apiUrl}/${path}`, {
     method: 'post',
     data,

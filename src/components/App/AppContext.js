@@ -4,22 +4,22 @@ import { get } from 'lodash'
 import { getYear } from 'date-fns'
 
 import { getParameterByName } from 'utils'
-import { getPaths, getUmbrellaPaths } from '../../apis/path'
 import useFetch from 'commons/hooks/useFetch'
 import { holonInfo as getHolonInfo } from 'apis/vote'
 import { getVoterInfos } from 'apis/desktopApp'
 import { getTheftInfo } from 'apis/reports'
+import { getPaths, getUmbrellaPaths } from '../../apis/path'
 
 const AppContext = createContext()
 
 const AppProvider = ({ children }) => {
-  if (getParameterByName('year')) localStorage.setItem("filterYear", getParameterByName('year'))
-  if (!localStorage.getItem("filterYear")) localStorage.setItem("filterYear", getYear(new Date()) - 1)
+  if (getParameterByName('year')) localStorage.setItem('filterYear', getParameterByName('year'))
+  if (!localStorage.getItem('filterYear')) localStorage.setItem('filterYear', getYear(new Date()) - 1)
 
   const [getPathsApi, loading, paths] = useFetch(getPaths)
   const [getUmbrellaPathsApi, fetchingUmbrella, umbrellaPaths] = useFetch(getUmbrellaPaths)
   const [getHolonApi, loadingHolon, holonInfo] = useFetch(getHolonInfo)
-  const [filterParams, updateFilter] = useState({ year: localStorage.getItem("filterYear"), initPath: 'USA' }),
+  const [filterParams, updateFilter] = useState({ year: localStorage.getItem('filterYear'), initPath: 'USA' }),
     [selectedHolon, updateHolon] = useState(localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}),
     [userInfo, updateUserInfo] = useState()
   const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem('address'))
@@ -29,7 +29,7 @@ const AppProvider = ({ children }) => {
     getUmbrellaPathsApi()
   }, [filterParams.initPath])
 
-  const fetchFromApp = async () => {
+  const fetchFromApp = async() => {
     const res = await getVoterInfos('data.address') || ''
     const holon = get(res, 'data.selectedHolon')
     const address = get(res, 'data.address') || ''
@@ -56,7 +56,7 @@ const AppProvider = ({ children }) => {
     getHolonApi()
   }, [])
   useEffect(() => {
-    getTheftApi(filterParams['initPath'], true, get(filterParams, 'year'))
+    getTheftApi(filterParams.initPath, true, get(filterParams, 'year'))
   }, [filterParams.year])
   return (
     <AppContext.Provider value={{ userInfo, filterParams, updateFilter, loading, loadingTheft, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
@@ -69,7 +69,8 @@ AppProvider.propTypes = {
 
 export { AppProvider, AppContext }
 
-let timeout = 2000
+const timeout = 2000
+
 // const useWebSocket = (callback) => {
 //   const [ws, changeWs] = useState()
 

@@ -17,8 +17,8 @@ export const
   VOTE_FINALIZE = `${PATH_DETAIL}/issue/:id/finalize`,
   AFTER_VOTE = `${PATH_DETAIL}/issue/:id/voted`
 
-export const VIEW_PROPOSAL = `/proposals/:id`
-export const VIEW_COUNTER_PROPOSAL = `/counter-proposals/:id`
+export const VIEW_PROPOSAL = '/proposals/:id'
+export const VIEW_COUNTER_PROPOSAL = '/counter-proposals/:id'
 
 export const HOLON = '/holon'
 export const THEFT = '/theft'

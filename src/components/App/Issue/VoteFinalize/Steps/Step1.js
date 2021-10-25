@@ -1,8 +1,8 @@
 import React from 'react'
 import { DESKTOP_APP_DOWNLOAD_LINK } from 'constants/index'
+import Button from 'commons/Buttons'
 import { Wrapper, Header, Body } from './styles'
 import { ButtonsWrapper, Next } from './Buttons'
-import Button from 'commons/Buttons'
 
 const Step1 = ({ updateCurrentStep }) => {
   return <Wrapper>
@@ -10,7 +10,7 @@ const Step1 = ({ updateCurrentStep }) => {
       <Header>Step #1: Download the Zero Theft Desktop App</Header>
       <Body>
         <span>Please install the zerotheft from this link:</span>
-        <Button style={{margin: '20px 0'}} onClick={() => window.open(DESKTOP_APP_DOWNLOAD_LINK, '_blank')}>Download Zerotheft</Button>
+        <Button style={{ margin: '20px 0' }} onClick={() => window.open(DESKTOP_APP_DOWNLOAD_LINK, '_blank')}>Download Zerotheft</Button>
         <span>or I already have the zerotheft app installed</span>
       </Body>
       <ButtonsWrapper>

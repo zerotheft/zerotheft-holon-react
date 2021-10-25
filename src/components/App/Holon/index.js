@@ -20,6 +20,7 @@ const Areas = () => {
 
   useEffect(() => {
     window.location.replace('/')
+
     // getHolonsApi().then(data => {
     //   selectArea(find(data, { address: get(selectedHolon, 'id') }))
     // })
@@ -27,31 +28,31 @@ const Areas = () => {
 
   const getColumns = (selectedArea, localHolon) => ({
     state: {
-      width: 20,
+      width  : 20,
       content: i => {
         if (i.address === get(localHolon, 'id'))
-          return <GreenCircle></GreenCircle>
+          return <GreenCircle />
         return null
       }
     },
     holon: {
-      key: 'holon',
-      label: 'Holon',
+      key    : 'holon',
+      label  : 'Holon',
       content: i => <p>{i.url}</p>,
     },
     country: {
-      label: 'Country',
-      width: 125,
+      label  : 'Country',
+      width  : 125,
       content: i => <p>{i.countryCode}</p>
     },
     health: {
-      key: 'health',
+      key  : 'health',
       label: 'Health',
       width: 100,
     },
     action: {
-      width: 30,
-      content: i => <Arrow status={i.address === get(selectedArea, 'address') || i.address === get(localHolon, 'id')}></Arrow>
+      width  : 30,
+      content: i => <Arrow status={i.address === get(selectedArea, 'address') || i.address === get(localHolon, 'id')} />
     }
   })
 
@@ -70,25 +71,25 @@ const Areas = () => {
             data={holons || []}
             loading={loading}
             rowConfig={{
-              onClick: i => selectArea(i),
+              onClick  : i => selectArea(i),
               className: i => `${i.address === get(selectedArea, 'address') ? 'active' : ''} ${i.address === get(selectedHolon, 'id') ? 'local' : ''}`
             }}
           />
         </div>
         <div className='description'>
-          {selectedArea && <React.Fragment>
+          {selectedArea && <>
             <div className='title'>
               <h4>{selectedArea.port}</h4>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <div>Status: <span style={{ fontWeight: 'bold' }}>{selectedArea.health}</span></div>
-                <Button style={{display: 'none'}}onClick={() => window.open('zerotheft://areas')} disabled={selectedArea.address === selectedHolon.id}>{selectedArea.address === selectedHolon.id ? 'Selected' : 'Select this'} Holon</Button>
+                <Button style={{ display: 'none' }}onClick={() => window.open('zerotheft://areas')} disabled={selectedArea.address === selectedHolon.id}>{selectedArea.address === selectedHolon.id ? 'Selected' : 'Select this'} Holon</Button>
               </div>
             </div>
             <div className='details'>
               <div>Description:</div>
             </div>
             <div className='holonId'>ID: <span>{truncateString(selectedArea.address, 12)}</span></div>
-          </React.Fragment>}
+          </>}
         </div>
       </AreasWrapper>
     </Container>

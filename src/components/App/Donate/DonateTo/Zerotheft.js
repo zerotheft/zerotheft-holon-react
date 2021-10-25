@@ -5,20 +5,20 @@ import * as Yup from 'yup'
 import styled from 'styled-components'
 import { colors } from 'theme'
 
-import MainWrapper from './commons/MainWrapper'
 import { Row } from 'commons/Form/styles'
 import { LabelledRadioField, Radio, TextField, SelectField, Checkbox, TextAreaField } from 'commons/Form/InputFields'
 import Button from 'commons/Buttons'
+import MainWrapper from './commons/MainWrapper'
 
 const ZeroTheft = () => {
   return <MainWrapper>
     <Description>
       <Title>
         How your donation helps.
-        </Title>
+      </Title>
       <Paragraph>
         Donations are needed for us to keep our voting platform permanent and public through the blockchain. If you want to help eliminate the rigged parts of our otherwise ethical economy, then please donate
-        </Paragraph>
+      </Paragraph>
       <ul>
         <li>In the interest of full transparency, we will use these funds to:</li>
         <li> Keep your votes and proposals deployed on the blockchain</li>
@@ -32,34 +32,34 @@ const ZeroTheft = () => {
       <Formik
         enableReinitialize
         initialValues={{
-          amount: 50,
-          payType: 'one-time',
-          first_name: null,
-          last_name: null,
-          email: null,
-          phone: null,
-          payBy: 'credit-card',
+          amount     : 50,
+          payType    : 'one-time',
+          first_name : null,
+          last_name  : null,
+          email      : null,
+          phone      : null,
+          payBy      : 'credit-card',
           credit_card: {
             card_number: null,
-            expire: {
-              year: null,
+            expire     : {
+              year : null,
               month: null,
             },
             cvv: null,
           },
-          address: '',
-          state: null,
-          country: null,
-          zip: null,
+          address       : '',
+          state         : null,
+          country       : null,
+          zip           : null,
           include_reason: false,
-          comment: null,
+          comment       : null,
         }}
         validationSchema={Yup.object().shape({
           first_name: Yup.string().nullable().required('Name Required.'),
-          email: Yup.string().nullable().required('Email Required.'),
-          phone: Yup.string().nullable().required('Phone Required.').matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Phone number is not valid').min(10, "to short").max(10, "to long"),
-          address: Yup.string().nullable().required('Address Required.'),
-          zip: Yup.string().nullable().required('Zip/Postal Code Required.'),
+          email     : Yup.string().nullable().required('Email Required.'),
+          phone     : Yup.string().nullable().required('Phone Required.').matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Phone number is not valid').min(10, 'to short').max(10, 'to long'),
+          address   : Yup.string().nullable().required('Address Required.'),
+          zip       : Yup.string().nullable().required('Zip/Postal Code Required.'),
         })}
         onSubmit={values => console.log(values)}
       >
@@ -100,10 +100,10 @@ const ZeroTheft = () => {
                   { value: 'monthly', label: 'Monthly' },
                 ]}
                 radioStyle={{
-                  color: '#7C7B7D',
-                  fontSize: 16,
+                  color     : '#7C7B7D',
+                  fontSize  : 16,
                   fontWeight: '500',
-                  width: 'auto'
+                  width     : 'auto'
                 }}
               />
             </Row>

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import MainWrapper from './commons/MainWrapper'
 import CopyIcon from 'assets/icons/copy-icon.svg'
+import MainWrapper from './commons/MainWrapper'
 import { ContentWrapper, EthAddress, History } from './commons/styles'
 
 const Holon = () => {

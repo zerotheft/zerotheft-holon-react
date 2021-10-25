@@ -36,7 +36,7 @@ const Report = ({ match, history }) => {
           <GoBackDiv><span onClick={() => history.goBack()}>&#60;Go Back</span></GoBackDiv>
           {(get(reportResponse, 'report') || get(nationReportResponse, 'report')) ?
             <IframeWrapper>
-              <Iframe src={get(reportResponse, 'report') || get(nationReportResponse, 'report')} width="100%" height="100%" ></Iframe>
+              <Iframe src={get(reportResponse, 'report') || get(nationReportResponse, 'report')} width="100%" height="100%" />
             </IframeWrapper> :
             (<NoReportWrapper>{get(reportResponse, 'message') || get(nationReportResponse, 'message') || 'Report is not available yet. Please come back later or error encountered.'}</NoReportWrapper>)
           }

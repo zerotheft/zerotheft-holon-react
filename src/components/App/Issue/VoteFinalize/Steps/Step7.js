@@ -9,26 +9,26 @@ import Button from 'commons/Buttons'
 const Step7 = ({ vote, showStepsPage }) => {
   const history = useHistory()
   
-  return <MessageWrapper style={{flex: 1}}>
-  <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-    <FontAwesomeIcon icon={faCheckCircle} size="10x" color="#6AB768"/>
-  </div>
-  <Container>
-    <MessageHeader>Congratulations!</MessageHeader>
-    <div style={{fontSize: 20, fontWeight: 600}}>You have completed all the steps to vote.</div>
-    <Message style={{textAlign: 'justify'}}>
+  return <MessageWrapper style={{ flex: 1 }}>
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <FontAwesomeIcon icon={faCheckCircle} size="10x" color="#6AB768" />
+    </div>
+    <Container>
+      <MessageHeader>Congratulations!</MessageHeader>
+      <div style={{ fontSize: 20, fontWeight: 600 }}>You have completed all the steps to vote.</div>
+      <Message style={{ textAlign: 'justify' }}>
       Please click on vote button to cast your vote.
-    </Message>
+      </Message>
       <Button
         onClick={() => {
           vote()
           showStepsPage(false)
-          history.push({search: ''})
+          history.push({ search: '' })
         }}
-        style={{ background: '#4C4A4F', marginRight: 18, opacity: 1}}
+        style={{ background: '#4C4A4F', marginRight: 18, opacity: 1 }}
       >Vote</Button> 
-  </Container>
-</MessageWrapper>
+    </Container>
+  </MessageWrapper>
 }
 
 export default Step7
@@ -38,14 +38,14 @@ const MessageWrapper = styled.div `
   padding: 70px 38px;
   color: #000;
 `,
-Container = styled.div `
+  Container = styled.div `
   margin-left: 30px;
 `,
-Message = styled.div `
+  Message = styled.div `
   margin: 20px 0;
   text-align: center;
 `,
-MessageHeader = styled.div `
+  MessageHeader = styled.div `
   font-size: 30px;
   font-weight: 600;
 `

@@ -40,20 +40,20 @@ export const SelectField = ({
             placeholder: styles => ({
               ...styles,
               fontSize: 16,
-              color: '#9E9B9B',
+              color   : '#9E9B9B',
             }),
             container: styles => ({
               ...styles,
               width: '100%',
-              flex: 1,
+              flex : 1,
             }),
             control: styles => ({
               ...styles,
-              cursor: searchable ? styles.cursor : 'pointer',
-              minHeight: 47,
+              cursor      : searchable ? styles.cursor : 'pointer',
+              minHeight   : 47,
               borderRadius: 8,
-              borderColor: '#E2DCDC !important',
-              boxShadow: 'none !important',
+              borderColor : '#E2DCDC !important',
+              boxShadow   : 'none !important',
             }),
             indicatorSeparator: () => ({
               display: 'none'
@@ -76,19 +76,19 @@ export const SelectField = ({
 }
 
 SelectField.propTypes = {
-  creatable   : PropTypes.bool,
-  disabled    : PropTypes.bool,
-  field       : PropTypes.object,
-  form        : PropTypes.object,
-  isMulti     : PropTypes.bool,
-  label       : PropTypes.string,
-  labelType   : PropTypes.string,
-  labelWidth  : PropTypes.string,
-  onChange    : PropTypes.func,
-  options     : PropTypes.array,
-  placeholder : PropTypes.string,
-  searchable  : PropTypes.bool,
-  style       : PropTypes.object,
+  creatable  : PropTypes.bool,
+  disabled   : PropTypes.bool,
+  field      : PropTypes.object,
+  form       : PropTypes.object,
+  isMulti    : PropTypes.bool,
+  label      : PropTypes.string,
+  labelType  : PropTypes.string,
+  labelWidth : PropTypes.string,
+  onChange   : PropTypes.func,
+  options    : PropTypes.array,
+  placeholder: PropTypes.string,
+  searchable : PropTypes.bool,
+  style      : PropTypes.object,
 }
 
 export default SelectField

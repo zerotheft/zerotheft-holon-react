@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Button from 'commons/Buttons'
 
 const ErrorPage = ({ onButtonClick }) => {
-
   return (
     <Container>
       <FontAwesomeIcon icon={faExclamationTriangle} size="6x" />

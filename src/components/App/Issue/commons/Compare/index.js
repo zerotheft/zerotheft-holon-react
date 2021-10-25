@@ -6,8 +6,8 @@ import CompareContent from './CompareContent'
 const Compare = ({ title, data, hideBtn, id }) => {
   return <Wrapper>
     <CompareContentWrapper>
-      <CompareContent vote='yes' title={title} data={data['proposal']} hideBtn={hideBtn} id={id} />
-      <CompareContent vote='no' title={title} data={data['counterProposal']} hideBtn={hideBtn} id={id} />
+      <CompareContent vote='yes' title={title} data={data.proposal} hideBtn={hideBtn} id={id} />
+      <CompareContent vote='no' title={title} data={data.counterProposal} hideBtn={hideBtn} id={id} />
     </CompareContentWrapper>
   </Wrapper>
 }
@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   border-radius: 40px;
   overflow: hidden;
 `,
-CompareContentWrapper = styled.div`
+  CompareContentWrapper = styled.div`
   & > div:last-of-type {
     margin-top: 20px;
   }

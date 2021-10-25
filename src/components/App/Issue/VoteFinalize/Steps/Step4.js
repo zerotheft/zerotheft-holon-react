@@ -1,11 +1,11 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList } from './styles'
-import { ButtonsWrapper, Next } from './Buttons'
 import metamaskIcon from 'assets/icons/metamask.svg'
 import styled from 'styled-components'
 import Button from 'commons/Buttons'
 import { colors } from 'theme'
 import { LinkText } from 'commons/styles'
+import { ButtonsWrapper, Next } from './Buttons'
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList } from './styles'
 import { VoteContext } from '../VoteContext'
 
 const Step4 = ({ updateCurrentStep }) => {
@@ -33,9 +33,10 @@ const Step4 = ({ updateCurrentStep }) => {
         {!userType ? <Question>
           Have you worked with metamask before?
           <ButtonsWrapper style={{ marginTop: 10 }}>
-            <Button onClick={() => {
-              updateUserType('oldUser')
-            }}>Yes</Button>
+            <Button
+              onClick={() => {
+                updateUserType('oldUser')
+              }}>Yes</Button>
             <Button plain onClick={() => updateUserType('newUser')}>No</Button>
           </ButtonsWrapper>
         </Question> : <div>

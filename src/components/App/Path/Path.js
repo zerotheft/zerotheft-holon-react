@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { get, isEmpty, startCase, toNumber, last } from 'lodash'
+import _, { get, isEmpty, startCase, toNumber, last } from 'lodash'
 import { getYear } from 'date-fns'
 import Collapsible from 'react-collapsible';
 import Select from 'react-select'
@@ -7,48 +7,48 @@ import styled from 'styled-components'
 import Tabs from 'commons/Tabs'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronRight, faFileAlt } from '@fortawesome/free-solid-svg-icons'
-import _ from 'lodash';
 import { Container } from 'commons/styles'
 import Button from 'commons/Buttons'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { AppContext } from 'components/App/AppContext'
-import PathDetails from './PathDetails'
 import { calculate } from 'components/App/commons/services'
 import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
+import PathDetails from './PathDetails'
 
 const Path = ({ history, match, isIssuePath }) => {
   const { paths, loadingPaths: loading, loadingTheft, filterParams, updateFilter, theftInfo, umbrellaPaths = [] } = useContext(AppContext)
 
-  const pathInTabs = paths && Object.keys(paths['USA']).map((path, index) => {
-    if (paths['USA'][path] !== null)
+  const pathInTabs = paths && Object.keys(paths.USA).map((path, index) => {
+    if (paths.USA[path] !== null)
       return { id: `path-${index + 1}`, pathId: path, name: _.startCase(path), path: `/path/USA/${path}` }
   }).filter(Boolean)
 
   const populateList = (master, parents = [match.params.pathname.split('%2F')], depth = 0) => {
-
-    if (master && (Object.keys(master)[0]) === "parent") {
+    if (master && (Object.keys(master)[0]) === 'parent') {
       return null
     }
     return Object.keys(master).map(i => {
-
-      let masterClone = Object.assign({}, master[i])
+      const masterClone = { ...master[i] }
       masterClone && ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete masterClone[k])
 
-      if ((!isEmpty(master[i]) && ((master[i]['metadata'] && master[i]['metadata']['umbrella']) || master[i]['parent']))) {
-        let newParents = [...parents, i]
-        let url = newParents.join('/')
+      if ((!isEmpty(master[i]) && ((master[i].metadata && master[i].metadata.umbrella) || master[i].parent))) {
+        const newParents = [...parents, i]
+        const url = newParents.join('/')
         return <CollapsibleWrapper className='collapsiblewrapper'>
-          <h4 className='col-title'>{(master[i]['metadata'] && master[i]['metadata']['display_name']) || master[i]['display_name'] || startCase(i)}</h4>
-          <Collapsible containerElementProps={{ id: i }} open={true} trigger={<>
-            {master[i]['metadata'] && master[i]['metadata']['umbrella'] && <ItemHead>
-              <div className='item-title'>
-                <FontAwesomeIcon className='icon' icon={faChevronRight} style={{ marginRight: 18, color: '#878688' }} />
-                <h5>Umbrella</h5>
-              </div>
-              <PathDetails isPath={true} url={url} summary={theftInfo} index={i} parents={parents} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
-            </ItemHead>}
-          </>}>
+          <h4 className='col-title'>{(master[i].metadata && master[i].metadata.display_name) || master[i].display_name || startCase(i)}</h4>
+          <Collapsible
+            containerElementProps={{ id: i }}
+            open
+            trigger={<>
+              {master[i].metadata && master[i].metadata.umbrella && <ItemHead>
+                <div className='item-title'>
+                  <FontAwesomeIcon className='icon' icon={faChevronRight} style={{ marginRight: 18, color: '#878688' }} />
+                  <h5>Umbrella</h5>
+                </div>
+                <PathDetails isPath url={url} summary={theftInfo} index={i} parents={parents} viewLink={`/path/${url.replaceAll(`/${ i}`, '').replaceAll('/', '%2F')}/issue/${i}`} />
+              </ItemHead>}
+            </>}>
             <ItemBody>
               {Object.keys(masterClone).map(j => {
                 return populateList({ [j]: masterClone[j] }, newParents, depth + 1)
@@ -56,24 +56,23 @@ const Path = ({ history, match, isIssuePath }) => {
             </ItemBody>
           </Collapsible>
         </CollapsibleWrapper>
-      } else {
-        let url = parents.join('/')
-        if (!['umbrella', 'leaf', 'display_name', 'metadata'].includes(i)) {
-          return <ItemHead type='issue'>
-            <div className='item-title'>
-              <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 18, color: '#878688' }} />
-              <h5>{master[i] && ((master[i]['metadata'] && master[i]['metadata']['display_name']) || master[i]['display_name']) || startCase(i) || 'N/A'}</h5>
-            </div>
-            <PathDetails url={`${url}/${i}`} summary={theftInfo} index={i} viewLink={`/path/${url.replaceAll('/' + i, '').replaceAll('/', '%2F')}/issue/${i}`} />
-          </ItemHead>
-        }
+      } 
+      const url = parents.join('/')
+      if (!['umbrella', 'leaf', 'display_name', 'metadata'].includes(i)) {
+        return <ItemHead type='issue'>
+          <div className='item-title'>
+            <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 18, color: '#878688' }} />
+            <h5>{master[i] && ((master[i].metadata && master[i].metadata.display_name) || master[i].display_name) || startCase(i) || 'N/A'}</h5>
+          </div>
+          <PathDetails url={`${url}/${i}`} summary={theftInfo} index={i} viewLink={`/path/${url.replaceAll(`/${ i}`, '').replaceAll('/', '%2F')}/issue/${i}`} />
+        </ItemHead>
       }
     })
   }
   const currentPathName = `${match.params.pathname}${match.params.id ? `%2F${match.params.id}` : ''}`,
     currentPath = get(paths, currentPathName.split('%2F').join('.')) || {}
   if (!currentPath || !Object.keys(currentPath).length) return null
-  const current_path_summary = !isEmpty(theftInfo) ? calculate(theftInfo[get(match, 'params.pathname', '').replaceAll("%2F", "/")]) : {}
+  const current_path_summary = !isEmpty(theftInfo) ? calculate(theftInfo[get(match, 'params.pathname', '').replaceAll('%2F', '/')]) : {}
   return <Wrapper>
     {(loading || loadingTheft) && <OverlaySpinner loading={loading || loadingTheft} />}
     {!get(match, 'params.id') && <Title>
@@ -107,10 +106,13 @@ const Path = ({ history, match, isIssuePath }) => {
           /> */}
           <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(current_path_summary, 'vote') === 'YES' ? 'Yes Theft' : 'No Theft'}  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
           <div className='amt'>${convertDollarToString(toNumber(get(current_path_summary, 'amount', 0)))}</div>
-          <CustomButton onClick={() => {
-            const isUmbrellaPath = Object.keys(umbrellaPaths).includes(get(match, 'params.pathname', '').replace(/%2F/g, '/').replace('USA/', ''))
-            history.push(`/${isUmbrellaPath ? 'leafReport' : 'pathReport'}/${get(match, 'params.pathname', '')}`)
-          }} height={31} style={{ backgroundColor: colors.background.body }}>View Report</CustomButton>
+          <CustomButton
+            onClick={() => {
+              const isUmbrellaPath = Object.keys(umbrellaPaths).includes(get(match, 'params.pathname', '').replace(/%2F/g, '/').replace('USA/', ''))
+              history.push(`/${isUmbrellaPath ? 'leafReport' : 'pathReport'}/${get(match, 'params.pathname', '')}`)
+            }}
+            height={31}
+            style={{ backgroundColor: colors.background.body }}>View Report</CustomButton>
         </CurrentDetails></>}
     </Title>
     }

@@ -15,17 +15,17 @@ const Paths = ({ summary = [] }) => {
       <ContentWrapper className={!loading && !loadingTheft && !isEmpty(get(paths, get(filterParams, 'initPath'), {})) ? 'divide' : ''}>
         {(loading || loadingTheft) ? <LoadingText>Fetching Paths</LoadingText> :
           <UL>
-            {Object.keys(allPaths).map((key) => {
+            {Object.keys(allPaths).map(key => {
               const isIssuePath = isEmpty(get(paths, get(filterParams, 'initPath'), {})[key])
               const childPaths = get(paths, get(filterParams, 'initPath'), {})[key] || {}
-              const childPathsClone = Object.assign({}, childPaths);
+              const childPathsClone = { ...childPaths };
               ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete childPathsClone[k])
               return <li>
-                <PathItem summary={summary} parent={true} to={isIssuePath ? `/path/${get(filterParams, 'initPath')}/issue/${key}` : `/path/${get(filterParams, 'initPath')}/${key}`} name={allPaths[key]['display_name'] ? allPaths[key]['display_name'] : startCase(key || 'N/A')} />
+                <PathItem summary={summary} parent to={isIssuePath ? `/path/${get(filterParams, 'initPath')}/issue/${key}` : `/path/${get(filterParams, 'initPath')}/${key}`} name={allPaths[key].display_name ? allPaths[key].display_name : startCase(key || 'N/A')} />
                 {!isEmpty(childPaths) ? <ul>
-                  {Object.keys(childPathsClone).map((innerKey) => {
+                  {Object.keys(childPathsClone).map(innerKey => {
                     const isIssue = childPaths[innerKey] && childPaths[innerKey].leaf
-                    return <li><PathItem summary={summary} to={isIssue ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}` : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`} name={(childPaths[innerKey]['metadata'] && childPaths[innerKey]['metadata']['display_name']) || childPaths[innerKey]['display_name'] || startCase(innerKey || 'N/A')} /></li>
+                    return <li><PathItem summary={summary} to={isIssue ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}` : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`} name={(childPaths[innerKey].metadata && childPaths[innerKey].metadata.display_name) || childPaths[innerKey].display_name || startCase(innerKey || 'N/A')} /></li>
                   })}
                 </ul> : null}
               </li>
@@ -34,7 +34,7 @@ const Paths = ({ summary = [] }) => {
         }
         {(!loading && !loadingTheft && isEmpty(get(paths, get(filterParams, 'initPath'), {}))) ? <EmptyText>No Data Available</EmptyText> : null}
       </ContentWrapper>
-      <Button onClick={() => window.open(`https://zerotheft.net/propose_problem?path=USA`)} plain width={280} height={52} style={{ margin: '30px auto 0', backgroundColor: 'transparent' }}>PROPOSE NEW PROBLEM AREA</Button>
+      <Button onClick={() => window.open('https://zerotheft.net/propose_problem?path=USA')} plain width={280} height={52} style={{ margin: '30px auto 0', backgroundColor: 'transparent' }}>PROPOSE NEW PROBLEM AREA</Button>
     </Container>
   </Wrapper>
 }

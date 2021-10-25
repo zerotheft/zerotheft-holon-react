@@ -3,31 +3,31 @@ import { colors } from 'theme';
 import { NavLink } from 'react-router-dom'
 
 export const customStyles = {
-    rows: {
-      style: {
-        height: '35px', // override the row height
-      }
+  rows: {
+    style: {
+      height: '35px', // override the row height
+    }
+  },
+  headCells: {
+    style: {
+      paddingLeft   : '30px', // override the cell padding for head cells
+      paddingRight  : '30px',
+      background    : colors.textTitle,
+      color         : colors.border.table,
+      fontFamily    : 'Poppins',
+      fontWeight    : '500',
+      fontSize      : '15px',
+      lineHeight    : '22px',
+      letterSspacing: '0.03em',
     },
-    headCells: {
-      style: {
-        paddingLeft: '30px', // override the cell padding for head cells
-        paddingRight: '30px',
-        background: colors.textTitle,
-        color: colors.border.table,
-        fontFamily: 'Poppins',
-        fontWeight: '500',
-        fontSize: '15px',
-        lineHeight: '22px',
-        letterSspacing: '0.03em',
-      },
+  },
+  cells: {
+    style: {
+      paddingLeft : '30px', // override the cell padding for data cells
+      paddingRight: '30px',
     },
-    cells: {
-      style: {
-        paddingLeft: '30px', // override the cell padding for data cells
-        paddingRight: '30px',
-      },
-    },
-  };
+  },
+};
 
   
 export const Wrapper = styled.div`
@@ -56,7 +56,7 @@ export const TableWrapper = styled.div`
       color: ${colors.textTitle};
   }`
 
-  export const ListMenu = styled.div`
+export const ListMenu = styled.div`
   position: relative;
   ul {
       background: white;
@@ -109,7 +109,7 @@ export const TableWrapper = styled.div`
     }
   `
   
-  export const TabWrapper = styled(NavLink)`
+export const TabWrapper = styled(NavLink)`
     background: none;
     text-decoration: none;
     color: ${colors.text}

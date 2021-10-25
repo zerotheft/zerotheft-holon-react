@@ -8,16 +8,15 @@ import yaml from 'js-yaml'
 import { getCitizenInfo } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
 import { getProposalTemplate } from 'apis/proposals'
-import { AppContext } from '../AppContext'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import Button from 'commons/Buttons'
 import { Container, EmptyText } from 'commons/styles'
+import { AppContext } from '../AppContext'
 
 const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
   if (!isObject(data)) return []
-  let arr = []
+  const arr = []
   Object.keys(data).forEach(i => {
-
     if (!data[i] || data[i].leaf) {
       if (!searchFilter) arr.push({ title: i, path: `${path}/issue/${i}` })
       else if (searchFilter === lowerCase(i).charAt(0)) arr.push({ title: i, path: `${path}/issue/${i}` })
@@ -37,10 +36,10 @@ const getRelatedEndNodes = (issues, name, path) => {
   let arr = []
   const username = [...take(name, 2), ...takeRight(name, 2)] // get first 2 and last 2 characters
 
-  for (let u of username) {
+  for (const u of username) {
     const letters = remove([...username], i => i !== u) || []
-    for (let letter of letters) {
-      for (let i in issues) {
+    for (const letter of letters) {
+      for (const i in issues) {
         if (u === lowerCase(i).charAt(0)) {
           arr = [...arr, ...getLeafNodes(issues[i], `${path}%2F${i}`, letter)]
         }
@@ -62,21 +61,20 @@ const IssueSlider = ({ onlySlider = false }) => {
   useEffect(() => {
     if (localStorage.getItem('citizenID')) getCitizenInfoApi(localStorage.getItem('citizenID'))
     prepareCarouselData(paths)
-
   }, [paths])
 
-  const prepareCarouselData = async (paths) => {
-    const username = uniqBy(lowerCase(get(userInfo, 'name', '')).replace(/[^a-zA-Z0-9]/g, "").split(''))
+  const prepareCarouselData = async paths => {
+    const username = uniqBy(lowerCase(get(userInfo, 'name', '')).replace(/[^a-zA-Z0-9]/g, '').split(''))
     let issues = getRelatedEndNodes(get(paths, get(filterParams, 'initPath'), {}), userInfo ? username : null, `/path/${get(filterParams, 'initPath', 'USA')}`)
     if (issues.length < 3) {
       issues = getRelatedEndNodes(get(paths, get(filterParams, 'initPath'), {}), null, `/path/${get(filterParams, 'initPath', 'USA')}`)
     }
     const mappedIssues = (await Promise.all(issues.map(async i => {
-      let path = get(i, `path`, '').split('/')[2] || ''
-      let templatePath = path.replace('USA', 'proposals').replace(/%2F/g, '/') + '/' + i.title
-      let template = await getTemplateApi(templatePath)
+      let path = get(i, 'path', '').split('/')[2] || ''
+      const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/') }/${ i.title}`
+      const template = await getTemplateApi(templatePath)
       path = path.replace(/%2F/g, ' > ')
-      return { title: i.title, path: path, rawPath: i.path, description: displayYaml(template, i.path) }
+      return { title: i.title, path, rawPath: i.path, description: displayYaml(template, i.path) }
     }))).filter(i => i.description)
     setIssues(mappedIssues)
   }
@@ -110,7 +108,7 @@ const IssueSlider = ({ onlySlider = false }) => {
           </p>
         </Welcome>}
       <SliderContent className={!onlySlider ? '' : 'full'}>
-        {loading ? <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} /> : <React.Fragment>
+        {loading ? <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} /> : <>
           <h3>For you to vote on next:</h3>
           {allIssues.length ? <Carousel pagination={false} enableMouseSwipe={false} style={{ height: '160px' }}>
             {allIssues.map(element => {
@@ -121,7 +119,7 @@ const IssueSlider = ({ onlySlider = false }) => {
               </Item>
             })}
           </Carousel> : null}
-        </React.Fragment>}
+        </>}
         {(!loading && !allIssues.length) ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
       </SliderContent>
     </Container>

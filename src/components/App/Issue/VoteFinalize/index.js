@@ -6,10 +6,6 @@ import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { API_URL } from 'constants/index'
-import { IssueContext } from '../IssueContext'
-import { AppContext } from '../../AppContext'
-import { VoteContext, VoteProvider } from './VoteContext'
-import ProposalDetail from '../commons/ProposalDetail'
 import useFetch from 'commons/hooks/useFetch'
 import { Row } from 'commons/Form/styles'
 import { TextField, TextAreaField, Radio, EditableField } from 'commons/Form/InputFields'
@@ -19,6 +15,10 @@ import { isChrome, numberWithCommas, getParameterByName, convertUNIXtoDATETIME }
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { getCitizenInfo } from 'apis/vote'
+import ProposalDetail from '../commons/ProposalDetail'
+import { VoteContext, VoteProvider } from './VoteContext'
+import { AppContext } from '../../AppContext'
+import { IssueContext } from '../IssueContext'
 import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
@@ -26,6 +26,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const { issue, selection, loading } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
   const { checkStep, voterInfo: userInfo, finalVote, popup, showErrorPopUp, voting, vote, priorVoteInfo } = useContext(VoteContext)
+
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [initialValues, updateValues] = useState()
   const [commentState, showHideComment] = useState(false)
@@ -35,7 +36,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const theftAmtYears = finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
   const hierarchyPath = (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
 
-  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePath = (`${match.params.pathname }/${ match.params.id}`).replace(/%2F/g, '/')
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
@@ -49,7 +50,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
   // }
 
-  const checkQueryParams = async () => {
+  const checkQueryParams = async() => {
     const hierarchyPath = (`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
     if (queryParams && getParameterByName('page') === 'steps') {
       const { step } = await checkStep(hierarchyPath, true)
@@ -77,29 +78,32 @@ const VoteFinalize = ({ match, history, location }) => {
 
   if (!loading && !get(selection, 'proposal') && !get(selection, 'counterProposal'))
     return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
-  if (stepsPage) return <Steps showStepsPage={showStepsPage} vote={() => {
-    showStepsPage(false)
-    vote(initialValues)
-  }} />
-  return <React.Fragment>
+  if (stepsPage) return <Steps
+    showStepsPage={showStepsPage}
+    vote={() => {
+      showStepsPage(false)
+      vote(initialValues)
+    }} />
+  return <>
     <Wrapper>
       <OverlaySpinner loading={voting} />
 
       <FormWrapper>
         <div>
-          <TitleSummary><h3>This Finalizes Your Vote That</h3><span>{finalVote === "yes" ? "Yes there is theft" : "No there is not theft"}</span><h3>In this Area</h3></TitleSummary>
+          <TitleSummary><h3>This Finalizes Your Vote That</h3><span>{finalVote === 'yes' ? 'Yes there is theft' : 'No there is not theft'}</span><h3>In this Area</h3></TitleSummary>
           {/* <h4>Do you consider this as theft via a rigged economy?</h4> */}
           <Formik
             enableReinitialize
             initialValues={initialValues || {
-              vote: capitalize(finalVote),
+              vote  : capitalize(finalVote),
               amount: 'static',
               ...theftAmtYears
             }}
-            onSubmit={async (values) => {
-              let altTheftAmounts = {}
-              Object.keys(theftAmtYears).map((yr) => {
+            onSubmit={async values => {
+              const altTheftAmounts = {}
+              Object.keys(theftAmtYears).map(yr => {
                 if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
+
                 // delete values[yr]
               })
               if (!isChrome()) {
@@ -142,7 +146,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
 
                 {finalVote === 'yes' && theftAmtYears &&
-                  Object.keys(theftAmtYears).map((y) =>
+                  Object.keys(theftAmtYears).map(y =>
                     <Row>
                       <Field
                         name={y}
@@ -164,9 +168,10 @@ const VoteFinalize = ({ match, history, location }) => {
                 }
                 <BottomRow>
                   <Button type="submit" height={50}>I approve & FINALIZE this vote</Button>
-                  <span onClick={() => {
-                    showHideComment(!commentState)
-                  }}>{!commentState ? `Add a comment` : `Do not add a comment`}</span>
+                  <span
+                    onClick={() => {
+                      showHideComment(!commentState)
+                    }}>{!commentState ? 'Add a comment' : 'Do not add a comment'}</span>
                 </BottomRow>
               </Form>
             }}
@@ -201,7 +206,7 @@ const VoteFinalize = ({ match, history, location }) => {
               You voted on this problem for this year already. Voting again will override your existing vote.
             </p>
             <p className='data-row' style={{ fontSize: 22 }}>
-              Prior Vote: {get(priorVoteInfo, 'voteIsTheft') === "True" ? 'YES' : 'NO'}
+              Prior Vote: {get(priorVoteInfo, 'voteIsTheft') === 'True' ? 'YES' : 'NO'}
             </p>
             <p className='data-row' style={{ fontWeight: '500' }}>
               {/* <span>
@@ -220,10 +225,10 @@ const VoteFinalize = ({ match, history, location }) => {
     <ProposalWrapper>
       <ProposalDetail allowSelect={false} reportPath={reportPath} item={finalVote === 'yes' ? selection.proposal : selection.counterProposal} type={finalVote === 'yes' ? 'proposal' : 'counter'} />
     </ProposalWrapper>
-  </React.Fragment >
+  </>
 }
 
-const FinalizeWrapper = (props) => {
+const FinalizeWrapper = props => {
   return <VoteProvider><VoteFinalize {...props} /> </VoteProvider>
 }
 export default FinalizeWrapper

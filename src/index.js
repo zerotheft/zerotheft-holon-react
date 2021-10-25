@@ -10,14 +10,14 @@ import './index.css'
 const root = document.getElementById('root')
 
 if (root !== null) {
-    const component = <App />
+  const component = <App />
 
-    ReactDOM.render(component, root)
+  ReactDOM.render(component, root)
 
-    if (module.hot) {
-        module.hot.accept(App, () => {
-            const HMRApp = App.default
-            ReactDOM.render(HMRApp, document.getElementById('root'))
-        })
-    }
+  if (module.hot) {
+    module.hot.accept(App, () => {
+      const HMRApp = App.default
+      ReactDOM.render(HMRApp, document.getElementById('root'))
+    })
+  }
 }

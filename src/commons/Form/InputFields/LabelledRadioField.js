@@ -3,8 +3,8 @@ import { Field, useFormikContext } from 'formik'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { CustomFieldWrapper, RadioBtn } from './styles'
 import { colors } from 'theme'
+import { CustomFieldWrapper, RadioBtn } from './styles'
 
 const LabelledRadioField = ({ field, readonly = false, values = [], style, innerStyle }) => {
   const { setFieldValue } = useFormikContext()
@@ -38,12 +38,12 @@ const LabelledRadioField = ({ field, readonly = false, values = [], style, inner
 }
 
 LabelledRadioField.propTypes = {
-  field: PropTypes.object,
+  field     : PropTypes.object,
   innerStyle: PropTypes.object,
   radioStyle: PropTypes.object,
-  readonly: PropTypes.bool,
-  style: PropTypes.object,
-  values: PropTypes.array,
+  readonly  : PropTypes.bool,
+  style     : PropTypes.object,
+  values    : PropTypes.array,
 }
 
 export default LabelledRadioField

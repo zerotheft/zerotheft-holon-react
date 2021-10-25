@@ -4,8 +4,8 @@ import { Field } from 'formik'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-import { CustomFieldWrapper, ErrorSpan } from './styles'
 import { colors } from 'theme'
+import { CustomFieldWrapper, ErrorSpan } from './styles'
 
 const Checkbox = ({ label, field, form, readonly = false, style, labelStyle }) => (
   <CustomFieldWrapper

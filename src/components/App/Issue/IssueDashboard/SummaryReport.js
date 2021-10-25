@@ -1,31 +1,28 @@
-import React, { useEffect } from "react";
-import { get as getAPI } from "utils/api";
+import React, { useEffect } from 'react';
+import { get as getAPI } from 'utils/api';
 
-const SummaryReport = (url) => {
-
-  const getSummaryReportInfo = async () => {
-    
+const SummaryReport = url => {
+  const getSummaryReportInfo = async() => {
     const summaryReportInfo = await getAPI( null,'',url);    
     
     if (summaryReportInfo.data) {
-        
-      let div = document.createElement("div");
-      let parser = new DOMParser();
-      let htmlDoc = parser.parseFromString(summaryReportInfo.data, "text/html");
+      const div = document.createElement('div');
+      const parser = new DOMParser();
+      const htmlDoc = parser.parseFromString(summaryReportInfo.data, 'text/html');
 
-      let getCellOrJpCell = (parentClass) => {
-        let parent = htmlDoc.getElementById(parentClass);
-        if (!parent) return "";
+      const getCellOrJpCell = parentClass => {
+        const parent = htmlDoc.getElementById(parentClass);
+        if (!parent) return '';
 
-        let closestCell = parent.closest(".cell");
+        const closestCell = parent.closest('.cell');
         if (closestCell) return closestCell.outerHTML;
 
-        let closestJPCell = parent.closest(".jp-Cell");
+        const closestJPCell = parent.closest('.jp-Cell');
         if (closestJPCell) return closestJPCell.outerHTML;
       };
 
-      let bar = getCellOrJpCell("bar_issue");
-      let summary = getCellOrJpCell("summary_issue");
+      const bar = getCellOrJpCell('bar_issue');
+      let summary = getCellOrJpCell('summary_issue');
 
       summary += bar;
 
@@ -80,7 +77,7 @@ const SummaryReport = (url) => {
       div.innerHTML = summary;
 
       while (div.firstChild) {
-        document.getElementById("view-summary-report").appendChild(div.firstChild);
+        document.getElementById('view-summary-report').appendChild(div.firstChild);
       }
     }
   };
@@ -89,7 +86,7 @@ const SummaryReport = (url) => {
     getSummaryReportInfo();
   }, []);
 
-  return <div id="view-summary-report"></div>;
+  return <div id="view-summary-report" />;
 };
 
 export default SummaryReport;

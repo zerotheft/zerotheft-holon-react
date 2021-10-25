@@ -16,7 +16,7 @@ h2 {
     color: #7F51C1;
 }
 `,
-ButtonSection = styled.div `
+  ButtonSection = styled.div `
 display: flex;
 flex-flow: row wrap;
 .btn {
@@ -39,7 +39,7 @@ flex-flow: row wrap;
     color: #fff;
 }
 `,
-DataSection = styled.div`
+  DataSection = styled.div`
 display: flex;
 flex-flow: column;
 margin-top: 20px;
@@ -119,7 +119,7 @@ ul {
     }
 }
 `,
-VoteDetailSection = styled.div `
+  VoteDetailSection = styled.div `
     display: flex;
     flex-flow: column;
     margin-top: 40px;

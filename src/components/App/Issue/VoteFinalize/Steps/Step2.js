@@ -1,15 +1,16 @@
 import React, { useContext } from 'react'
+import { LinkText } from 'commons/styles'
+import config from 'config'
 import { Wrapper, Header, Body, SubHeader, OrderedList } from './styles'
 import { ButtonsWrapper, Previous, Next } from './Buttons'
 import { VoteContext } from '../VoteContext'
-import { LinkText } from 'commons/styles'
 
-import config from 'config'
+
 const { MODE } = config
 
 const networks = {
-  private: 'privatenet',
-  staging: 'testnet',
+  private   : 'privatenet',
+  staging   : 'testnet',
   production: 'mainnet'
 }
 
@@ -24,7 +25,7 @@ const Step2 = ({ updateCurrentStep }) => {
         {voterInfo.network !== MODE && <div style={{ marginTop: 20 }}>
           <SubHeader>Envirnoment Setup</SubHeader>
           <OrderedList>
-            <li>Open settings page in zerotheft. <LinkText onClick={() => window.location.href = 'zerotheft://settings/environment?holonRedirectUrl=' + encodeURIComponent(buildUrl())}>Settings</LinkText></li>
+            <li>Open settings page in zerotheft. <LinkText onClick={() => window.location.href = `zerotheft://settings/environment?holonRedirectUrl=${ encodeURIComponent(buildUrl())}`}>Settings</LinkText></li>
             <li>Select {networks[MODE] || 'testnet'} and save.</li>
             <li>Get back to this page and click next.</li>
           </OrderedList>

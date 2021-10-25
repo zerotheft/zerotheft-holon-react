@@ -17,7 +17,7 @@ export const holonInfo = async body => {
 }
 
 export const getPriorVote = async body => {
-  const { data } = await post(`api/prior-vote`, body)
+  const { data } = await post('api/prior-vote', body)
   return data
 }
 export const voteDataRollups = async body => {

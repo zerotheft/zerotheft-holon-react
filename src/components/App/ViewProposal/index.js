@@ -16,11 +16,11 @@ const ViewProposal = ({ match, history }) => {
     getProposalApi(match.params.id)
   }, [])
 
-  if (loading) return <OverlaySpinner loading={true} />
+  if (loading) return <OverlaySpinner loading />
   if (!proposal || !proposal.detail) return <div style={{ padding: 40 }}>Proposal is not available.</div>
 
   const hierarchy = proposal.detail.Hierarchy || proposal.detail.hierarchy || ''
-  let pathArray = compact(hierarchy.split('/'))
+  const pathArray = compact(hierarchy.split('/'))
   const issue = pathArray.pop()
   const path = concat(get(proposal, 'detail.summary_country', 'USA'), pathArray).join('%2F')
 

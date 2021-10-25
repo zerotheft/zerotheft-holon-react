@@ -1,18 +1,18 @@
 import React, { useContext } from 'react'
 import { get } from 'lodash'
 import styled from 'styled-components'
-import { AppContext } from '../AppContext'
 import { Container } from 'commons/styles'
-import Paths from './Paths'
-import TheftInfo from './TheftInfo'
-import IssueSlider from './IssueSlider'
 import Button from 'commons/Buttons'
 import { colors } from 'theme'
 import { DESKTOP_APP_DOWNLOAD_LINK } from 'constants/index'
+import { AppContext } from '../AppContext'
+import Paths from './Paths'
+import TheftInfo from './TheftInfo'
+import IssueSlider from './IssueSlider'
 
 const Home = () => {
   const { selectedHolon, theftInfo } = useContext(AppContext)
-  return <React.Fragment>
+  return <>
     <IssueSlider />
     <TheftInfo summary={get(theftInfo, 'info')} />
     <Paths summary={theftInfo} />
@@ -29,20 +29,20 @@ const Home = () => {
           </ButtonWrapper>
         </AboutZT>
         <AboutZT>
-          {selectedHolon['port'] && <React.Fragment>
-            <h3>About<br /> {selectedHolon['port']}</h3>
+          {selectedHolon.port && <>
+            <h3>About<br /> {selectedHolon.port}</h3>
             <p>
-              {selectedHolon['description'] ||
-                "This will be a holon description. ZeroTheft (ZT) is a tool and infrastructure intended to provide a means for citizens to publish researched documentation of government corruption.  It is built on the premise that corruption can be quantified by a specific monetary amount that is “taken” from taxpayers -- this is what is termed “theft”."}
+              {selectedHolon.description ||
+                'This will be a holon description. ZeroTheft (ZT) is a tool and infrastructure intended to provide a means for citizens to publish researched documentation of government corruption.  It is built on the premise that corruption can be quantified by a specific monetary amount that is “taken” from taxpayers -- this is what is termed “theft”.'}
             </p>
             <ButtonWrapper style={{ display: 'none' }}>
               <Button onClick={() => { }} plain>View Profile</Button>
             </ButtonWrapper>
-          </React.Fragment>}
+          </>}
         </AboutZT>
       </Container>
     </AboutSection>
-  </React.Fragment>
+  </>
 }
 
 Home.propTypes = {}
