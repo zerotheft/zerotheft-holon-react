@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { Web3Context } from 'components/App/Web3Context'
-import { get } from 'utils/api'
+import { saveTransaction } from 'apis/centralizedServer'
 import config from 'config'
 
 const { MODE, GAS_PRICE } = config
@@ -31,11 +31,13 @@ const getBalance = async (web3, address) => {
   return bal ? web3.utils.fromWei(bal, 'ether') : 0
 }
 
-const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [], gasLimit = 3000000) => {
+const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [], txDetails, gasLimit = 3000000) => {
   try {
     if (!web3) {
       web3 = await loadWeb3()
     }
+    const balanceBefore = await getBalance(web3)
+
     const [instance, address] = await instantiateContract(web3, contract)
     const functionAbi = instance.methods[methodName](...args).encodeABI()
     const accounts = await web3.eth.getAccounts()
@@ -58,7 +60,13 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
       ...obj,
     }
 
-    return web3.eth.sendTransaction(txObject)
+    const tx = await web3.eth.sendTransaction(txObject)
+    const balanceAfter = await getBalance(web3)
+    if (txDetails) {
+      // Track the record of transaction made to the blockchain by this citizen while selecting a holon
+      await saveTransaction({ ...txDetails, balanceBefore, balanceAfter, gasPrice: config.GAS_PRICE })
+    }
+    return tx
   } catch (e) {
     throw e
   }
