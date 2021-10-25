@@ -17,7 +17,7 @@ if (!MODE) {
 const envConfig = !MODE || MODE === 'development' ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
 const contracts = (MODE === 'development' || MODE === 'private' || MODE === 'production') ? {} : require(`./contracts.${MODE}.json`)
 
-const getVoteContract = async() => {
+const getVoteContract = async () => {
   if (MODE === 'development')
     return tryRequire('./contracts/ZTMVotes.json')
 
@@ -26,14 +26,15 @@ const getVoteContract = async() => {
 }
 
 export default {
-  DESKTOP_APP                : envConfig.DESKTOP_APP,
-  CHAIN_ID                   : envConfig.CHAIN_ID,
-  HTTP_PROVIDER              : envConfig.HTTP_PROVIDER || 'http://localhost:7545',
-  ZERO_THEFT_CONTRACT        : envConfig.ZERO_THEFT_CONTRACT,
+  DESKTOP_APP: envConfig.DESKTOP_APP,
+  CHAIN_ID: envConfig.CHAIN_ID,
+  HTTP_PROVIDER: envConfig.HTTP_PROVIDER || 'http://localhost:7545',
+  ZERO_THEFT_CONTRACT: envConfig.ZERO_THEFT_CONTRACT,
   getVoteContract,
   ...contracts,
-  MODE                       : MODE || 'development',
-  HONEYBADGER_API_KEY        : envConfig.HONEYBADGER_API_KEY,
-  CENTRALIZED_SERVER         : envConfig.CENTRALIZED_SERVER,
-  CENTRALIZED_SERVER_FRONTEND: envConfig.CENTRALIZED_SERVER_FRONTEND
+  MODE: MODE || 'development',
+  HONEYBADGER_API_KEY: envConfig.HONEYBADGER_API_KEY,
+  CENTRALIZED_SERVER: envConfig.CENTRALIZED_SERVER,
+  CENTRALIZED_SERVER_FRONTEND: envConfig.CENTRALIZED_SERVER_FRONTEND,
+  ...envConfig
 }
