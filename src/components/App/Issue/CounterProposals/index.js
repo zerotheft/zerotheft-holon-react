@@ -4,32 +4,32 @@ import { get, isEmpty, filter as Filter } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
 import { API_URL } from 'constants/index'
+import Button from 'commons/Buttons'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
 import { Wrapper, Left, Right, Header, EmptyProposalWrapper, WarningWrapper } from '../commons/styles'
-import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 
 const CounterProposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  let
+  const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'counterProposal') || {}),
     [loading, updateLoading] = useState(false)
 
-  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePath = (`${match.params.pathname }/${ match.params.id}`).replace(/%2F/g, '/')
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
 
-  let data = get(issue, 'counter_proposals');
+  const data = get(issue, 'counter_proposals');
   if (!selectedItem.id) {
     if (data && data.length > 0) {
       selectedItem = data[0];
     }
   }
-  let proposalLength = (data && data.length > 0)? data.length: 0;
+  const proposalLength = (data && data.length > 0)? data.length: 0;
   
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <WarningWrapper>
@@ -40,7 +40,7 @@ const CounterProposals = ({ history, match }) => {
       <EmptyProposalWrapper>
         <p>
           No counter proposals are available. Please 
-          <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-counter-proposal`} style={{cursor: 'pointer'}}> add new </a>
+          <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-counter-proposal`} style={{ cursor: 'pointer' }}> add new </a>
           counter proposal.
         </p>
       </EmptyProposalWrapper>: null }
@@ -58,7 +58,7 @@ const CounterProposals = ({ history, match }) => {
       </div> */}
       <div style={{ overflowY: 'auto', height: '100%' }}>
         <div style={{ overflow: 'hidden', height: '100%' }}>
-          <Points data={get(issue, 'counter_proposals', [])} issue={issue} counter={true} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
+          <Points data={get(issue, 'counter_proposals', [])} issue={issue} counter selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} />
         </div>
       </div>
     </Left>

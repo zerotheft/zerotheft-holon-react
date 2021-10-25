@@ -36,7 +36,7 @@ const
     const
       [state, changeState] = useState(initial)
     if (text && text.length > textLength)
-      return <DescriptionPara>{state ? <React.Fragment>{text}<Extend onClick={() => changeState(false)}>See less</Extend></React.Fragment> : <React.Fragment>{truncateString(text, textLength)}<Extend onClick={() => changeState(true)} down>See More</Extend></React.Fragment>}</DescriptionPara>
+      return <DescriptionPara>{state ? <>{text}<Extend onClick={() => changeState(false)}>See less</Extend></> : <>{truncateString(text, textLength)}<Extend onClick={() => changeState(true)} down>See More</Extend></>}</DescriptionPara>
     return <DescriptionPara>{text}</DescriptionPara>
   }
 

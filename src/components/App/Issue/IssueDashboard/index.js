@@ -2,19 +2,18 @@ import React, { useEffect, useContext, useState } from 'react'
 import { get, sortedUniqBy, range, isEmpty, filter as filterArray } from 'lodash'
 import yaml from 'js-yaml'
 import styled from 'styled-components'
-import { convertDollarToString } from 'utils'
+import { convertDollarToString , numberWithCommas } from 'utils'
 import { colors } from 'theme'
-import { IssueContext } from '../IssueContext'
 import { getReport, getTheftInfo } from 'apis/reports'
 import { getProposalTemplate } from 'apis/proposals'
-import { numberWithCommas } from 'utils'
 import useFetch from 'commons/hooks/useFetch'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import Button from 'commons/Buttons'
 import SeeMore from 'commons/SeeMore'
 import { EmptyText, } from 'commons/styles'
-import { Header, Left, Right, Wrapper, WarningWrapper } from '../commons/styles'
 import { AppContext } from 'components/App/AppContext'
+import { IssueContext } from '../IssueContext'
+import { Header, Left, Right, Wrapper, WarningWrapper } from '../commons/styles'
 import Path from '../../Path/Path'
 import SummaryReport from './SummaryReport';
 import PathProposals from './PathProposals';
@@ -30,8 +29,8 @@ const Dashboard = ({ history, location, match }) => {
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
   const { pathname } = location
   const { selection, updateSelection, refetchIssue } = useContext(IssueContext)
-  let[selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {})
-  const displayYaml = (template) => {
+  const[selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {})
+  const displayYaml = template => {
     let data
     try {
       data = yaml.safeLoad(template)
@@ -64,26 +63,26 @@ const Dashboard = ({ history, location, match }) => {
   const yes = theftData && (theftData.for / theftData.votes * 100).toFixed()
   const no = 100 - yes
   if ((issueLoading || templateLoading || loading || loadingTheft)) return <OverlaySpinner loading />
-  return  <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
-  <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
-    <div style={{ overflowY: 'auto', height: '100%' }}>
+  return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
+    <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}>
+      <div style={{ overflowY: 'auto', height: '100%' }}>
         <div style={{ overflow: 'hidden', height: '100%' }}>
           {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
-          <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage={true} />
+          <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage />
         </div>
       </div>
     </Left>
     <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
       <div style={{ overflow: 'hidden' }}>
-        <div style={{width: '80%', float: 'left'}}>
+        <div style={{ width: '80%', float: 'left' }}>
           <PathProposals regularProp={get(issue, 'proposals') || []} counterProp={get(issue, 'counter_proposals') || []} theftData={theftData} />
         </div>
-        <div style={{width: '20%', float: 'right'}}>
+        <div style={{ width: '20%', float: 'right' }}>
           <SelectWrapper>
-          {theftData && (no || yes) && <TheftInfo>
+            {theftData && (no || yes) && <TheftInfo>
               <h2>Was there theft?</h2>
-              <div class="wrapLeftRightsec">
-                <div class="leftTheftSec">
+              <div className="wrapLeftRightsec">
+                <div className="leftTheftSec">
                   <TheftBlockSec className="yesTheftsec" width={yes}>
                     <span>Yes {yes}%</span>
                   </TheftBlockSec>
@@ -91,12 +90,12 @@ const Dashboard = ({ history, location, match }) => {
                     <span>No {no}%</span>
                   </TheftBlockSec>
                 </div>
-                <div class="rightTheftSec">
+                <div className="rightTheftSec">
                   <h2>Amount of theft: <span>${(convertDollarToString(parseFloat(get(theftData, 'theft'))))}</span></h2>
                 </div>
               </div>
 
-              <div class="totlVotersSec">
+              <div className="totlVotersSec">
                 Total Voters : {numberWithCommas(get(theftData, 'votes'))}
               </div>
             </TheftInfo>
@@ -105,18 +104,18 @@ const Dashboard = ({ history, location, match }) => {
         </div>
       </div>
     </Right>
-</Wrapper>
+  </Wrapper>
 
 
-    {/* <InnerWrapper>
+  {/* <InnerWrapper>
       <Left style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}> */}
-      {/* <div style={{ overflowY: 'auto', height: '100%' }}>
+  {/* <div style={{ overflowY: 'auto', height: '100%' }}>
         <div style={{ overflow: 'hidden', height: '100%' }}>
           {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> 
         
         </div>
         </div> */}
-          {/* <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage={true} />
+  {/* <Points data={get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} viewPage={true} />
       </Left>
       <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
       <div style={{ overflow: 'hidden' }}>
@@ -126,7 +125,7 @@ const Dashboard = ({ history, location, match }) => {
           </div>
         <Header>
           <SelectWrapper> */}
-            {/* <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
+  {/* <div className="btns" style={{ margin: '15px 0', justifyContent: 'center' }}>
               {filteredProposals.length ? <Button onClick={() => history.push(`${pathname}/proposals`)} width={180} height={55} style={{ fontSize: 22 }}>Vote</Button> :
                 <CustomButton href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}>
                   Add your proposal
@@ -197,7 +196,7 @@ const Dashboard = ({ history, location, match }) => {
               /> 
             </div> */}
 
-            {/* {theftData && (no || yes) && <TheftInfo>
+  {/* {theftData && (no || yes) && <TheftInfo>
               <h2>Was There Theft?</h2>
               <div class="wrapLeftRightsec">
                 <div class="leftTheftSec">

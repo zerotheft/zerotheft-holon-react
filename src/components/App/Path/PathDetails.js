@@ -17,18 +17,27 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
   return <Wrapper>
     {voteDetails ?
       <div className='details-wrapper'>
-        <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote') === "NO" ? "No Theft" : "Yes theft"} ${get(voteDetails, 'votedPercent', '0')}%`}</div>
+        <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'} ${get(voteDetails, 'votedPercent', '0')}%`}</div>
         <div className={`amt ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>${convertDollarToString(toNumber(get(voteDetails, 'amount', 1)))}</div>
       </div> : <div style={{ fontSize: 14, minWidth: 190 }}>Need votes</div>}
     <div className="button-wrapper">
-      <CustomButton onClick={e => {
-        e.stopPropagation()
-        history.push(`${viewLink}/proposals`)
-      }} plain style={{ color: '#777373' }} width={90} height={34}><FontAwesomeIcon icon={faEye} />View</CustomButton>
-      <CustomButton onClick={e => {
-        e.stopPropagation()
-        history.push(`/${isPath ? 'pathReport' : 'leafReport'}/${url.replaceAll('/', '%2F')}`)
-      }} style={{ backgroundColor: '#E9E9E9', color: '#777373' }} width={105} height={34}><FontAwesomeIcon icon={faFilePdf} />Report</CustomButton>
+      <CustomButton
+        onClick={e => {
+          e.stopPropagation()
+          history.push(`${viewLink}/proposals`)
+        }}
+        plain
+        style={{ color: '#777373' }}
+        width={90}
+        height={34}><FontAwesomeIcon icon={faEye} />View</CustomButton>
+      <CustomButton
+        onClick={e => {
+          e.stopPropagation()
+          history.push(`/${isPath ? 'pathReport' : 'leafReport'}/${url.replaceAll('/', '%2F')}`)
+        }}
+        style={{ backgroundColor: '#E9E9E9', color: '#777373' }}
+        width={105}
+        height={34}><FontAwesomeIcon icon={faFilePdf} />Report</CustomButton>
       {isPath ? <CustomButton onClick={() => history.push(`${viewLink}/proposals`)} width={90} height={34}>Vote</CustomButton> : <CustomButton onClick={() => history.push(`${viewLink}/proposals`)} width={90} height={34}>Vote</CustomButton>
       }
     </div>

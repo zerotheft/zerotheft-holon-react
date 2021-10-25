@@ -1,15 +1,15 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
-import useCanVote from './useCanVote'
 import { vote as voteByHolon, holonInfo as getHolonInfo, voteDataRollups } from 'apis/vote'
 import config from 'config'
 import useWeb3 from 'utils/useWeb3'
 import { addHistory } from 'apis/desktopApp'
-import { IssueContext } from '../IssueContext'
-import { AppContext } from '../../AppContext'
 import { toast } from 'react-toastify'
 import { get } from 'lodash'
 import { getParameterByName } from 'utils'
+import { AppContext } from '../../AppContext'
+import { IssueContext } from '../IssueContext'
+import useCanVote from './useCanVote'
 
 const { getVoteContract } = config
 const VoteContext = createContext()
@@ -21,9 +21,9 @@ const VoteProvider = ({ children }) => {
   const { selection } = useContext(IssueContext)
   const buildUrl = () => {
     let query = '?page=steps&details=true'
-    if (finalVote) query = query + `&vote=${finalVote}`
-    if (selection.proposal) query = query + `&p=${selection.proposal.id}`
-    if (selection.counterProposal) query = query + `&c=${selection.counterProposal.id}`
+    if (finalVote) query += `&vote=${finalVote}`
+    if (selection.proposal) query += `&p=${selection.proposal.id}`
+    if (selection.counterProposal) query += `&c=${selection.counterProposal.id}`
 
     return window.location.origin + window.location.pathname + query
   }
@@ -72,12 +72,12 @@ const useVote = () => {
   //   })
   // }
 
-  const vote = async (values) => {
+  const vote = async values => {
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
-    let yesTheftProposalId = get(selection, 'proposal.id', "")
-    let noTheftProposalId = get(selection, 'counterProposal.id', "")
+    const yesTheftProposalId = get(selection, 'proposal.id', '')
+    const noTheftProposalId = get(selection, 'counterProposal.id', '')
 
     const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
     const contract = await getVoteContract()
@@ -87,20 +87,21 @@ const useVote = () => {
         showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
-      if (!holonInfo.holonID || holonInfo.holonID === "") {
+      if (!holonInfo.holonID || holonInfo.holonID === '') {
         showErrorPopUp({ message: 'Holon information missing. Please select holon first', holonInfo, proposalId, voteType: finalVote, ...values })
         return
       }
+
       // const voteID = convertStringToHash(`${userInfo.address}${Date.now().toString()}`)
 
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
 
-      const votingArea = await convertToAscii("RiggedEconomy")
+      const votingArea = await convertToAscii('RiggedEconomy')
       const hierarchyPath = convertStringToHash(values.hierarchyPath)
-      const voteTypeDetail = await convertToAscii("TrueFalse_AmountsPerYear")
-      const voteValue = voteType ? "True" : "False"
-      const verificationOnVote = await convertToAscii("RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured")
+      const voteTypeDetail = await convertToAscii('TrueFalse_AmountsPerYear')
+      const voteValue = voteType ? 'True' : 'False'
+      const verificationOnVote = await convertToAscii('RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured')
       const amountValue = values.altTheftAmounts || ''
 
       const messageParams = [
@@ -108,8 +109,8 @@ const useVote = () => {
         { t: 'bytes32', v: hierarchyPath },
         { t: 'bytes32', v: voteTypeDetail },
         { t: 'string', v: voteValue },
-        { t: 'string', v: amountValue }, //custom amount added by citizen
-        { t: "address", v: account },
+        { t: 'string', v: amountValue }, // custom amount added by citizen
+        { t: 'address', v: account },
         { t: 'string', v: yesTheftProposalId },
         { t: 'string', v: noTheftProposalId }
       ]
@@ -131,7 +132,8 @@ const useVote = () => {
       updateVoting(false)
     }
   }
-  //TODO: We might need this later. So just keeping it with comments
+
+  // TODO: We might need this later. So just keeping it with comments
   // const voteWithHolon = async () => {
   //   try {
   //     const values = popup
@@ -162,9 +164,8 @@ const useVote = () => {
   // }
 
 
-  const afterVote = async (balance, values) => {
-
-    //do voteData Rollups
+  const afterVote = async(balance, values) => {
+    // do voteData Rollups
     const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
     if (!rollupsRes.success)
       toast.error('Error in  voting rollups')
@@ -173,13 +174,13 @@ const useVote = () => {
 
     const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
     const newHistory = {
-      details: `Voted for path: '${fullPath}'`,
-      pathName: fullPath,
+      details        : `Voted for path: '${fullPath}'`,
+      pathName       : fullPath,
       previousBalance: balance,
-      newBalance: newBalance,
-      date: new Date(),
-      amount: 0,
-      type: 'vote'
+      newBalance,
+      date           : new Date(),
+      amount         : 0,
+      type           : 'vote'
     }
 
     try {
@@ -189,7 +190,8 @@ const useVote = () => {
     }
 
     updateVoteStore(values)
-    //save voter address in local storage
+
+    // save voter address in local storage
     localStorage.setItem('address', values.account)
 
     // await refetchIssue()

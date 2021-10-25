@@ -8,9 +8,8 @@ import { faFrown } from '@fortawesome/free-regular-svg-icons'
 import Highcharts from 'highcharts';
 import HighchartsReact from 'highcharts-react-official'
 import { colors } from 'theme'
-import { Body, Header, NoChartText } from '../styles'
 import Button from 'commons/Buttons'
-import { imageExists, convertJSONtoString } from 'utils'
+import { imageExists, convertJSONtoString , convertDollarToString, numberWithCommas } from 'utils'
 import OverlaySpinner from 'commons/OverlaySpinner';
 import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
@@ -18,18 +17,19 @@ import { FlexRow } from 'commons/styles';
 import { getTheftInfo } from 'apis/reports';
 import { AppContext } from 'components/App/AppContext'
 import TheftInfo from 'components/App/Home/TheftInfo';
-import { convertDollarToString, numberWithCommas } from 'utils'
 import styled from 'styled-components';
+import { Body, Header, NoChartText } from '../styles'
 
 const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, allowSelect = true, chartData = null }) => {
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
   const match = useRouteMatch()
+
   // const { proposalDetails } = useContext(IssueContext)
-  let theftYears = item.theftYears
+  const { theftYears } = item
   let maxTheftYear = null;
   if (theftYears) {
     let theftYearKeys = Object.keys(theftYears);
-    theftYearKeys = theftYearKeys.map(function (item) {
+    theftYearKeys = theftYearKeys.map(function(item) {
       return parseInt(item)
     })
 
@@ -53,23 +53,23 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
 
 
   if (proposalLoading) {
-    return (<Body><OverlaySpinner overlayParent loading={true} backgroundColor="transparent" /> <div className="overlayTextWrapper"> <p className="overlayText"> Please wait. The details are being fetched from the server. </p> </div> </Body>)
+    return (<Body><OverlaySpinner overlayParent loading backgroundColor="transparent" /> <div className="overlayTextWrapper"> <p className="overlayText"> Please wait. The details are being fetched from the server. </p> </div> </Body>)
   }
   return (<Body>
     <div className="bodyDescription">
       {proposalInfo ? <div className='detail-wrapper' style={{ position: 'relative', minHeight: 50 }}>
         {convertJSONtoString(get(proposalInfo, 'detail', {}))}
-      </div> : <React.Fragment>
+      </div> : <>
         {get(item, 'title') && <h5>{get(item, 'title')}</h5>}
         <p>{get(item, 'description')}</p>
-      </React.Fragment>}
+      </>}
     </div>
     <div className="detailsWithCharts">
       <Header>
         {theftData && (no || yes) && <SelectWrapper>
           <h4>Was there theft?</h4>
-          <div class="wrapLeftRightsec">
-            <div class="leftTheftSec">
+          <div className="wrapLeftRightsec">
+            <div className="leftTheftSec">
               <TheftBlockSec className="yesTheftsec" width={yes}>
                 <span>Yes {yes}%</span>
               </TheftBlockSec>
@@ -78,7 +78,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               </TheftBlockSec>
             </div>
           </div>
-          <div class="totlVotersSec">
+          <div className="totlVotersSec">
             Total Voters : {numberWithCommas(get(theftData, 'votes'))}
           </div>
         </SelectWrapper>
@@ -87,14 +87,23 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
         <h5 className='plain'>This is used to compare against, for when you make your final decision</h5>
         {allowSelect &&
           <div className="btns">
-            <Button width={170} height={44} onClick={() => {
-              updateSelection(type === "counter" ? { ...selection, counterProposal: item } : { ...selection, proposal: item })
-              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
-            }} disabled={isEmpty(item)}>Select This One</Button>
-            <Button plain height={44} width={125} onClick={() => {
-              updateSelection(type === "counter" ? { ...selection, counterProposal: null } : { ...selection, proposal: null })
-              history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === "counter" ? "vote" : "counter-proposals"}`)
-            }} style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
+            <Button
+              width={170}
+              height={44}
+              onClick={() => {
+                updateSelection(type === 'counter' ? { ...selection, counterProposal: item } : { ...selection, proposal: item })
+                history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === 'counter' ? 'vote' : 'counter-proposals'}`)
+              }}
+              disabled={isEmpty(item)}>Select This One</Button>
+            <Button
+              plain
+              height={44}
+              width={125}
+              onClick={() => {
+                updateSelection(type === 'counter' ? { ...selection, counterProposal: null } : { ...selection, proposal: null })
+                history.push(`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === 'counter' ? 'vote' : 'counter-proposals'}`)
+              }}
+              style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}>Skip This</Button>
           </div>
         }
       </Header>
@@ -213,7 +222,7 @@ const TheftBlockSec = styled.div`
     margin-right: 10px;
   }
 `,
-TitleContent = styled.div`
+  TitleContent = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

@@ -10,7 +10,7 @@ const BreadCrumbs = ({ match, history }) => {
   if (breadcrumb.length) {
     let current_path = ''
     breadcrumb = breadcrumb.map(i => {
-      current_path = current_path ? current_path + '%2F' + i : i
+      current_path = current_path ? `${current_path }%2F${ i}` : i
       return ({ label: i, path: current_path })
     })
   }

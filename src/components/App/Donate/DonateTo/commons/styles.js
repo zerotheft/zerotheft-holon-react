@@ -34,7 +34,7 @@ export const ContentWrapper = styled.div`
     }
   } 
   `,
-EthAddress = styled.div`
+  EthAddress = styled.div`
   background: #F2F4F4;
   border-radius: 11px;
   padding: 15px 140px 15px 40px;
@@ -54,7 +54,7 @@ EthAddress = styled.div`
     right: 45px;
   }
   `,
-History = styled.div`
+  History = styled.div`
   margin-top: 40px;
   h5 {
     font-size: 21px;

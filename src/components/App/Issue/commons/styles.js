@@ -33,7 +33,7 @@ export const
   font-size: 22px;
   color: #99;
 `,
-NoChartText = styled.div`
+  NoChartText = styled.div`
   background: ${colors.warningBGColor};
   border-radius: 5px;
   padding: 6px;

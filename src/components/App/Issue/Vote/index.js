@@ -3,9 +3,9 @@ import { get } from 'lodash'
 import { Redirect } from 'react-router-dom'
 import styled from 'styled-components'
 
+import { colors } from 'theme'
 import { IssueContext } from '../IssueContext'
 import Compare from '../commons/Compare'
-import { colors } from 'theme'
 
 const Vote = ({ match }) => {
   const { issue, selection } = useContext(IssueContext)  
@@ -31,7 +31,7 @@ export default Vote
 const Wrapper = styled.div`
   padding-top: 75px;
 `,
-Header = styled.div`
+  Header = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

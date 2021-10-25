@@ -6,10 +6,6 @@ import styled from 'styled-components'
 
 import config from 'config'
 import BRANDLOGO from 'assets/icons/zerotheft.svg'
-import HomeIcon from './svgs/home'
-import DonateIcon from './svgs/donate'
-import PathIcon from './svgs/path'
-import HolonIcon from './svgs/holon'
 
 import { getNations } from 'apis/path'
 import useFetch from 'commons/hooks/useFetch'
@@ -18,6 +14,10 @@ import * as ROUTES from 'constants/routes'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { Container } from 'commons/styles'
 import { colors } from 'theme'
+import HolonIcon from './svgs/holon'
+import PathIcon from './svgs/path'
+import DonateIcon from './svgs/donate'
+import HomeIcon from './svgs/home'
 import { AppContext } from '../../AppContext'
 
 const { CENTRALIZED_SERVER_FRONTEND } = config
@@ -48,13 +48,13 @@ const Header = () => {
         </BrandLogo>
         <MenuWrapper>
           <li>
-            <NavLink to={'/'} activeClassName='active1'>
+            <NavLink to="/" activeClassName='active1'>
               <HomeIcon />
               Home
             </NavLink>
           </li>
           <li>
-            <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank">
+            <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
               <HolonIcon />
               Holons
             </a>
@@ -78,7 +78,7 @@ const Header = () => {
               <li><NavLink to={ROUTES.DATALIST} activeClassName='active'>Citizens/Proposals</NavLink></li>
               <li><NavLink to={ROUTES.VOTELIST} activeClassName='active'>Votes</NavLink></li>
               <li><NavLink to={ROUTES.HIERARCHY} activeClassName='active'>HierarchyYaml</NavLink></li>
-              <li><a href={ROUTES.EXPORT_LOCATION} activeClassName='active' target='_blank'>Exported Data</a></li>
+              <li><a href={ROUTES.EXPORT_LOCATION} activeClassName='active' target='_blank' rel="noreferrer">Exported Data</a></li>
             </ul>
           </li>
         </MenuWrapper>
@@ -106,15 +106,15 @@ const Header = () => {
             }),
             control: styles => ({
               ...styles,
-              width: 90,
+              width      : 90,
               borderColor: 'transparent !important',
-              border: 'none !important',
+              border     : 'none !important',
             }),
             singleValue: styles => ({
               ...styles,
-              fontSize: 15,
+              fontSize  : 15,
               fontWeight: 500,
-              color: '#77707D'
+              color     : '#77707D'
             }),
             indicatorSeparator: () => ({
               display: 'none'

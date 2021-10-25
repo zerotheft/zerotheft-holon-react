@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   position: relative;
   overflow-x: hidden;
 `,
-BreadcrumbWrapper = styled.div`
+  BreadcrumbWrapper = styled.div`
   width: 100%;
   position: absolute;
   top: 0px; left: 0;

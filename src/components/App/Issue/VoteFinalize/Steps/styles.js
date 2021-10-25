@@ -5,22 +5,22 @@ import { colors } from 'theme'
 export const Wrapper = styled.div `
   display: flex;
 `,
-InnerWrapper = styled.div `
+  InnerWrapper = styled.div `
   flex: 1;
   margin-right: 30px;
 `,
-Header = styled.div `
+  Header = styled.div `
   font-size: 34px;
   font-weight: 600;
   color: ${colors.primary};
 `,
-Body = styled.div `
+  Body = styled.div `
   margin: 20px 0;
 `,
-BodyInfo = styled.div `
+  BodyInfo = styled.div `
   margin-bottom: 20px;
 `,
-OrderedList = styled.ol `
+  OrderedList = styled.ol `
   list-style-type: inside;
   margin: 0 20px;
   li {
@@ -33,11 +33,11 @@ OrderedList = styled.ol `
     }
   }
 `,
-Info = styled.div `
+  Info = styled.div `
   margin-bottom: 20px;
   font-style: italic;
 `,
-SubHeader = styled.div `
+  SubHeader = styled.div `
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 10px;

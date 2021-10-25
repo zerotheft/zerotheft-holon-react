@@ -35,7 +35,7 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
     </Header>
     {isEmpty(data) ? <div>
       <span style={{ color: colors.primary, fontSize: 15, fontWeight: '500', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'}`)}>select proposal</span>
-    </div> : <React.Fragment>
+    </div> : <>
       <div style={{ fontSize: 20 }}>
         This Proposal: ID {data.id}
         <span style={{ marginLeft: 15, color: colors.primary, fontSize: 15, fontWeight: '500', textDecoration: 'underline', cursor: 'pointer' }} onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'}`)}>change proposal</span>
@@ -47,7 +47,7 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
         <p>
           <span style={{ color: '#8D8D8D' }}>AUTHOR</span> {get(data, 'author.name', 'Anonymous')}
         </p>
-        {/*<p>
+        {/* <p>
           {get(data, 'ratings.count', 0)}
           <span style={{ margin: '0 5px' }}><StarRatings
             rating={get(data, 'ratings.rating', 0)}
@@ -58,7 +58,7 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
             name='author_rating'
           /></span>
           <FontAwesomeIcon icon={faFrown} color={colors.red} />{get(data, 'complaints.count', 0)}
-        </p>*/}
+        </p> */}
       </div>
       <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
         <p style={{ fontSize: 24 }}>
@@ -76,12 +76,12 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
           <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(data, 'complaints.count', 0)}
         </p>
       </div>
-      {(data && details) && <React.Fragment>
+      {(data && details) && <>
         <div className="description" style={{ position: 'relative', minHeight: 50 }}>
           {details.loading ? <OverlaySpinner overlayParent loading backgroundColor="transparent" /> : convertJSONtoString(details.detail)}
         </div>
-      </React.Fragment>}
-    </React.Fragment>}
+      </>}
+    </>}
   </Wrapper>
 }
 

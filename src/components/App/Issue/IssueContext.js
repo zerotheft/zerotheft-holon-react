@@ -12,6 +12,7 @@ const IssueContext = createContext()
 const IssueProvider = ({ children, id, match, params, location }) => {
   const [issue, error, loading, fetchIssue, selection, updateSelection] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
+
   // const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
   const { userInfo = {}, filterParams } = useContext(AppContext)
   const [proposalDetails, updateProposalDetails] = useState({})
@@ -65,6 +66,7 @@ const IssueProvider = ({ children, id, match, params, location }) => {
         issue,
         error,
         loading,
+
         // priorVoteInfo,
         refetchIssue: () => fetchIssue(),
         selection,
@@ -88,11 +90,11 @@ const useIssueFetcher = (id, match) => {
     [loading, updateLoading] = useState(true),
     [error, updateError] = useState()
 
-  const fetchIssue = async () => {
+  const fetchIssue = async() => {
     updateLoading(true)
     try {
       const path = await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`) || []
-      let issueDetails = {}
+      const issueDetails = {}
       issueDetails.proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
         ...i, year: parseInt(get(i, 'year'))
       })) || []

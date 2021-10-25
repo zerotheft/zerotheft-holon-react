@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import Button from 'commons/Buttons'
 
 import {
-    HOME
+  HOME
 } from 'constants/routes'
 
 const NotFound = () => {

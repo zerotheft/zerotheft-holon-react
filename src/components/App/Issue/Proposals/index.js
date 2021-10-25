@@ -4,35 +4,35 @@ import { get, isEmpty, filter as Filter } from 'lodash'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
+import Button from 'commons/Buttons'
+import { EmptyText } from 'commons/styles'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
 import { Wrapper, Left, Right, WarningWrapper, EmptyProposalWrapper } from '../commons/styles'
-import Button from 'commons/Buttons'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
-import { EmptyText } from 'commons/styles'
 
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  let
+  const
     [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
 
-  const issuePath = (match.params.pathname + '/' + match.params.id).replace(/%2F/g, '/')
+  const issuePath = (`${match.params.pathname }/${ match.params.id}`).replace(/%2F/g, '/')
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'}/${issuePath.replace(/\//g, '-')}`
   
-  let data = get(issue, 'proposals')
+  const data = get(issue, 'proposals')
   if (!selectedItem.id) {
     if (data && data.length > 0) {
       selectedItem = data[0];
     }
   }
 
-  let proposalLength = (data && data.length > 0)? data.length: 0;
+  const proposalLength = (data && data.length > 0)? data.length: 0;
   
   return <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
     <WarningWrapper>
@@ -42,7 +42,7 @@ const Proposals = ({ history, match }) => {
       <EmptyProposalWrapper>
         <p>
           No proposals are available. Please 
-          <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`} style={{cursor: 'pointer'}}> add new </a>
+          <a href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`} style={{ cursor: 'pointer' }}> add new </a>
           proposal.
         </p>
       </EmptyProposalWrapper>: null }

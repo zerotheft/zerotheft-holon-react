@@ -8,75 +8,74 @@ import proposal from 'assets/icons/proposal.svg'
 import OverlaySpinner from 'commons/OverlaySpinner'
 
 const PathProposals = ({ regularProp, counterProp, theftData }) => {
-    const [proposalNumber, updateProposal] = useState(0),
-        [leadingProps, updateLeadingProps] = useState([]),
-        [proposalLoading, updateLoader] = useState(true),
-        proposals = [...regularProp, ...counterProp];
+  const [proposalNumber, updateProposal] = useState(0),
+    [leadingProps, updateLeadingProps] = useState([]),
+    [proposalLoading, updateLoader] = useState(true),
+    proposals = [...regularProp, ...counterProp];
 
-    const getLeadingProp = (allProps) => {
-        return allProps.length && allProps.reduce((proposal, temp) => proposal.votes > temp.votes ? proposal : temp);
+  const getLeadingProp = allProps => {
+    return allProps.length && allProps.reduce((proposal, temp) => proposal.votes > temp.votes ? proposal : temp);
+  }
+
+  const firstLeadingProp = proposals.length && getLeadingProp(proposals);
+  const secondLeadingProp = regularProp.length && regularProp.length !== proposals.length && getLeadingProp(regularProp);
+
+  const getLeadingProposals = async firstLeadingProp => {
+    updateLoader(true)
+    const props = []
+    const firstProp = await getProposal(firstLeadingProp.id)
+    if (firstProp && parseInt(firstProp.theftAmt) === 0 && theftData && theftData.for >= theftData.against) {
+      const secondProp = await getProposal(secondLeadingProp.id)
+      props.push(secondProp)
     }
-
-    let firstLeadingProp = proposals.length && getLeadingProp(proposals);
-    let secondLeadingProp = regularProp.length && regularProp.length !== proposals.length && getLeadingProp(regularProp);
-
-    const getLeadingProposals = async (firstLeadingProp) => {
-        updateLoader(true)
-        const props = []
-        const firstProp = await getProposal(firstLeadingProp.id)
-        if (firstProp && parseInt(firstProp.theftAmt) === 0 && theftData && theftData.for >= theftData.against) {
-            const secondProp = await getProposal(secondLeadingProp.id)
-            props.push(secondProp)
-        }
-        props.push(firstProp)
-        updateLeadingProps(props)
-        updateLoader(false)
-    }
-    useEffect(() => {
-        firstLeadingProp.id && getLeadingProposals(firstLeadingProp)
-        updateLoader(false)
-    }, [firstLeadingProp.id])
-    if(proposalLoading)
-        return <Wrapper>
-                <OverlaySpinner loading/>
-            </Wrapper>
-    if (isEmpty(proposals)) return (
-        <Wrapper>
-            <div className="no-proposal">
-                <div>
-                    <img src={proposal} style={{height: 75, width: 60}} />
-                </div>
-                <div>
-                    <h2>No Proposal Found</h2>
-                    <span> No proposals for the path exists yet. </span>
-                </div>
-            </div>
-        </Wrapper>)
-
+    props.push(firstProp)
+    updateLeadingProps(props)
+    updateLoader(false)
+  }
+  useEffect(() => {
+    firstLeadingProp.id && getLeadingProposals(firstLeadingProp)
+    updateLoader(false)
+  }, [firstLeadingProp.id])
+  if(proposalLoading)
     return <Wrapper>
-        <h3>{proposals[proposalNumber].title}</h3>
-        <div className="description">{proposals[proposalNumber].description}</div>
-        <div className="proposal-list">
-            {proposalNumber !== 0 && <button onClick={() => { updateProposal(proposalNumber - 1) }}>Previous</button>}
-            {proposalNumber !== (proposals.length - 1) && <button onClick={() => { updateProposal(proposalNumber + 1) }}>Next Description</button>}
-        </div>
-        {leadingProps.length>0 && <>
-            <h3>Leading Proposal{leadingProps.length > 1 && 's'}</h3>
-            {
-                leadingProps.map((prop, index) => {
-
-                    return (<>
-                        <h4>{`${index + 1}. ${prop.title}`}</h4>
-                        <div className="best-proposal">
-                            {convertJSONtoString(get(prop, 'detail', {}))}
-                        </div>
-                    </>)
-                })
-            }
-
-        </>
-        }
+      <OverlaySpinner loading />
     </Wrapper>
+  if (isEmpty(proposals)) return (
+    <Wrapper>
+      <div className="no-proposal">
+        <div>
+          <img src={proposal} style={{ height: 75, width: 60 }} />
+        </div>
+        <div>
+          <h2>No Proposal Found</h2>
+          <span> No proposals for the path exists yet. </span>
+        </div>
+      </div>
+    </Wrapper>)
+
+  return <Wrapper>
+    <h3>{proposals[proposalNumber].title}</h3>
+    <div className="description">{proposals[proposalNumber].description}</div>
+    <div className="proposal-list">
+      {proposalNumber !== 0 && <button onClick={() => { updateProposal(proposalNumber - 1) }}>Previous</button>}
+      {proposalNumber !== (proposals.length - 1) && <button onClick={() => { updateProposal(proposalNumber + 1) }}>Next Description</button>}
+    </div>
+    {leadingProps.length>0 && <>
+      <h3>Leading Proposal{leadingProps.length > 1 && 's'}</h3>
+      {
+        leadingProps.map((prop, index) => {
+          return (<>
+            <h4>{`${index + 1}. ${prop.title}`}</h4>
+            <div className="best-proposal">
+              {convertJSONtoString(get(prop, 'detail', {}))}
+            </div>
+          </>)
+        })
+      }
+
+    </>
+    }
+  </Wrapper>
 }
 
 const Wrapper = styled.div`

@@ -8,12 +8,12 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
-import { IssueContext } from '../IssueContext'
 import Button from 'commons/Buttons'
 import { getCitizenInfo } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
 import IssueSlider from 'components/App/Home/IssueSlider'
 import { colors } from 'theme'
+import { IssueContext } from '../IssueContext'
 
 const AfterVote = ({ match }) => {
   const { vote, issue } = useContext(IssueContext)
@@ -47,7 +47,7 @@ const AfterVote = ({ match }) => {
                 Your Comment : {vote.comment ? <><br />{vote.comment}</> : 'NONE'}
               </p>
               <p>
-                Amount Stolen : ${numberWithCommas(amount)}{vote.vote === 'Yes' && !vote.custom_amount && `(from Problem Proposal)`}
+                Amount Stolen : ${numberWithCommas(amount)}{vote.vote === 'Yes' && !vote.custom_amount && '(from Problem Proposal)'}
               </p>
               <p style={{ display: 'none' }}>
                 Chosen Proposal : ID 23412
@@ -64,9 +64,13 @@ const AfterVote = ({ match }) => {
                 /></span>
                 <FontAwesomeIcon icon={faFrown} color={colors.red} style={{ marginRight: 5 }} />{get(proposal, 'complaints.count', 0)}
               </p>
-              <Button onClick={() => {
-                window.location.href = `zerotheft://home/path/${get(match, 'params.pathname')}%2F${get(match, 'params.id')}/proposal-feedback/${get(proposal, 'id')}`
-              }} width={285} height={50} style={{ fontSize: 16 }}>Please Rate This Proposal</Button>
+              <Button
+                onClick={() => {
+                  window.location.href = `zerotheft://home/path/${get(match, 'params.pathname')}%2F${get(match, 'params.id')}/proposal-feedback/${get(proposal, 'id')}`
+                }}
+                width={285}
+                height={50}
+                style={{ fontSize: 16 }}>Please Rate This Proposal</Button>
             </div>
           </VotedInfo>
         </div>

@@ -1,9 +1,9 @@
 import React from 'react'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from './styles'
-import { ButtonsWrapper, Next } from './Buttons'
 import metamaskIcon from 'assets/icons/metamask.svg'
 import styled from 'styled-components'
 import config from 'config'
+import { ButtonsWrapper, Next } from './Buttons'
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from './styles'
 
 const { MODE, CHAIN_ID, HTTP_PROVIDER } = config
 

@@ -31,14 +31,14 @@ const SimilarIssues = ({ history, match }) => {
           </th>
         </thead>
         <tbody>
-        {reject(get(res, 'issues', []), { id: get(match, 'params.id') }).map(i => <tr>
-          <td className='issue' onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${i.id}`)}>
-            <div>
-              <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 5, color: colors.primary }}/> {i.title || 'N/A'} <span style={{ fontSize: 14, fontStyle: 'italic' }}>(proposals: {i.total_proposals || 0}, counter proposals: {i.total_counter_proposals || 0})</span><br />
-              <div className='createdOn'>Created On: {convertUNIXtoDATETIME(i.created_at)}</div>
-            </div>
-          </td>
-        </tr>)}
+          {reject(get(res, 'issues', []), { id: get(match, 'params.id') }).map(i => <tr>
+            <td className='issue' onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${i.id}`)}>
+              <div>
+                <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 5, color: colors.primary }} /> {i.title || 'N/A'} <span style={{ fontSize: 14, fontStyle: 'italic' }}>(proposals: {i.total_proposals || 0}, counter proposals: {i.total_counter_proposals || 0})</span><br />
+                <div className='createdOn'>Created On: {convertUNIXtoDATETIME(i.created_at)}</div>
+              </div>
+            </td>
+          </tr>)}
         </tbody>
       </table>
       {!get(res, 'issues', []).length && <div style={{ padding: 10, fontStyle: 'italic' }}>
@@ -55,7 +55,7 @@ const Header = styled.div`
     font-size: 28px;
   }
 `,
-ListWrapper = styled.div`
+  ListWrapper = styled.div`
   letter-spacing: 0.5px;
   border: 1px solid #dbdbdb;
   border-radius: 4px 4px 0 0;

@@ -1,5 +1,5 @@
 import React, { useEffect, useContext } from 'react'
-import { get } from 'lodash'
+import { get , random } from 'lodash'
 import styled from 'styled-components'
 import { getYear } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -12,7 +12,6 @@ import OverlaySpinner from 'commons/OverlaySpinner'
 import { colors } from 'theme'
 import { AppContext } from 'components/App/AppContext'
 import Select from 'react-select'
-import { random } from 'lodash'
 
 
 const PathList = ({ history, match }) => {
@@ -75,12 +74,12 @@ const SelectStyles = {
   }),
   control: styles => ({
     ...styles,
-    borderColor: '#ccc !important',
+    borderColor : '#ccc !important',
     borderRadius: 0,
-    minHeight: 0,
-    background: 'transparent',
-    boxShadow: 'none !important',
-    width: 100
+    minHeight   : 0,
+    background  : 'transparent',
+    boxShadow   : 'none !important',
+    width       : 100
   }),
   option: styles => ({
     ...styles,
@@ -88,7 +87,7 @@ const SelectStyles = {
   }),
   menu: styles => ({
     ...styles,
-    margin: '5px 0 0',
+    margin      : '5px 0 0',
     borderRadius: 0
   }),
   menuList: styles => ({

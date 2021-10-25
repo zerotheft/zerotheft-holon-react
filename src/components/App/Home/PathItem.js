@@ -7,14 +7,13 @@ import { calculate } from 'components/App/commons/services'
 import { convertDollarToString } from 'utils'
 
 const PathItem = ({ to = '/', name = '', summary, parent = false }) => {
-
   const realpath = to.replace('/issue', '').replaceAll('%2F', '/').replace('/path/', '')
-  let summaryItem = summary[realpath] ? calculate(summary[realpath]) : {}
+  const summaryItem = summary[realpath] ? calculate(summary[realpath]) : {}
   return <Wrapper to={to} parent={parent}>
     <div className='name'>{name}</div>
     {!isEmpty(summaryItem) && summaryItem.vote && <div className='details'>
       <div className={`vote ${summaryItem.vote === 'YES' ? 'active' : ''}`}>
-        {summaryItem.vote === "NO" ? "NO THEFT" : "YES THEFT"} {summaryItem.votedPercent}%
+        {summaryItem.vote === 'NO' ? 'NO THEFT' : 'YES THEFT'} {summaryItem.votedPercent}%
       </div>
       <div className={`amount ${summaryItem.vote === 'NO' ? 'line' : ''}`}>${convertDollarToString(toNumber(summaryItem.amount))}</div>
     </div>}

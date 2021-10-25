@@ -14,12 +14,13 @@ import Step5 from './Step5'
 import Step6 from './Step6'
 import Step7 from './Step7'
 import { VoteContext } from '../VoteContext'
+
 // import { vote } from 'apis/vote'
 
 const steps = range(4, 8)
 const stepComponents = [Step4, Step5, Step6, Step7]
 
-const Steps = (props) => {
+const Steps = props => {
   const { step } = useContext(VoteContext)
   const [currentStep, updateCurrentStep] = useState(step)
   const Step = stepComponents[currentStep - 4]

@@ -3,8 +3,9 @@ import { Switch, Route } from 'react-router-dom'
 import { get } from 'lodash'
 
 import * as ROUTES from 'constants/routes'
-import { IssueProvider, IssueContext } from './IssueContext'
 import OverlaySpinner from 'commons/OverlaySpinner'
+import { getParameterByName } from 'utils'
+import { IssueProvider, IssueContext } from './IssueContext'
 import MainWrapper from './commons/MainWrapper'
 
 import IssueDashboard from './IssueDashboard'
@@ -13,7 +14,6 @@ import CounterProposals from './CounterProposals'
 import Vote from './Vote'
 import VoteFinalize from './VoteFinalize'
 import AfterVote from './AfterVote'
-import { getParameterByName } from 'utils'
 
 const IssueWrapper = props => (
   <IssueProvider id={get(props, 'match.params.id')} {...props}>
@@ -25,7 +25,7 @@ const Issue = ({ match }) => {
   const { loading } = useContext(IssueContext)
   const stepsPage = getParameterByName('page') === 'steps'
 
-  let pathCrumbsTemp = match.params.pathname.split('%2F');
+  const pathCrumbsTemp = match.params.pathname.split('%2F');
   pathCrumbsTemp.push(match.params.id)
 
   return <MainWrapper pathname={match.params.pathname} stepsPage={stepsPage} pathCrumbs={pathCrumbsTemp} pathCrumbTemp={pathCrumbsTemp} title={match.params.id}>
