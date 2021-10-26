@@ -22,14 +22,13 @@ const Proposals = ({ history, match }) => {
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
-  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
-    isUmbrella ? 'multiIssueReport' : 'ztReport'
-  }/${issuePath.replace(/\//g, '-')}`
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
+    }/${issuePath.replace(/\//g, '-')}`
 
   const data = get(issue, 'proposals')
   if (!selectedItem.id) {
     if (data && data.length > 0) {
-      selectedItem = data[0]
+      updateSelectedItem(data[0])
     }
   }
 
