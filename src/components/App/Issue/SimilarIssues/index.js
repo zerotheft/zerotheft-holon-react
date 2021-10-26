@@ -32,7 +32,7 @@ const SimilarIssues = ({ history, match }) => {
             </th>
           </thead>
           <tbody>
-            {reject(get(res, 'issues', []), { id: get(match, 'params.id') }).map((i) => (
+            {reject(get(res, 'issues', []), { id: get(match, 'params.id') }).map(i => (
               <tr>
                 <td
                   className="issue"

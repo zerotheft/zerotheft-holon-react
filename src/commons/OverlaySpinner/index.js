@@ -13,18 +13,18 @@ const OverlaySpinner = ({ left, top, backgroundColor, loading, style, overlayPar
 }
 
 OverlaySpinner.defaultProps = {
-  left: 0,
-  top: 0,
+  left           : 0,
+  top            : 0,
   backgroundColor: 'rgba(0,0,0,0.5)',
 }
 
 OverlaySpinner.propTypes = {
   backgroundColor: PropTypes.string,
-  left: PropTypes.number,
-  loaderStyle: PropTypes.object,
-  loading: PropTypes.bool.isRequired,
-  overlayParent: PropTypes.bool,
-  style: PropTypes.object,
-  top: PropTypes.number,
+  left           : PropTypes.number,
+  loaderStyle    : PropTypes.object,
+  loading        : PropTypes.bool.isRequired,
+  overlayParent  : PropTypes.bool,
+  style          : PropTypes.object,
+  top            : PropTypes.number,
 }
 export default OverlaySpinner

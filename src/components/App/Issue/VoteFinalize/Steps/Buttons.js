@@ -17,7 +17,7 @@ export const ButtonsWrapper = styled.div`
   }
 `
 
-export const Previous = (props) => {
+export const Previous = props => {
   return (
     <Button plain {...props}>
       <FontAwesomeIcon icon={faLongArrowAltLeft} style={{ marginRight: 10 }} />
@@ -31,7 +31,7 @@ export const Next = ({ currentStep, updateCurrentStep, ...props }) => {
 
   return (
     <Button
-      onClick={async () => {
+      onClick={async() => {
         const { msg, step } = await checkStep()
         if (step === 7) {
           return

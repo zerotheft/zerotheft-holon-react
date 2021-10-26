@@ -3,7 +3,7 @@ import { Web3Context } from 'components/App/Web3Context'
 import { saveTransaction } from 'apis/centralizedServer'
 import config from 'config'
 
-const { MODE, GAS_PRICE } = config
+const { GAS_PRICE } = config
 
 const useWeb3 = () => {
   const { web3, loadWeb3 } = useContext(Web3Context)
@@ -11,17 +11,17 @@ const useWeb3 = () => {
   // useEffect(() => {loadWeb3()}, [])
   return {
     web3,
-    getBalance: (address) => getBalance(web3, address),
+    getBalance              : address => getBalance(web3, address),
     callSmartContractGetFunc: (...args) => callSmartContractGetFunc(web3, ...args),
-    convertStringToHash: (...args) => convertStringToHash(web3, ...args),
-    convertToAscii: (...args) => convertToAscii(web3, ...args),
-    carryTransaction: (...args) => carryTransaction(web3, loadWeb3, ...args),
+    convertStringToHash     : (...args) => convertStringToHash(web3, ...args),
+    convertToAscii          : (...args) => convertToAscii(web3, ...args),
+    carryTransaction        : (...args) => carryTransaction(web3, loadWeb3, ...args),
   }
 }
 
 export default useWeb3
 
-const getBalance = async (web3, address) => {
+const getBalance = async(web3, address) => {
   let defAddress = address
   if (!defAddress) {
     const accounts = await web3.eth.getAccounts()
@@ -31,7 +31,8 @@ const getBalance = async (web3, address) => {
   return bal ? web3.utils.fromWei(bal, 'ether') : 0
 }
 
-const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [], txDetails, gasLimit = 3000000) => {
+const carryTransaction = async(web3, loadWeb3, contract, methodName, args = [], txDetails, gasLimit = 3000000) => {
+  /* eslint-disable no-useless-catch */
   try {
     if (!web3) {
       web3 = await loadWeb3()
@@ -44,16 +45,16 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
     const defAddress = accounts[0]
 
     const obj = {
-      from: defAddress,
-      to: address,
-      data: functionAbi,
+      from    : defAddress,
+      to      : address,
+      data    : functionAbi,
       gasLimit: web3.utils.toHex(gasLimit),
     }
     const txCount = await web3.eth.getTransactionCount(address)
 
     const txObject = {
       ...{
-        nonce: web3.utils.toHex(txCount),
+        nonce   : web3.utils.toHex(txCount),
         gasLimit: web3.utils.toHex(300000),
         gasPrice: web3.utils.toHex(web3.utils.toWei(GAS_PRICE.toString() || '30', 'gwei')),
       },
@@ -64,7 +65,7 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
     const balanceAfter = await getBalance(web3)
     if (txDetails) {
       // Track the record of transaction made to the blockchain by this citizen while selecting a holon
-      await saveTransaction({ ...txDetails, balanceBefore, balanceAfter, gasPrice: config.GAS_PRICE })
+      await saveTransaction({ ...txDetails, balanceBefore, balanceAfter, gasPrice: config.GAS_PRICE, txHash: tx.transactionHash })
     }
     return tx
   } catch (e) {
@@ -72,10 +73,11 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
   }
 }
 
-const callSmartContractGetFunc = async (web3, contract, methodName, args = []) => {
+const callSmartContractGetFunc = async(web3, contract, methodName, args = []) => {
   const [instance] = await instantiateContract(web3, contract)
 
-  return await instance.methods[methodName](...args).call()
+  const txResponse = await instance.methods[methodName](...args).call()
+  return txResponse
 }
 
 /**
@@ -83,7 +85,7 @@ const callSmartContractGetFunc = async (web3, contract, methodName, args = []) =
  * @param {Object} web3 - instance of a web3 to get the network id
  * @param {Object} contract - it could be any smartcontract as ZTMCitizens,ZTMHolons, ZTMProposals and so on.
  */
-const instantiateContract = async (web3, contract) => {
+const instantiateContract = async(web3, contract) => {
   // if (MODE === 'development' || MODE === 'private') {
   const networkId = await web3.eth.net.getId()
   const deployedNetwork = contract.networks[networkId]

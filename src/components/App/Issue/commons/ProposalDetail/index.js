@@ -38,7 +38,7 @@ const ProposalDetail = ({
   if (item && item.theftYears) {
     const { theftYears } = item
     let theftYearKeys = Object.keys(theftYears)
-    theftYearKeys = theftYearKeys.map(function (item) {
+    theftYearKeys = theftYearKeys.map(function(item) {
       return parseInt(item)
     })
 
@@ -250,7 +250,7 @@ const TheftBlockSec = styled.div`
       top: 0px;
       left: 0px;
       height: 100%;
-      width: ${(props) => props.width || 0}%;
+      width: ${props => props.width || 0}%;
       background: green;
     }
     &.noTheftsec {

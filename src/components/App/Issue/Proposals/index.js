@@ -15,7 +15,7 @@ import ProposalDetail from '../commons/ProposalDetail'
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
-  let [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
+  const [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
 
@@ -26,7 +26,7 @@ const Proposals = ({ history, match }) => {
     isUmbrella ? 'multiIssueReport' : 'ztReport'
   }/${issuePath.replace(/\//g, '-')}`
 
-  let data = get(issue, 'proposals')
+  const data = get(issue, 'proposals')
   if (!selectedItem.id) {
     if (data && data.length > 0) {
       selectedItem = data[0]

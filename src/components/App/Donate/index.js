@@ -88,19 +88,19 @@ const Wrapper = styled.div``,
 
 const donateContentData = (selectedHolon, history) => [
   {
-    title: '1st, Donate to the Zero Theft Movement',
+    title  : '1st, Donate to the Zero Theft Movement',
     content:
       'Donations are needed for us to keep the software and ability open.  If you want crony capitalism removed, to keep the healthy ethical economy protected, then please donate.',
     onClickButton: () => history.push(ROUTES.DONATE_TO),
   },
   {
-    title: '2nd, Donate to the Holon',
+    title  : '2nd, Donate to the Holon',
     content:
       'Your holon is run by an individual, often in another country.  A $50-once-per-year donation will keep the holon running.  Protect one-citizen-one-vote by open source software that corporations don’t control.  You make one-citizen-one-vote master by it being financially self-sustaining.',
     onClickButton: () => window.open(`zerotheft://donate-to/holon?id=${selectedHolon.id}`),
   },
   {
-    title: '3rd, Donate to Pay-it-forward fund',
+    title  : '3rd, Donate to Pay-it-forward fund',
     content:
       'We are dedicated to making this easy-to-use.  Blockchain payments can scare people initially.  The pay-it-forward allows someone to cast their first few votes without having to buy cryptocurrency.  Your donation to tha pay-it-forward fund pays for ~$0.05 per vote to help get people started.  When they get serious, they will donate to the pay-it-forward fund to everyone else.',
     onClickButton: () => window.open(`zerotheft://donate-to/pay-it-forward?id=${selectedHolon.id}`),

@@ -37,7 +37,7 @@ const Wrapper = styled.section`
   overflow: auto;
 `
 
-const AppWrapper = (props) => (
+const AppWrapper = props => (
   <Router preserverScrollPosition={false}>
     <ErrorBoundary>
       <AppProvider>

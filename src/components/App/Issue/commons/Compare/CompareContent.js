@@ -48,11 +48,11 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
         <div>
           <span
             style={{
-              color: colors.primary,
-              fontSize: 15,
-              fontWeight: '500',
+              color         : colors.primary,
+              fontSize      : 15,
+              fontWeight    : '500',
               textDecoration: 'underline',
-              cursor: 'pointer',
+              cursor        : 'pointer',
             }}
             onClick={() =>
               history.push(
@@ -71,12 +71,12 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
             This Proposal: ID {data.id}
             <span
               style={{
-                marginLeft: 15,
-                color: colors.primary,
-                fontSize: 15,
-                fontWeight: '500',
+                marginLeft    : 15,
+                color         : colors.primary,
+                fontSize      : 15,
+                fontWeight    : '500',
                 textDecoration: 'underline',
-                cursor: 'pointer',
+                cursor        : 'pointer',
               }}
               onClick={() =>
                 history.push(

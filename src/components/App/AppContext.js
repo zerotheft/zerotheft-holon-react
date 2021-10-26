@@ -31,7 +31,7 @@ const AppProvider = ({ children }) => {
     getUmbrellaPathsApi()
   }, [filterParams.initPath])
 
-  const fetchFromApp = async () => {
+  const fetchFromApp = async() => {
     const res = (await getVoterInfos('data.address')) || ''
     const holon = get(res, 'data.selectedHolon')
     const address = get(res, 'data.address') || ''
@@ -72,7 +72,7 @@ const AppProvider = ({ children }) => {
         updateHolon,
         holonInfo,
         loadingPaths: loading,
-        paths: get(paths, 'data'),
+        paths       : get(paths, 'data'),
         umbrellaPaths,
         theftInfo,
       }}

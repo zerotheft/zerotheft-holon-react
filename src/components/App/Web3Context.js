@@ -29,7 +29,7 @@ const useWeb3 = () => {
     [error, updateError] = useState(false),
     [web3, updateWeb3] = useState()
 
-  const fetchWeb3 = async () => {
+  const fetchWeb3 = async() => {
     try {
       updateLoading(true)
       const web3R = await getWeb3()
@@ -47,7 +47,7 @@ const useWeb3 = () => {
 }
 
 const getWeb3 = () =>
-  new Promise(async (resolve, reject) => {
+  new Promise(async(resolve, reject) => {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum)
       try {

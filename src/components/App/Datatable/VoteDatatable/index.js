@@ -10,7 +10,7 @@ import { tab } from './constants'
 
 createTheme('custom', {
   text: {
-    primary: colors.background.body,
+    primary  : colors.background.body,
     secondary: colors.textTitle,
   },
   background: {
@@ -18,7 +18,7 @@ createTheme('custom', {
   },
   context: {
     background: colors.datatable.context.background,
-    text: colors.text.white,
+    text      : colors.text.white,
   },
 })
 
@@ -30,32 +30,32 @@ const VoteDatatable = ({ history }) => {
     industries: {
       finance: {
         high_freq_front_running: true,
-        one_eight_exchange: true,
-        share_buy_back: true,
+        one_eight_exchange     : true,
+        share_buy_back         : true,
       },
       healthcare: true,
-      pharma: {
+      pharma    : {
         medicare: true,
       },
     },
     economic_crisis: {
-      ltcm: true,
-      '2008_mortgage': true,
+      ltcm                     : true,
+      '2008_mortgage'          : true,
       saving_and_loan_bails_out: true,
     },
     tax: {
-      capital_gain_low: true,
-      corp_gain_low: true,
-      corporate_tax_evason: true,
+      capital_gain_low       : true,
+      corp_gain_low          : true,
+      corporate_tax_evason   : true,
       tax_evasion_by_offshore: true,
-      other_way: true,
+      other_way              : true,
     },
   }
 
   const [tabInfo, updateTab] = useState(
     Object.assign(tab, { data: voteData, title: `Vote List for ${votePath.split('/').join(' > ')}` })
   )
-  const updateItems = (index) => {
+  const updateItems = index => {
     updateTab(Object.assign(tab, { data: voteData, title: `Vote List for ${votePath.split('/').join(' > ')}` }))
   }
   useEffect(() => {
@@ -82,7 +82,7 @@ const VoteDatatable = ({ history }) => {
             {tab.name}
           </TabWrapper>
           <ul>
-            {Object.keys(hierarchy).map((key) => {
+            {Object.keys(hierarchy).map(key => {
               const inner = hierarchy[key]
               return (
                 <li>
@@ -96,7 +96,7 @@ const VoteDatatable = ({ history }) => {
                     {startCase(key)}
                   </span>
                   <ul>
-                    {Object.keys(hierarchy[key]).map((innerKey) => {
+                    {Object.keys(hierarchy[key]).map(innerKey => {
                       return (
                         <li>
                           <span
@@ -109,7 +109,7 @@ const VoteDatatable = ({ history }) => {
                             {startCase(innerKey)}
                           </span>
                           <ul>
-                            {Object.keys(hierarchy[key][innerKey]).map((lastKey) => {
+                            {Object.keys(hierarchy[key][innerKey]).map(lastKey => {
                               return (
                                 <li>
                                   <span

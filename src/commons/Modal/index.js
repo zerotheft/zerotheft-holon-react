@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import cross from 'assets/icons/cross.svg'
 
 const Wrapper = styled.div`
-    max-width: ${(props) => (props.width ? props.width : 350)}px;
+    max-width: ${props => (props.width ? props.width : 350)}px;
     width: calc(100vw - 20px);
     background: #fff;
     border-radius: 4px;
@@ -46,9 +46,9 @@ const PopupModal = ({ onClose, wrapperStyle, children, width = 500 }) => {
 }
 
 PopupModal.propTypes = {
-  children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
-  onClose: PropTypes.func,
-  width: PropTypes.number,
+  children    : PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
+  onClose     : PropTypes.func,
+  width       : PropTypes.number,
   wrapperStyle: PropTypes.string,
 }
 

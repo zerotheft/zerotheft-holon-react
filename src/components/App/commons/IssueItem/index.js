@@ -31,7 +31,7 @@ const Wrapper = styled.div`
   & > div {
     padding: 10px 15px;
   }
-  ${(props) =>
+  ${props =>
     props.cursor &&
     `
     cursor: pointer;

@@ -20,7 +20,7 @@ import { VoteContext } from '../VoteContext'
 const steps = range(4, 8)
 const stepComponents = [Step4, Step5, Step6, Step7]
 
-const Steps = (props) => {
+const Steps = props => {
   const { step } = useContext(VoteContext)
   const [currentStep, updateCurrentStep] = useState(step)
   const Step = stepComponents[currentStep - 4]
@@ -37,7 +37,7 @@ const Steps = (props) => {
           Complete all the steps, <br /> so you can vote
         </HeaderTitle>
         <StyledSteps>
-          {steps.map((i) => (
+          {steps.map(i => (
             <StepWrapper>
               <Circle active={currentStep >= i}>
                 {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i - 3}`}
@@ -88,7 +88,7 @@ const Header = styled.div`
     color: #fff;
     font-size: 30px;
     font-weight: 600;
-    background-color: ${(props) => (props.active ? colors.primary : colors.backgroundColor)};
+    background-color: ${props => (props.active ? colors.primary : colors.backgroundColor)};
     border-radius: 50%;
   `,
   Body = styled.div`

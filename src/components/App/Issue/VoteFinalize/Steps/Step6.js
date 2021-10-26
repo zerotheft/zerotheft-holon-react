@@ -37,7 +37,7 @@ const Step6 = ({ updateCurrentStep }) => {
           <ButtonsWrapper>
             <Button
               disabled={false && shouldCheck && voterInfo.ethereumAddress}
-              onClick={async () => {
+              onClick={async() => {
                 const { msg, step } = await checkStep()
                 if (step < 6) updateCurrentStep(step)
                 else if (msg) {

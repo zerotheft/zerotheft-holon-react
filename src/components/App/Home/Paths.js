@@ -22,11 +22,11 @@ const Paths = ({ summary = [] }) => {
             <LoadingText>Fetching Paths</LoadingText>
           ) : (
             <UL>
-              {Object.keys(allPaths).map((key) => {
+              {Object.keys(allPaths).map(key => {
                 const isIssuePath = isEmpty(get(paths, get(filterParams, 'initPath'), {})[key])
                 const childPaths = get(paths, get(filterParams, 'initPath'), {})[key] || {}
                 const childPathsClone = { ...childPaths }
-                ;['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach((k) => delete childPathsClone[k])
+                ;['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete childPathsClone[k])
                 return (
                   <li>
                     <PathItem
@@ -41,7 +41,7 @@ const Paths = ({ summary = [] }) => {
                     />
                     {!isEmpty(childPaths) ? (
                       <ul>
-                        {Object.keys(childPathsClone).map((innerKey) => {
+                        {Object.keys(childPathsClone).map(innerKey => {
                           const isIssue = childPaths[innerKey] && childPaths[innerKey].leaf
                           return (
                             <li>

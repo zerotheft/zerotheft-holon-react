@@ -28,30 +28,30 @@ const Areas = () => {
 
   const getColumns = (selectedArea, localHolon) => ({
     state: {
-      width: 20,
-      content: (i) => {
+      width  : 20,
+      content: i => {
         if (i.address === get(localHolon, 'id')) return <GreenCircle />
         return null
       },
     },
     holon: {
-      key: 'holon',
-      label: 'Holon',
-      content: (i) => <p>{i.url}</p>,
+      key    : 'holon',
+      label  : 'Holon',
+      content: i => <p>{i.url}</p>,
     },
     country: {
-      label: 'Country',
-      width: 125,
-      content: (i) => <p>{i.countryCode}</p>,
+      label  : 'Country',
+      width  : 125,
+      content: i => <p>{i.countryCode}</p>,
     },
     health: {
-      key: 'health',
+      key  : 'health',
       label: 'Health',
       width: 100,
     },
     action: {
-      width: 30,
-      content: (i) => (
+      width  : 30,
+      content: i => (
         <Arrow status={i.address === get(selectedArea, 'address') || i.address === get(localHolon, 'id')} />
       ),
     },
@@ -79,8 +79,8 @@ const Areas = () => {
               data={holons || []}
               loading={loading}
               rowConfig={{
-                onClick: (i) => selectArea(i),
-                className: (i) =>
+                onClick  : i => selectArea(i),
+                className: i =>
                   `${i.address === get(selectedArea, 'address') ? 'active' : ''} ${
                     i.address === get(selectedHolon, 'id') ? 'local' : ''
                   }`,
@@ -197,8 +197,8 @@ const TitleSection = styled.div`
     border-width: 2px 2px 0 0;
     transform: rotate(45deg);
     float: right;
-    ${(props) =>
-      props.status &&
+    ${props =>
+    props.status &&
       `
     border-width: 3px 3px 0 0;
     border-color: ${colors.primary};

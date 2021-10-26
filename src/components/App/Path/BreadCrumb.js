@@ -9,7 +9,7 @@ const BreadCrumbs = ({ match, history }) => {
   let breadcrumb = get(match, 'params.pathname').split('%2F')
   if (breadcrumb.length) {
     let current_path = ''
-    breadcrumb = breadcrumb.map((i) => {
+    breadcrumb = breadcrumb.map(i => {
       current_path = current_path ? `${current_path}%2F${i}` : i
       return { label: i, path: current_path }
     })
@@ -18,7 +18,7 @@ const BreadCrumbs = ({ match, history }) => {
   return (
     <Wrapper>
       <BreadCrumb>
-        {breadcrumb.map((i) => (
+        {breadcrumb.map(i => (
           <li>
             <span onClick={() => window.location.replace(i.path)}>{startCase(i.label)}</span>
           </li>

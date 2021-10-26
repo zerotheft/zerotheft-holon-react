@@ -8,9 +8,9 @@ text-transform: capitalize;
 
 export const Status = styled.span`
   ${statusCommon}
-  color: ${(props) => (props.state === 'good' || props.state === 'active' ? colors.success : colors.error)};
+  color: ${props => (props.state === 'good' || props.state === 'active' ? colors.success : colors.error)};
 `
 export const State = styled.span`
   ${statusCommon}
-  color: ${(props) => (props.state ? colors.success : colors.error)};
+  color: ${props => (props.state ? colors.success : colors.error)};
 `

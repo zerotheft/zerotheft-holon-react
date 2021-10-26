@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { get as getAPI } from 'utils/api'
 
-const SummaryReport = (url) => {
-  const getSummaryReportInfo = async () => {
+const SummaryReport = url => {
+  const getSummaryReportInfo = async() => {
     const summaryReportInfo = await getAPI(null, '', url)
 
     if (summaryReportInfo.data) {
@@ -10,7 +10,7 @@ const SummaryReport = (url) => {
       const parser = new DOMParser()
       const htmlDoc = parser.parseFromString(summaryReportInfo.data, 'text/html')
 
-      const getCellOrJpCell = (parentClass) => {
+      const getCellOrJpCell = parentClass => {
         const parent = htmlDoc.getElementById(parentClass)
         if (!parent) return ''
 

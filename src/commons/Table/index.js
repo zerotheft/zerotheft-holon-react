@@ -13,11 +13,11 @@ export const Wrapper = styled.div`
     padding-bottom: 100px;
   `,
   Td = styled.td`
-    text-align: ${(props) => props.align || 'left'};
+    text-align: ${props => props.align || 'left'};
     padding: 7px 10px;
-    min-width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+    min-width: ${props => (props.width ? `${props.width}px` : 'auto')};
     border-bottom: 1px solid #f4f4f4;
-    ${(props) => props.css}
+    ${props => props.css}
   `,
   Th = styled.th`
     padding: 10px;
@@ -27,22 +27,22 @@ export const Wrapper = styled.div`
     & > span {
       display: flex;
       flex-direction: row;
-      justify-content: ${(props) => align[props.align]};
+      justify-content: ${props => align[props.align]};
       align-items: center;
       & > img {
         margin-left: 5px;
         width: 15px;
       }
     }
-    ${(props) =>
-      props.maxWidth &&
+    ${props =>
+    props.maxWidth &&
       `
       max-width: ${props.maxWidth}px;
     `}
   `,
   Tr = styled.tr`
-    ${(props) =>
-      props.clickable &&
+    ${props =>
+    props.clickable &&
       `
       cursor: pointer;
     `}
@@ -60,7 +60,7 @@ export const Wrapper = styled.div`
   TBody = styled.tbody``,
   T = styled.table`
     width: 100%;
-    min-width: ${(props) => props.minWidth || 1000}px;
+    min-width: ${props => props.minWidth || 1000}px;
     padding-bottom: 40px;
   `,
   PaginationWrapper = styled.div`
@@ -108,14 +108,14 @@ const getRows = (item, columns, rowConfig = {}) => (
         cursor: rowConfig.onClick ? 'pointer' : 'default',
       }}
     >
-      {Object.keys(columns).map((key) => cell(key, item, columns))}
+      {Object.keys(columns).map(key => cell(key, item, columns))}
     </Tr>
     {rowConfig.getExtraRow ? rowConfig.getExtraRow(item) : null}
   </>
 )
 
-const getHeaderColumns = (columns) =>
-  Object.keys(columns).map((key) => {
+const getHeaderColumns = columns =>
+  Object.keys(columns).map(key => {
     return (
       <Th
         key={key}
@@ -154,7 +154,7 @@ const Table = ({
         <THead>
           <Tr>{getHeaderColumns(columns)}</Tr>
         </THead>
-        <TBody>{data.length ? data.map((i) => getRows(i, columns, rowConfig)) : null}</TBody>
+        <TBody>{data.length ? data.map(i => getRows(i, columns, rowConfig)) : null}</TBody>
       </T>
       {noData && <span style={{ fontStyle: 'italic' }}>No Data Available</span>}
     </Wrapper>
@@ -164,22 +164,22 @@ const Table = ({
 export default Table
 
 Table.propTypes = {
-  columns: PropTypes.object,
-  currentPage: PropTypes.number,
-  data: PropTypes.array,
+  columns            : PropTypes.object,
+  currentPage        : PropTypes.number,
+  data               : PropTypes.array,
   hideUnavailableInfo: PropTypes.bool,
-  limit: PropTypes.number,
-  loading: PropTypes.bool,
-  minWidth: PropTypes.number,
-  rowConfig: PropTypes.object,
-  setCurrentPage: PropTypes.func,
-  showPagination: PropTypes.bool,
-  totalRows: PropTypes.number,
-  wrapperStyle: PropTypes.object,
+  limit              : PropTypes.number,
+  loading            : PropTypes.bool,
+  minWidth           : PropTypes.number,
+  rowConfig          : PropTypes.object,
+  setCurrentPage     : PropTypes.func,
+  showPagination     : PropTypes.bool,
+  totalRows          : PropTypes.number,
+  wrapperStyle       : PropTypes.object,
 }
 
 const align = {
-  left: 'flex-start',
+  left  : 'flex-start',
   center: 'center',
-  right: 'flex-end',
+  right : 'flex-end',
 }

@@ -10,7 +10,7 @@ export const truncateString = (str, num) => {
   return str
 }
 
-export const numberWithCommas = (number) => {
+export const numberWithCommas = number => {
   if (!number || number < 0) return 0
   return number.toLocaleString()
 }
@@ -56,7 +56,7 @@ export const isChrome = () => {
   return false
 }
 
-export const addMissingHttp = (url) => {
+export const addMissingHttp = url => {
   if (!/^https?:\/\//i.test(url)) {
     return `http://${url}`
   }
@@ -76,20 +76,20 @@ export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) 
   if (!currentPath || isEmpty(paths)) return []
   let nodes = []
   if (!entireSearch)
-    Object.keys(paths).map((key) => {
+    Object.keys(paths).map(key => {
       if (isEmpty(paths[key])) nodes = [...nodes, { path: `/path/${currentPath}/issue/${key}`, title: key }]
     })
   return nodes
 }
 
-export const displayContent = (data) => {
+export const displayContent = data => {
   if (!isEmpty(data) && data.toString().includes('http')) {
     if (data.toString().split(' ').length > 1) {
       let mainContent = ''
       data
         .toString()
         .split(' ')
-        .forEach((value) => {
+        .forEach(value => {
           if (value.includes('http')) {
             mainContent += `<a href={data} target='_blank'> ${value}</a>`
           } else {
@@ -99,7 +99,7 @@ export const displayContent = (data) => {
       return (
         <div
           className="dataValue"
-          style={{ wordBreak: 'break-word' }}
+          style={{ wordBreak: 'break-word' }}/* eslint-disable react/no-danger */
           dangerouslySetInnerHTML={{ __html: mainContent }}
         />
       )
@@ -121,11 +121,11 @@ export const displayContent = (data) => {
   )
 }
 
-export const convertJSONtoString = (data) => {
+export const convertJSONtoString = data => {
   if (!data) return null
   return (
     <DataObject>
-      {Object.keys(data).map((key) => (
+      {Object.keys(data).map(key => (
         <li>
           {isArray(data) ? null : <div className="dataKey">{startCase(key)}:&nbsp;</div>}
           {isObject(data[key]) ? convertJSONtoString(data[key]) : displayContent(data[key])}
@@ -135,7 +135,7 @@ export const convertJSONtoString = (data) => {
   )
 }
 
-export const convertStringDollarToNumeric = (dollar) => {
+export const convertStringDollarToNumeric = dollar => {
   try {
     dollar = dollar.replace(',', '')
     let realAmount = 0
@@ -158,12 +158,11 @@ export const convertStringDollarToNumeric = (dollar) => {
     }
     return realAmount
   } catch (e) {
-    console.log(e)
     return 0
   }
 }
 
-export const removeDecimelIfNeeded = (number) => {
+export const removeDecimelIfNeeded = number => {
   const [num, decimel] = number.toString().split('.')
   return parseInt(decimel) === 0 ? num : number
 }
@@ -174,6 +173,7 @@ export const convertDollarToString = (value, decimal = 2) => {
   if (!isNumber(val) || val === 0) return val
 
   if (Math.sign(val) === -1) {
+    /*eslint-disable operator-assignment*/
     val = -1 * val
     negative = true
   }
@@ -201,11 +201,12 @@ export function getParameterByName(name, url = window.location.href) {
  * @params URL of a image for existence check
  * @returns true/false based on image existence
  * */
-export const imageExists = (image_url) => {
+export const imageExists = image_url => {
   const http = new XMLHttpRequest()
+  /* eslint-disable camelcase */
   http.open('HEAD', image_url, false)
   http.send()
-  return http.status != 404
+  return http.status !== 404
 }
 
 const DataObject = styled.ul`

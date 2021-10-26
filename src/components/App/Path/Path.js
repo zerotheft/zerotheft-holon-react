@@ -40,9 +40,9 @@ const Path = ({ history, match, isIssuePath }) => {
     if (master && Object.keys(master)[0] === 'parent') {
       return null
     }
-    return Object.keys(master).map((i) => {
+    return Object.keys(master).map(i => {
       const masterClone = { ...master[i] }
-      masterClone && ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach((k) => delete masterClone[k])
+      masterClone && ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete masterClone[k])
 
       if (!isEmpty(master[i]) && ((master[i].metadata && master[i].metadata.umbrella) || master[i].parent)) {
         const newParents = [...parents, i]
@@ -81,7 +81,7 @@ const Path = ({ history, match, isIssuePath }) => {
               }
             >
               <ItemBody>
-                {Object.keys(masterClone).map((j) => {
+                {Object.keys(masterClone).map(j => {
                   return populateList({ [j]: masterClone[j] }, newParents, depth + 1)
                 })}
               </ItemBody>
@@ -287,7 +287,7 @@ const Wrapper = styled(Container)`
   align-items: center;
   padding: 0 15px;
   cursor: pointer;
-  ${(props) =>
+  ${props =>
     props.type !== 'issue' &&
     `
     border: 1px solid #B0A8A8;
@@ -317,7 +317,7 @@ const Wrapper = styled(Container)`
     justify-content: flex-start;
     min-width: 250px;
   }
-  ${(props) =>
+  ${props =>
     props.type === 'issue' &&
     `
     cursor: default;

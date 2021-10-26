@@ -8,7 +8,7 @@ import ErrorPage from './ErrorPage'
 const { MODE, HONEYBADGER_API_KEY } = mainConfig
 
 const config = {
-  apiKey: HONEYBADGER_API_KEY,
+  apiKey     : HONEYBADGER_API_KEY,
   environment: `${MODE}-holon-frontend`,
 }
 

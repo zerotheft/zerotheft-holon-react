@@ -21,7 +21,7 @@ import Points from '../commons/Points'
 
 const dateRange = range(1999, new Date().getFullYear())
   .reverse()
-  .map((i) => ({ label: i, value: i }))
+  .map(i => ({ label: i, value: i }))
 const Dashboard = ({ history, location, match }) => {
   const decodedPath = decodeURIComponent(get(match, 'params.pathname'))
   const { issue, loading: issueLoading } = useContext(IssueContext)
@@ -32,7 +32,7 @@ const Dashboard = ({ history, location, match }) => {
   const { pathname } = location
   const { selection, updateSelection, refetchIssue } = useContext(IssueContext)
   const [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {})
-  const displayYaml = (template) => {
+  const displayYaml = template => {
     let data
     try {
       data = yaml.safeLoad(template)
@@ -350,7 +350,7 @@ const InnerWrapper = styled.div`
       top: 0px;
       left: 0px;
       height: 100%;
-      width: ${(props) => props.width || 0}%;
+      width: ${props => props.width || 0}%;
       background: green;
     }
     &.noTheftsec {

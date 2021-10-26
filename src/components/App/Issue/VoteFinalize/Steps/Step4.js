@@ -131,8 +131,8 @@ const Question = styled.div``,
   Option = styled.div`
     padding: 10px;
     cursor: pointer;
-    color: ${(props) => (props.selected ? '#fff' : colors.primary)};
-    background: ${(props) => (props.selected ? colors.primary : '#fff')};
+    color: ${props => (props.selected ? '#fff' : colors.primary)};
+    background: ${props => (props.selected ? colors.primary : '#fff')};
     :first-of-type {
       border-right: 1px solid ${colors.primary};
     }

@@ -16,7 +16,7 @@ import { AppContext } from '../AppContext'
 const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
   if (!isObject(data)) return []
   const arr = []
-  Object.keys(data).forEach((i) => {
+  Object.keys(data).forEach(i => {
     if (!data[i] || data[i].leaf) {
       if (!searchFilter) arr.push({ title: i, path: `${path}/issue/${i}` })
       else if (searchFilter === lowerCase(i).charAt(0)) arr.push({ title: i, path: `${path}/issue/${i}` })
@@ -36,7 +36,7 @@ const getRelatedEndNodes = (issues, name, path) => {
   const username = [...take(name, 2), ...takeRight(name, 2)] // get first 2 and last 2 characters
 
   for (const u of username) {
-    const letters = remove([...username], (i) => i !== u) || []
+    const letters = remove([...username], i => i !== u) || []
     for (const letter of letters) {
       for (const i in issues) {
         if (u === lowerCase(i).charAt(0)) {
@@ -62,7 +62,7 @@ const IssueSlider = ({ onlySlider = false }) => {
     prepareCarouselData(paths)
   }, [paths])
 
-  const prepareCarouselData = async (paths) => {
+  const prepareCarouselData = async paths => {
     const username = uniqBy(
       lowerCase(get(userInfo, 'name', ''))
         .replace(/[^a-zA-Z0-9]/g, '')
@@ -82,7 +82,7 @@ const IssueSlider = ({ onlySlider = false }) => {
     }
     const mappedIssues = (
       await Promise.all(
-        issues.map(async (i) => {
+        issues.map(async i => {
           let path = get(i, 'path', '').split('/')[2] || ''
           const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${i.title}`
           const template = await getTemplateApi(templatePath)
@@ -90,7 +90,7 @@ const IssueSlider = ({ onlySlider = false }) => {
           return { title: i.title, path, rawPath: i.path, description: displayYaml(template, i.path) }
         })
       )
-    ).filter((i) => i.description)
+    ).filter(i => i.description)
     setIssues(mappedIssues)
   }
 
@@ -132,7 +132,7 @@ const IssueSlider = ({ onlySlider = false }) => {
               <h3>For you to vote on next:</h3>
               {allIssues.length ? (
                 <Carousel pagination={false} enableMouseSwipe={false} style={{ height: '160px' }}>
-                  {allIssues.map((element) => {
+                  {allIssues.map(element => {
                     return (
                       <Item>
                         <Path>

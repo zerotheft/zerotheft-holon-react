@@ -61,7 +61,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
   // }
 
-  const checkQueryParams = async () => {
+  const checkQueryParams = async() => {
     const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
     if (queryParams && getParameterByName('page') === 'steps') {
       const { step } = await checkStep(hierarchyPath, true)
@@ -116,14 +116,14 @@ const VoteFinalize = ({ match, history, location }) => {
               enableReinitialize
               initialValues={
                 initialValues || {
-                  vote: capitalize(finalVote),
+                  vote  : capitalize(finalVote),
                   amount: 'static',
                   ...theftAmtYears,
                 }
               }
-              onSubmit={async (values) => {
+              onSubmit={async values => {
                 const altTheftAmounts = {}
-                Object.keys(theftAmtYears).map((yr) => {
+                Object.keys(theftAmtYears).map(yr => {
                   if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
 
                   // delete values[yr]
@@ -154,11 +154,11 @@ const VoteFinalize = ({ match, history, location }) => {
                       <Modal onClose={() => showErrorPopUp(false)}>
                         <div
                           style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+                            display       : 'flex',
+                            flexDirection : 'column',
+                            alignItems    : 'center',
                             justifyContent: 'center',
-                            marginTop: 30,
+                            marginTop     : 30,
                           }}
                         >
                           {get(popup, 'message') || 'There was some error while trying to vote.'}
@@ -183,7 +183,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
                     {finalVote === 'yes' &&
                       theftAmtYears &&
-                      Object.keys(theftAmtYears).map((y) => (
+                      Object.keys(theftAmtYears).map(y => (
                         <Row>
                           <Field name={y} component={EditableField} type="number" min={0} label={y} />
                         </Row>
@@ -282,7 +282,7 @@ const VoteFinalize = ({ match, history, location }) => {
   )
 }
 
-const FinalizeWrapper = (props) => {
+const FinalizeWrapper = props => {
   return (
     <VoteProvider>
       <VoteFinalize {...props} />{' '}
@@ -340,8 +340,8 @@ const Wrapper = styled.div`
     line-height: 18px;
     padding-right: 10px;
     width: 140px;
-    ${(props) =>
-      props.full &&
+    ${props =>
+    props.full &&
       `
     width: 100%;
     color: ${colors.primary};

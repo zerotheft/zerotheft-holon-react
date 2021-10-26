@@ -110,35 +110,35 @@ const Header = () => {
             value={country}
             isSearchable={false}
             options={[
-              ...get(nations, 'data', []).map((i) => ({ label: i.nation, value: i.nation })),
+              ...get(nations, 'data', []).map(i => ({ label: i.nation, value: i.nation })),
               { value: 'none', label: 'Select Another Country' },
             ]}
-            onChange={async (i) => {
+            onChange={async i => {
               if (i.value === 'none') {
                 await selectCountry({ value: 'USA', label: 'USA' })
                 window.open('https://zerotheft.net/the-zt-global-expansion/', true)
               } else selectCountry(i)
             }}
             styles={{
-              container: (styles) => ({
+              container: styles => ({
                 ...styles,
                 marginRight: 5,
               }),
-              menu: (styles) => ({
+              menu: styles => ({
                 ...styles,
                 width: 210,
               }),
-              control: (styles) => ({
+              control: styles => ({
                 ...styles,
-                width: 90,
+                width      : 90,
                 borderColor: 'transparent !important',
-                border: 'none !important',
+                border     : 'none !important',
               }),
-              singleValue: (styles) => ({
+              singleValue: styles => ({
                 ...styles,
-                fontSize: 15,
+                fontSize  : 15,
                 fontWeight: 500,
-                color: '#77707D',
+                color     : '#77707D',
               }),
               indicatorSeparator: () => ({
                 display: 'none',

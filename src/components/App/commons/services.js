@@ -1,6 +1,6 @@
 import { round } from 'lodash'
 
-export const calculate = (obj) => {
+export const calculate = obj => {
   if (!obj) return {}
 
   const { for: forVote, against, votes } = obj

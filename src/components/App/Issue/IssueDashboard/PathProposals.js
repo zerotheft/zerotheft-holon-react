@@ -13,14 +13,14 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
     [proposalLoading, updateLoader] = useState(true),
     proposals = [...regularProp, ...counterProp]
 
-  const getLeadingProp = (allProps) => {
+  const getLeadingProp = allProps => {
     return allProps.length && allProps.reduce((proposal, temp) => (proposal.votes > temp.votes ? proposal : temp))
   }
 
   const firstLeadingProp = proposals.length && getLeadingProp(proposals)
   const secondLeadingProp = regularProp.length && regularProp.length !== proposals.length && getLeadingProp(regularProp)
 
-  const getLeadingProposals = async (firstLeadingProp) => {
+  const getLeadingProposals = async firstLeadingProp => {
     updateLoader(true)
     const props = []
     const firstProp = await getProposal(firstLeadingProp.id)

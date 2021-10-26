@@ -35,21 +35,21 @@ const Points = ({
         <div style={{ overflow: 'hidden' }}>
           {data.length
             ? data.map((i, idx) => (
-                <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
-                  <div className="itemWrap">
-                    <div>
-                      {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
-                      <div style={{ fontWeight: '200' }}>#{i.id} </div>
-                      {/* <div>Theft Amount: </div> */}
-                      <StarRatings
-                        rating={get(i, 'ratings.rating', 0)}
-                        starDimension="20px"
-                        starSpacing="1px"
-                        starRatedColor={colors.yellow}
-                        numberOfStars={5}
-                        name="proposal_rating"
-                      />
-                      {/* <div>Ratings:{
+              <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
+                <div className="itemWrap">
+                  <div>
+                    {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
+                    <div style={{ fontWeight: '200' }}>#{i.id} </div>
+                    {/* <div>Theft Amount: </div> */}
+                    <StarRatings
+                      rating={get(i, 'ratings.rating', 0)}
+                      starDimension="20px"
+                      starSpacing="1px"
+                      starRatedColor={colors.yellow}
+                      numberOfStars={5}
+                      name="proposal_rating"
+                    />
+                    {/* <div>Ratings:{
             get(i, 'ratings.count', 0) > 0 ?
               <span> {get(i, 'ratings.count', 0)}&nbsp;
                 <StarRatings
@@ -66,26 +66,26 @@ const Points = ({
               <span><FontAwesomeIcon icon={faFrown} color={colors.red} className='icon' /> {get(i, 'complaints.count', 0)}</span>
             }
           </div> */}
+                  </div>
+                  <div
+                    style={{
+                      textAlign : 'right',
+                      width     : 'auto',
+                      maxWidth  : '150px',
+                      minWidth  : '65px',
+                      marginLeft: '15px',
+                    }}
+                  >
+                    <div style={{ border: '1px solid #D5C9C9', borderRadius: '2px' }}>
+                      <Progress completed={75} color="yellow" height="15px" />
                     </div>
-                    <div
-                      style={{
-                        textAlign: 'right',
-                        width: 'auto',
-                        maxWidth: '150px',
-                        minWidth: '65px',
-                        marginLeft: '15px',
-                      }}
-                    >
-                      <div style={{ border: '1px solid #D5C9C9', borderRadius: '2px' }}>
-                        <Progress completed={75} color="yellow" height="15px" />
-                      </div>
-                      {/* <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div> */}
-                      <div>
-                        <span style={{ fontWeight: '600' }}>{i.summary}</span> | Votes:{' '}
-                        <span>{get(i, 'votes', 0)}</span>
-                      </div>
-                      <div>
-                        {/*
+                    {/* <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div> */}
+                    <div>
+                      <span style={{ fontWeight: '600' }}>{i.summary}</span> | Votes:{' '}
+                      <span>{get(i, 'votes', 0)}</span>
+                    </div>
+                    <div>
+                      {/*
             Author: {get(i, 'ratings.count', 0)}
             <StarRatings
               rating={get(i, 'ratings.count', 0)}
@@ -97,11 +97,11 @@ const Points = ({
             />
             <FontAwesomeIcon icon={faFrown} color={colors.red} className='icon' /><span> {get(i, 'complaints.count', 0)}</span>
             */}
-                      </div>
                     </div>
                   </div>
-                </Item>
-              ))
+                </div>
+              </Item>
+            ))
             : ''}
         </div>
       </div>
@@ -160,8 +160,8 @@ const Item = styled.div`
         margin: 10px 15px;
       }
     }
-    ${(props) =>
-      props.active &&
+    ${props =>
+    props.active &&
       `
     & > .itemWrap {
       background: ${colors.primary};

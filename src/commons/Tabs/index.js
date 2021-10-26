@@ -9,7 +9,7 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
   return (
     <Wrapper style={wrapperStyle}>
       <Container style={{ display: 'flex', flexDirection: 'column', ...tabInnerStyle }}>
-        {tabs.map((tab) => {
+        {tabs.map(tab => {
           return (
             <TabWrapper
               key={tab.id}
@@ -24,7 +24,7 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
               activeStyle={{
                 fontWeight: '600',
                 background: '#7F51C1',
-                color: 'white',
+                color     : 'white',
                 ...activeStyle,
               }}
             >
@@ -38,11 +38,11 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
 }
 
 Tabs.propTypes = {
-  activeStyle: PropTypes.object,
+  activeStyle  : PropTypes.object,
   tabInnerStyle: PropTypes.object,
-  tabs: PropTypes.array.isRequired,
-  tabStyle: PropTypes.object,
-  wrapperStyle: PropTypes.object,
+  tabs         : PropTypes.array.isRequired,
+  tabStyle     : PropTypes.object,
+  wrapperStyle : PropTypes.object,
 }
 
 const Wrapper = styled.div`

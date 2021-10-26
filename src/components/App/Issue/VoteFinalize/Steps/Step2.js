@@ -8,8 +8,8 @@ import { VoteContext } from '../VoteContext'
 const { MODE } = config
 
 const networks = {
-  private: 'privatenet',
-  staging: 'testnet',
+  private   : 'privatenet',
+  staging   : 'testnet',
   production: 'mainnet',
 }
 

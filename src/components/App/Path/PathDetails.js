@@ -30,7 +30,7 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
       )}
       <div className="button-wrapper">
         <CustomButton
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation()
             history.push(`${viewLink}/proposals`)
           }}
@@ -43,7 +43,7 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
           View
         </CustomButton>
         <CustomButton
-          onClick={(e) => {
+          onClick={e => {
             e.stopPropagation()
             history.push(`/${isPath ? 'pathReport' : 'leafReport'}/${url.replaceAll('/', '%2F')}`)
           }}
