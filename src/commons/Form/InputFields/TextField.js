@@ -16,9 +16,9 @@ const TextField = ({
   required = false,
   readonly = false,
   type = 'text',
-  labelType='side',
+  labelType = 'side',
   style,
-  inputStyles = {}
+  inputStyles = {},
 }) => (
   <CustomFieldWrapper
     style={style}

@@ -13,4 +13,4 @@ export const Status = styled.span`
 export const State = styled.span`
   ${statusCommon}
   color: ${props => (props.state ? colors.success : colors.error)};
-  `
+`

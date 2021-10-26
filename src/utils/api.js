@@ -30,7 +30,7 @@ const checkForError = (e, type) => {
 }
 
 export const get = (path, params, apiUrl = API_URL) => {
-  const url = (path) ? `${apiUrl}/${path}` : apiUrl;
+  const url = path ? `${apiUrl}/${path}` : apiUrl
 
   return axios(url, {
     method: 'get',

@@ -49,25 +49,27 @@ LabelledRadioField.propTypes = {
 export default LabelledRadioField
 
 const RadioItemsWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-`,
+    display: flex;
+    flex-direction: row;
+  `,
   RadioItem = styled.div`
-  input[type = radio] { display: none; }
-  input[type = radio] ~ label {
-    border: 2px solid #ccc;
-    color: #4d4a50;
-    font-size: 17px;
-    font-weight: 500;
-    padding: 5px 16px;
-    margin-right: 12px;
-    min-width: 85px;
-    display: inline-block;
-    user-select: none;
-  }
-  input[type=radio]:checked ~ label {
-    background: ${colors.primary};
-    color: #fff;
-    border-color: ${colors.primary};
-  }
-`
+    input[type='radio'] {
+      display: none;
+    }
+    input[type='radio'] ~ label {
+      border: 2px solid #ccc;
+      color: #4d4a50;
+      font-size: 17px;
+      font-weight: 500;
+      padding: 5px 16px;
+      margin-right: 12px;
+      min-width: 85px;
+      display: inline-block;
+      user-select: none;
+    }
+    input[type='radio']:checked ~ label {
+      background: ${colors.primary};
+      color: #fff;
+      border-color: ${colors.primary};
+    }
+  `

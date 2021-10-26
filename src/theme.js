@@ -17,7 +17,7 @@ export const colors = {
     textTitle     : '#7F58BF',
     button        : {
       blackText     : '#000',
-      greyBackground: '#C4C4C4'
+      greyBackground: '#C4C4C4',
     },
     background: {
       body  : '#FFF',
@@ -28,11 +28,11 @@ export const colors = {
     datatable: {
       row: {
         textColor        : '#474444',
-        evenRowBackground: '#F7F4FC'
+        evenRowBackground: '#F7F4FC',
       },
       context: {
-        background: '#CB4B16'
-      }
+        background: '#CB4B16',
+      },
     },
     link                 : '#4169E1',
     externalLink         : '#4F4F4F',
@@ -54,12 +54,12 @@ export const colors = {
       backgroundColor: '#F4E4AB',
     },
     idWrapper: {
-      text: '#606060'
-    }
+      text: '#606060',
+    },
   },
   height = {
     header: 75,
-    footer: 25
+    footer: 25,
   },
   fontSize = {
     h1: '32px',

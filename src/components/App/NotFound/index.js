@@ -3,9 +3,7 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import Button from 'commons/Buttons'
 
-import {
-  HOME
-} from 'constants/routes'
+import { HOME } from 'constants/routes'
 
 const NotFound = () => {
   const homePage = HOME
@@ -15,9 +13,7 @@ const NotFound = () => {
   return (
     <Container>
       <h1 style={{ marginTop: 10 }}>Page Not Found</h1>
-      <Paragraph>
-        The page you are looking for doesn't exist.
-      </Paragraph>
+      <Paragraph>The page you are looking for doesn't exist.</Paragraph>
       <div style={{ display: 'flex' }}>
         <Button
           plain

@@ -12,5 +12,5 @@ export default CopyToClipBoard
 
 const Wrapper = styled.div`
   cursor: pointer;
-  color: ${colors.primary}; 
+  color: ${colors.primary};
 `

@@ -18,7 +18,7 @@ const EditableField = ({
   type = 'text',
   labelType = 'side',
   style,
-  inputStyles = {}
+  inputStyles = {},
 }) => (
   <CustomFieldWrapper
     style={style}

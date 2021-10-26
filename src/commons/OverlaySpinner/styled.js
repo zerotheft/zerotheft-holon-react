@@ -9,7 +9,8 @@ export const Wrapper = styled.div`
   right: 0;
   background: ${({ backgroundColor }) => backgroundColor};
   ${props =>
-    props.overlayParent && `
+    props.overlayParent &&
+    `
     z-index: 1;  
     position: absolute;
     background: ${props.backgroundColor || 'rgba(255, 255, 255, 0.7)'};

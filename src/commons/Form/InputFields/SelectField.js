@@ -56,8 +56,8 @@ export const SelectField = ({
               boxShadow   : 'none !important',
             }),
             indicatorSeparator: () => ({
-              display: 'none'
-            })
+              display: 'none',
+            }),
           }}
           isMulti={isMulti}
           value={field.value}

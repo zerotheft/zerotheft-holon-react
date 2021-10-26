@@ -5,16 +5,18 @@ import styled from 'styled-components'
 import { numberWithCommas } from 'utils'
 
 const IssueItem = ({ data = {}, style = {}, onClick, hideAmount = false }) => {
-  return <Wrapper style={style} onClick={() => onClick ? onClick() : null} cursor={onClick}>
-    <div>
-      <div>id: {get(data, 'id', 'N/A')}</div>
-      {(!hideAmount && get(data, 'amount')) && <div>${numberWithCommas(get(data, 'amount'))}</div>}
-    </div>
-    <div>
-      <div>Proposal</div>
-      <div>({data.votes || 0} Votes)</div>
-    </div>
-  </Wrapper>
+  return (
+    <Wrapper style={style} onClick={() => (onClick ? onClick() : null)} cursor={onClick}>
+      <div>
+        <div>id: {get(data, 'id', 'N/A')}</div>
+        {!hideAmount && get(data, 'amount') && <div>${numberWithCommas(get(data, 'amount'))}</div>}
+      </div>
+      <div>
+        <div>Proposal</div>
+        <div>({data.votes || 0} Votes)</div>
+      </div>
+    </Wrapper>
+  )
 }
 
 export default IssueItem
@@ -29,7 +31,9 @@ const Wrapper = styled.div`
   & > div {
     padding: 10px 15px;
   }
-  ${props => props.cursor && `
+  ${props =>
+    props.cursor &&
+    `
     cursor: pointer;
     &:hover {
       background: #fef8a0;

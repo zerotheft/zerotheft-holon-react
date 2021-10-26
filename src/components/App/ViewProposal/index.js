@@ -24,27 +24,31 @@ const ViewProposal = ({ match, history }) => {
   const issue = pathArray.pop()
   const path = concat(get(proposal, 'detail.summary_country', 'USA'), pathArray).join('%2F')
 
-  return <Wrapper>
-    <Container>
-      {hierarchy && <HeaderContainer>
-        <Header>Proposal for {startCase(issue)}</Header>
-        <Button onClick={() => history.push(`/path/${path}/issue/${issue}/proposals`)}>View</Button>
-      </HeaderContainer>}
-      {convertJSONtoString(proposal.detail)}
-    </Container>
-  </Wrapper>
+  return (
+    <Wrapper>
+      <Container>
+        {hierarchy && (
+          <HeaderContainer>
+            <Header>Proposal for {startCase(issue)}</Header>
+            <Button onClick={() => history.push(`/path/${path}/issue/${issue}/proposals`)}>View</Button>
+          </HeaderContainer>
+        )}
+        {convertJSONtoString(proposal.detail)}
+      </Container>
+    </Wrapper>
+  )
 }
 
 export default ViewProposal
 
 const HeaderContainer = styled.div`
-  display: flex;
-  width: 100%;
-  margin-bottom: 20px;
-  align-items: center;
-  justify-content: space-between;
-`,
+    display: flex;
+    width: 100%;
+    margin-bottom: 20px;
+    align-items: center;
+    justify-content: space-between;
+  `,
   Header = styled.div`
-  font-size: 26px;
-  font-weight: 600;
-`
+    font-size: 26px;
+    font-weight: 600;
+  `

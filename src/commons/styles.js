@@ -6,50 +6,52 @@ export const Wrapper = styled.div`
     padding: 40px 0;
   `,
   Breadcrumb = styled.div`
-  ul{
-    list-style: none;
-    margin-bottom:12px;
-    li{
-      display: inline;
-      font-size: 24px;
-      color: ${colors.link};
-      text-decoration: none;
-      &:not(:last-child):after{
-        content:'>';
-        padding: 0 5px;
-        color:${colors.link}
-      }
-      &:not(:last-child):hover {
-       cursor:pointer;
-      }
-      :last-child{
-        color:${colors.text.gray};
+    ul {
+      list-style: none;
+      margin-bottom: 12px;
+      li {
+        display: inline;
+        font-size: 24px;
+        color: ${colors.link};
         text-decoration: none;
-      }
-      :first-child{
-        &::before {
-          content: '';
-          width: 14px; height: 14px;
-          border: 1px solid #aaa;
-          border-width: 4px 4px 0 0;
-          transform: rotate(-133deg) translateY(48%);
-          display: inline-block;
-          margin: 0px 14px -7px -9px;
+        &:not(:last-child):after {
+          content: '>';
+          padding: 0 5px;
+          color: ${colors.link};
+        }
+        &:not(:last-child):hover {
+          cursor: pointer;
+        }
+        :last-child {
+          color: ${colors.text.gray};
+          text-decoration: none;
+        }
+        :first-child {
+          &::before {
+            content: '';
+            width: 14px;
+            height: 14px;
+            border: 1px solid #aaa;
+            border-width: 4px 4px 0 0;
+            transform: rotate(-133deg) translateY(48%);
+            display: inline-block;
+            margin: 0px 14px -7px -9px;
+          }
         }
       }
     }
-  }
   `,
   AddVote = styled.div`
     padding: 4px 0 20px 20px;
     font-size: 16px;
-    div{
+    div {
       font-size: 24px;
       padding: 10px 0;
-      color:${colors.link};
+      color: ${colors.link};
       &::before {
         content: '';
-        width: 12px; height: 12px;
+        width: 12px;
+        height: 12px;
         border: 1px solid #aaa;
         border-width: 4px 4px 0 0;
         transform: rotate(45deg) translateY(-50%);
@@ -133,7 +135,8 @@ export const Wrapper = styled.div`
     letter-spacing: 0.5px;
     text-align: center;
     font-style: italic;
-    &::before, &::after {
+    &::before,
+    &::after {
       content: ' .';
       animation: dots 1s steps(5, end) infinite;
     }

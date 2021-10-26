@@ -25,20 +25,28 @@ const Issue = ({ match }) => {
   const { loading } = useContext(IssueContext)
   const stepsPage = getParameterByName('page') === 'steps'
 
-  const pathCrumbsTemp = match.params.pathname.split('%2F');
+  const pathCrumbsTemp = match.params.pathname.split('%2F')
   pathCrumbsTemp.push(match.params.id)
 
-  return <MainWrapper pathname={match.params.pathname} stepsPage={stepsPage} pathCrumbs={pathCrumbsTemp} pathCrumbTemp={pathCrumbsTemp} title={match.params.id}>
-    {loading && <OverlaySpinner loading />}
-    <Switch>
-      <Route exact path={ROUTES.PROPOSALS} component={Proposals} />
-      <Route exact path={ROUTES.COUNTER_PROPOSALS} component={CounterProposals} />
-      <Route path={ROUTES.VOTE} component={Vote} />
-      <Route path={ROUTES.VOTE_FINALIZE} component={VoteFinalize} />
-      <Route path={ROUTES.AFTER_VOTE} component={AfterVote} />
-      <Route path={ROUTES.ISSUE} component={IssueDashboard} />
-    </Switch>
-  </MainWrapper>
+  return (
+    <MainWrapper
+      pathname={match.params.pathname}
+      stepsPage={stepsPage}
+      pathCrumbs={pathCrumbsTemp}
+      pathCrumbTemp={pathCrumbsTemp}
+      title={match.params.id}
+    >
+      {loading && <OverlaySpinner loading />}
+      <Switch>
+        <Route exact path={ROUTES.PROPOSALS} component={Proposals} />
+        <Route exact path={ROUTES.COUNTER_PROPOSALS} component={CounterProposals} />
+        <Route path={ROUTES.VOTE} component={Vote} />
+        <Route path={ROUTES.VOTE_FINALIZE} component={VoteFinalize} />
+        <Route path={ROUTES.AFTER_VOTE} component={AfterVote} />
+        <Route path={ROUTES.ISSUE} component={IssueDashboard} />
+      </Switch>
+    </MainWrapper>
+  )
 }
 
-export default IssueWrapper;
+export default IssueWrapper
