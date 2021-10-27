@@ -182,8 +182,10 @@
       1,
       "single"
     ],
+    "global-require": "off",
+    "import/no-dynamic-require": "off",
     "import/no-extraneous-dependencies": [
-      "error",
+      "off",
       {
         "devDependencies": [
           ".storybook/**",

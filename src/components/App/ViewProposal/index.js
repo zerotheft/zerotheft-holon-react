@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { startCase, compact, concat, get } from 'lodash'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 
 import { Wrapper, Container } from 'commons/styles'
 import Button from 'commons/Buttons'
@@ -40,6 +41,11 @@ const ViewProposal = ({ match, history }) => {
 }
 
 export default ViewProposal
+
+ViewProposal.propTypes = {
+  history: PropTypes.object,
+  match  : PropTypes.object,
+}
 
 const HeaderContainer = styled.div`
     display: flex;

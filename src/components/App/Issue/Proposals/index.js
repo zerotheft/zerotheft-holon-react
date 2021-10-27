@@ -23,7 +23,7 @@ const Proposals = ({ history, match }) => {
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
-    }/${issuePath.replace(/\//g, '-')}`
+  }/${issuePath.replace(/\//g, '-')}`
 
   const data = get(issue, 'proposals')
   if (!selectedItem.id) {

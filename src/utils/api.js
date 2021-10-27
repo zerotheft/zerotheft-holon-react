@@ -1,5 +1,6 @@
 import axios from 'axios'
-import { get as getLodash } from 'lodash'
+
+// import { get as getLodash } from 'lodash'
 
 // import { toast } from 'react-toastify'
 import { API_URL } from 'constants/index'

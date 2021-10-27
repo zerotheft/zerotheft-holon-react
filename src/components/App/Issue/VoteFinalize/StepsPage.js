@@ -11,7 +11,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
     <Wrapper>
       <Header>Please complete these steps to vote:</Header>
       <Step isCompleted={step > 1}>
-        1.{' '}
+        1.
         <a target="_blank" href={DESKTOP_APP_DOWNLOAD_LINK} rel="noopener noreferrer">
           Install
         </a>
@@ -21,7 +21,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
         2. <a href="zerotheft://wallet">Create or import wallet in the zerotheft desktop app.</a>
       </Step>
       <Step isCompleted={step > 3} isFutureStep={step < 3}>
-        3.{' '}
+        3.
         <a href="zerotheft://auth">
           Complete your profile and create voter id in your ZeroTheft Desktop App. For that, click on register voter tab
           which can be found inside the profile dropdown on the top right section.
@@ -31,14 +31,14 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
         4. Metamask Setup:
         <ol type="a" style={{ marginLeft: 35 }}>
           <li>
-            If you don't have metamask yet: Install{' '}
+            If you don't have metamask yet: Install
             <a
               href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
               target="_blank"
               rel="noopener noreferrer"
             >
               <LinkText style={{ fontSize: 14 }}>metamask extension</LinkText>
-            </a>{' '}
+            </a>
             in your chrome browser.
           </li>
           <li>
@@ -57,7 +57,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
       </Step>
 
       <Button
-        onClick={async() => {
+        onClick={async () => {
           if (step === 4) {
             window.location.href = `${window.location.origin + window.location.pathname}?q=steps`
           }
@@ -86,7 +86,7 @@ const Wrapper = styled.div``,
     margin-bottom: 8px;
     font-size: 14px;
     ${props =>
-    props.isCompleted &&
+      props.isCompleted &&
       `
       color: green;
       background: url(${require('assets/icons/check-circle-solid.svg')}) no-repeat 0 2px transparent;
@@ -97,7 +97,7 @@ const Wrapper = styled.div``,
       }
     `}
     ${props =>
-    props.isFutureStep &&
+      props.isFutureStep &&
       `
       opacity: 0.2;
       pointer-events: none;
