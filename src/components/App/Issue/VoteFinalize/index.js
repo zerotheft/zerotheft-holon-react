@@ -1,30 +1,28 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { get, capitalize, filter as Filter } from 'lodash'
+import { get, capitalize } from 'lodash'
 import { Formik, Field, Form } from 'formik'
 import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
 import { API_URL } from 'constants/index'
-import useFetch from 'commons/hooks/useFetch'
 import { Row } from 'commons/Form/styles'
-import { TextField, TextAreaField, Radio, EditableField } from 'commons/Form/InputFields'
+import { TextAreaField, EditableField } from 'commons/Form/InputFields'
 import Button from 'commons/Buttons'
 import { colors } from 'theme'
-import { isChrome, numberWithCommas, getParameterByName, convertUNIXtoDATETIME } from 'utils'
+import { isChrome, getParameterByName, convertUNIXtoDATETIME } from 'utils'
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
-import { getCitizenInfo } from 'apis/vote'
-import ProposalDetail from '../commons/ProposalDetail'
 import { VoteContext, VoteProvider } from './VoteContext'
+import ProposalDetail from '../commons/ProposalDetail'
 import { AppContext } from '../../AppContext'
 import { IssueContext } from '../IssueContext'
 import Steps from './Steps'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
-  const { issue, selection, loading } = useContext(IssueContext)
-  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
+  const { selection, loading } = useContext(IssueContext)
+  const { umbrellaPaths, holonInfo } = useContext(AppContext)
   const {
     checkStep,
     voterInfo: userInfo,
@@ -41,7 +39,8 @@ const VoteFinalize = ({ match, history, location }) => {
   const [commentState, showHideComment] = useState(false)
 
   const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
-  const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
+
+  // const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
   const theftAmtYears =
     finalVote === 'yes' ? get(selection, 'proposal.theftYears') : get(selection, 'counterProposal.theftYears')
   const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
@@ -49,8 +48,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
-  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
-    isUmbrella ? 'multiIssueReport' : 'ztReport'
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
   }/${issuePath.replace(/\//g, '-')}`
 
   // const getVotedIdeas = async () => {
@@ -240,7 +238,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 </p>
                 {priorVoteInfo && priorVoteInfo.success && (
                   <Button
-                    onClick={() => {}}
+                    onClick={() => { }}
                     style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }}
                     height={62}
                   >
@@ -332,25 +330,26 @@ const Wrapper = styled.div`
       color: ${colors.text.gray};
     }
   `,
-  Label = styled.div`
-    font-weight: 600;
-    color: #062928;
-    opacity: 0.7;
-    font-size: 13px;
-    line-height: 18px;
-    padding-right: 10px;
-    width: 140px;
-    ${props =>
-    props.full &&
-      `
-    width: 100%;
-    color: ${colors.primary};
-  `}
-  `,
-  Column = styled.div`
-    display: flex;
-    flex-direction: column;
-  `,
+
+  // Label = styled.div`
+  //   font-weight: 600;
+  //   color: #062928;
+  //   opacity: 0.7;
+  //   font-size: 13px;
+  //   line-height: 18px;
+  //   padding-right: 10px;
+  //   width: 140px;
+  //   ${props =>
+  //   props.full &&
+  //     `
+  //   width: 100%;
+  //   color: ${colors.primary};
+  // `}
+  // `,
+  // Column = styled.div`
+  //   display: flex;
+  //   flex-direction: column;
+  // `,
   BottomRow = styled(Row)`
     align-items: center;
     span {

@@ -31,7 +31,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
         4. Metamask Setup:
         <ol type="a" style={{ marginLeft: 35 }}>
           <li>
-            If you don't have metamask yet: Install
+            If you don&apos;t have metamask yet: Install
             <a
               href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
               target="_blank"
@@ -42,11 +42,11 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
             in your chrome browser.
           </li>
           <li>
-            Click "import wallet" after installing metamask. If you already have a wallet in your metamask, click
-            "import account using seed phrase".
+            Click &quot;import wallet&quot; after installing metamask. If you already have a wallet in your metamask, click
+            &quot;import account using seed phrase&quot;.
           </li>
           <li>
-            Copy the seed phrase from zerotheft desktop app that you can find in "Key/Phrase" section of "wallet" tab.
+            Copy the seed phrase from zerotheft desktop app that you can find in &quot;Key/Phrase&quot; section of &quot;wallet&quot; tab.
           </li>
           <li>Paste it into the metamask input and follow the necessary steps.</li>
         </ol>
@@ -57,7 +57,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
       </Step>
 
       <Button
-        onClick={async () => {
+        onClick={async() => {
           if (step === 4) {
             window.location.href = `${window.location.origin + window.location.pathname}?q=steps`
           }
@@ -86,7 +86,7 @@ const Wrapper = styled.div``,
     margin-bottom: 8px;
     font-size: 14px;
     ${props =>
-      props.isCompleted &&
+    props.isCompleted &&
       `
       color: green;
       background: url(${require('assets/icons/check-circle-solid.svg')}) no-repeat 0 2px transparent;
@@ -97,7 +97,7 @@ const Wrapper = styled.div``,
       }
     `}
     ${props =>
-      props.isFutureStep &&
+    props.isFutureStep &&
       `
       opacity: 0.2;
       pointer-events: none;

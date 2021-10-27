@@ -1,13 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { vote as voteByHolon, holonInfo as getHolonInfo, voteDataRollups } from 'apis/vote'
+import { holonInfo as getHolonInfo, voteDataRollups } from 'apis/vote'
 import config from 'config'
 import useWeb3 from 'utils/useWeb3'
-import { addHistory } from 'apis/desktopApp'
 import { toast } from 'react-toastify'
 import { get } from 'lodash'
 import { getParameterByName } from 'utils'
-import { AppContext } from '../../AppContext'
 import { IssueContext } from '../IssueContext'
 import useCanVote from './useCanVote'
 
@@ -57,14 +55,15 @@ const useVote = voterInfo => {
   const location = useLocation()
   const params = useParams()
 
-  const { userInfo } = useContext(AppContext)
+  // const { userInfo } = useContext(AppContext)
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
+  /* eslint-disable-next-line no-unused-vars */
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
   const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } =
     useWeb3()
   const [popup, showErrorPopUp] = useState()
-  const { selection, refetchIssue, updateVote: updateVoteStore } = useContext(IssueContext)
+  const { selection, updateVote: updateVoteStore } = useContext(IssueContext)
 
   // const fetchPriorVoteInfo = async (metamaskAccount) => {
   //   getPriorVoteApi({
@@ -126,24 +125,24 @@ const useVote = voterInfo => {
       const sha3 = web3.utils.soliditySha3(...messageParams)
       const signedMessage = await web3.eth.personal.sign(sha3, account)
 
-      console.log(
-        'before vote',
-        [
-          votingArea,
-          hierarchyPath,
-          values.hierarchyPath,
-          voteTypeDetail,
-          voteValue,
-          amountValue,
-          verificationOnVote,
-          yesTheftProposalId,
-          noTheftProposalId,
-          values.comment || '',
-          holonInfo.holonID,
-          signedMessage,
-        ],
-        voterInfo
-      )
+      // console.log(
+      //   'before vote',
+      //   [
+      //     votingArea,
+      //     hierarchyPath,
+      //     values.hierarchyPath,
+      //     voteTypeDetail,
+      //     voteValue,
+      //     amountValue,
+      //     verificationOnVote,
+      //     yesTheftProposalId,
+      //     noTheftProposalId,
+      //     values.comment || '',
+      //     holonInfo.holonID,
+      //     signedMessage,
+      //   ],
+      //   voterInfo
+      // )
 
       const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
       const txDetails = { userId: voterInfo.id, details: `Voted path ${fullPath}`, txType: 'vote' }
@@ -166,7 +165,8 @@ const useVote = voterInfo => {
         ],
         txDetails
       )
-      console.log('after vote')
+
+      // console.log('after vote')
 
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
       await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })

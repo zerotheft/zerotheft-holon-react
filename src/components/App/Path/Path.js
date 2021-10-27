@@ -152,7 +152,7 @@ const Path = ({ history, match, isIssuePath }) => {
             }}
           /> */}
                 <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(current_path_summary, 'vote') === 'YES' ? 'Yes Theft' : 'No Theft'
-                  }  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
+                }  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
                 <div className="amt">${convertDollarToString(toNumber(get(current_path_summary, 'amount', 0)))}</div>
                 <CustomButton
                   onClick={() => {
@@ -214,9 +214,9 @@ const Path = ({ history, match, isIssuePath }) => {
 export default Path
 
 Path.propTypes = {
-  history: PropTypes.object,
+  history    : PropTypes.object,
   isIssuePath: PropTypes.bool,
-  match: PropTypes.object,
+  match      : PropTypes.object,
 }
 const Wrapper = styled(Container)`
     .content {
@@ -291,7 +291,7 @@ const Wrapper = styled(Container)`
   padding: 0 15px;
   cursor: pointer;
   ${props =>
-      props.type !== 'issue' &&
+    props.type !== 'issue' &&
       `
     border: 1px solid #B0A8A8;
     background: #fff;
@@ -321,7 +321,7 @@ const Wrapper = styled(Container)`
     min-width: 250px;
   }
   ${props =>
-      props.type === 'issue' &&
+    props.type === 'issue' &&
       `
     cursor: default;
   `}
