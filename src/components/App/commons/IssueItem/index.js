@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { get } from 'lodash'
 import styled from 'styled-components'
 
@@ -20,6 +21,13 @@ const IssueItem = ({ data = {}, style = {}, onClick, hideAmount = false }) => {
 }
 
 export default IssueItem
+
+IssueItem.propTypes = {
+  data      : PropTypes.object,
+  hideAmount: PropTypes.bool,
+  onClick   : PropTypes.func,
+  style     : PropTypes.object,
+}
 
 const Wrapper = styled.div`
   background: #c9f1fd;

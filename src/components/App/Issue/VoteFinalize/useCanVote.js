@@ -7,12 +7,13 @@ import useFetch from 'commons/hooks/useFetch'
 
 import config from 'config'
 
-const { CHAIN_ID, MODE } = config
+const { CHAIN_ID } = config
 
 export default () => {
   const chainID = CHAIN_ID
   const { web3, loadWeb3 } = useContext(Web3Context)
   const { userInfo } = useContext(AppContext)
+  /* eslint-disable-next-line no-unused-vars */
   const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
   const [step, changeStep] = useState(0),
     [voterInfo, updateVoterInfo] = useState()
@@ -76,6 +77,7 @@ export default () => {
       if (newStep > 6) {
         fetchPriorVoteInfo(path, metamaskAccount)
       }
+      /* eslint-disable-next-line no-unsafe-finally */
       return { step: newStep, msg }
     }
   }

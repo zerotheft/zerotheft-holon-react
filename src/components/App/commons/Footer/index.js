@@ -1,5 +1,4 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { APP_VERSION } from 'constants/index'
 
 import styled from 'styled-components'
@@ -17,9 +16,6 @@ const Footer = () => {
   )
 }
 
-Footer.propTypes = {
-  history: PropTypes.object,
-}
 
 export default Footer
 

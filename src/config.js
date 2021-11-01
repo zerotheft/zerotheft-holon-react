@@ -5,6 +5,7 @@ const tryRequire = path => {
     const file = require(`${path}`)
     return file
   } catch (err) {
+    /* eslint-disable-next-line no-console */
     console.log(`Required File Error: ${err.message}`)
     return null
   }

@@ -1,32 +1,37 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import StarRatings from 'react-star-ratings'
 import Progress from 'react-progressbar'
-import { get, toNumber } from 'lodash'
-import { useRouteMatch, useHistory } from 'react-router-dom'
+import { get } from 'lodash'
+import { useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFrown } from '@fortawesome/free-regular-svg-icons'
+
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+// import { faFrown } from '@fortawesome/free-regular-svg-icons'
 
 import OverlaySpinner from 'commons/OverlaySpinner'
-import Button from 'commons/Buttons'
-import { EmptyText } from 'commons/styles'
-import { convertDollarToString } from 'utils'
+
+// import Button from 'commons/Buttons'
+// import { EmptyText } from 'commons/styles'
+// import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
-import { IssueContext } from '../../IssueContext'
+
+// import { IssueContext } from '../../IssueContext'
 
 const Points = ({
   data = [],
   selectedItem = {},
   updateSelectedItem,
-  issue = {},
+
+  // issue = {},
   counter = false,
   loading = false,
   viewPage = false,
 }) => {
   const match = useRouteMatch()
-  const history = useHistory()
 
-  const { selection, updateSelection } = useContext(IssueContext)
+  // const history = useHistory()
+
+  // const { selection, updateSelection } = useContext(IssueContext)
 
   return (
     <Wrapper style={{ height: '100%' }}>
@@ -34,7 +39,7 @@ const Points = ({
       <div style={{ height: '90%', overflowY: 'auto' }}>
         <div style={{ overflow: 'hidden' }}>
           {data.length
-            ? data.map((i, idx) => (
+            ? data.map(i => (
               <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
                 <div className="itemWrap">
                   <div>
@@ -113,8 +118,7 @@ const Points = ({
           {data.length ? (
             <div className="btns">
               <a
-                href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${
-                  counter ? 'counter-' : ''
+                href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${counter ? 'counter-' : ''
                 }proposal`}
               >
                 Add {counter ? 'Counter' : ''} Proposal
@@ -162,7 +166,7 @@ const Item = styled.div`
     }
     ${props =>
     props.active &&
-      `
+    `
     & > .itemWrap {
       background: ${colors.primary};
       color: #fff;

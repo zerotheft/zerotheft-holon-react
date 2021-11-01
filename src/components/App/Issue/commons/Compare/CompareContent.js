@@ -1,19 +1,19 @@
 import React, { useContext } from 'react'
-import { get, lowerCase, upperCase, toNumber, isEmpty } from 'lodash'
+import { get, lowerCase, upperCase, isEmpty } from 'lodash'
 import { useHistory, useRouteMatch } from 'react-router-dom'
 import StarRatings from 'react-star-ratings'
 import styled from 'styled-components'
 
 import { colors } from 'theme'
 import Button from 'commons/Buttons'
-import { convertJSONtoString, numberWithCommas } from 'utils'
+import { convertJSONtoString } from 'utils'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown } from '@fortawesome/free-regular-svg-icons'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { IssueContext } from '../../IssueContext'
 
-const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = false }) => {
+const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
   const history = useHistory()
   const match = useRouteMatch()
   const { proposalDetails } = useContext(IssueContext)
@@ -56,8 +56,7 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
             }}
             onClick={() =>
               history.push(
-                `/path/${get(match, 'params.pathname')}/issue/${id}/${
-                  vote === 'yes' ? 'proposals' : 'counter-proposals'
+                `/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'
                 }`
               )
             }
@@ -80,8 +79,7 @@ const CompareContent = ({ vote = 'yes', title = '', data = {}, id, hideBtn = fal
               }}
               onClick={() =>
                 history.push(
-                  `/path/${get(match, 'params.pathname')}/issue/${id}/${
-                    vote === 'yes' ? 'proposals' : 'counter-proposals'
+                  `/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'
                   }`
                 )
               }

@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import styled from 'styled-components'
+import PropTypes from 'prop-types'
 import { get } from 'lodash'
 import useFetch from 'commons/hooks/useFetch'
 import OverlaySpinner from 'commons/OverlaySpinner'
@@ -86,3 +87,8 @@ export const Iframe = styled.iframe`
   `
 
 export default Report
+
+Report.propTypes = {
+  history: PropTypes.object,
+  match  : PropTypes.object,
+}

@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import PropTypes from 'prop-types'
 import { Switch, Route } from 'react-router-dom'
 import { get } from 'lodash'
 
@@ -50,3 +51,6 @@ const Issue = ({ match }) => {
 }
 
 export default IssueWrapper
+Issue.propTypes = {
+  match: PropTypes.object,
+}
