@@ -1,8 +1,6 @@
 import React, { createContext, useState } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import Web3 from 'web3'
-import { subYears, format } from 'date-fns'
 
 const Web3Context = createContext()
 
@@ -36,7 +34,6 @@ const useWeb3 = () => {
       updateWeb3(web3R)
       return web3R
     } catch (e) {
-      console.log(e, 'error')
       updateError(e)
     } finally {
       updateLoading(false)
@@ -47,6 +44,7 @@ const useWeb3 = () => {
 }
 
 const getWeb3 = () =>
+  /* eslint-disable-next-line no-async-promise-executor */
   new Promise(async(resolve, reject) => {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum)
@@ -60,19 +58,20 @@ const getWeb3 = () =>
       const { web3 } = window
       resolve(web3)
     } else {
+      /* eslint-disable-next-line prefer-promise-reject-errors */
       reject('No Metamask')
     }
   })
 
-const Error = styled.div`
-    display: flex;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-  `,
-  ErrorMessage = styled.div`
-    padding: 20px 0;
-    width: 520px;
-    text-align: center;
-  `
+// const Error = styled.div`
+//     display: flex;
+//     min-height: 100vh;
+//     align-items: center;
+//     justify-content: center;
+//     flex-direction: column;
+//   `,
+//   ErrorMessage = styled.div`
+//     padding: 20px 0;
+//     width: 520px;
+//     text-align: center;
+//   `

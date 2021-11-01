@@ -11,7 +11,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
     <Wrapper>
       <Header>Please complete these steps to vote:</Header>
       <Step isCompleted={step > 1}>
-        1.{' '}
+        1.
         <a target="_blank" href={DESKTOP_APP_DOWNLOAD_LINK} rel="noopener noreferrer">
           Install
         </a>
@@ -21,7 +21,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
         2. <a href="zerotheft://wallet">Create or import wallet in the zerotheft desktop app.</a>
       </Step>
       <Step isCompleted={step > 3} isFutureStep={step < 3}>
-        3.{' '}
+        3.
         <a href="zerotheft://auth">
           Complete your profile and create voter id in your ZeroTheft Desktop App. For that, click on register voter tab
           which can be found inside the profile dropdown on the top right section.
@@ -31,22 +31,22 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
         4. Metamask Setup:
         <ol type="a" style={{ marginLeft: 35 }}>
           <li>
-            If you don't have metamask yet: Install{' '}
+            If you don&apos;t have metamask yet: Install
             <a
               href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
               target="_blank"
               rel="noopener noreferrer"
             >
               <LinkText style={{ fontSize: 14 }}>metamask extension</LinkText>
-            </a>{' '}
+            </a>
             in your chrome browser.
           </li>
           <li>
-            Click "import wallet" after installing metamask. If you already have a wallet in your metamask, click
-            "import account using seed phrase".
+            Click &quot;import wallet&quot; after installing metamask. If you already have a wallet in your metamask, click
+            &quot;import account using seed phrase&quot;.
           </li>
           <li>
-            Copy the seed phrase from zerotheft desktop app that you can find in "Key/Phrase" section of "wallet" tab.
+            Copy the seed phrase from zerotheft desktop app that you can find in &quot;Key/Phrase&quot; section of &quot;wallet&quot; tab.
           </li>
           <li>Paste it into the metamask input and follow the necessary steps.</li>
         </ol>

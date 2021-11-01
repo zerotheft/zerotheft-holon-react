@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import { startCase, compact, concat, get } from 'lodash'
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react'
 import { Wrapper, Container } from 'commons/styles'
 import { HeaderContainer, ButtonSection, DataSection } from '../styles'
 
-const Vote = ({ match, history }) => {
+const Vote = () => {
   return (
     <Wrapper>
       <Container>
@@ -46,7 +46,7 @@ const Vote = ({ match, history }) => {
               <strong>Date Created</strong> <span>2021 Jan 22</span>
             </li>
             <li>
-              <strong>Coming</strong>{' '}
+              <strong>Coming</strong>
               <span>
                 <div className="yesText">75% YES</div>
                 <div className="noText">45% NO</div>
