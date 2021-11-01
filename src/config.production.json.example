@@ -1,6 +1,7 @@
 {
   "DESKTOP_APP": "http://localhost:6549",
   "HTTP_PROVIDER": "https://matic-mainnet.chainstacklabs.com",
+  "ZERO_THEFT_CONTRACT": "https://zerotheft-contract-artifacts.s3.amazonaws.com",
   "CHAIN_ID":137,
   "NETWORK_ID":137,
   "NETWORK_NAME":"productionnet",
