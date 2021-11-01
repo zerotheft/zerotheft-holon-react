@@ -9,7 +9,7 @@ export const getVoterInfos = async body => {
 }
 
 // Save a transaction in the UserTransactionHistory Table
-export const saveTransaction = async (body) => {
+export const saveTransaction = async body => {
   const { data } = await post('api/save-transaction', body, CENTRALIZED_SERVER)
   return data
 }

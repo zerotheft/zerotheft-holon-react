@@ -40,8 +40,10 @@ Checkbox.propTypes = {
 export default Checkbox
 
 const CheckboxWrapper = styled.div`
-  input[type = checkbox] { display: none; }
-  input[type = checkbox] ~ label {
+  input[type='checkbox'] {
+    display: none;
+  }
+  input[type='checkbox'] ~ label {
     font-size: 16px;
     color: #797979;
     font-weight: 600;
@@ -70,7 +72,7 @@ const CheckboxWrapper = styled.div`
       left: 3px;
     }
   }
-  input[type=checkbox]:checked ~ label {
+  input[type='checkbox']:checked ~ label {
     &::before {
       border-color: ${colors.primary};
       background: ${colors.primary};

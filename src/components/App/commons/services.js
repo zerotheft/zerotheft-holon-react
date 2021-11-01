@@ -9,7 +9,7 @@ export const calculate = obj => {
   const vote = forVote >= against ? 'YES' : 'NO'
   const toMeasure = vote === 'YES' ? forVote : against
 
-  const votedPercent = round(toMeasure / votes * 100, 2)
+  const votedPercent = round((toMeasure / votes) * 100, 2)
 
   return { votedPercent, vote, amount: obj.theft }
 }

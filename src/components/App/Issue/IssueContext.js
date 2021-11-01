@@ -93,15 +93,23 @@ const useIssueFetcher = (id, match) => {
   const fetchIssue = async() => {
     updateLoading(true)
     try {
-      const path = await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`) || []
+      const path = (await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`)) || []
       const issueDetails = {}
-      issueDetails.proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) > 0)).map(i => ({
-        ...i, year: parseInt(get(i, 'year'))
-      })) || []
+      issueDetails.proposals =
+        path.data
+          .filter(i => i && parseFloat(i.theftAmt) > 0)
+          .map(i => ({
+            ...i,
+            year: parseInt(get(i, 'year')),
+          })) || []
 
-      issueDetails.counter_proposals = path.data.filter(i => (i && parseFloat(i.theftAmt) <= 0)).map(i => ({
-        ...i, year: parseInt(get(i, 'year'))
-      })) || []
+      issueDetails.counter_proposals =
+        path.data
+          .filter(i => i && parseFloat(i.theftAmt) <= 0)
+          .map(i => ({
+            ...i,
+            year: parseInt(get(i, 'year')),
+          })) || []
 
       issueDetails.bellCurveData = path.chartData || {}
       updateIssue(issueDetails)

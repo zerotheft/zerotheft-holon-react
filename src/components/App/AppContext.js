@@ -20,7 +20,9 @@ const AppProvider = ({ children }) => {
   const [getUmbrellaPathsApi, fetchingUmbrella, umbrellaPaths] = useFetch(getUmbrellaPaths)
   const [getHolonApi, loadingHolon, holonInfo] = useFetch(getHolonInfo)
   const [filterParams, updateFilter] = useState({ year: localStorage.getItem('filterYear'), initPath: 'USA' }),
-    [selectedHolon, updateHolon] = useState(localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}),
+    [selectedHolon, updateHolon] = useState(
+      localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}
+    ),
     [userInfo, updateUserInfo] = useState()
   const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem('address'))
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
@@ -30,7 +32,7 @@ const AppProvider = ({ children }) => {
   }, [filterParams.initPath])
 
   const fetchFromApp = async() => {
-    const res = await getVoterInfos('data.address') || ''
+    const res = (await getVoterInfos('data.address')) || ''
     const holon = get(res, 'data.selectedHolon')
     const address = get(res, 'data.address') || ''
     const voterId = get(res, 'data.voterId') || ''
@@ -59,7 +61,24 @@ const AppProvider = ({ children }) => {
     getTheftApi(filterParams.initPath, true, get(filterParams, 'year'))
   }, [filterParams.year])
   return (
-    <AppContext.Provider value={{ userInfo, filterParams, updateFilter, loading, loadingTheft, selectedHolon, updateHolon, holonInfo, loadingPaths: loading, paths: get(paths, 'data'), umbrellaPaths, theftInfo }}>{children}</AppContext.Provider>
+    <AppContext.Provider
+      value={{
+        userInfo,
+        filterParams,
+        updateFilter,
+        loading,
+        loadingTheft,
+        selectedHolon,
+        updateHolon,
+        holonInfo,
+        loadingPaths: loading,
+        paths       : get(paths, 'data'),
+        umbrellaPaths,
+        theftInfo,
+      }}
+    >
+      {children}
+    </AppContext.Provider>
   )
 }
 

@@ -6,7 +6,7 @@ export default (apiFunc, initialLoading, callback) => {
 
   const callApi = async(...args) => {
     try {
-      if(!apiFunc) return
+      if (!apiFunc) return
       updateLoading(true)
       const response = await apiFunc(...args)
       updateRes(response)

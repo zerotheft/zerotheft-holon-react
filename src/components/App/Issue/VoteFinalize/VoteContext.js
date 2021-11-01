@@ -17,7 +17,7 @@ const VoteContext = createContext()
 const VoteProvider = ({ children }) => {
   const [step, checkStep, voterInfo, web3, loadWeb3, priorVoteInfo] = useCanVote()
 
-  const { voting, finalVote, popup, showErrorPopUp, vote } = useVote()
+  const { voting, finalVote, popup, showErrorPopUp, vote } = useVote(voterInfo)
   const { selection } = useContext(IssueContext)
   const buildUrl = () => {
     let query = '?page=steps&details=true'
@@ -42,7 +42,7 @@ const VoteProvider = ({ children }) => {
         popup,
         showErrorPopUp,
         vote,
-        priorVoteInfo
+        priorVoteInfo,
       }}
     >
       {children}
@@ -52,7 +52,7 @@ const VoteProvider = ({ children }) => {
 
 export { VoteProvider, VoteContext }
 
-const useVote = () => {
+const useVote = voterInfo => {
   const history = useHistory()
   const location = useLocation()
   const params = useParams()
@@ -61,7 +61,8 @@ const useVote = () => {
   const [voting, updateVoting] = useState(false)
   const currentVote = getParameterByName('vote')
   const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
-  const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } = useWeb3()
+  const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } =
+    useWeb3()
   const [popup, showErrorPopUp] = useState()
   const { selection, refetchIssue, updateVote: updateVoteStore } = useContext(IssueContext)
 
@@ -88,7 +89,13 @@ const useVote = () => {
         return
       }
       if (!holonInfo.holonID || holonInfo.holonID === '') {
-        showErrorPopUp({ message: 'Holon information missing. Please select holon first', holonInfo, proposalId, voteType: finalVote, ...values })
+        showErrorPopUp({
+          message : 'Holon information missing. Please select holon first',
+          holonInfo,
+          proposalId,
+          voteType: finalVote,
+          ...values,
+        })
         return
       }
 
@@ -101,7 +108,9 @@ const useVote = () => {
       const hierarchyPath = convertStringToHash(values.hierarchyPath)
       const voteTypeDetail = await convertToAscii('TrueFalse_AmountsPerYear')
       const voteValue = voteType ? 'True' : 'False'
-      const verificationOnVote = await convertToAscii('RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured')
+      const verificationOnVote = await convertToAscii(
+        'RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured'
+      )
       const amountValue = values.altTheftAmounts || ''
 
       const messageParams = [
@@ -112,21 +121,57 @@ const useVote = () => {
         { t: 'string', v: amountValue }, // custom amount added by citizen
         { t: 'address', v: account },
         { t: 'string', v: yesTheftProposalId },
-        { t: 'string', v: noTheftProposalId }
+        { t: 'string', v: noTheftProposalId },
       ]
       const sha3 = web3.utils.soliditySha3(...messageParams)
       const signedMessage = await web3.eth.personal.sign(sha3, account)
 
-      console.log('before vote', [votingArea, hierarchyPath, values.hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, signedMessage])
+      console.log(
+        'before vote',
+        [
+          votingArea,
+          hierarchyPath,
+          values.hierarchyPath,
+          voteTypeDetail,
+          voteValue,
+          amountValue,
+          verificationOnVote,
+          yesTheftProposalId,
+          noTheftProposalId,
+          values.comment || '',
+          holonInfo.holonID,
+          signedMessage,
+        ],
+        voterInfo
+      )
 
-      await carryTransaction(contract, 'createVote', [votingArea, hierarchyPath, voteTypeDetail, voteValue, amountValue, verificationOnVote, yesTheftProposalId, noTheftProposalId, values.comment || '', holonInfo.holonID, signedMessage])
+      const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
+      const txDetails = { userId: voterInfo.id, details: `Voted path ${fullPath}`, txType: 'vote' }
+
+      await carryTransaction(
+        contract,
+        'createVote',
+        [
+          votingArea,
+          hierarchyPath,
+          voteTypeDetail,
+          voteValue,
+          amountValue,
+          verificationOnVote,
+          yesTheftProposalId,
+          noTheftProposalId,
+          values.comment || '',
+          holonInfo.holonID,
+          signedMessage,
+        ],
+        txDetails
+      )
       console.log('after vote')
 
       const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
       await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
     } catch (e) {
-      if (holonInfo.canBeFunded)
-        showErrorPopUp({ message: '', holonInfo, proposalId, voteType: finalVote, ...values })
+      if (holonInfo.canBeFunded) showErrorPopUp({ message: '', holonInfo, proposalId, voteType: finalVote, ...values })
       toast.error('Error while voting on this proposal.')
     } finally {
       updateVoting(false)
@@ -163,31 +208,29 @@ const useVote = () => {
   //   }
   // }
 
-
   const afterVote = async(balance, values) => {
     // do voteData Rollups
     const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
-    if (!rollupsRes.success)
-      toast.error('Error in  voting rollups')
+    if (!rollupsRes.success) toast.error('Error in  voting rollups')
 
-    const newBalance = await getBalance()
+    // TODO: Voting history is no more maintained in desktop app. so keeping it for now
+    // const newBalance = await getBalance()
 
-    const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
-    const newHistory = {
-      details        : `Voted for path: '${fullPath}'`,
-      pathName       : fullPath,
-      previousBalance: balance,
-      newBalance,
-      date           : new Date(),
-      amount         : 0,
-      type           : 'vote'
-    }
-
-    try {
-      await addHistory(newHistory)
-    } catch (e) {
-      console.log(e)
-    }
+    // const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
+    // const newHistory = {
+    //   details: `Voted for path: '${fullPath}'`,
+    //   pathName: fullPath,
+    //   previousBalance: balance,
+    //   newBalance,
+    //   date: new Date(),
+    //   amount: 0,
+    //   type: 'vote'
+    // }
+    // try {
+    //   await addHistory(newHistory)
+    // } catch (e) {
+    //   console.log(e)
+    // }
 
     updateVoteStore(values)
 
@@ -204,8 +247,6 @@ const useVote = () => {
     finalVote,
     popup,
     showErrorPopUp,
-    vote
+    vote,
   }
 }
-
-

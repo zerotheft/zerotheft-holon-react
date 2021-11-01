@@ -14,11 +14,11 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
             <TabWrapper
               key={tab.id}
               to={tab.path}
-              active={activeTab==tab.pathId}
-              onClick={()=>{
-                const elementPosition = document.getElementById(tab.pathId).offsetTop;
-                const offsetPosition = elementPosition - 130;
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+              active={activeTab == tab.pathId}
+              onClick={() => {
+                const elementPosition = document.getElementById(tab.pathId).offsetTop
+                const offsetPosition = elementPosition - 130
+                window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
               }}
               style={tabStyle}
               activeStyle={{
@@ -26,8 +26,7 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
                 background: '#7F51C1',
                 color     : 'white',
                 ...activeStyle,
-              }
-              }
+              }}
             >
               {tab.name}
             </TabWrapper>
@@ -48,10 +47,10 @@ Tabs.propTypes = {
 
 const Wrapper = styled.div`
     display: none;
-    @media(min-width: 768px){
-        display: flex;
+    @media (min-width: 768px) {
+      display: flex;
     }
-`,
+  `,
   TabWrapper = styled(NavLink)`
     text-decoration: none;
     color: #000;
@@ -59,6 +58,6 @@ const Wrapper = styled.div`
     font-size: 17px;
     line-height: 48px;
     padding: 0 15px;
-`
+  `
 
 export default Tabs

@@ -11,7 +11,7 @@ const TextAreaField = ({
   field,
   form,
   placeholder = '',
-  labelType='side',
+  labelType = 'side',
   required = false,
   readonly = false,
   style,
