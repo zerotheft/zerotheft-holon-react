@@ -11,6 +11,7 @@ export const vote = async body => {
   return { data }
 }
 
+// eslint-disable-next-line no-unused-vars
 export const holonInfo = async body => {
   const { data } = await get('api/holon-info')
   return data

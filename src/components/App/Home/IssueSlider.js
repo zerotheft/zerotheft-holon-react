@@ -86,8 +86,8 @@ const IssueSlider = ({ onlySlider = false }) => {
           let path = get(i, 'path', '').split('/')[2] || ''
           const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${i.title}`
           const template = await getTemplateApi(templatePath)
-          path = path.replace(/%2F/g, ' > ')
-          return { title: i.title, path, rawPath: i.path, description: displayYaml(template, i.path) }
+          path = path.replace(/%2F/g, ' > ');
+          return { title: i.title, path, rawPath: `${i.path}/proposals`, description: displayYaml(template, i.path) }
         })
       )
     ).filter(i => i.description)

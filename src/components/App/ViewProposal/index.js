@@ -31,7 +31,7 @@ const ViewProposal = ({ match, history }) => {
         {hierarchy && (
           <HeaderContainer>
             <Header>Proposal for {startCase(issue)}</Header>
-            <Button onClick={() => history.push(`/path/${path}/issue/${issue}/proposals`)}>View</Button>
+            <Button onClick={() => history.push(`/path/${path}/issue/${issue}/proposals`)}>View path</Button>
           </HeaderContainer>
         )}
         {convertJSONtoString(proposal.detail)}

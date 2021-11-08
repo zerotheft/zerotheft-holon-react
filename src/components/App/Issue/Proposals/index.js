@@ -1,11 +1,7 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { API_URL } from 'constants/index'
-import { get, isEmpty, filter as Filter } from 'lodash'
+import { get } from 'lodash'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
-import Button from 'commons/Buttons'
-import { EmptyText } from 'commons/styles'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
 import { Wrapper, Left, Right, WarningWrapper, EmptyProposalWrapper } from '../commons/styles'
