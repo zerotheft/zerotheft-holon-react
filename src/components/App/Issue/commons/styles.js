@@ -1,8 +1,5 @@
 import styled from 'styled-components'
-
-import Button from 'commons/Buttons'
 import { colors } from 'theme'
-import { color } from 'highcharts'
 
 export const Header = styled.div`
     margin-bottom: 15px;

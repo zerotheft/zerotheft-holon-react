@@ -18,6 +18,7 @@ export const getReport = async(param, path = false, year) => {
   }
 }
 
+// eslint-disable-next-line no-unused-vars
 export const getTheftInfo = async(param, path = false, year) => {
   try {
     const { data } = await getAPI(`api/issues/${param}/theftInfo`)

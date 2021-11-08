@@ -173,7 +173,7 @@ export const convertDollarToString = (value, decimal = 2) => {
   if (!isNumber(val) || val === 0) return val
 
   if (Math.sign(val) === -1) {
-    /*eslint-disable operator-assignment*/
+    /* eslint-disable operator-assignment */
     val = -1 * val
     negative = true
   }

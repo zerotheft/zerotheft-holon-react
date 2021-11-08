@@ -1,16 +1,11 @@
 import React, { useContext } from 'react'
 import StarRatings from 'react-star-ratings'
 import Progress from 'react-progressbar'
-import { get, toNumber } from 'lodash'
+import { get } from 'lodash'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import styled from 'styled-components'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFrown } from '@fortawesome/free-regular-svg-icons'
 
 import OverlaySpinner from 'commons/OverlaySpinner'
-import Button from 'commons/Buttons'
-import { EmptyText } from 'commons/styles'
-import { convertDollarToString } from 'utils'
 import { colors } from 'theme'
 import { IssueContext } from '../../IssueContext'
 
@@ -35,7 +30,7 @@ const Points = ({
         <div style={{ overflow: 'hidden' }}>
           {data.length
             ? data.map((i, idx) => (
-              <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
+              <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)} key={i.id}>
                 <div className="itemWrap">
                   <div>
                     {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
