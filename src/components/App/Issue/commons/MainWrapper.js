@@ -1,6 +1,6 @@
 import React from 'react'
 import { startCase } from 'lodash'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 import { Container } from 'commons/styles'
@@ -12,8 +12,8 @@ import { colors } from 'theme'
 //   return false
 // }
 
-const MainWrapper = ({ title, stepsPage, pathname, children, pathCrumbTemp }) => {
-  const history = useHistory()
+const MainWrapper = ({ stepsPage, pathname, children, pathCrumbTemp }) => {
+  // const history = useHistory()
   const pathCrumbs = pathCrumbTemp && pathCrumbTemp.length > 0 ? pathCrumbTemp : pathname.split('%2F')
 
   return (

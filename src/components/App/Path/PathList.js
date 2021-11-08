@@ -1,4 +1,5 @@
 import React, { useEffect, useContext } from 'react'
+import PropTypes from 'prop-types'
 import { get, random } from 'lodash'
 import styled from 'styled-components'
 import { getYear } from 'date-fns'
@@ -13,7 +14,7 @@ import { colors } from 'theme'
 import { AppContext } from 'components/App/AppContext'
 import Select from 'react-select'
 
-const PathList = ({ history, match }) => {
+const PathList = ({ history }) => {
   const { filterParams } = useContext(AppContext)
   const [getNationsApi, loading, nations] = useFetch(getNations)
 
@@ -45,13 +46,15 @@ const PathList = ({ history, match }) => {
                     })}
                     isSearchable={false}
                     styles={SelectStyles}
-                    onChange={selected => {
-                      // updateFilter({ ...filterParams, year: selected.value })
-                    }}
+
+                  // onChange={selected => {
+                  //   // updateFilter({ ...filterParams, year: selected.value })
+                  // }}
                   />
                 </div>
                 <div style={{ width: 260 }} className="details">
-                  <div className={`vote ${'YES' === 'YES' ? 'active' : ''} ${true && 'blurred'}`}>
+                  {/* <div className={`vote ${'YES' === 'YES' ? 'active' : ''} ${true && 'blurred'}`}> */}
+                  <div className={`vote active ${true && 'blurred'}`}>
                     <div className="status">NO</div>
                     <div className="percent">{random(51, 95)}%</div>
                   </div>
@@ -72,6 +75,9 @@ const PathList = ({ history, match }) => {
 }
 
 export default PathList
+PathList.propTypes = {
+  history: PropTypes.object,
+}
 
 const SelectStyles = {
   singleValue: styles => ({

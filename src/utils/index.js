@@ -72,15 +72,15 @@ export const convertUNIXtoDATETIME = (date, dateFormat = 'dd MMM, yyyy') => {
   return getDate(fromUnixTime(date), dateFormat)
 }
 
-export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) => {
-  if (!currentPath || isEmpty(paths)) return []
-  let nodes = []
-  if (!entireSearch)
-    Object.keys(paths).map(key => {
-      if (isEmpty(paths[key])) nodes = [...nodes, { path: `/path/${currentPath}/issue/${key}`, title: key }]
-    })
-  return nodes
-}
+// export const getEndNodes = (currentPath = '', paths = {}, entireSearch = false) => {
+//   if (!currentPath || isEmpty(paths)) return []
+//   let nodes = []
+//   if (!entireSearch)
+//     Object.keys(paths).map(key => {
+//       if (isEmpty(paths[key])) nodes = [...nodes, { path: `/path/${currentPath}/issue/${key}`, title: key }]
+//     })
+//   return nodes
+// }
 
 export const displayContent = data => {
   if (!isEmpty(data) && data.toString().includes('http')) {
@@ -188,6 +188,7 @@ export const convertDollarToString = (value, decimal = 2) => {
 }
 
 export function getParameterByName(name, url = window.location.href) {
+  /* eslint-disable no-useless-escape */
   name = name.replace(/[\[\]]/g, '\\$&')
   const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
     results = regex.exec(url)
@@ -201,10 +202,9 @@ export function getParameterByName(name, url = window.location.href) {
  * @params URL of a image for existence check
  * @returns true/false based on image existence
  * */
-export const imageExists = image_url => {
+export const imageExists = imageUrl => {
   const http = new XMLHttpRequest()
-  /* eslint-disable camelcase */
-  http.open('HEAD', image_url, false)
+  http.open('HEAD', imageUrl, false)
   http.send()
   return http.status !== 404
 }

@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react'
-import { startCase, compact, concat, get } from 'lodash'
+/* eslint-disable jsx-a11y/anchor-is-valid */
+import React from 'react'
 import { Wrapper, Container } from 'commons/styles'
 import { HeaderContainer, ButtonSection, DataSection, VoteDetailSection } from '../styles'
 
-const Citizen = ({ match, history }) => {
+const Citizen = () => {
   return (
     <Wrapper>
       <Container>
@@ -33,7 +33,7 @@ const Citizen = ({ match, history }) => {
               <strong>No Of Votes</strong> <span>35</span>
             </li>
             <li>
-              <strong>Linked-In URL</strong>{' '}
+              <strong>Linked-In URL</strong>
               <span>
                 <a href="#">https://www.linkedin.com/davidlampard</a>
               </span>
@@ -45,7 +45,7 @@ const Citizen = ({ match, history }) => {
               <strong>Date Created</strong> <span>2021 Jan 22</span>
             </li>
             <li>
-              <strong>Coming</strong>{' '}
+              <strong>Coming</strong>
               <span>
                 <div className="yesText">75% YES</div>
                 <div className="noText">45% NO</div>
@@ -83,7 +83,7 @@ const Citizen = ({ match, history }) => {
                 </td>
                 <td>$14.88</td>
                 <td>
-                  <span className="yestheft">45% Yes Theft</span> >
+                  <span className="yestheft">45% Yes Theft</span> &gt;
                 </td>
                 <td>Theft</td>
                 <td>4th Oct 2020</td>
@@ -97,7 +97,7 @@ const Citizen = ({ match, history }) => {
                 </td>
                 <td className="totalAmount">$14.88</td>
                 <td>
-                  <span className="yestheft">45% Yes Theft</span> >
+                  <span className="yestheft">45% Yes Theft</span> &gt;
                 </td>
                 <td>Theft</td>
                 <td>4th Oct 2020</td>

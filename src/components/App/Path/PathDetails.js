@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { useHistory } from 'react-router-dom'
 import { toNumber, get } from 'lodash'
@@ -9,7 +10,7 @@ import { calculate } from 'components/App/commons/services'
 import Button from 'commons/Buttons'
 import { convertDollarToString } from 'utils'
 
-const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
+const PathDetails = ({ url, isPath, summary, viewLink }) => {
   const summaryPath = summary && summary[url]
 
   const voteDetails = summaryPath ? calculate(summaryPath) : null
@@ -18,8 +19,7 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
     <Wrapper>
       {voteDetails ? (
         <div className="details-wrapper">
-          <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${
-            get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'
+          <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'
           } ${get(voteDetails, 'votedPercent', '0')}%`}</div>
           <div className={`amt ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>
             ${convertDollarToString(toNumber(get(voteDetails, 'amount', 1)))}
@@ -70,6 +70,12 @@ const PathDetails = ({ url, isPath, summary, index, parents, viewLink }) => {
 
 export default PathDetails
 
+PathDetails.propTypes = {
+  isPath  : PropTypes.bool,
+  summary : PropTypes.object,
+  url     : PropTypes.string,
+  viewLink: PropTypes.string,
+}
 const Wrapper = styled.div`
     display: flex;
     flex-direction: row;

@@ -24,7 +24,7 @@ const { CENTRALIZED_SERVER_FRONTEND } = config
 
 const Header = () => {
   const [getNationsApi, loading, nations] = useFetch(getNations)
-  const { selectedHolon, filterParams, updateFilter } = useContext(AppContext)
+  const { selectedHolon, filterParams } = useContext(AppContext)
   const [country, selectCountry] = useState({
     value: get(filterParams, 'initPath', 'USA'),
     label: get(filterParams, 'initPath', 'USA'),
@@ -197,16 +197,17 @@ const Wrapper = styled.header`
       justify-content: space-between;
       padding-top: 10px;
     }
-  `,
-  TopHeader = styled.div`
-    display: flex;
-    flex-direction: row;
-    margin: 5px 0;
-    align-items: center;
-    a {
-      color: ${colors.primary};
-    }
   `
+
+// TopHeader = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   margin: 5px 0;
+//   align-items: center;
+//   a {
+//     color: ${colors.primary};
+//   }
+// `
 const BrandLogo = styled.div`
   img {
     display: block;

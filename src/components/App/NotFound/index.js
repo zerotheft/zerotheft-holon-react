@@ -13,7 +13,7 @@ const NotFound = () => {
   return (
     <Container>
       <h1 style={{ marginTop: 10 }}>Page Not Found</h1>
-      <Paragraph>The page you are looking for doesn't exist.</Paragraph>
+      <Paragraph>The page you are looking for doesn&apos;t exist.</Paragraph>
       <div style={{ display: 'flex' }}>
         <Button
           plain
