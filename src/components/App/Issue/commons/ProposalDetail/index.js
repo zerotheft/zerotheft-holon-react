@@ -57,7 +57,6 @@ const ProposalDetail = ({
   const no = 100 - yes
 
   const tempDetail = get(proposalInfo, 'detail', {});
-  console.log(tempDetail);
 
   if (proposalLoading) {
     return (
