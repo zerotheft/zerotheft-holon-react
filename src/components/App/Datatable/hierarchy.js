@@ -5,6 +5,7 @@ import YAML from 'json2yaml'
 import SyntaxHighlighter from 'react-syntax-highlighter'
 
 const HierarchyYaml = () => {
+  //eslint-disable-next-line no-unused-vars
   const [getNationsApi, loading, nations] = useFetch(getNations)
   useEffect(() => {
     getNationsApi()

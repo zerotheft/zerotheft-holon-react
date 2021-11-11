@@ -35,10 +35,10 @@ export default () => {
     }
   }
 
-  const fetchPriorVoteInfo = async(path, metamaskAccount) => {
+  const fetchPriorVoteInfo = async (path, metamaskAccount) => {
     getPriorVoteApi({
       address: metamaskAccount,
-      url    : path,
+      url: path,
     })
   }
 
@@ -46,7 +46,7 @@ export default () => {
     updateVoterInfo(userInfo)
   }, [userInfo])
 
-  const checkSteps = async(path, skipWaiting) => {
+  const checkSteps = async (path, skipWaiting) => {
     let newStep = 4
     let msg = ''
     const { account: metamaskAccount, web3 } = (await getMetamaskAccount(skipWaiting)) || {}
@@ -56,10 +56,10 @@ export default () => {
       const metamask = !!window.web3
       if (!metamask) {
         newStep = 4
-        msg = 'No metamask found'
+        msg = 'No zerotheft wallet found'
       } else if (!metamaskAccount) {
         newStep = 4
-        msg = 'Please login to the metamask.'
+        msg = 'Please login to the zerotheft wallet.'
       } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
         newStep = 5
         msg = 'Please select the correct network.'

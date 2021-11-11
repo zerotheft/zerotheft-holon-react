@@ -5,7 +5,7 @@ import Button from 'commons/Buttons'
 import { colors } from 'theme'
 import { LinkText } from 'commons/styles'
 import { ButtonsWrapper, Next } from './Buttons'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList } from './styles'
+import { Wrapper, Header, Body, InnerWrapper, OrderedList } from './styles'
 import { VoteContext } from '../VoteContext'
 
 const Step4 = ({ updateCurrentStep }) => {
@@ -29,11 +29,11 @@ const Step4 = ({ updateCurrentStep }) => {
   return (
     <Wrapper>
       <InnerWrapper>
-        <Header>Step #1: Setup metamask</Header>
+        <Header>Step #1: Setup Zerotheft Wallet</Header>
         <Body>
           {!userType ? (
             <Question>
-              Have you worked with metamask before?
+              Have you worked with zerotheft wallet before?
               <ButtonsWrapper style={{ marginTop: 10 }}>
                 <Button
                   onClick={() => {
@@ -50,7 +50,7 @@ const Step4 = ({ updateCurrentStep }) => {
           ) : (
             <div>
               <FlexBox>
-                <div className="metamask-header">Metamask Setup</div>
+                <div className="metamask-header">Zerotheft Wallet Setup</div>
                 <Selector>
                   <Option selected={userType === 'newUser'} onClick={() => updateUserType('newUser')}>
                     New User
@@ -64,7 +64,7 @@ const Step4 = ({ updateCurrentStep }) => {
                 {userType === 'newUser' ? (
                   <>
                     <li>
-                      Download and open Metamask{' '}
+                      Download and open Zerotheft Wallet
                       <LinkText
                         onClick={() =>
                           window.open(
@@ -81,10 +81,10 @@ const Step4 = ({ updateCurrentStep }) => {
                     ) : (
                       <>
                         <li>
-                          Create your metamask account by clicking create wallet button and follow necessary steps.
+                          Create your zerotheft wallet account by clicking create wallet button and follow necessary steps.
                         </li>
                         <li>
-                          Connect metamask to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
+                          Connect zerotheft wallet to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
                         </li>
                       </>
                     )}
@@ -92,9 +92,9 @@ const Step4 = ({ updateCurrentStep }) => {
                 ) : (
                   <>
                     <li>
-                      Connect metamask to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
+                      Connect zerotheft wallet to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
                     </li>
-                    <li>If you see not connected info in your metamask wallet, click there and connect the wallet.</li>
+                    <li>If you see not connected info in your zerotheft wallet, click there and connect the wallet.</li>
                   </>
                 )}
               </OrderedList>
@@ -105,7 +105,7 @@ const Step4 = ({ updateCurrentStep }) => {
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>
-      <img src={metamaskIcon} alt="meta mask" style={{ height: 300 }} />
+      <img src={metamaskIcon} alt="Zerotheft Wallet" style={{ height: 300 }} />
     </Wrapper>
   )
 }
