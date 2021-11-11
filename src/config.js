@@ -14,7 +14,6 @@ let MODE = process.env.REACT_APP_MODE || process.env.NODE_ENV
 if (!MODE) {
   MODE = 'development'
 }
-// MODE = 'staging'
 const envConfig = !MODE || MODE === 'development' ? tryRequire('./config.json') : require(`./config.${MODE}.json`)
 const contracts =
   MODE === 'development' || MODE === 'private' || MODE === 'production' ? {} : require(`./contracts.${MODE}.json`)
