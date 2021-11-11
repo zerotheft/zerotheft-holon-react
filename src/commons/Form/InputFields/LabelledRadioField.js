@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
 import { colors } from 'theme'
+// eslint-disable-next-line no-unused-vars
 import { CustomFieldWrapper, RadioBtn } from './styles'
 
 const LabelledRadioField = ({ field, readonly = false, values = [], style, innerStyle }) => {
@@ -40,6 +41,7 @@ const LabelledRadioField = ({ field, readonly = false, values = [], style, inner
 LabelledRadioField.propTypes = {
   field     : PropTypes.object,
   innerStyle: PropTypes.object,
+  // eslint-disable-next-line react/no-unused-prop-types
   radioStyle: PropTypes.object,
   readonly  : PropTypes.bool,
   style     : PropTypes.object,

@@ -16,6 +16,7 @@ const EditableField = ({
   required = false,
   readonly = false,
   type = 'text',
+  // eslint-disable-next-line react/prop-types
   labelType = 'side',
   style,
   inputStyles = {},

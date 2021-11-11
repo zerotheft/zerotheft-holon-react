@@ -10,7 +10,7 @@ import { tab } from './constants'
 
 createTheme('custom', {
   text: {
-    primary  : colors.background.body,
+    primary: colors.background.body,
     secondary: colors.textTitle,
   },
   background: {
@@ -18,7 +18,7 @@ createTheme('custom', {
   },
   context: {
     background: colors.datatable.context.background,
-    text      : colors.text.white,
+    text: colors.text.white,
   },
 })
 
@@ -30,25 +30,25 @@ const VoteDatatable = ({ history }) => {
     industries: {
       finance: {
         high_freq_front_running: true,
-        one_eight_exchange     : true,
-        share_buy_back         : true,
+        one_eight_exchange: true,
+        share_buy_back: true,
       },
       healthcare: true,
-      pharma    : {
+      pharma: {
         medicare: true,
       },
     },
     economic_crisis: {
-      ltcm                     : true,
-      '2008_mortgage'          : true,
+      ltcm: true,
+      '2008_mortgage': true,
       saving_and_loan_bails_out: true,
     },
     tax: {
-      capital_gain_low       : true,
-      corp_gain_low          : true,
-      corporate_tax_evason   : true,
+      capital_gain_low: true,
+      corp_gain_low: true,
+      corporate_tax_evason: true,
       tax_evasion_by_offshore: true,
-      other_way              : true,
+      other_way: true,
     },
   }
 
@@ -65,7 +65,6 @@ const VoteDatatable = ({ history }) => {
 
     if (path.includes('votelist')) updateItems()
   }, [history.location])
-  console.log(tab)
   if (loader) return null
   return (
     <Wrapper>

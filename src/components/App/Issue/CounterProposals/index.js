@@ -1,13 +1,9 @@
 import React, { useState, useContext } from 'react'
-import { get, isEmpty, filter as Filter } from 'lodash'
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'
+import { get } from 'lodash'
 import { API_URL } from 'constants/index'
-import Button from 'commons/Buttons'
 import { IssueContext } from '../IssueContext'
 import { AppContext } from '../../AppContext'
-import { Wrapper, Left, Right, Header, EmptyProposalWrapper, WarningWrapper } from '../commons/styles'
+import { Wrapper, Left, Right, EmptyProposalWrapper, WarningWrapper } from '../commons/styles'
 import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 

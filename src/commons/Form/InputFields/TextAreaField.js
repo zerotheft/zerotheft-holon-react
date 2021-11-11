@@ -11,6 +11,7 @@ const TextAreaField = ({
   field,
   form,
   placeholder = '',
+  // eslint-disable-next-line react/prop-types
   labelType = 'side',
   required = false,
   readonly = false,

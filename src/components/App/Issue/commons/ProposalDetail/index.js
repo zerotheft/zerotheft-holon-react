@@ -1,22 +1,18 @@
 import React, { useContext, useEffect } from 'react'
 import StarRatings from 'react-star-ratings'
 import { useRouteMatch } from 'react-router-dom'
-import { get, isEmpty, toNumber, pickBy } from 'lodash'
+import { get, isEmpty } from 'lodash'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown } from '@fortawesome/free-regular-svg-icons'
-import Highcharts from 'highcharts'
-import HighchartsReact from 'highcharts-react-official'
 import { colors } from 'theme'
 import Button from 'commons/Buttons'
-import { imageExists, convertJSONtoString, convertDollarToString, numberWithCommas } from 'utils'
+import { imageExists, convertJSONtoString, numberWithCommas } from 'utils'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import useFetch from 'commons/hooks/useFetch'
 import { getProposal } from 'apis/proposals'
-import { FlexRow } from 'commons/styles'
 import { getTheftInfo } from 'apis/reports'
 import { AppContext } from 'components/App/AppContext'
-import TheftInfo from 'components/App/Home/TheftInfo'
 import styled from 'styled-components'
 import { Body, Header, NoChartText } from '../styles'
 
@@ -59,6 +55,8 @@ const ProposalDetail = ({
   const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
   const yes = theftData && ((theftData.for / theftData.votes) * 100).toFixed()
   const no = 100 - yes
+
+  const tempDetail = get(proposalInfo, 'detail', {});
 
   if (proposalLoading) {
     return (
@@ -150,7 +148,7 @@ const ProposalDetail = ({
           <>
             {imageExists(`${reportPath}-theftValue-view.svg`) ? (
               <div className="imageWrapper">
-                <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} />
+                <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} alt="Report" />
               </div>
             ) : (
               <NoChartText>Report is not available yet.</NoChartText>
@@ -204,7 +202,7 @@ const ProposalDetail = ({
             </div>
             {imageExists(`${reportPath}-votesForTheftAmount.svg`) ? (
               <div className="imageWrapper">
-                <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} />
+                <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} alt="Chart" />
               </div>
             ) : (
               <NoChartText>Unable to meet criteria for chart.</NoChartText>
@@ -277,60 +275,61 @@ const TheftBlockSec = styled.div`
       color: #000;
       margin-right: 10px;
     }
-  `,
-  TitleContent = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    h3 {
-      font-size: 29px;
-      font-weight: 500;
-      color: 39313f;
-    }
-    button {
-      font-size: 18px;
-      font-weight: 600;
-    }
-    margin-bottom: 35px;
-  `,
-  InfoWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  `,
-  InfoBox = styled.div`
-    width: calc((100% - 86px) / 2);
-    background: #c5eee4;
-    border-radius: 23px;
-    padding: 25px 40px;
-    box-shadow: 0px 4px 23px rgba(0, 0, 0, 0.08);
-    &:first-of-type {
-      background: #ebe0f3;
-      margin-right: 43px;
-    }
-    &:last-of-type {
-      background: #eee5c5;
-      margin-left: 43px;
-    }
-    h3 {
-      font-size: 75px;
-      font-weight: 700;
-      color: #000;
-    }
-    h5 {
-      font-size: 23px;
-      font-weight: 500;
-      color: #000;
-    }
-    h6 {
-      font-size: 18px;
-      font-weight: 500;
-      color: #000;
-    }
-  `,
-  InfoText = styled.span`
-    font-size: 14px;
-    font-weight: 500;
-    color: ${colors.text.gray};
   `
+
+// TitleContent = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   align-items: center;
+//   justify-content: space-between;
+//   h3 {
+//     font-size: 29px;
+//     font-weight: 500;
+//     color: 39313f;
+//   }
+//   button {
+//     font-size: 18px;
+//     font-weight: 600;
+//   }
+//   margin-bottom: 35px;
+// `,
+// InfoWrapper = styled.div`
+//   display: flex;
+//   flex-direction: row;
+//   justify-content: center;
+// `,
+// InfoBox = styled.div`
+//   width: calc((100% - 86px) / 2);
+//   background: #c5eee4;
+//   border-radius: 23px;
+//   padding: 25px 40px;
+//   box-shadow: 0px 4px 23px rgba(0, 0, 0, 0.08);
+//   &:first-of-type {
+//     background: #ebe0f3;
+//     margin-right: 43px;
+//   }
+//   &:last-of-type {
+//     background: #eee5c5;
+//     margin-left: 43px;
+//   }
+//   h3 {
+//     font-size: 75px;
+//     font-weight: 700;
+//     color: #000;
+//   }
+//   h5 {
+//     font-size: 23px;
+//     font-weight: 500;
+//     color: #000;
+//   }
+//   h6 {
+//     font-size: 18px;
+//     font-weight: 500;
+//     color: #000;
+//   }
+// `,
+// InfoText = styled.span`
+//   font-size: 14px;
+//   font-weight: 500;
+//   color: ${colors.text.gray};
+// `

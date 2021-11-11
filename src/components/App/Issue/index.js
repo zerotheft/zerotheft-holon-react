@@ -44,7 +44,7 @@ const Issue = ({ match }) => {
         <Route path={ROUTES.VOTE} component={Vote} />
         <Route path={ROUTES.VOTE_FINALIZE} component={VoteFinalize} />
         <Route path={ROUTES.AFTER_VOTE} component={AfterVote} />
-        <Route path={ROUTES.ISSUE} component={IssueDashboard} />
+        <Route path={ROUTES.ISSUE} component={Proposals} />
       </Switch>
     </MainWrapper>
   )
