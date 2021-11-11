@@ -5,22 +5,36 @@ import config from 'config'
 import { ButtonsWrapper, Next } from './Buttons'
 import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from './styles'
 
-const { MODE, CHAIN_ID, HTTP_PROVIDER } = config
+const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
 
 const Step5 = ({ updateCurrentStep }) => {
-  const name = MODE === 'private' ? 'ETC Private' : 'ETC'
 
+  let name
+  switch (MODE) {
+    case 'private':
+      name = 'ETC Privatenet'
+      break
+    case 'staging':
+      name = 'Polygon Testnet'
+      break
+    case 'production':
+      name = 'Polygon Mainnet'
+      break
+    default:
+      name = 'Local Network'
+      break
+  }
   return (
     <Wrapper>
       <InnerWrapper>
-        <Header>Step #2: Configure metamask to ethereum classic</Header>
+        <Header>Step #2: Configure Zerotheft Wallet</Header>
         <Body>
-          <BodyInfo>We need to configure metamask to connect to ETC network.</BodyInfo>
+          <BodyInfo>We need to configure zerotheft wallet to connect to {name}.</BodyInfo>
           <div>
-            <SubHeader>Metamask Network Setup</SubHeader>
+            <SubHeader>Zerothet Wallet Network Setup</SubHeader>
             <Info>If you have already done the following steps, select '{name}' from network selector tab.</Info>
             <StyledOrderedList>
-              <li>Open my accounts selector at the top right corner section of the metamask.</li>
+              <li>Open my accounts selector at the top right corner section of the zerotheft wallet.</li>
               <li>Click on settings and then go to networks setting.</li>
               <li>
                 Click 'Add Network' button and fill the details as:
@@ -32,10 +46,10 @@ const Step5 = ({ updateCurrentStep }) => {
                   <span>New RPC URL:</span> {HTTP_PROVIDER}
                 </div>
                 <div>
-                  <span>Chain ID:</span> {CHAIN_ID}{' '}
+                  <span>Chain ID:</span> {CHAIN_ID}
                 </div>
                 <div>
-                  <span>Currency Symbol:</span> ETC
+                  <span>Currency Symbol:</span> {TOKEN}
                 </div>
               </li>
               <li>Click on save</li>

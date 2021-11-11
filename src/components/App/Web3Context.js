@@ -7,11 +7,11 @@ const Web3Context = createContext()
 const Web3Provider = ({ children }) => {
   const [loading, error, web3, loadWeb3] = useWeb3()
 
-  // if (loading) return <div>Authenticating metamask...</div>
+  // if (loading) return <div>Authenticating zerotheft wallet...</div>
   //
   // if (error) return <Error>
   //   <h1>Error!</h1>
-  //   <ErrorMessage>Please install metamask extension first.</ErrorMessage>
+  //   <ErrorMessage>Please install zerotheft wallet extension first.</ErrorMessage>
   // </Error>
   return <Web3Context.Provider value={{ loading, error, web3, loadWeb3 }}>{children}</Web3Context.Provider>
 }
@@ -27,7 +27,7 @@ const useWeb3 = () => {
     [error, updateError] = useState(false),
     [web3, updateWeb3] = useState()
 
-  const fetchWeb3 = async() => {
+  const fetchWeb3 = async () => {
     try {
       updateLoading(true)
       const web3R = await getWeb3()
@@ -45,7 +45,7 @@ const useWeb3 = () => {
 
 const getWeb3 = () =>
   /* eslint-disable-next-line no-async-promise-executor */
-  new Promise(async(resolve, reject) => {
+  new Promise(async (resolve, reject) => {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum)
       try {
