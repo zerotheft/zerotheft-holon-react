@@ -8,9 +8,11 @@ const { GAS_PRICE } = config
 const useWeb3 = () => {
   const { web3, loadWeb3 } = useContext(Web3Context)
 
-  // useEffect(() => {loadWeb3()}, [])
+  // useEffect(() => { loadWeb3() }, [])
   return {
     web3,
+    signMessage             : (params, address) => signMessage(web3, loadWeb3, params, address),
+    getWalletAccount        : skipWaiting => getWalletAccount(web3, loadWeb3, skipWaiting),
     getBalance              : address => getBalance(web3, address),
     callSmartContractGetFunc: (...args) => callSmartContractGetFunc(web3, ...args),
     convertStringToHash     : (...args) => convertStringToHash(web3, ...args),
@@ -20,6 +22,39 @@ const useWeb3 = () => {
 }
 
 export default useWeb3
+
+/**
+ * Sign a message using the private key of the address
+ * @param {object} web3 - instance of a web3
+ * @param {function} loadWeb3 - function to load the web3
+ * @param {object} params - payload that needs to be signed
+ * @param {object} address - address of the user signing a message
+ * @returns signed message
+ */
+const signMessage = async(web3, loadWeb3, params, address) => {
+  if (!web3) {
+    web3 = await loadWeb3()
+  }
+  const sha3 = web3.utils.soliditySha3(...params)
+  const signedMessage = await web3.eth.personal.sign(sha3, address)
+  return signedMessage
+}
+
+/**
+ * Get the account information of the user from chrome extension
+ * @param {Object} web3 - instance of a web3 to get the network id
+ * @param {Function} loadWeb3 - function to load the web3
+ * @param {boolean} skipWaiting 
+ * @returns JSON object of the account information and  instance of web3
+ */
+const getWalletAccount = async(web3, loadWeb3, skipWaiting) => {
+  const web3R = web3 || skipWaiting ? web3 : await loadWeb3()
+
+  if (!web3R) return null
+
+  const accounts = await web3R.eth.getAccounts()
+  return { account: accounts[0], web3: web3R }
+}
 
 const getBalance = async(web3, address) => {
   let defAddress = address

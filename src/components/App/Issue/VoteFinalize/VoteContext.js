@@ -9,7 +9,7 @@ import { getParameterByName } from 'utils'
 import { IssueContext } from '../IssueContext'
 import useCanVote from './useCanVote'
 
-const { getVoteContract } = config
+const { loadContract } = config
 const VoteContext = createContext()
 
 const VoteProvider = ({ children }) => {
@@ -80,7 +80,7 @@ const useVote = voterInfo => {
     const noTheftProposalId = get(selection, 'counterProposal.id', '')
 
     const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
-    const contract = await getVoteContract()
+    const contract = await loadContract('ZTMVotes')
     try {
       const balance = await getBalance()
       if (balance === 0 && holonInfo.canBeFunded) {

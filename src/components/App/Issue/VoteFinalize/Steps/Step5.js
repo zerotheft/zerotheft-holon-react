@@ -8,21 +8,20 @@ import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, 
 const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
 
 const Step5 = ({ updateCurrentStep }) => {
-
   let name
   switch (MODE) {
-    case 'private':
-      name = 'ETC Privatenet'
-      break
-    case 'staging':
-      name = 'Polygon Testnet'
-      break
-    case 'production':
-      name = 'Polygon Mainnet'
-      break
-    default:
-      name = 'Local Network'
-      break
+  case 'private':
+    name = 'ETC Privatenet'
+    break
+  case 'staging':
+    name = 'Polygon Testnet'
+    break
+  case 'production':
+    name = 'Polygon Mainnet'
+    break
+  default:
+    name = 'Local Network'
+    break
   }
   return (
     <Wrapper>

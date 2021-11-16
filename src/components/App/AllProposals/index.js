@@ -8,7 +8,7 @@ import { convertUNIXtoDATETIME } from 'utils'
 import { getExportedProposals } from 'apis/proposals'
 
 const AllProposals = () => {
-  //eslint-disable-next-line no-unused-vars
+  // eslint-disable-next-line no-unused-vars
   const [getExportedProposalsApi, loading, allProposals] = useFetch(getExportedProposals)
   const [filterText, setFilterText] = React.useState('')
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false)
@@ -19,36 +19,36 @@ const AllProposals = () => {
   const columns = useMemo(
     () => [
       {
-        name: 'ID',
+        name    : 'ID',
         selector: 'id',
         sortable: true,
       },
       {
-        name: 'Theft Amount',
+        name    : 'Theft Amount',
         selector: 'name',
         sortable: true,
       },
       {
-        name: 'Country',
+        name    : 'Country',
         selector: 'country',
         sortable: true,
       },
       {
-        name: 'Path',
+        name    : 'Path',
         selector: 'path',
         sortable: true,
       },
 
       {
-        name: 'Year',
+        name    : 'Year',
         selector: 'year',
         sortable: true,
       },
       {
-        name: 'Date',
+        name    : 'Date',
         selector: 'date',
         sortable: true,
-        cell: props => convertUNIXtoDATETIME(props.date),
+        cell    : props => convertUNIXtoDATETIME(props.date),
       },
     ],
     []

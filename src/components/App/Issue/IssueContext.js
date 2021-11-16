@@ -90,7 +90,7 @@ const useIssueFetcher = (id, match) => {
     [loading, updateLoading] = useState(true),
     [error, updateError] = useState()
 
-  const fetchIssue = async () => {
+  const fetchIssue = async() => {
     updateLoading(true)
     try {
       const path = (await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`)) || []

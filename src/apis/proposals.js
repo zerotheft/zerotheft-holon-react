@@ -30,7 +30,6 @@ export const getProposalTemplate = async path => {
 
 export const getPathProposalsByPath = async path => {
   const { data } = await get(`api/proposals-by-path?path=${path}`)
-
   return data
 }
 
