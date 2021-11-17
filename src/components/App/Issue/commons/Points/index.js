@@ -1,7 +1,7 @@
 import React from 'react'
 import StarRatings from 'react-star-ratings'
 import Progress from 'react-progressbar'
-import { get } from 'lodash'
+import { get, orderBy } from 'lodash'
 import { useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 
@@ -36,7 +36,7 @@ const Points = ({
   // const history = useHistory()
 
   // const { selection, updateSelection } = useContext(IssueContext)
-
+  data = data.length > 0 && orderBy(data, (item) => { return item.ratings.rating }, ['desc'])
   return (
     <Wrapper style={{ height: '100%' }}>
       {loading && <OverlaySpinner loading overlayParent />}
@@ -78,10 +78,10 @@ const Points = ({
                   </div>
                   <div
                     style={{
-                      textAlign : 'right',
-                      width     : 'auto',
-                      maxWidth  : '150px',
-                      minWidth  : '65px',
+                      textAlign: 'right',
+                      width: 'auto',
+                      maxWidth: '150px',
+                      minWidth: '65px',
                       marginLeft: '15px',
                     }}
                   >
@@ -123,7 +123,7 @@ const Points = ({
             <div className="btns">
               <a
                 href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${counter ? 'counter-' : ''
-                }proposal`}
+                  }proposal`}
               >
                 Add {counter ? 'Counter' : ''} Proposal
               </a>
