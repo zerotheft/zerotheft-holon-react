@@ -242,10 +242,10 @@ const ProposalDetail = ({
               //   }/proposal-feedback/${get(item, 'id')}`)
               // }
               >
-                {get(item, 'ratings.count', 0)}
+                {get(proposalInfo, 'ratings.count', 0)}
                 <span style={{ margin: '0 15px 0 5px' }}>
                   <StarRatings
-                    rating={get(item, 'ratings.rating', 0)}
+                    rating={get(proposalInfo, 'ratings.rating', 0)}
                     starDimension="24px"
                     starSpacing="1px"
                     starRatedColor={colors.yellow}
