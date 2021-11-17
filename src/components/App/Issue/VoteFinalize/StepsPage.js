@@ -57,7 +57,7 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
       </Step>
 
       <Button
-        onClick={async () => {
+        onClick={async() => {
           if (step === 4) {
             window.location.href = `${window.location.origin + window.location.pathname}?q=steps`
           }
@@ -86,7 +86,7 @@ const Wrapper = styled.div``,
     margin-bottom: 8px;
     font-size: 14px;
     ${props =>
-      props.isCompleted &&
+    props.isCompleted &&
       `
       color: green;
       background: url(${require('assets/icons/check-circle-solid.svg')}) no-repeat 0 2px transparent;
@@ -97,7 +97,7 @@ const Wrapper = styled.div``,
       }
     `}
     ${props =>
-      props.isFutureStep &&
+    props.isFutureStep &&
       `
       opacity: 0.2;
       pointer-events: none;

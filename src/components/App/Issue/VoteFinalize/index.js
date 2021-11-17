@@ -46,10 +46,11 @@ const VoteFinalize = ({ match, history, location }) => {
   const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
 
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
+  /* eslint-disable-next-line no-useless-escape */
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
-  }/${issuePath.replace(/\//g, '-')}`
+    }/${issuePath.replace(/\//g, '-')}`
 
   // const getVotedIdeas = async () => {
   //   if (localStorage.getItem('citizenID')) {
@@ -59,7 +60,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
   // }
 
-  const checkQueryParams = async() => {
+  const checkQueryParams = async () => {
     const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
     if (queryParams && getParameterByName('page') === 'steps') {
       const { step } = await checkStep(hierarchyPath, true)
@@ -114,14 +115,14 @@ const VoteFinalize = ({ match, history, location }) => {
               enableReinitialize
               initialValues={
                 initialValues || {
-                  vote  : capitalize(finalVote),
+                  vote: capitalize(finalVote),
                   amount: 'static',
                   ...theftAmtYears,
                 }
               }
               onSubmit={async values => {
                 const altTheftAmounts = {}
-                Object.keys(theftAmtYears).map(yr => {
+                Object.keys(theftAmtYears).forEach(yr => {
                   if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
 
                   // delete values[yr]
@@ -145,29 +146,30 @@ const VoteFinalize = ({ match, history, location }) => {
                 } else vote(updatedVal)
               }}
             >
-              {({ values }) => {
-                return (
-                  <Form>
-                    {popup && (
-                      <Modal onClose={() => showErrorPopUp(false)}>
-                        <div
-                          style={{
-                            display       : 'flex',
-                            flexDirection : 'column',
-                            alignItems    : 'center',
-                            justifyContent: 'center',
-                            marginTop     : 30,
-                          }}
-                        >
-                          {get(popup, 'message') || 'There was some error while trying to vote.'}
-                          {/* <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button> */}
-                        </div>
-                      </Modal>
-                    )}
-                    {/* <Row>
+              {// eslint-disable-next-line no-unused-vars 
+                ({ values }) => {
+                  return (
+                    <Form>
+                      {popup && (
+                        <Modal onClose={() => showErrorPopUp(false)}>
+                          <div
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              marginTop: 30,
+                            }}
+                          >
+                            {get(popup, 'message') || 'There was some error while trying to vote.'}
+                            {/* <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button> */}
+                          </div>
+                        </Modal>
+                      )}
+                      {/* <Row>
                   <Field name="vote" component={TextField} label="Your Vote" labelWidth={110} readonly />
                 </Row> */}
-                    {/* <Row>
+                      {/* <Row>
                   <Label>Proposed Total Amount:</Label>
                   <Field
                     name="amount"
@@ -179,34 +181,34 @@ const VoteFinalize = ({ match, history, location }) => {
                   />
                 </Row> */}
 
-                    {finalVote === 'yes' &&
-                      theftAmtYears &&
-                      Object.keys(theftAmtYears).map(y => (
-                        <Row>
-                          <Field name={y} component={EditableField} type="number" min={0} label={y} />
-                        </Row>
-                      ))}
-                    {commentState && (
-                      <CommentBox>
-                        <span>Add Comment:</span>
-                        <Field name="comment" component={TextAreaField} />
-                      </CommentBox>
-                    )}
-                    <BottomRow>
-                      <Button type="submit" height={50}>
-                        I approve & FINALIZE this vote
-                      </Button>
-                      <span
-                        onClick={() => {
-                          showHideComment(!commentState)
-                        }}
-                      >
-                        {!commentState ? 'Add a comment' : 'Do not add a comment'}
-                      </span>
-                    </BottomRow>
-                  </Form>
-                )
-              }}
+                      {finalVote === 'yes' &&
+                        theftAmtYears &&
+                        Object.keys(theftAmtYears).map(y => (
+                          <Row>
+                            <Field name={y} component={EditableField} type="number" min={0} label={y} />
+                          </Row>
+                        ))}
+                      {commentState && (
+                        <CommentBox>
+                          <span>Add Comment:</span>
+                          <Field name="comment" component={TextAreaField} />
+                        </CommentBox>
+                      )}
+                      <BottomRow>
+                        <Button type="submit" height={50}>
+                          I approve & FINALIZE this vote
+                        </Button>
+                        <span
+                          onClick={() => {
+                            showHideComment(!commentState)
+                          }}
+                        >
+                          {!commentState ? 'Add a comment' : 'Do not add a comment'}
+                        </span>
+                      </BottomRow>
+                    </Form>
+                  )
+                }}
             </Formik>
           </div>
         </FormWrapper>
