@@ -65,7 +65,7 @@ export default () => {
         msg = 'Please select the correct network.'
       } else if (!voterInfo.verifiedCitizen) {
         newStep = 6
-        msg = 'Please verify your account.'
+        msg = 'Your account is not a verified yet.'
       } else {
         newStep = 7
         localStorage.setItem('citizenID', voterInfo.verifiedCitizen)

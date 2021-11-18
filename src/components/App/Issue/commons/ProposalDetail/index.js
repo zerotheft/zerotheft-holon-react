@@ -112,7 +112,7 @@ const ProposalDetail = ({
         signedMessage,
       ], txDetails);
       await getProposalApi(item.id)
-      toast.success('Rating successfully provided.')
+      toast.success(`Rating successfully ${ratingData.success ? 'updated' : 'provided'}.`)
     } catch (e) {
       toast.error(e.message || 'Something went wrong.');
     } finally {
