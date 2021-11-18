@@ -35,10 +35,10 @@ export default () => {
     }
   }
 
-  const fetchPriorVoteInfo = async(path, metamaskAccount) => {
+  const fetchPriorVoteInfo = async (path, metamaskAccount) => {
     getPriorVoteApi({
       address: metamaskAccount,
-      url    : path,
+      url: path,
     })
   }
 
@@ -46,7 +46,7 @@ export default () => {
     updateVoterInfo(userInfo)
   }, [userInfo])
 
-  const checkSteps = async(path, skipWaiting) => {
+  const checkSteps = async (path, skipWaiting) => {
     let newStep = 4
     let msg = ''
     const { account: metamaskAccount, web3 } = (await getMetamaskAccount(skipWaiting)) || {}
@@ -65,6 +65,7 @@ export default () => {
         msg = 'Please select the correct network.'
       } else if (!voterInfo.verifiedCitizen) {
         newStep = 6
+        msg = 'Please verify your account.'
       } else {
         newStep = 7
         localStorage.setItem('citizenID', voterInfo.verifiedCitizen)
