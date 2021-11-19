@@ -25,10 +25,10 @@ const Step6 = ({ updateCurrentStep }) => {
 
             <OrderedList>
               <li>
-                Navigate to register voter.{' '}
+                Navigate to register voter.
                 <LinkText onClick={() => window.open(CENTRALIZED_SERVER_FRONTEND)}>Register Voter</LinkText>
               </li>
-              <li>Select your country and enter your country's zip code.</li>
+              <li>Select your country and enter your country&apos;s zip code.</li>
               <li>Enter your linkedin ID and linkedin full name. Click continue button.</li>
               <li>Login to your linkedin account so that we can verify you.</li>
               <li>Switch back to this page and click vote.</li>
@@ -37,7 +37,7 @@ const Step6 = ({ updateCurrentStep }) => {
           <ButtonsWrapper>
             <Button
               disabled={false && shouldCheck && voterInfo.ethereumAddress}
-              onClick={async() => {
+              onClick={async () => {
                 const { msg, step } = await checkStep()
                 if (step < 6) updateCurrentStep(step)
                 else if (msg) {
@@ -50,7 +50,7 @@ const Step6 = ({ updateCurrentStep }) => {
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>
-      <img src={metamaskIcon} style={{ height: 300 }} />
+      <img src={metamaskIcon} alt="Metamask" style={{ height: 300 }} />
     </Wrapper>
   )
 }

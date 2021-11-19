@@ -10,18 +10,18 @@ const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
 const Step5 = ({ updateCurrentStep }) => {
   let name
   switch (MODE) {
-  case 'private':
-    name = 'ETC Privatenet'
-    break
-  case 'staging':
-    name = 'Polygon Testnet'
-    break
-  case 'production':
-    name = 'Polygon Mainnet'
-    break
-  default:
-    name = 'Local Network'
-    break
+    case 'private':
+      name = 'ETC Privatenet'
+      break
+    case 'staging':
+      name = 'Polygon Testnet'
+      break
+    case 'production':
+      name = 'Polygon Mainnet'
+      break
+    default:
+      name = 'Local Network'
+      break
   }
   return (
     <Wrapper>
@@ -31,12 +31,12 @@ const Step5 = ({ updateCurrentStep }) => {
           <BodyInfo>We need to configure zerotheft wallet to connect to {name}.</BodyInfo>
           <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
-            <Info>If you have already done the following steps, select '{name}' from network selector tab.</Info>
+            <Info>If you have already done the following steps, select &apos;{name}&apos; from network selector tab.</Info>
             <StyledOrderedList>
               <li>Open my accounts selector at the top right corner section of the zerotheft wallet.</li>
               <li>Click on settings and then go to networks setting.</li>
               <li>
-                Click 'Add Network' button and fill the details as:
+                Click &apos;Add Network&apos; button and fill the details as:
                 <br />
                 <div>
                   <span>Network Name:</span> {name}
@@ -59,7 +59,7 @@ const Step5 = ({ updateCurrentStep }) => {
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>
-      <img src={metamaskIcon} style={{ height: 300 }} />
+      <img src={metamaskIcon} alt="Metamask" style={{ height: 300 }} />
     </Wrapper>
   )
 }

@@ -50,7 +50,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
-    }/${issuePath.replace(/\//g, '-')}`
+  }/${issuePath.replace(/\//g, '-')}`
 
   // const getVotedIdeas = async () => {
   //   if (localStorage.getItem('citizenID')) {
@@ -60,7 +60,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
   // }
 
-  const checkQueryParams = async () => {
+  const checkQueryParams = async() => {
     const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
     if (queryParams && getParameterByName('page') === 'steps') {
       const { step } = await checkStep(hierarchyPath, true)
@@ -115,7 +115,7 @@ const VoteFinalize = ({ match, history, location }) => {
               enableReinitialize
               initialValues={
                 initialValues || {
-                  vote: capitalize(finalVote),
+                  vote  : capitalize(finalVote),
                   amount: 'static',
                   ...theftAmtYears,
                 }
@@ -154,11 +154,11 @@ const VoteFinalize = ({ match, history, location }) => {
                         <Modal onClose={() => showErrorPopUp(false)}>
                           <div
                             style={{
-                              display: 'flex',
-                              flexDirection: 'column',
-                              alignItems: 'center',
+                              display       : 'flex',
+                              flexDirection : 'column',
+                              alignItems    : 'center',
                               justifyContent: 'center',
-                              marginTop: 30,
+                              marginTop     : 30,
                             }}
                           >
                             {get(popup, 'message') || 'There was some error while trying to vote.'}

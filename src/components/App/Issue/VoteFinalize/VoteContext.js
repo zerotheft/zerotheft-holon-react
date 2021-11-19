@@ -89,7 +89,7 @@ const useVote = voterInfo => {
       }
       if (!holonInfo.holonID || holonInfo.holonID === '') {
         showErrorPopUp({
-          message: 'Holon information missing. Please select holon first',
+          message : 'Holon information missing. Please select holon first',
           holonInfo,
           proposalId,
           voteType: finalVote,
@@ -208,7 +208,7 @@ const useVote = voterInfo => {
   //   }
   // }
 
-  const afterVote = async (balance, values) => {
+  const afterVote = async(balance, values) => {
     // do voteData Rollups
     const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
     if (!rollupsRes.success) toast.error('Error in  voting rollups')

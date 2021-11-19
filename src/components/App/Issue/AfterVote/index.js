@@ -75,7 +75,7 @@ const AfterVote = ({ match }) => {
                 <FontAwesomeIcon icon={faFrown} color={colors.red} style={{ marginRight: 5 }} />
                 {get(proposal, 'complaints.count', 0)}
               </p>
-              <Button
+              {/* <Button
                 onClick={() => {
                   window.location.href = `zerotheft://home/path/${get(match, 'params.pathname')}%2F${get(
                     match,
@@ -87,7 +87,7 @@ const AfterVote = ({ match }) => {
                 style={{ fontSize: 16 }}
               >
                 Please Rate This Proposal
-              </Button>
+              </Button> */}
             </div>
           </VotedInfo>
         </div>

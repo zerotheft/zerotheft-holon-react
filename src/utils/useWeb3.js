@@ -11,13 +11,13 @@ const useWeb3 = () => {
   // useEffect(() => { loadWeb3() }, [])
   return {
     web3,
-    signMessage: (params, address) => signMessage(web3, loadWeb3, params, address),
-    getWalletAccount: skipWaiting => getWalletAccount(web3, loadWeb3, skipWaiting),
-    getBalance: address => getBalance(web3, address),
+    signMessage             : (params, address) => signMessage(web3, loadWeb3, params, address),
+    getWalletAccount        : skipWaiting => getWalletAccount(web3, loadWeb3, skipWaiting),
+    getBalance              : address => getBalance(web3, address),
     callSmartContractGetFunc: (...args) => callSmartContractGetFunc(web3, ...args),
-    convertStringToHash: (...args) => convertStringToHash(web3, ...args),
-    convertToAscii: (...args) => convertToAscii(web3, ...args),
-    carryTransaction: (...args) => carryTransaction(web3, loadWeb3, ...args),
+    convertStringToHash     : (...args) => convertStringToHash(web3, ...args),
+    convertToAscii          : (...args) => convertToAscii(web3, ...args),
+    carryTransaction        : (...args) => carryTransaction(web3, loadWeb3, ...args),
   }
 }
 
@@ -31,7 +31,7 @@ export default useWeb3
  * @param {object} address - address of the user signing a message
  * @returns signed message
  */
-const signMessage = async (web3, loadWeb3, params, address) => {
+const signMessage = async(web3, loadWeb3, params, address) => {
   if (!web3) {
     web3 = await loadWeb3()
   }
@@ -47,7 +47,7 @@ const signMessage = async (web3, loadWeb3, params, address) => {
  * @param {boolean} skipWaiting 
  * @returns JSON object of the account information and  instance of web3
  */
-const getWalletAccount = async (web3, loadWeb3, skipWaiting) => {
+const getWalletAccount = async(web3, loadWeb3, skipWaiting) => {
   const web3R = web3 || skipWaiting ? web3 : await loadWeb3()
 
   if (!web3R) return null
@@ -56,7 +56,7 @@ const getWalletAccount = async (web3, loadWeb3, skipWaiting) => {
   return { account: accounts[0], web3: web3R }
 }
 
-const getBalance = async (web3, address) => {
+const getBalance = async(web3, address) => {
   let defAddress = address
   if (!defAddress) {
     const accounts = await web3.eth.getAccounts()
@@ -66,7 +66,7 @@ const getBalance = async (web3, address) => {
   return bal ? web3.utils.fromWei(bal, 'ether') : 0
 }
 
-const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [], txDetails, gasLimit = 3000000) => {
+const carryTransaction = async(web3, loadWeb3, contract, methodName, args = [], txDetails, gasLimit = 3000000) => {
   /* eslint-disable no-useless-catch */
   try {
     if (!web3) {
@@ -80,16 +80,16 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
     const defAddress = accounts[0]
 
     const obj = {
-      from: defAddress,
-      to: address,
-      data: functionAbi,
+      from    : defAddress,
+      to      : address,
+      data    : functionAbi,
       gasLimit: web3.utils.toHex(gasLimit),
     }
     const txCount = await web3.eth.getTransactionCount(address)
 
     const txObject = {
       ...{
-        nonce: web3.utils.toHex(txCount),
+        nonce   : web3.utils.toHex(txCount),
         gasLimit: web3.utils.toHex(300000),
         gasPrice: web3.utils.toHex(web3.utils.toWei(GAS_PRICE.toString() || '30', 'gwei')),
       },
@@ -108,7 +108,7 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
   }
 }
 
-const callSmartContractGetFunc = async (web3, contract, methodName, args = []) => {
+const callSmartContractGetFunc = async(web3, contract, methodName, args = []) => {
   const [instance] = await instantiateContract(web3, contract)
 
   const txResponse = await instance.methods[methodName](...args).call()
@@ -120,7 +120,7 @@ const callSmartContractGetFunc = async (web3, contract, methodName, args = []) =
  * @param {Object} web3 - instance of a web3 to get the network id
  * @param {Object} contract - it could be any smartcontract as ZTMCitizens,ZTMHolons, ZTMProposals and so on.
  */
-const instantiateContract = async (web3, contract) => {
+const instantiateContract = async(web3, contract) => {
   // if (MODE === 'development' || MODE === 'private') {
   const networkId = await web3.eth.net.getId()
   const deployedNetwork = contract.networks[networkId]
