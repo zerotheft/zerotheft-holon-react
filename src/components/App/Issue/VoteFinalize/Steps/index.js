@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { range } from 'lodash'
 import styled from 'styled-components'
+
 // import { useHistory } from 'react-router-dom'
 import stepsArrow from 'assets/icons/step-arrow.svg'
 import check from 'assets/icons/check.svg'
@@ -24,6 +25,7 @@ const Steps = props => {
   const { step } = useContext(VoteContext)
   const [currentStep, updateCurrentStep] = useState(step)
   const Step = stepComponents[currentStep - 4]
+
   // const history = useHistory()
   useEffect(() => {
     updateCurrentStep(step)

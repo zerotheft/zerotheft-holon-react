@@ -23,7 +23,7 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
               activeStyle={{
                 fontWeight: '600',
                 background: '#7F51C1',
-                color: 'white',
+                color     : 'white',
                 ...activeStyle,
               }}
             >
@@ -37,11 +37,11 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
 }
 
 Tabs.propTypes = {
-  activeStyle: PropTypes.object,
+  activeStyle  : PropTypes.object,
   tabInnerStyle: PropTypes.object,
-  tabs: PropTypes.array.isRequired,
-  tabStyle: PropTypes.object,
-  wrapperStyle: PropTypes.object,
+  tabs         : PropTypes.array.isRequired,
+  tabStyle     : PropTypes.object,
+  wrapperStyle : PropTypes.object,
 }
 
 const Wrapper = styled.div`

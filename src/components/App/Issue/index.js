@@ -9,7 +9,7 @@ import { getParameterByName } from 'utils'
 import { IssueProvider, IssueContext } from './IssueContext'
 import MainWrapper from './commons/MainWrapper'
 
-import IssueDashboard from './IssueDashboard'
+// import IssueDashboard from './IssueDashboard'
 import Proposals from './Proposals'
 import CounterProposals from './CounterProposals'
 import Vote from './Vote'

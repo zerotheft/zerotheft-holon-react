@@ -1,6 +1,6 @@
 {
   "DESKTOP_APP": "http://localhost:6549",
-  "HTTP_PROVIDER": "https://matic-mumbai.chainstacklabs.com",
+  "HTTP_PROVIDER": "https://rpc-mumbai.maticvigil.com",
   "ZERO_THEFT_CONTRACT": "https://zerotheft-contract-artifacts.s3.amazonaws.com",
   "CHAIN_ID":80001,
   "NETWORK_ID": 80001,
