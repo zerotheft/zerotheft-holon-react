@@ -37,46 +37,46 @@ import {
 import PathProposals from './PathProposals';
 import Points from '../commons/Points';
 
-const dateRange = range(1999, new Date().getFullYear())
-  .reverse()
-  .map(i => ({ label: i, value: i }));
-const Dashboard = ({ history, location, match }) => {
+// const dateRange = range(1999, new Date().getFullYear())
+//   .reverse()
+//   .map(i => ({ label: i, value: i }));
+const Dashboard = ({ location, match }) => {
   const decodedPath = decodeURIComponent(get(match, 'params.pathname'));
   const { issue, loading: issueLoading } = useContext(IssueContext);
-  const [getReportApi, loading, report] = useFetch(getReport);
-  const [getTemplateApi, templateLoading, template] =
+  const [getReportApi, loading] = useFetch(getReport);
+  const [getTemplateApi, templateLoading] =
     useFetch(getProposalTemplate);
   const { filterParams } = useContext(AppContext);
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo);
-  const { pathname } = location;
-  const { selection, updateSelection, refetchIssue } = useContext(IssueContext);
+  // const { pathname } = location;
+  const { selection } = useContext(IssueContext);
   const [selectedItem, updateSelectedItem] = useState(
     get(selection, 'proposal') || {}
   );
-  const displayYaml = template => {
-    let data;
-    try {
-      data = yaml.safeLoad(template);
-    } catch (e) {
-      console.log(e.message);
-    }
-    return (
-      <div className="item">
-        <h5>
-          {get(data, 'title') || ' This problem has no title at this time'}
-        </h5>
-        <p>
-          <SeeMore
-            text={
-              get(data, 'describe_problem_area') ||
-              'This problem has no descriptions at this time. You can add your description by adding a new proposal.'
-            }
-            textLength="200"
-          />
-        </p>
-      </div>
-    );
-  };
+  // const displayYaml = template => {
+  //   let data;
+  //   try {
+  //     data = yaml.safeLoad(template);
+  //   } catch (e) {
+  //     console.log(e.message);
+  //   }
+  //   return (
+  //     <div className="item">
+  //       <h5>
+  //         {get(data, 'title') || ' This problem has no title at this time'}
+  //       </h5>
+  //       <p>
+  //         <SeeMore
+  //           text={
+  //             get(data, 'describe_problem_area') ||
+  //             'This problem has no descriptions at this time. You can add your description by adding a new proposal.'
+  //           }
+  //           textLength="200"
+  //         />
+  //       </p>
+  //     </div>
+  //   );
+  // };
 
   useEffect(() => {
     if (
@@ -108,17 +108,17 @@ const Dashboard = ({ history, location, match }) => {
     )}`;
     getTemplateApi(templatePath);
   }, [get(match, 'params.id'), get(match, 'params.pathname')]);
-  const allProposals = [
-    ...(get(issue, 'proposals') || []),
-    ...(get(issue, 'counter_proposals') || []),
-  ];
+  // const allProposals = [
+  //   ...(get(issue, 'proposals') || []),
+  //   ...(get(issue, 'counter_proposals') || []),
+  // ];
 
   // const filteredProposals = sortedUniqBy(isEmpty(filterParams.year) ? filterArray(allProposals, { year: filterParams.year }) : allProposals, 'description')
-  const filteredProposals = sortedUniqBy(allProposals, 'description');
+  // const filteredProposals = sortedUniqBy(allProposals, 'description');
   const theftData =
     theftInfo &&
     theftInfo[
-      `${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')
+    `${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')
     ];
   const yes = theftData && ((theftData.for / theftData.votes) * 100).toFixed();
   const no = 100 - yes;
@@ -128,11 +128,11 @@ const Dashboard = ({ history, location, match }) => {
     <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
       <Left
         style={{
-          width        : 'auto',
-          margin       : '0 30px 0 0',
-          display      : 'flex',
+          width: 'auto',
+          margin: '0 30px 0 0',
+          display: 'flex',
           flexDirection: 'column',
-          maxWidth     : '440px',
+          maxWidth: '440px',
         }}
       >
         <div style={{ overflowY: 'auto', height: '100%' }}>
@@ -333,14 +333,14 @@ const Dashboard = ({ history, location, match }) => {
 
 export default Dashboard;
 
-const InnerWrapper = styled.div`
-    min-height: 80vh;
-    @media (min-width: 991px) {
-      display: flex;
-      flex-flow: row wrap;
-    }
-  `,
-  TheftInfo = styled.div`
+// const InnerWrapper = styled.div`
+//     min-height: 80vh;
+//     @media (min-width: 991px) {
+//       display: flex;
+//       flex-flow: row wrap;
+//     }
+//   `,
+const TheftInfo = styled.div`
     display: flex;
     flex-flow: column;
 
@@ -423,48 +423,48 @@ const InnerWrapper = styled.div`
       }
     }
   `,
-  Title = styled.div`
-    margin-bottom: 20px;
-    h4 {
-      font-size: 33px;
-      color: ${colors.primary};
-      font-weight: 600;
-    }
-    h5 {
-      font-size: 16px;
-    }
-  `,
-  ProposalContents = styled.div`
-    .header {
-      background: #e9e9e9;
-      color: #000;
-      font-size: 20px;
-      font-weight: 600;
-      padding: 20px;
-      border-radius: 8px 8px 0 0;
-      border: 1px solid #e9e9e9;
-    }
-    .content {
-      border: 1px solid #e9e9e9;
-      border-radius: 0 0 8px 8px;
-      padding: 20px;
-      margin-bottom: 20px;
-      .item {
-        margin-bottom: 20px;
-        h5 {
-          font-size: 18px;
-          font-weight: 500;
-          color: #504949;
-        }
-        p {
-          margin-top: 5px;
-          font-size: 16px;
-          font-weight: 400;
-          color: rgba(0, 0, 0, 0.69);
-        }
-      }
-    }
-  `,
+  // Title = styled.div`
+  //   margin-bottom: 20px;
+  //   h4 {
+  //     font-size: 33px;
+  //     color: ${colors.primary};
+  //     font-weight: 600;
+  //   }
+  //   h5 {
+  //     font-size: 16px;
+  //   }
+  // `,
+  // ProposalContents = styled.div`
+  //   .header {
+  //     background: #e9e9e9;
+  //     color: #000;
+  //     font-size: 20px;
+  //     font-weight: 600;
+  //     padding: 20px;
+  //     border-radius: 8px 8px 0 0;
+  //     border: 1px solid #e9e9e9;
+  //   }
+  //   .content {
+  //     border: 1px solid #e9e9e9;
+  //     border-radius: 0 0 8px 8px;
+  //     padding: 20px;
+  //     margin-bottom: 20px;
+  //     .item {
+  //       margin-bottom: 20px;
+  //       h5 {
+  //         font-size: 18px;
+  //         font-weight: 500;
+  //         color: #504949;
+  //       }
+  //       p {
+  //         margin-top: 5px;
+  //         font-size: 16px;
+  //         font-weight: 400;
+  //         color: rgba(0, 0, 0, 0.69);
+  //       }
+  //     }
+  //   }
+  // `,
   SelectWrapper = styled.div`
     display: flex;
     flex-direction: column;
@@ -483,34 +483,34 @@ const InnerWrapper = styled.div`
       color: #000;
       margin-right: 10px;
     }
-  `,
-  CustomButton = styled.a`
-    text-decoration: none;
-    background: ${colors.primary};
-    display: inline-block;
-    border-radius: 8px;
-    border: none;
-    font-weight: 600;
-    color: #fff;
-    width: auto;
-    height: 55px;
-    margin-right: 20px;
-    padding: 10px 20px;
-    font-size: 22px;
-    align-items: center;
-    justify-content: center;
-  `,
-  IWrapper = styled.div`
-    overflow: hidden;
-    border: 1px solid #f2f2f2;
-    min-height: 100px;
-    position: relative;
-    margin-top: 20px;
-    flex: 1;
-    & > iframe {
-      width: 100%;
-      position: relative;
-      box-shadow: none;
-      border: none;
-    }
   `;
+  // CustomButton = styled.a`
+  //   text-decoration: none;
+  //   background: ${colors.primary};
+  //   display: inline-block;
+  //   border-radius: 8px;
+  //   border: none;
+  //   font-weight: 600;
+  //   color: #fff;
+  //   width: auto;
+  //   height: 55px;
+  //   margin-right: 20px;
+  //   padding: 10px 20px;
+  //   font-size: 22px;
+  //   align-items: center;
+  //   justify-content: center;
+  // `,
+  // IWrapper = styled.div`
+  //   overflow: hidden;
+  //   border: 1px solid #f2f2f2;
+  //   min-height: 100px;
+  //   position: relative;
+  //   margin-top: 20px;
+  //   flex: 1;
+  //   & > iframe {
+  //     width: 100%;
+  //     position: relative;
+  //     box-shadow: none;
+  //     border: none;
+  //   }
+  // `;

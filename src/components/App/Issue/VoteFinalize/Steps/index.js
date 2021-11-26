@@ -42,7 +42,7 @@ const Steps = props => {
           {steps.map(i => (
             <StepWrapper>
               <Circle active={currentStep >= i}>
-                {currentStep > i ? <img src={check} style={{ height: 28, width: 28 }} /> : `0${i - 3}`}
+                {currentStep > i ? <img src={check} alt="" style={{ height: 28, width: 28 }} /> : `0${i - 3}`}
               </Circle>
               <img src={stepsArrow} alt="" />
             </StepWrapper>
