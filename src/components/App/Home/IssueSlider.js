@@ -1,97 +1,111 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Carousel from 'react-elastic-carousel'
-import { get, shuffle, take, takeRight, isArray, uniqBy, lowerCase, isObject, remove } from 'lodash'
+import { get, isEmpty } from 'lodash'
 import { colors } from 'theme'
 import styled from 'styled-components'
 import yaml from 'js-yaml'
-import { getCitizenInfo } from 'apis/vote'
-import useFetch from 'commons/hooks/useFetch'
+import { nextAreaToVote } from 'apis/path'
 import { getProposalTemplate } from 'apis/proposals'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import Button from 'commons/Buttons'
 import { Container, EmptyText } from 'commons/styles'
 import { AppContext } from '../AppContext'
 
-const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
-  if (!isObject(data)) return []
-  const arr = []
-  Object.keys(data).forEach(i => {
-    if (!data[i] || data[i].leaf) {
-      if (!searchFilter) arr.push({ title: i, path: `${path}/issue/${i}` })
-      else if (searchFilter === lowerCase(i).charAt(0)) arr.push({ title: i, path: `${path}/issue/${i}` })
-    } else {
-      arr.push(...getLeafNodes(data[i], `${path}%2F${i}`, searchFilter))
-    }
-  })
-  return arr
-}
+// const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
+//   if (!isObject(data)) return []
+//   const arr = []
+//   Object.keys(data).forEach(i => {
+//     if (!data[i] || data[i].leaf) {
+//       if (!searchFilter) arr.push({ title: i, path: `${path}/issue/${i}` })
+//       else if (searchFilter === lowerCase(i).charAt(0)) arr.push({ title: i, path: `${path}/issue/${i}` })
+//     } else {
+//       arr.push(...getLeafNodes(data[i], `${path}%2F${i}`, searchFilter))
+//     }
+//   })
+//   return arr
+// }
 
-const getRelatedEndNodes = (issues, name, path) => {
-  if (!name || !isArray(name)) {
-    return take(shuffle(getLeafNodes(issues, path)), 10)
-  }
+// const getRelatedEndNodes = (issues, name, path) => {
+//   if (!name || !isArray(name)) {
+//     return take(shuffle(getLeafNodes(issues, path)), 10)
+//   }
 
-  let arr = []
-  const username = [...take(name, 2), ...takeRight(name, 2)] // get first 2 and last 2 characters
+//   let arr = []
+//   const username = [...take(name, 2), ...takeRight(name, 2)] // get first 2 and last 2 characters
 
-  for (const u of username) {
-    const letters = remove([...username], i => i !== u) || []
-    for (const letter of letters) {
-      for (const i in issues) {
-        if (u === lowerCase(i).charAt(0)) {
-          arr = [...arr, ...getLeafNodes(issues[i], `${path}%2F${i}`, letter)]
-        }
-        if (arr.length >= 9) return arr // If arr length greater than 10; END
-      }
-    }
-  }
+//   for (const u of username) {
+//     const letters = remove([...username], i => i !== u) || []
+//     for (const letter of letters) {
+//       for (const i in issues) {
+//         if (u === lowerCase(i).charAt(0)) {
+//           arr = [...arr, ...getLeafNodes(issues[i], `${path}%2F${i}`, letter)]
+//         }
+//         if (arr.length >= 9) return arr // If arr length greater than 10; END
+//       }
+//     }
+//   }
 
-  return arr
-}
+//   return arr
+// }
 
-const IssueSlider = ({ onlySlider = false }) => {
+const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false }) => {
   const history = useHistory()
-  const { paths, loadingPaths: loading, filterParams } = useContext(AppContext)
-  const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
-  const [getTemplateApi, templateLoading, template] = useFetch(getProposalTemplate)
+  const { paths, loadingPaths: loading } = useContext(AppContext)
+  // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [allIssues, setIssues] = useState([])
 
   useEffect(() => {
-    if (localStorage.getItem('citizenID')) getCitizenInfoApi(localStorage.getItem('citizenID'))
+    // if (localStorage.getItem('citizenID')) { getCitizenInfoApi(localStorage.getItem('citizenID')) }
     prepareCarouselData(paths)
+
   }, [paths])
 
   const prepareCarouselData = async paths => {
-    const username = uniqBy(
-      lowerCase(get(userInfo, 'name', ''))
-        .replace(/[^a-zA-Z0-9]/g, '')
-        .split('')
-    )
-    let issues = getRelatedEndNodes(
-      get(paths, get(filterParams, 'initPath'), {}),
-      userInfo ? username : null,
-      `/path/${get(filterParams, 'initPath', 'USA')}`
-    )
-    if (issues.length < 3) {
-      issues = getRelatedEndNodes(
-        get(paths, get(filterParams, 'initPath'), {}),
-        null,
-        `/path/${get(filterParams, 'initPath', 'USA')}`
-      )
+    const nextAreaData = await nextAreaToVote()
+
+    // const username = uniqBy(
+    //   lowerCase(get(userInfo, 'name', ''))
+    //     .replace(/[^a-zA-Z0-9]/g, '')
+    //     .split('')
+    // )
+    // let issues = getRelatedEndNodes(
+    //   get(paths, get(filterParams, 'initPath'), {}),
+    //   userInfo ? username : null,
+    //   `/path/${get(filterParams, 'initPath', 'USA')}`
+    // )
+    // if (issues.length < 3) {
+    //   issues = getRelatedEndNodes(
+    //     get(paths, get(filterParams, 'initPath'), {}),
+    //     null,
+    //     `/path/${get(filterParams, 'initPath', 'USA')}`
+    //   )
+    // }
+    // console.log(issues)
+    // const mappedIssues = (
+    //   await Promise.all(
+    //     issues.map(async i => {
+    //       let path = get(i, 'path', '').split('/')[2] || ''
+    //       const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${i.title}`
+    //       const template = await getTemplateApi(templatePath)
+    //       path = path.replace(/%2F/g, ' > ');
+    //       console.log("purano", path, i.path)
+
+    //       return { title: i.title, path, rawPath: `${i.path}/proposals`, description: displayYaml(template, i.path) }
+    //     })
+    //   )
+    // ).filter(i => i.description)
+    // setIssues(mappedIssues)
+    if (!isEmpty(nextAreaData)) {
+      let path = nextAreaData.nextVotein.hierarchy
+      let pathElms = path.split('/')
+      let title = pathElms.pop()
+      path = pathElms.join('%2F')
+      const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${title}`
+      const template = await getProposalTemplate(templatePath)
+      path = path.replace(/%2F/g, ' > ');
+      setIssues([{ title, path, rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`, description: displayYaml(template, path) }])
     }
-    const mappedIssues = (
-      await Promise.all(
-        issues.map(async i => {
-          let path = get(i, 'path', '').split('/')[2] || ''
-          const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${i.title}`
-          const template = await getTemplateApi(templatePath)
-          path = path.replace(/%2F/g, ' > ');
-          return { title: i.title, path, rawPath: `${i.path}/proposals`, description: displayYaml(template, i.path) }
-        })
-      )
-    ).filter(i => i.description)
-    setIssues(mappedIssues)
   }
 
   const truncateString = (str, num) => {
@@ -136,11 +150,14 @@ const IssueSlider = ({ onlySlider = false }) => {
                     return (
                       <Item>
                         <Path>
-                          {get(element, 'path', '').replace(/_/g, ' ')} {'>'}{' '}
+                          {get(element, 'path', '').replace(/_/g, ' ')} {'>'}
                           {get(element, 'title', '').replace(/_/g, ' ')}
                         </Path>
                         <div style={{ fontSize: '15px' }}>{element.description}</div>
-                        <Button onClick={() => history.push(element.rawPath)} plain>
+                        <Button onClick={() => {
+                          if (afterVote) { updateIssue([]); }
+                          history.push(element.rawPath)
+                        }} plain>
                           Read More
                         </Button>
                       </Item>

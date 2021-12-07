@@ -8,7 +8,6 @@ import styled from 'styled-components'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
 
-import Button from 'commons/Buttons'
 import { getCitizenInfo } from 'apis/vote'
 import useFetch from 'commons/hooks/useFetch'
 import IssueSlider from 'components/App/Home/IssueSlider'
@@ -16,16 +15,18 @@ import { colors } from 'theme'
 import { IssueContext } from '../IssueContext'
 
 const AfterVote = ({ match }) => {
-  const { vote, issue } = useContext(IssueContext)
+  let { vote, issue, updateIssue } = useContext(IssueContext)
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
 
   useEffect(() => {
     getCitizenInfoApi(localStorage.getItem('citizenID'))
   }, [])
 
-  if (!vote) {
-    return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
-  }
+  // if (!vote) {
+  //   return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
+  // }
+  vote = { 'vote': "" }
+  issue = { 'proposals': [], 'counter_proposals': [] }
   const proposal = [...issue.proposals, ...issue.counter_proposals].find(i => i.id == vote.proposalId)
   const amount = vote.vote === 'Yes' ? proposal.theftAmt : 0
 
@@ -35,7 +36,6 @@ const AfterVote = ({ match }) => {
       'id'
     )}`
   }
-
   return (
     <>
       <Wrapper>
@@ -45,7 +45,7 @@ const AfterVote = ({ match }) => {
             <div className="content bold">
               <p>Your Vote : {vote.vote.toUpperCase()}</p>
               <p>
-                Your Comment :{' '}
+                Your Comment :
                 {vote.comment ? (
                   <>
                     <br />
@@ -124,7 +124,7 @@ const AfterVote = ({ match }) => {
         </div>
       </Wrapper>
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <IssueSlider onlySlider />
+        <IssueSlider afterVote updateIssue={updateIssue} onlySlider />
       </div>
     </>
   )
