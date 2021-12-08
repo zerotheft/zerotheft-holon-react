@@ -15,7 +15,7 @@ import { colors } from 'theme'
 import { IssueContext } from '../IssueContext'
 
 const AfterVote = ({ match }) => {
-  let { vote, issue, updateIssue } = useContext(IssueContext)
+  const { vote, issue, updateIssue } = useContext(IssueContext)
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
 
   useEffect(() => {
@@ -25,6 +25,7 @@ const AfterVote = ({ match }) => {
   if (!vote) {
     return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
   }
+
   // vote = { 'vote': "" }
   // issue = { 'proposals': [], 'counter_proposals': [] }
   const proposal = [...issue.proposals, ...issue.counter_proposals].find(i => i.id == vote.proposalId)

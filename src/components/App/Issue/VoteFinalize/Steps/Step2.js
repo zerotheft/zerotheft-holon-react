@@ -8,8 +8,8 @@ import { VoteContext } from '../VoteContext'
 const { MODE } = config
 
 const networks = {
-  private   : 'privatenet',
-  staging   : 'testnet',
+  private: 'privatenet',
+  staging: 'testnet',
   production: 'mainnet',
 }
 
@@ -32,12 +32,12 @@ const Step2 = ({ updateCurrentStep }) => {
               <SubHeader>Envirnoment Setup</SubHeader>
               <OrderedList>
                 <li>
-                  Open settings page in zerotheft.{' '}
-                  <LinkText
+                  Open settings page in zerotheft.
+                  <LinkText /* eslint-disable-next-line no-return-assign */
                     onClick={() =>
-                      (window.location.href = `zerotheft://settings/environment?holonRedirectUrl=${encodeURIComponent(
-                        buildUrl()
-                      )}`)
+                    (window.location.href = `zerotheft://settings/environment?holonRedirectUrl=${encodeURIComponent(
+                      buildUrl()
+                    )}`)
                     }
                   >
                     Settings

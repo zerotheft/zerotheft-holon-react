@@ -1,13 +1,12 @@
 import React, { useEffect, useContext, useState } from 'react';
 import {
   get,
-  sortedUniqBy,
-  range,
 
   // isEmpty,
   // filter as filterArray,
 } from 'lodash';
-import yaml from 'js-yaml';
+
+// import yaml from 'js-yaml';
 import styled from 'styled-components';
 import { convertDollarToString, numberWithCommas } from 'utils';
 import { colors } from 'theme';
@@ -17,7 +16,7 @@ import useFetch from 'commons/hooks/useFetch';
 import OverlaySpinner from 'commons/OverlaySpinner';
 
 // import Button from "commons/Buttons";
-import SeeMore from 'commons/SeeMore';
+// import SeeMore from 'commons/SeeMore';
 
 // import { EmptyText } from "commons/styles";
 import { AppContext } from 'components/App/AppContext';
@@ -40,7 +39,7 @@ import Points from '../commons/Points';
 // const dateRange = range(1999, new Date().getFullYear())
 //   .reverse()
 //   .map(i => ({ label: i, value: i }));
-const Dashboard = ({ location, match }) => {
+const Dashboard = ({ match }) => {
   const decodedPath = decodeURIComponent(get(match, 'params.pathname'));
   const { issue, loading: issueLoading } = useContext(IssueContext);
   const [getReportApi, loading] = useFetch(getReport);
@@ -48,11 +47,13 @@ const Dashboard = ({ location, match }) => {
     useFetch(getProposalTemplate);
   const { filterParams } = useContext(AppContext);
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo);
+
   // const { pathname } = location;
   const { selection } = useContext(IssueContext);
   const [selectedItem, updateSelectedItem] = useState(
     get(selection, 'proposal') || {}
   );
+
   // const displayYaml = template => {
   //   let data;
   //   try {
@@ -108,6 +109,7 @@ const Dashboard = ({ location, match }) => {
     )}`;
     getTemplateApi(templatePath);
   }, [get(match, 'params.id'), get(match, 'params.pathname')]);
+
   // const allProposals = [
   //   ...(get(issue, 'proposals') || []),
   //   ...(get(issue, 'counter_proposals') || []),
@@ -423,6 +425,7 @@ const TheftInfo = styled.div`
       }
     }
   `,
+
   // Title = styled.div`
   //   margin-bottom: 20px;
   //   h4 {
@@ -484,33 +487,34 @@ const TheftInfo = styled.div`
       margin-right: 10px;
     }
   `;
-  // CustomButton = styled.a`
-  //   text-decoration: none;
-  //   background: ${colors.primary};
-  //   display: inline-block;
-  //   border-radius: 8px;
-  //   border: none;
-  //   font-weight: 600;
-  //   color: #fff;
-  //   width: auto;
-  //   height: 55px;
-  //   margin-right: 20px;
-  //   padding: 10px 20px;
-  //   font-size: 22px;
-  //   align-items: center;
-  //   justify-content: center;
-  // `,
-  // IWrapper = styled.div`
-  //   overflow: hidden;
-  //   border: 1px solid #f2f2f2;
-  //   min-height: 100px;
-  //   position: relative;
-  //   margin-top: 20px;
-  //   flex: 1;
-  //   & > iframe {
-  //     width: 100%;
-  //     position: relative;
-  //     box-shadow: none;
-  //     border: none;
-  //   }
-  // `;
+
+// CustomButton = styled.a`
+//   text-decoration: none;
+//   background: ${colors.primary};
+//   display: inline-block;
+//   border-radius: 8px;
+//   border: none;
+//   font-weight: 600;
+//   color: #fff;
+//   width: auto;
+//   height: 55px;
+//   margin-right: 20px;
+//   padding: 10px 20px;
+//   font-size: 22px;
+//   align-items: center;
+//   justify-content: center;
+// `,
+// IWrapper = styled.div`
+//   overflow: hidden;
+//   border: 1px solid #f2f2f2;
+//   min-height: 100px;
+//   position: relative;
+//   margin-top: 20px;
+//   flex: 1;
+//   & > iframe {
+//     width: 100%;
+//     position: relative;
+//     box-shadow: none;
+//     border: none;
+//   }
+// `;

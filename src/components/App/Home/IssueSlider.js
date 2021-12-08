@@ -52,16 +52,17 @@ import { AppContext } from '../AppContext'
 const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNode }) => {
   const history = useHistory()
   const { paths, loadingPaths: loading, filterParams } = useContext(AppContext)
+
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [allIssues, setIssues] = useState([])
   useEffect(() => {
     // if (localStorage.getItem('citizenID')) { getCitizenInfoApi(localStorage.getItem('citizenID')) }
     prepareCarouselData(paths)
-
   }, [paths])
 
   const prepareCarouselData = async paths => {
     const { nextAreas } = await nextAreaToVote()
+
     // const username = uniqBy(
     //   lowerCase(get(userInfo, 'name', ''))
     //     .replace(/[^a-zA-Z0-9]/g, '')
@@ -94,11 +95,11 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     //   )
     // ).filter(i => i.description)
     // setIssues(mappedIssues)
-    let issues = []
+    const issues = []
     for (const area of nextAreas) {
       let path = area.hierarchy
-      let pathElms = path.split('/')
-      let title = pathElms.pop()
+      const pathElms = path.split('/')
+      const title = pathElms.pop()
       if (title === endNode) { continue }
       path = pathElms.join('%2F')
       const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${title}`
@@ -155,10 +156,12 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
                           {get(element, 'title', '').replace(/_/g, ' ')}
                         </Path>
                         <div style={{ fontSize: '15px' }}>{element.description}</div>
-                        <Button onClick={() => {
-                          if (afterVote) { updateIssue([]); }
-                          history.push(element.rawPath)
-                        }} plain>
+                        <Button
+                          onClick={() => {
+                            if (afterVote) { updateIssue([]); }
+                            history.push(element.rawPath)
+                          }}
+                          plain>
                           Read More
                         </Button>
                       </Item>

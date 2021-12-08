@@ -8,13 +8,13 @@ export const getPaths = async params => {
   return { data }
 }
 
-export const getUmbrellaPaths = async () => {
+export const getUmbrellaPaths = async() => {
   const { data } = await getAPI('api/umbrella-paths')
 
   return data
 }
 
-export const getNations = async () => {
+export const getNations = async() => {
   const { data } = await getAPI('api/nations')
 
   return { data }
@@ -28,7 +28,7 @@ export const getPathProposals = async pathname => {
     toast.success(get(e, 'response.status') === 404 ? 'Record Not Found.' : e.message)
     return {
       status: get(e, 'response.status'),
-      error: get(e, 'response.status') === 404 ? 'Record Not Found.' : e.message,
+      error : get(e, 'response.status') === 404 ? 'Record Not Found.' : e.message,
     }
   }
 }
@@ -37,7 +37,7 @@ export const getPathProposals = async pathname => {
  * Find the hierarchy path which needs to be voted next
  * @returns JSON information of priority hierarchy path to vote in next time.
  */
-export const nextAreaToVote = async () => {
+export const nextAreaToVote = async() => {
   const { data } = await getAPI('api/next-priority')
   return data && data.scoreSheet
 }
