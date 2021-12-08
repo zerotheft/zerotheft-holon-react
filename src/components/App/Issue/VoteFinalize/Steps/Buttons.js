@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+
 // import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLongArrowAltLeft, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons'
@@ -31,7 +32,7 @@ export const Next = ({ currentStep, updateCurrentStep, ...props }) => {
 
   return (
     <Button
-      onClick={async () => {
+      onClick={async() => {
         const { msg, step } = await checkStep()
         if (step === 7) {
           return

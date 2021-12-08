@@ -120,7 +120,7 @@ const Dashboard = ({ match }) => {
   const theftData =
     theftInfo &&
     theftInfo[
-    `${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')
+      `${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')
     ];
   const yes = theftData && ((theftData.for / theftData.votes) * 100).toFixed();
   const no = 100 - yes;
@@ -130,11 +130,11 @@ const Dashboard = ({ match }) => {
     <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
       <Left
         style={{
-          width: 'auto',
-          margin: '0 30px 0 0',
-          display: 'flex',
+          width        : 'auto',
+          margin       : '0 30px 0 0',
+          display      : 'flex',
           flexDirection: 'column',
-          maxWidth: '440px',
+          maxWidth     : '440px',
         }}
       >
         <div style={{ overflowY: 'auto', height: '100%' }}>
