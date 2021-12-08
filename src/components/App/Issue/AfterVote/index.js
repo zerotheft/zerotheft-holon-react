@@ -22,11 +22,11 @@ const AfterVote = ({ match }) => {
     getCitizenInfoApi(localStorage.getItem('citizenID'))
   }, [])
 
-  // if (!vote) {
-  //   return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
-  // }
-  vote = { 'vote': "" }
-  issue = { 'proposals': [], 'counter_proposals': [] }
+  if (!vote) {
+    return <Redirect to={`/path/${match.params.pathname}/issue/${match.params.id}`} />
+  }
+  // vote = { 'vote': "" }
+  // issue = { 'proposals': [], 'counter_proposals': [] }
   const proposal = [...issue.proposals, ...issue.counter_proposals].find(i => i.id == vote.proposalId)
   const amount = vote.vote === 'Yes' ? proposal.theftAmt : 0
 
@@ -124,7 +124,7 @@ const AfterVote = ({ match }) => {
         </div>
       </Wrapper>
       <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <IssueSlider afterVote updateIssue={updateIssue} onlySlider />
+        <IssueSlider afterVote endNode={match.params.id} updateIssue={updateIssue} onlySlider />
       </div>
     </>
   )

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Carousel from 'react-elastic-carousel'
-import { get, isEmpty } from 'lodash'
+import { get } from 'lodash'
 import { colors } from 'theme'
 import styled from 'styled-components'
 import yaml from 'js-yaml'
@@ -49,12 +49,11 @@ import { AppContext } from '../AppContext'
 //   return arr
 // }
 
-const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false }) => {
+const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNode }) => {
   const history = useHistory()
-  const { paths, loadingPaths: loading } = useContext(AppContext)
+  const { paths, loadingPaths: loading, filterParams } = useContext(AppContext)
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [allIssues, setIssues] = useState([])
-
   useEffect(() => {
     // if (localStorage.getItem('citizenID')) { getCitizenInfoApi(localStorage.getItem('citizenID')) }
     prepareCarouselData(paths)
@@ -62,8 +61,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false }) => 
   }, [paths])
 
   const prepareCarouselData = async paths => {
-    const nextAreaData = await nextAreaToVote()
-
+    const { nextAreas } = await nextAreaToVote()
     // const username = uniqBy(
     //   lowerCase(get(userInfo, 'name', ''))
     //     .replace(/[^a-zA-Z0-9]/g, '')
@@ -96,16 +94,19 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false }) => 
     //   )
     // ).filter(i => i.description)
     // setIssues(mappedIssues)
-    if (!isEmpty(nextAreaData)) {
-      let path = nextAreaData.nextVotein.hierarchy
+    let issues = []
+    for (const area of nextAreas) {
+      let path = area.hierarchy
       let pathElms = path.split('/')
       let title = pathElms.pop()
+      if (title === endNode) { continue }
       path = pathElms.join('%2F')
       const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${title}`
       const template = await getProposalTemplate(templatePath)
       path = path.replace(/%2F/g, ' > ');
-      setIssues([{ title, path, rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`, description: displayYaml(template, path) }])
+      issues.push({ title, path, rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`, description: displayYaml(template, path) })
     }
+    setIssues(issues)
   }
 
   const truncateString = (str, num) => {
