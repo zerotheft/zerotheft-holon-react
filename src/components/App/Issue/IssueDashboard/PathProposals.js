@@ -33,6 +33,7 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
     updateLoader(false)
   }
   useEffect(() => {
+    /* eslint-disable-next-line no-unused-expressions */
     firstLeadingProp.id && getLeadingProposals(firstLeadingProp)
     updateLoader(false)
   }, [firstLeadingProp.id])

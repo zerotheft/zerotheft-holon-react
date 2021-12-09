@@ -1,6 +1,8 @@
+/* eslint-disable camelcase */
 import React from 'react'
-import { NavLink } from 'react-router-dom'
-import moment from 'moment'
+
+// import { NavLink } from 'react-router-dom'
+// import moment from 'moment'
 
 const voteColumns = [
   {
