@@ -51,16 +51,17 @@ import { AppContext } from '../AppContext'
 
 const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNode }) => {
   const history = useHistory()
-  const { paths, loadingPaths: loading, filterParams } = useContext(AppContext)
+  const [loader, setLoader] = useState(true)
 
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
   const [allIssues, setIssues] = useState([])
+
   useEffect(() => {
     // if (localStorage.getItem('citizenID')) { getCitizenInfoApi(localStorage.getItem('citizenID')) }
-    prepareCarouselData(paths)
-  }, [paths])
+    prepareCarouselData()
+  }, [])
 
-  const prepareCarouselData = async paths => {
+  const prepareCarouselData = async () => {
     const { nextAreas } = await nextAreaToVote()
 
     // const username = uniqBy(
@@ -108,6 +109,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
       issues.push({ title, path, rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`, description: displayYaml(template, path) })
     }
     setIssues(issues)
+    setLoader(false)
   }
 
   const truncateString = (str, num) => {
@@ -141,8 +143,8 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
           </Welcome>
         )}
         <SliderContent className={!onlySlider ? '' : 'full'}>
-          {loading ? (
-            <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} />
+          {loader ? (
+            <OverlaySpinner loader overlayParent style={{ zIndex: 0 }} />
           ) : (
             <>
               <h3>For you to vote on next:</h3>
@@ -171,7 +173,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
               ) : null}
             </>
           )}
-          {!loading && !allIssues.length ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
+          {!loader && !allIssues.length ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
         </SliderContent>
       </Container>
     </Wrapper>
