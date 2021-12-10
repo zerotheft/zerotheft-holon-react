@@ -51,10 +51,10 @@ import { AppContext } from '../AppContext'
 
 const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNode }) => {
   const history = useHistory()
-  const [loader, setLoader] = useState(true)
+  const [loading, setLoader] = useState(true)
+  const [allIssues, setIssues] = useState([])
 
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
-  const [allIssues, setIssues] = useState([])
 
   useEffect(() => {
     // if (localStorage.getItem('citizenID')) { getCitizenInfoApi(localStorage.getItem('citizenID')) }
@@ -111,7 +111,6 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     setIssues(issues)
     setLoader(false)
   }
-
   const truncateString = (str, num) => {
     if (num && str && str.length > num) {
       return `${str.slice(0, num)}...`
@@ -143,8 +142,8 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
           </Welcome>
         )}
         <SliderContent className={!onlySlider ? '' : 'full'}>
-          {loader ? (
-            <OverlaySpinner loader overlayParent style={{ zIndex: 0 }} />
+          {loading ? (
+            <OverlaySpinner loading overlayParent />
           ) : (
             <>
               <h3>For you to vote on next:</h3>
@@ -173,7 +172,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
               ) : null}
             </>
           )}
-          {!loader && !allIssues.length ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
+          {!loading && !allIssues.length ? <EmptyText>Recommendations are currently unavailable</EmptyText> : null}
         </SliderContent>
       </Container>
     </Wrapper>
