@@ -1,20 +1,28 @@
-import React, { useContext, useEffect } from 'react'
+// eslint-disable no-throw-literal
+import React, { useState, useContext, useEffect } from 'react'
+import styled from 'styled-components'
 import StarRatings from 'react-star-ratings'
+import { toast } from 'react-toastify'
 import { useRouteMatch } from 'react-router-dom'
 import { get, isEmpty } from 'lodash'
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown } from '@fortawesome/free-regular-svg-icons'
+
+import config from 'config'
 import { colors } from 'theme'
 import Button from 'commons/Buttons'
 import { imageExists, convertJSONtoString, numberWithCommas } from 'utils'
+import useWeb3 from 'utils/useWeb3'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import useFetch from 'commons/hooks/useFetch'
+import { getVoterInfos } from 'apis/centralizedServer'
 import { getProposal } from 'apis/proposals'
+import { getCitizenProposalRating } from 'apis/datas'
 import { getTheftInfo } from 'apis/reports'
 import { AppContext } from 'components/App/AppContext'
-import styled from 'styled-components'
 import { Body, Header, NoChartText } from '../styles'
+
+const { CHAIN_ID, loadContract } = config
 
 const ProposalDetail = ({
   item,
@@ -24,23 +32,26 @@ const ProposalDetail = ({
   reportPath,
   type,
   allowSelect = true,
-  chartData = null,
 }) => {
-  const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal)
-  const match = useRouteMatch()
+  const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal),
+    match = useRouteMatch(),
+    { carryTransaction, getWalletAccount, signMessage } =
+      useWeb3(),
+    [ratingLoader, updateRatingLoader] = useState(false)
+
 
   // const { proposalDetails } = useContext(IssueContext)
   let maxTheftYear = null
   if (item && item.theftYears) {
     const { theftYears } = item
     let theftYearKeys = Object.keys(theftYears)
-    theftYearKeys = theftYearKeys.map(function(item) {
+    theftYearKeys = theftYearKeys.map(item => {
       return parseInt(item)
     })
 
     maxTheftYear = theftYearKeys.length > 0 ? Math.max(...theftYearKeys) : null
   }
-
+  // eslint-disable-next-line no-unused-vars
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
   const { filterParams } = useContext(AppContext)
 
@@ -49,6 +60,7 @@ const ProposalDetail = ({
   }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
 
   useEffect(() => {
+    // eslint-disable-next-line no-unused-expressions
     item && getProposalApi(item.id)
   }, [item])
 
@@ -56,21 +68,72 @@ const ProposalDetail = ({
   const yes = theftData && ((theftData.for / theftData.votes) * 100).toFixed()
   const no = 100 - yes
 
-  const tempDetail = get(proposalInfo, 'detail', {});
+  // const tempDetail = get(proposalInfo, 'detail', {});
+
+  //  update rating if the user clicks on the star
+  const changeRating = async newRating => {
+    try {
+      updateRatingLoader(true)
+      const feedbackContract = await loadContract('ZTMFeedbacks')
+
+      const { account, web3 } = await getWalletAccount()
+
+      // Check if chrome wallet extn is installed
+      const chromeWallet = !!window.web3
+      if (!chromeWallet) {
+        throw new Error('No zerotheft wallet found.')
+      }
+
+      // Check if correct network is selected
+      if (web3.currentProvider.chainId !== `0x${CHAIN_ID.toString(16)}`) {
+        throw new Error('Please select the correct network.')
+      }
+
+      // Check if `account` is a verified voter ID 
+      const { data } = await getVoterInfos(account.toLowerCase())
+      if (!data.verifiedCitizen) { throw new Error('You are not a verified citizen.') }
+
+      // Check if `account` has already provided rating for this proposal
+      const ratingData = await getCitizenProposalRating(account, item.id)
+      const methodName = (ratingData.success) ? 'updateProposalRating' : 'addProposalRating'
+
+      // Now, sign a message and perform transaction
+      const params = [
+        { t: 'string', v: item.id },
+        { t: 'uint256', v: newRating },
+        { t: 'address', v: account },
+      ];
+      const signedMessage = await signMessage(params, account)
+      const txDetails = { userId: data.id, details: `Rated proposal ${item.id}`, txType: 'proposal-rating' }
+
+      await carryTransaction(feedbackContract, methodName, [
+        item.id,
+        newRating,
+        signedMessage,
+      ], txDetails);
+      await getProposalApi(item.id)
+      toast.success(`Rating successfully ${ratingData.success ? 'updated' : 'provided'}.`)
+    } catch (e) {
+      toast.error(e.message || 'Something went wrong.');
+    } finally {
+      updateRatingLoader(false);
+    }
+  }
 
   if (proposalLoading) {
     return (
       <Body>
-        <OverlaySpinner overlayParent loading backgroundColor="transparent" />{' '}
+        <OverlaySpinner overlayParent loading backgroundColor="transparent" />
         <div className="overlayTextWrapper">
-          {' '}
-          <p className="overlayText"> Please wait. The details are being fetched from the server. </p>{' '}
-        </div>{' '}
+          <p className="overlayText"> Please wait. The details are being fetched from the server. </p>
+        </div>
       </Body>
     )
   }
   return (
+
     <Body>
+      <OverlaySpinner loading={ratingLoader} />
       <div className="bodyDescription">
         {proposalInfo ? (
           <div className="detail-wrapper" style={{ position: 'relative', minHeight: 50 }}>
@@ -113,8 +176,7 @@ const ProposalDetail = ({
                     type === 'counter' ? { ...selection, counterProposal: item } : { ...selection, proposal: item }
                   )
                   history.push(
-                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${
-                      type === 'counter' ? 'vote' : 'counter-proposals'
+                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === 'counter' ? 'vote' : 'counter-proposals'
                     }`
                   )
                 }}
@@ -131,8 +193,7 @@ const ProposalDetail = ({
                     type === 'counter' ? { ...selection, counterProposal: null } : { ...selection, proposal: null }
                   )
                   history.push(
-                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${
-                      type === 'counter' ? 'vote' : 'counter-proposals'
+                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === 'counter' ? 'vote' : 'counter-proposals'
                     }`
                   )
                 }}
@@ -164,32 +225,33 @@ const ProposalDetail = ({
                   </div>
                 </div>
                 <div className="warning">
-                  Warning: <br /> The amount claimed to be stolen in this area is{' '}
-                  <span style={{ fontSize: '20px' }}>{item.summary}</span> lower than the average of{' '}
+                  Warning: <br /> The amount claimed to be stolen in this area is
+                  <span style={{ fontSize: '20px' }}>{item.summary}</span> lower than the average of
                   <span style={{ fontSize: '20px' }}>$291B</span>
                 </div>
               </div>
               <div>
-                <span style={{ color: '#8D8D8D', marginRight: 5 }}>AUTHOR:</span>{' '}
+                <span style={{ color: '#8D8D8D', marginRight: 5 }}>AUTHOR:</span>
                 <span style={{ fontWeight: 500, marginLeft: '5px' }}>{get(item, 'author.name', 'Anonymous')}</span>
               </div>
               <div
                 style={{ fontSize: 22, cursor: 'pointer', marginBottom: 15 }}
-                onClick={() =>
-                  (window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${
-                    match.params.id
-                  }/proposal-feedback/${get(item, 'id')}`)
-                }
+
+              // onClick={() =>
+              // (window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id
+              //   }/proposal-feedback/${get(item, 'id')}`)
+              // }
               >
-                {get(item, 'ratings.count', 0)}
+                {get(proposalInfo, 'ratings.count', 0)}
                 <span style={{ margin: '0 15px 0 5px' }}>
                   <StarRatings
-                    rating={get(item, 'ratings.rating', 0)}
+                    rating={get(proposalInfo, 'ratings.rating', 0)}
                     starDimension="24px"
                     starSpacing="1px"
                     starRatedColor={colors.yellow}
                     numberOfStars={5}
                     name="rating"
+                    changeRating={changeRating}
                   />
                 </span>
                 <span style={{ float: 'right' }}>

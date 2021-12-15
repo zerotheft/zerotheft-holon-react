@@ -65,7 +65,6 @@ const VoteDatatable = ({ history }) => {
 
     if (path.includes('votelist')) updateItems()
   }, [history.location])
-  console.log(tab)
   if (loader) return null
   return (
     <Wrapper>

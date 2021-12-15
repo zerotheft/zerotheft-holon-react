@@ -9,13 +9,15 @@ import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 
 const Proposals = ({ history, match }) => {
-  const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
-  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
+  const { issue, selection, updateSelection } = useContext(IssueContext)
+  const { umbrellaPaths, holonInfo } = useContext(AppContext)
   const [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
+    // eslint-disable-next-line no-unused-vars
     [loading, updateLoading] = useState(false)
   const bellCurveData = get(issue, 'bellCurveData') || {}
 
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
+  /* eslint-disable-next-line no-useless-escape */
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
@@ -43,8 +45,7 @@ const Proposals = ({ history, match }) => {
               href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}
               style={{ cursor: 'pointer' }}
             >
-              {' '}
-              add new{' '}
+              add new
             </a>
             proposal.
           </p>

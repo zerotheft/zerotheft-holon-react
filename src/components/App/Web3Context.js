@@ -7,11 +7,11 @@ const Web3Context = createContext()
 const Web3Provider = ({ children }) => {
   const [loading, error, web3, loadWeb3] = useWeb3()
 
-  // if (loading) return <div>Authenticating metamask...</div>
+  // if (loading) return <div>Authenticating zerotheft wallet...</div>
   //
   // if (error) return <Error>
   //   <h1>Error!</h1>
-  //   <ErrorMessage>Please install metamask extension first.</ErrorMessage>
+  //   <ErrorMessage>Please install zerotheft wallet extension first.</ErrorMessage>
   // </Error>
   return <Web3Context.Provider value={{ loading, error, web3, loadWeb3 }}>{children}</Web3Context.Provider>
 }

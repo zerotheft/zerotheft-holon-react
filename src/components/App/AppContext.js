@@ -17,7 +17,9 @@ const AppProvider = ({ children }) => {
   if (!localStorage.getItem('filterYear')) localStorage.setItem('filterYear', getYear(new Date()) - 1)
 
   const [getPathsApi, loading, paths] = useFetch(getPaths)
+  /* eslint-disable-next-line no-unused-vars */
   const [getUmbrellaPathsApi, fetchingUmbrella, umbrellaPaths] = useFetch(getUmbrellaPaths)
+  /* eslint-disable-next-line no-unused-vars */
   const [getHolonApi, loadingHolon, holonInfo] = useFetch(getHolonInfo)
   const [filterParams, updateFilter] = useState({ year: localStorage.getItem('filterYear'), initPath: 'USA' }),
     [selectedHolon, updateHolon] = useState(
@@ -31,6 +33,7 @@ const AppProvider = ({ children }) => {
     getUmbrellaPathsApi()
   }, [filterParams.initPath])
 
+  /* eslint-disable-next-line no-unused-vars */
   const fetchFromApp = async() => {
     const res = (await getVoterInfos('data.address')) || ''
     const holon = get(res, 'data.selectedHolon')
@@ -88,7 +91,7 @@ AppProvider.propTypes = {
 
 export { AppProvider, AppContext }
 
-const timeout = 2000
+// const timeout = 2000
 
 // const useWebSocket = (callback) => {
 //   const [ws, changeWs] = useState()

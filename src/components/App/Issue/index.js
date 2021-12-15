@@ -9,7 +9,7 @@ import { getParameterByName } from 'utils'
 import { IssueProvider, IssueContext } from './IssueContext'
 import MainWrapper from './commons/MainWrapper'
 
-import IssueDashboard from './IssueDashboard'
+// import IssueDashboard from './IssueDashboard'
 import Proposals from './Proposals'
 import CounterProposals from './CounterProposals'
 import Vote from './Vote'
@@ -44,7 +44,7 @@ const Issue = ({ match }) => {
         <Route path={ROUTES.VOTE} component={Vote} />
         <Route path={ROUTES.VOTE_FINALIZE} component={VoteFinalize} />
         <Route path={ROUTES.AFTER_VOTE} component={AfterVote} />
-        <Route path={ROUTES.ISSUE} component={IssueDashboard} />
+        <Route path={ROUTES.ISSUE} component={Proposals} />
       </Switch>
     </MainWrapper>
   )

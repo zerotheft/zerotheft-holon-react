@@ -10,7 +10,7 @@ import useFetch from 'commons/hooks/useFetch'
 const IssueContext = createContext()
 
 const IssueProvider = ({ children, id, match, params, location }) => {
-  const [issue, error, loading, fetchIssue, selection, updateSelection] = useIssueFetcher(id, match)
+  const [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
 
   // const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
@@ -73,6 +73,7 @@ const IssueProvider = ({ children, id, match, params, location }) => {
         vote,
         updateVote,
         updateSelection,
+        updateIssue,
         proposalDetails,
       }}
     >
@@ -125,6 +126,5 @@ const useIssueFetcher = (id, match) => {
   useEffect(() => {
     fetchIssue()
   }, [get(match, 'params.pathname'), get(match, 'params.id'), filterParams.year])
-
-  return [issue, error, loading, fetchIssue, selection, updateSelection]
+  return [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue]
 }

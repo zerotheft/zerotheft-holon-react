@@ -31,28 +31,28 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
         4. Metamask Setup:
         <ol type="a" style={{ marginLeft: 35 }}>
           <li>
-            If you don&apos;t have metamask yet: Install
+            If you don&apos;t have Zerotheft Wallet yet: Install
             <a
               href="https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <LinkText style={{ fontSize: 14 }}>metamask extension</LinkText>
+              <LinkText style={{ fontSize: 14 }}>Zerotheft Wallet extension</LinkText>
             </a>
             in your chrome browser.
           </li>
           <li>
-            Click &quot;import wallet&quot; after installing metamask. If you already have a wallet in your metamask, click
+            Click &quot;import wallet&quot; after installing zerotheft wallet. If you already have a wallet in your zerotheft wallet, click
             &quot;import account using seed phrase&quot;.
           </li>
           <li>
             Copy the seed phrase from zerotheft desktop app that you can find in &quot;Key/Phrase&quot; section of &quot;wallet&quot; tab.
           </li>
-          <li>Paste it into the metamask input and follow the necessary steps.</li>
+          <li>Paste it into the zerotheft wallet input and follow the necessary steps.</li>
         </ol>
       </Step>
       <Step isCompleted={step > 5} isFutureStep={step < 5}>
-        5. Connect holon into your metamask account. Select the account that you want to connect to the holon. Make sure
+        5. Connect holon into your zerotheft wallet account. Select the account that you want to connect to the holon. Make sure
         that the selected wallet is the wallet that matches with the zerotheft desktop wallet.
       </Step>
 

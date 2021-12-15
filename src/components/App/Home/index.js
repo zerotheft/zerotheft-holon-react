@@ -45,7 +45,7 @@ const Home = () => {
                     'This will be a holon description. ZeroTheft (ZT) is a tool and infrastructure intended to provide a means for citizens to publish researched documentation of government corruption.  It is built on the premise that corruption can be quantified by a specific monetary amount that is “taken” from taxpayers -- this is what is termed “theft”.'}
                 </p>
                 <ButtonWrapper style={{ display: 'none' }}>
-                  <Button onClick={() => {}} plain>
+                  <Button onClick={() => { }} plain>
                     View Profile
                   </Button>
                 </ButtonWrapper>

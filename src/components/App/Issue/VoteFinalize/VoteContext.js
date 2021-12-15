@@ -9,7 +9,7 @@ import { getParameterByName } from 'utils'
 import { IssueContext } from '../IssueContext'
 import useCanVote from './useCanVote'
 
-const { getVoteContract } = config
+const { loadContract } = config
 const VoteContext = createContext()
 
 const VoteProvider = ({ children }) => {
@@ -80,7 +80,7 @@ const useVote = voterInfo => {
     const noTheftProposalId = get(selection, 'counterProposal.id', '')
 
     const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
-    const contract = await getVoteContract()
+    const contract = await loadContract('ZTMVotes')
     try {
       const balance = await getBalance()
       if (balance === 0 && holonInfo.canBeFunded) {
@@ -145,7 +145,7 @@ const useVote = voterInfo => {
       // )
 
       const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
-      const txDetails = { userId: voterInfo.id, details: `Voted path ${fullPath}`, txType: 'vote' }
+      const txDetails = { userId: voterInfo.id, details: `Voted to ${voteType ? 'proposal' : 'counter-proposal'} in path ${fullPath}`, txType: 'vote' }
 
       await carryTransaction(
         contract,

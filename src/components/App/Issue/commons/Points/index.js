@@ -1,8 +1,8 @@
 import React from 'react'
 import StarRatings from 'react-star-ratings'
 import Progress from 'react-progressbar'
-import { get } from 'lodash'
-import { useRouteMatch, useHistory } from 'react-router-dom'
+import { get, orderBy } from 'lodash'
+import { useRouteMatch } from 'react-router-dom'
 import styled from 'styled-components'
 
 // import OverlaySpinner from 'commons/OverlaySpinner'
@@ -36,7 +36,7 @@ const Points = ({
   // const history = useHistory()
 
   // const { selection, updateSelection } = useContext(IssueContext)
-
+  data = data.length > 0 && orderBy(data, item => { return item.ratings.rating }, ['desc'])
   return (
     <Wrapper style={{ height: '100%' }}>
       {loading && <OverlaySpinner loading overlayParent />}
