@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { NavLink } from 'react-router-dom'
 import { Container } from 'commons/styles'
-import { colors, fontSize } from 'theme'
 
 const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, activeTab }) => {
   return (
@@ -14,7 +13,7 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
             <TabWrapper
               key={tab.id}
               to={tab.path}
-              active={activeTab == tab.pathId}
+              active={activeTab === tab.pathId}
               onClick={() => {
                 const elementPosition = document.getElementById(tab.pathId).offsetTop
                 const offsetPosition = elementPosition - 130

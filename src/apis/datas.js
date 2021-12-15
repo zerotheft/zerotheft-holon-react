@@ -5,6 +5,11 @@ export const getCitizensInfo = async() => {
   return data
 }
 
+export const getCitizenProposalRating = async(citizenAddress, proposalID) => {
+  const { data } = await get(`api/citizen-proposal-rating/${citizenAddress}/${proposalID}`)
+  return data
+}
+
 export const getVotesInfo = async path => {
   const { data } = await get('api/votes-data/', path)
   return data

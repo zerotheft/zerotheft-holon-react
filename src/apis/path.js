@@ -32,3 +32,12 @@ export const getPathProposals = async pathname => {
     }
   }
 }
+
+/**
+ * Find the hierarchy path which needs to be voted next
+ * @returns JSON information of priority hierarchy path to vote in next time.
+ */
+export const nextAreaToVote = async() => {
+  const { data } = await getAPI('api/next-priority')
+  return data && data.scoreSheet
+}

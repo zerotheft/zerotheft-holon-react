@@ -16,7 +16,7 @@ const Step3 = ({ updateCurrentStep }) => {
         </Body>
         <ButtonsWrapper>
           <Button
-            plain
+            plain /* eslint-disable-next-line no-return-assign */
             onClick={() =>
               (window.location.href = `zerotheft://wallet?holonRedirectUrl=${encodeURIComponent(buildUrl())}`)
             }
