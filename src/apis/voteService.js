@@ -1,6 +1,6 @@
-import config from "config";
-import Web3 from "web3";
-import { getVoterInfos } from "./centralizedServer";
+import config from 'config';
+import Web3 from 'web3';
+import { getVoterInfos } from './centralizedServer';
 
 const { CHAIN_ID } = config;
 
@@ -10,7 +10,7 @@ const { CHAIN_ID } = config;
  * @param {null}
  * @returns {web3}
  */
-export const getWeb3 = async () => {
+export const getWeb3 = async() => {
   try {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum);
@@ -43,14 +43,14 @@ export const getWeb3 = async () => {
  * @param null
  * @return boolean
  */
-export const checkWalletInstallation = async () => {
+export const checkWalletInstallation = async() => {
   try {
     if (window.ethereum || window.ztm_ethereum || window.web3) {
       return true;
     }
     return false;
   } catch (error) {
-    console.log("Error", error);
+    console.log('Error', error);
     return false;
   }
 };
@@ -65,28 +65,28 @@ export const checkWalletInstallation = async () => {
  * @param null
  * @returns string (metamask or ztmwallet)
  */
-export const checkInstalledWallet = async () => {
+export const checkInstalledWallet = async() => {
   try {
-    let installedExtension = "none";
+    let installedExtension = 'none';
     if (window.ethereum) {
       if (window.ethereum.isMetamask) {
-        installedExtension = "metamask";
+        installedExtension = 'metamask';
       }
       if (window.ethereum.isZTMWallet) {
-        installedExtension = "ztmwallet";
+        installedExtension = 'ztmwallet';
       } else {
-        installedExtension = "none";
+        installedExtension = 'none';
       }
     }
 
     if (window.ztm_ethereum) {
-      installedExtension = "ztmwallet";
+      installedExtension = 'ztmwallet';
     }
 
     return installedExtension;
   } catch (error) {
-    console.log("Error ", error);
-    return "none";
+    console.log('Error ', error);
+    return 'none';
   }
 };
 
@@ -96,10 +96,10 @@ export const checkInstalledWallet = async () => {
  * @param null
  * @returns string - metamask account address
  */
-export const getUserMetamaskAddress = async (web3) => {
+export const getUserMetamaskAddress = async web3 => {
   try {
     // const web3 = await getWeb3();
-    const getMetamaskAccount = async () => {
+    const getMetamaskAccount = async() => {
       const web3R = web3;
 
       if (!web3R) return null;
@@ -111,7 +111,7 @@ export const getUserMetamaskAddress = async (web3) => {
 
     return metamaskAccount;
   } catch (error) {
-    console.log("Error ", error);
+    console.log('Error ', error);
     return false;
   }
 };
@@ -121,19 +121,19 @@ export const getUserMetamaskAddress = async (web3) => {
  * @param {null}
  * @returns {boolean} - flag for correct network
  */
-export const checkNetwork = async (web3) => {
+export const checkNetwork = async web3 => {
   try {
     // const web3 = await getWeb3();
     const chainID = CHAIN_ID;
-    console.log("Current provider", web3.currentProvider);
-    console.log("Chain Id", web3.currentProvider.chainId);
-    console.log("Config chain id", `0x${chainID.toString(16)}`);
+    console.log('Current provider', web3.currentProvider);
+    console.log('Chain Id', web3.currentProvider.chainId);
+    console.log('Config chain id', `0x${chainID.toString(16)}`);
     if (web3.currentProvider.chainId === `0x${chainID.toString(16)}`) {
       return true;
     }
     return false;
   } catch (error) {
-    console.log("Error", error);
+    console.log('Error', error);
     return false;
   }
 };
@@ -144,12 +144,12 @@ export const checkNetwork = async (web3) => {
  * @param string - walletAddress - wallet address of the extension
  * @returns object - user registration details
  */
-export const getUserRegistration = async (walletAddress) => {
+export const getUserRegistration = async walletAddress => {
   try {
     const { data } = await getVoterInfos(walletAddress.toLowerCase());
     return data;
   } catch (error) {
-    console.log("Error ", error);
+    console.log('Error ', error);
     return false;
   }
 };
@@ -160,12 +160,12 @@ export const getUserRegistration = async (walletAddress) => {
  * @param string - walletAddress - wallet address of the extension
  * @returns boolena - flag if user is verified or not
  */
-export const checkUserVerification = async (walletAddress) => {
+export const checkUserVerification = async walletAddress => {
   try {
     const { data } = await getVoterInfos(walletAddress.toLowerCase());
     return data.unverifiedCitizen;
   } catch (error) {
-    console.log("Error ", error);
+    console.log('Error ', error);
     return false;
   }
 };
