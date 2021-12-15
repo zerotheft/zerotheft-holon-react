@@ -50,7 +50,6 @@ export const checkWalletInstallation = async() => {
     }
     return false;
   } catch (error) {
-    console.log('Error', error);
     return false;
   }
 };
@@ -85,7 +84,6 @@ export const checkInstalledWallet = async() => {
 
     return installedExtension;
   } catch (error) {
-    console.log('Error ', error);
     return 'none';
   }
 };
@@ -111,7 +109,6 @@ export const getUserMetamaskAddress = async web3 => {
 
     return metamaskAccount;
   } catch (error) {
-    console.log('Error ', error);
     return false;
   }
 };
@@ -125,15 +122,11 @@ export const checkNetwork = async web3 => {
   try {
     // const web3 = await getWeb3();
     const chainID = CHAIN_ID;
-    console.log('Current provider', web3.currentProvider);
-    console.log('Chain Id', web3.currentProvider.chainId);
-    console.log('Config chain id', `0x${chainID.toString(16)}`);
     if (web3.currentProvider.chainId === `0x${chainID.toString(16)}`) {
       return true;
     }
     return false;
   } catch (error) {
-    console.log('Error', error);
     return false;
   }
 };
@@ -149,7 +142,6 @@ export const getUserRegistration = async walletAddress => {
     const { data } = await getVoterInfos(walletAddress.toLowerCase());
     return data;
   } catch (error) {
-    console.log('Error ', error);
     return false;
   }
 };
@@ -165,7 +157,6 @@ export const checkUserVerification = async walletAddress => {
     const { data } = await getVoterInfos(walletAddress.toLowerCase());
     return data.unverifiedCitizen;
   } catch (error) {
-    console.log('Error ', error);
     return false;
   }
 };

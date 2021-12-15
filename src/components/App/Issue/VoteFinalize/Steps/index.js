@@ -44,7 +44,6 @@ const Steps = props => {
 
   const checkRequirements = async() => {
     const isMetamaskInstalled = await checkWalletInstallation();
-    console.log('Is metamask installed', isMetamaskInstalled);
 
     if (!isMetamaskInstalled) {
       generateModal(
@@ -67,7 +66,6 @@ const Steps = props => {
 
     const userWalletAddress = await getUserMetamaskAddress(web3);
     if (!userWalletAddress) {
-      console.log('Create or import wallet');
       generateModal(
         'Extension',
         'Please add or import wallet.',
