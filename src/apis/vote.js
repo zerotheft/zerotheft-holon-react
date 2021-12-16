@@ -25,3 +25,11 @@ export const voteDataRollups = async body => {
   const { data } = await post('api/vote-rollups', body)
   return data
 }
+
+/**
+ * Transfer few funds to citizen metamask wallet provided
+ */
+export const transferFund = async body => {
+  const { data } = await post('api/transfer-fund', body)
+  return data
+}
