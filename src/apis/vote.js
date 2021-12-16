@@ -1,4 +1,7 @@
+import config from 'config'
 import { post, get } from 'utils/api'
+
+const { CENTRALIZED_SERVER } = config
 
 export const getCitizenInfo = async citizenID => {
   const { data } = await get(`api/citizen-info/${citizenID}`)
@@ -30,6 +33,6 @@ export const voteDataRollups = async body => {
  * Transfer few funds to citizen metamask wallet provided
  */
 export const transferFund = async body => {
-  const { data } = await post('api/transfer-fund', body)
+  const { data } = await post('api/transfer-fund', body, CENTRALIZED_SERVER)
   return data
 }
