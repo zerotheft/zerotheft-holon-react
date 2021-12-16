@@ -20,10 +20,11 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
       {voteDetails ? (
         <div className="details-wrapper">
           <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'
-          } ${get(voteDetails, 'votedPercent', '0')}%`}</div>
+            } ${get(voteDetails, 'votedPercent', '0')}%`}</div>
           <div className={`amt ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>
             ${convertDollarToString(toNumber(get(voteDetails, 'amount', 1)))}
           </div>
+          {/* {voteDetails.votes < voteDetails.unlockVotes && <div class="overlay-info">Need {voteDetails.unlockVotes} votes ({voteDetails.votes})</div>} */}
         </div>
       ) : (
         <div style={{ fontSize: 14, minWidth: 190 }}>Need votes</div>
@@ -71,9 +72,9 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
 export default PathDetails
 
 PathDetails.propTypes = {
-  isPath  : PropTypes.bool,
-  summary : PropTypes.object,
-  url     : PropTypes.string,
+  isPath: PropTypes.bool,
+  summary: PropTypes.object,
+  url: PropTypes.string,
   viewLink: PropTypes.string,
 }
 const Wrapper = styled.div`
@@ -98,6 +99,8 @@ const Wrapper = styled.div`
       flex-direction: row;
       align-items: center;
       min-width: 190px;
+      
+     
       .amt {
         font-size: 22px;
         color: #000;
@@ -118,6 +121,11 @@ const Wrapper = styled.div`
         &.no {
           color: #d76969;
         }
+      }
+      .overlay-info{
+        z-index: 9;
+        margin: 30px;
+        background: #009938;
       }
     }
   `,

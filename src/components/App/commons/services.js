@@ -2,8 +2,7 @@ import { round } from 'lodash'
 
 export const calculate = obj => {
   if (!obj) return {}
-
-  const { for: forVote, against, votes } = obj
+  const { for: forVote, against, votes, unlockVotes } = obj
 
   if (!votes) return {}
   const vote = forVote >= against ? 'YES' : 'NO'
@@ -11,5 +10,5 @@ export const calculate = obj => {
 
   const votedPercent = round((toMeasure / votes) * 100, 2)
 
-  return { votedPercent, vote, amount: obj.theft }
+  return { votedPercent, vote, amount: obj.theft, unlockVotes, votes }
 }
