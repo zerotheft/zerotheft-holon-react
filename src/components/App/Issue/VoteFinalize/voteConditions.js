@@ -95,7 +95,7 @@ export const checkInstalledWallet = async () => {
  * @param null
  * @returns string - metamask account address
  */
-export const getUserMetamaskAddress = async web3 => {
+export const getUserMetamaskAddress = async (web3) => {
   try {
     // const web3 = await getWeb3();
     const getMetamaskAccount = async () => {
@@ -119,7 +119,7 @@ export const getUserMetamaskAddress = async web3 => {
  * @param {null}
  * @returns {boolean} - flag for correct network
  */
-export const checkNetwork = async web3 => {
+export const checkNetwork = async (web3) => {
   try {
     // const web3 = await getWeb3();
     const chainID = CHAIN_ID;
@@ -138,7 +138,7 @@ export const checkNetwork = async web3 => {
  * @param string - walletAddress - wallet address of the extension
  * @returns object - user registration details
  */
-export const getUserRegistration = async walletAddress => {
+export const getUserRegistration = async (walletAddress) => {
   try {
     const { data } = await getVoterInfos(walletAddress.toLowerCase());
     return data;
@@ -153,7 +153,7 @@ export const getUserRegistration = async walletAddress => {
  * @param string - walletAddress - wallet address of the extension
  * @returns boolena - flag if user is verified or not
  */
-export const checkUserVerification = async walletAddress => {
+export const checkUserVerification = async (walletAddress) => {
   try {
     const { data } = await getVoterInfos(walletAddress.toLowerCase());
     return data.unverifiedCitizen;
@@ -186,7 +186,7 @@ export const getWalletBalance = async (web3, walletAddress) => {
  * @param object - citizen object
  * @returns boolena - flag if balance has been sent or not
  */
-export const sendBalanceToWallet = async (citizen ,walletAddress) => {
+export const sendBalanceToWallet = async (citizen, walletAddress) => {
   try {
     const transferRes = await transferFund({
       userId: citizen.id,
