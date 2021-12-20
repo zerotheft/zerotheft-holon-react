@@ -13,12 +13,12 @@ import { colors } from 'theme'
 import { isChrome, getParameterByName, convertUNIXtoDATETIME } from 'utils'
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
+import config from 'config'
 import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import { AppContext } from '../../AppContext'
 import { IssueContext } from '../IssueContext'
 import Steps from './Steps'
-import config from 'config'
 import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration, getWalletBalance, getWeb3, sendBalanceToWallet } from './voteConditions'
 
 const VoteFinalize = ({ match, history, location }) => {
@@ -64,15 +64,15 @@ const VoteFinalize = ({ match, history, location }) => {
   // }
   const { CENTRALIZED_SERVER_FRONTEND, VOTE_BALANCE } = config;
   const [popupError, updatePopupError] = useState({
-    title       : "",
-    message     : "",
-    redirectLink: "",
+    title       : '',
+    message     : '',
+    redirectLink: '',
   });
 
   const [currentRequirementStep, updateCurrentRequirementStep] = useState(0);
   const [modalIsOpen, setIsOpen] = useState(false);
   const [formValues, updateFormValues] = useState();
-  const closeModal = async () => {
+  const closeModal = async() => {
     setIsOpen(false);
     await updatePopupError({
       title       : '',
@@ -82,7 +82,7 @@ const VoteFinalize = ({ match, history, location }) => {
     submitForm(formValues);
   }
 
-  const generateModal = async (title, message, redirectLink) => {
+  const generateModal = async(title, message, redirectLink) => {
     await updatePopupError({
       title,
       message,
@@ -93,13 +93,13 @@ const VoteFinalize = ({ match, history, location }) => {
 
 
 
-  const checkRequirements = async () => {
+  const checkRequirements = async() => {
     const isMetamaskInstalled = (currentRequirementStep <= 1)? await checkWalletInstallation(): true;
     if (!isMetamaskInstalled) {
       await updateCurrentRequirementStep(1);
       await generateModal(
-        "Extension",
-        "Please install extension",
+        'Extension',
+        'Please install extension',
         `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
       );
       return false;
@@ -109,8 +109,8 @@ const VoteFinalize = ({ match, history, location }) => {
     if (!isCorrectNetwork) {
       await updateCurrentRequirementStep(2);
       await generateModal(
-        "Extension",
-        "Please add correct network",
+        'Extension',
+        'Please add correct network',
         `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
       );
       return false;
@@ -120,8 +120,8 @@ const VoteFinalize = ({ match, history, location }) => {
     if (!userWalletAddress) {
       await updateCurrentRequirementStep(3);
       await generateModal(
-        "Extension",
-        "Please add or import wallet",
+        'Extension',
+        'Please add or import wallet',
         `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
       );
     }
@@ -130,8 +130,8 @@ const VoteFinalize = ({ match, history, location }) => {
     if (!userDetails) {
       await updateCurrentRequirementStep(4);
       await generateModal(
-        "Voter Id",
-        "Please register voter id before voting",
+        'Voter Id',
+        'Please register voter id before voting',
         `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
       );
       return false;
@@ -141,8 +141,8 @@ const VoteFinalize = ({ match, history, location }) => {
       if (!userInfo.verifiedCitizen) {
         await updateCurrentRequirementStep(5);
         await generateModal(
-          "Verify Id",
-          "Please verify voter id before voting",
+          'Verify Id',
+          'Please verify voter id before voting',
           `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
         );
         return false;
@@ -159,8 +159,8 @@ const VoteFinalize = ({ match, history, location }) => {
         if (transferToWalletStatus !== true) {
           await updateCurrentRequirementStep(6);
           await generateModal(
-            "Balance",
-            "We are unable to transfer fund to your wallet. Please try again.",
+            'Balance',
+            'We are unable to transfer fund to your wallet. Please try again.',
             `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
           );
 
@@ -252,16 +252,16 @@ const VoteFinalize = ({ match, history, location }) => {
     <>
       <Wrapper>
         <OverlaySpinner loading={voting} />
-        {popupError && popupError.message && popupError.message !== "" ? (
+        {popupError && popupError.message && popupError.message !== '' ? (
           <Modal
             isOpen={modalIsOpen}
             onClose={() => checkRequirements()}>
             <div
               style={{
-                display       : "flex",
-                flexDirection : "column",
-                alignItems    : "center",
-                justifyContent: "center",
+                display       : 'flex',
+                flexDirection : 'column',
+                alignItems    : 'center',
+                justifyContent: 'center',
               }}
             >
               <h3>{popupError.title}</h3>
@@ -269,7 +269,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 {`${popupError.message} from`} <a
                   href={popupError.redirectLink}
                   target="_blank"
-                  style={{ textDecoration: "none" }}
+                  style={{ textDecoration: 'none' }}
                   rel="noreferrer"
                 >
                 here.
@@ -279,7 +279,7 @@ const VoteFinalize = ({ match, history, location }) => {
             </div>
           </Modal>
         ) : (
-          ""
+          ''
         )}
         <FormWrapper>
           <div>

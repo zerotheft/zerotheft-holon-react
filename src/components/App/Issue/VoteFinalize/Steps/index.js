@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useContext } from "react";
-import styled from "styled-components";
-import { colors } from "theme";
-import Step7 from "./Step7";
-import { VoteContext } from "../VoteContext";
+import React, { useEffect, useState, useContext } from 'react';
+import styled from 'styled-components';
+import { colors } from 'theme';
+import Step7 from './Step7';
+import { VoteContext } from '../VoteContext';
 
 // import { vote } from 'apis/vote'
 
 // const steps = range(4, 8);
 // const stepComponents = [Step4, Step5, Step6, Step7];
 
-const Steps = (props) => {
+const Steps = props => {
   const { step, voterInfo, web3 } = useContext(VoteContext);
   const [currentStep, updateCurrentStep] = useState(step);
   const Step = Step7;
@@ -17,8 +17,8 @@ const Steps = (props) => {
     updateCurrentStep(step);
   }, [step]);
 
-  const setCitizenID = async () => {
-    localStorage.setItem("citizenID", voterInfo.unverifiedCitizen);
+  const setCitizenID = async() => {
+    localStorage.setItem('citizenID', voterInfo.unverifiedCitizen);
     return true;
   };
 
@@ -69,8 +69,8 @@ const Header = styled.div`
     color: #fff;
     font-size: 30px;
     font-weight: 600;
-    background-color: ${(props) =>
-      props.active ? colors.primary : colors.backgroundColor};
+    background-color: ${props =>
+    props.active ? colors.primary : colors.backgroundColor};
     border-radius: 50%;
   `,
   Body = styled.div`
