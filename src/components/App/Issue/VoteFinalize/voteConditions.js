@@ -1,7 +1,7 @@
-import config from "config";
-import Web3 from "web3";
-import { getVoterInfos } from "../../../../apis/centralizedServer";
-import { transferFund } from "../../../../apis/vote";
+import config from 'config';
+import Web3 from 'web3';
+import { getVoterInfos } from '../../../../apis/centralizedServer';
+import { transferFund } from '../../../../apis/vote';
 
 const { CHAIN_ID } = config;
 
@@ -11,7 +11,7 @@ const { CHAIN_ID } = config;
  * @param {null}
  * @returns {web3}
  */
-export const getWeb3 = async () => {
+export const getWeb3 = async() => {
   try {
     if (window.ethereum) {
       const web3 = new Web3(window.ethereum);
@@ -44,7 +44,7 @@ export const getWeb3 = async () => {
  * @param null
  * @return boolean
  */
-export const checkWalletInstallation = async () => {
+export const checkWalletInstallation = async() => {
   try {
     if (window.ethereum || window.ztm_ethereum || window.web3) {
       return true;
@@ -65,27 +65,27 @@ export const checkWalletInstallation = async () => {
  * @param null
  * @returns string (metamask or ztmwallet)
  */
-export const checkInstalledWallet = async () => {
+export const checkInstalledWallet = async() => {
   try {
-    let installedExtension = "none";
+    let installedExtension = 'none';
     if (window.ethereum) {
       if (window.ethereum.isMetamask) {
-        installedExtension = "metamask";
+        installedExtension = 'metamask';
       }
       if (window.ethereum.isZTMWallet) {
-        installedExtension = "ztmwallet";
+        installedExtension = 'ztmwallet';
       } else {
-        installedExtension = "none";
+        installedExtension = 'none';
       }
     }
 
     if (window.ztm_ethereum) {
-      installedExtension = "ztmwallet";
+      installedExtension = 'ztmwallet';
     }
 
     return installedExtension;
   } catch (error) {
-    return "none";
+    return 'none';
   }
 };
 
@@ -98,7 +98,7 @@ export const checkInstalledWallet = async () => {
 export const getUserMetamaskAddress = async web3 => {
   try {
     // const web3 = await getWeb3();
-    const getMetamaskAccount = async () => {
+    const getMetamaskAccount = async() => {
       const web3R = web3;
 
       if (!web3R) return null;
@@ -169,10 +169,10 @@ export const checkUserVerification = async walletAddress => {
  * @param {object} - web3 -  injected web3 into site from extension
  * @returns {string} - balance of the wallet
  */
-export const getWalletBalance = async (web3, walletAddress) => {
+export const getWalletBalance = async(web3, walletAddress) => {
   try {
     let balance = await web3.eth.getBalance(walletAddress);
-    balance = balance ? web3.utils.fromWei(balance, "ether") : 0;
+    balance = balance ? web3.utils.fromWei(balance, 'ether') : 0;
     return balance;
   } catch (error) {
     return false;
@@ -186,14 +186,14 @@ export const getWalletBalance = async (web3, walletAddress) => {
  * @param object - citizen object
  * @returns boolena - flag if balance has been sent or not
  */
-export const sendBalanceToWallet = async (citizen ,walletAddress) => {
+export const sendBalanceToWallet = async(citizen, walletAddress) => {
   try {
     const transferRes = await transferFund({
-      userId: citizen.id,
+      userId  : citizen.id,
       receiver: walletAddress,
     });
 
-    if (transferRes.status === "success") {
+    if (transferRes.status === 'success') {
       return true;
     }
 

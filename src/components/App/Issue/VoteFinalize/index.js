@@ -13,11 +13,13 @@ import { colors } from 'theme'
 import { isChrome, getParameterByName, convertUNIXtoDATETIME } from 'utils'
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
+import config from 'config'
 import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import { AppContext } from '../../AppContext'
 import { IssueContext } from '../IssueContext'
 import Steps from './Steps'
+import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration, getWalletBalance, getWeb3, sendBalanceToWallet } from './voteConditions'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
@@ -32,6 +34,7 @@ const VoteFinalize = ({ match, history, location }) => {
     voting,
     vote,
     priorVoteInfo,
+    web3
   } = useContext(VoteContext)
 
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
@@ -59,6 +62,118 @@ const VoteFinalize = ({ match, history, location }) => {
   //   }
 
   // }
+  const { CENTRALIZED_SERVER_FRONTEND, VOTE_BALANCE } = config;
+  const [popupError, updatePopupError] = useState({
+    title       : '',
+    message     : '',
+    redirectLink: '',
+  });
+
+  const [currentRequirementStep, updateCurrentRequirementStep] = useState(0);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [formValues, updateFormValues] = useState();
+  const closeModal = async() => {
+    setIsOpen(false);
+    await updatePopupError({
+      title       : '',
+      message     : '',
+      redirectLink: '',
+    });
+    submitForm(formValues);
+  }
+
+  const generateModal = async(title, message, redirectLink) => {
+    await updatePopupError({
+      title,
+      message,
+      redirectLink,
+    });
+    setIsOpen(true);
+  };
+
+
+
+  const checkRequirements = async() => {
+    const isMetamaskInstalled = (currentRequirementStep <= 1)? await checkWalletInstallation(): true;
+    if (!isMetamaskInstalled) {
+      await updateCurrentRequirementStep(1);
+      await generateModal(
+        'Extension',
+        'Please install extension',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      );
+      return false;
+    }
+
+    const isCorrectNetwork = (currentRequirementStep <= 2)? await checkNetwork(web3): true;
+    if (!isCorrectNetwork) {
+      await updateCurrentRequirementStep(2);
+      await generateModal(
+        'Extension',
+        'Please add correct network',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      );
+      return false;
+    }
+
+    const userWalletAddress = (currentRequirementStep <= 3) ? await getUserMetamaskAddress(web3): true;
+    if (!userWalletAddress) {
+      await updateCurrentRequirementStep(3);
+      await generateModal(
+        'Extension',
+        'Please add or import wallet',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      );
+    }
+
+    const userDetails = (currentRequirementStep <= 4)? await getUserRegistration(userWalletAddress): true;
+    if (!userDetails) {
+      await updateCurrentRequirementStep(4);
+      await generateModal(
+        'Voter Id',
+        'Please register voter id before voting',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      );
+      return false;
+    }
+
+    if (currentRequirementStep <= 5) {
+      if (!userInfo.verifiedCitizen) {
+        await updateCurrentRequirementStep(5);
+        await generateModal(
+          'Verify Id',
+          'Please verify voter id before voting',
+          `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+        );
+        return false;
+      }
+    }
+
+    if (currentRequirementStep <= 6) {
+      const walletBalance = await getWalletBalance(web3, userWalletAddress);
+      if (walletBalance < VOTE_BALANCE) {
+        const transferToWalletStatus = await sendBalanceToWallet(
+          userInfo.verifiedCitizen,
+          userWalletAddress
+        );
+        if (transferToWalletStatus !== true) {
+          await updateCurrentRequirementStep(6);
+          await generateModal(
+            'Balance',
+            'We are unable to transfer fund to your wallet. Please try again.',
+            `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+          );
+
+          return false;
+        }
+      }
+    }
+
+    await updateCurrentRequirementStep(7);
+    setIsOpen(false);
+    return true;
+  }
+
 
   const checkQueryParams = async() => {
     const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
@@ -76,6 +191,41 @@ const VoteFinalize = ({ match, history, location }) => {
       showStepsPage(false)
       checkStep(hierarchyPath)
     }
+  }
+
+  const submitForm = async values => {
+    updateFormValues(values);
+    const requirementChecks = await checkRequirements();
+    if (!requirementChecks) {
+      return
+    }
+
+    const altTheftAmounts = {}
+    Object.keys(theftAmtYears).forEach(yr => {
+      if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
+
+      // delete values[yr]
+    })
+    if (!isChrome()) {
+      toast.error('Please open on chrome browser to vote!!!')
+      return
+    }
+
+    // const { step: curStep } = await checkStep()
+    const updatedVal = {
+      ...values,
+      priorVoteInfo,
+      altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '"'),
+      hierarchyPath,
+    }
+    localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
+
+    history.push({ search: '?page=steps' })
+    updateValues(updatedVal)
+    showStepsPage(true)
+
+    // For vote if all steps are completed
+    // vote(updatedVal)
   }
 
   useEffect(() => {
@@ -102,7 +252,35 @@ const VoteFinalize = ({ match, history, location }) => {
     <>
       <Wrapper>
         <OverlaySpinner loading={voting} />
-
+        {popupError && popupError.message && popupError.message !== '' ? (
+          <Modal
+            isOpen={modalIsOpen}
+            onClose={() => checkRequirements()}>
+            <div
+              style={{
+                display       : 'flex',
+                flexDirection : 'column',
+                alignItems    : 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <h3>{popupError.title}</h3>
+              <p>
+                {`${popupError.message} from`} <a
+                  href={popupError.redirectLink}
+                  target="_blank"
+                  style={{ textDecoration: 'none' }}
+                  rel="noreferrer"
+                >
+                here.
+                </a>
+              </p>
+              <Button style={{ marginTop: 20 }} onClick={() => closeModal()}>Continue</Button>
+            </div>
+          </Modal>
+        ) : (
+          ''
+        )}
         <FormWrapper>
           <div>
             <TitleSummary>
@@ -121,32 +299,10 @@ const VoteFinalize = ({ match, history, location }) => {
                 }
               }
               onSubmit={async values => {
-                const altTheftAmounts = {}
-                Object.keys(theftAmtYears).forEach(yr => {
-                  if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
-
-                  // delete values[yr]
-                })
-                if (!isChrome()) {
-                  toast.error('Please open on chrome browser to vote!!!')
-                  return
-                }
-                const { step: curStep } = await checkStep()
-                const updatedVal = {
-                  ...values,
-                  priorVoteInfo,
-                  altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '"'),
-                  hierarchyPath,
-                }
-                localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
-                history.push({ search: '?page=steps' })
-                if (curStep <= 6) {
-                  updateValues(updatedVal)
-                  showStepsPage(true)
-                } else vote(updatedVal)
+                submitForm(values)
               }}
             >
-              {// eslint-disable-next-line no-unused-vars 
+              {// eslint-disable-next-line no-unused-vars
                 ({ values }) => {
                   return (
                     <Form>
@@ -262,7 +418,7 @@ const VoteFinalize = ({ match, history, location }) => {
               </span> */}
                     <span>Voted on : {convertUNIXtoDATETIME(get(priorVoteInfo, 'date'))}</span>
                   </p>
-                  {/* TODO: When we maintain the proper historical data then we will show this button            
+                  {/* TODO: When we maintain the proper historical data then we will show this button
             <Button plain onClick={() => window.open('zerotheft://settings/history')} style={{ width: '100%', fontSize: 20, fontWeight: '500', background: 'transparent', borderWidth: 2 }} height={62}>View Voting History</Button> */}
                 </div>
               )}

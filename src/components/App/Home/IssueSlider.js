@@ -61,7 +61,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     prepareCarouselData()
   }, [])
 
-  const prepareCarouselData = async () => {
+  const prepareCarouselData = async() => {
     const { nextAreas } = await nextAreaToVote()
 
     // const username = uniqBy(
