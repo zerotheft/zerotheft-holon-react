@@ -51,16 +51,17 @@ import { AppContext } from '../AppContext'
 
 const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNode }) => {
   const history = useHistory()
-  const { paths, loadingPaths: loading, filterParams } = useContext(AppContext)
+  const [loading, setLoader] = useState(true)
+  const [allIssues, setIssues] = useState([])
 
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
-  const [allIssues, setIssues] = useState([])
+
   useEffect(() => {
     // if (localStorage.getItem('citizenID')) { getCitizenInfoApi(localStorage.getItem('citizenID')) }
-    prepareCarouselData(paths)
-  }, [paths])
+    prepareCarouselData()
+  }, [])
 
-  const prepareCarouselData = async paths => {
+  const prepareCarouselData = async() => {
     const { nextAreas } = await nextAreaToVote()
 
     // const username = uniqBy(
@@ -108,8 +109,8 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
       issues.push({ title, path, rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`, description: displayYaml(template, path) })
     }
     setIssues(issues)
+    setLoader(false)
   }
-
   const truncateString = (str, num) => {
     if (num && str && str.length > num) {
       return `${str.slice(0, num)}...`
@@ -142,7 +143,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
         )}
         <SliderContent className={!onlySlider ? '' : 'full'}>
           {loading ? (
-            <OverlaySpinner loading overlayParent style={{ zIndex: 0 }} />
+            <OverlaySpinner loading overlayParent />
           ) : (
             <>
               <h3>For you to vote on next:</h3>
