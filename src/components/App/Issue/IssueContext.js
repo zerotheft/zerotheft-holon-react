@@ -1,20 +1,18 @@
 import React, { createContext, useState, useEffect, useContext } from 'react'
-import { get, sortedUniq, sortBy, reverse, toNumber } from 'lodash'
+import { get } from 'lodash'
 
 import { getParameterByName } from 'utils'
 import { getPathProposalsByPath, getProposal } from 'apis/proposals'
-import { AppContext, filterParams } from 'components/App/AppContext'
-import { getPriorVote } from 'apis/vote'
-import useFetch from 'commons/hooks/useFetch'
+import { AppContext } from 'components/App/AppContext'
 
 const IssueContext = createContext()
 
-const IssueProvider = ({ children, id, match, params, location }) => {
+const IssueProvider = ({ children, id, match, location }) => {
   const [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
 
   // const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
-  const { userInfo = {}, filterParams } = useContext(AppContext)
+  // const { userInfo = {}, filterParams } = useContext(AppContext)
   const [proposalDetails, updateProposalDetails] = useState({})
 
   // useEffect(() => {
@@ -32,8 +30,8 @@ const IssueProvider = ({ children, id, match, params, location }) => {
     const counterProposalId = getParameterByName('c')
 
     if (proposalId || counterProposalId) {
-      const proposal = issue.proposals.find(i => i.id === proposalId)
-      const counterProposal = issue.counter_proposals.find(i => i.id === counterProposalId)
+      const proposal = issue.proposals.find((i) => i.id === proposalId)
+      const counterProposal = issue.counter_proposals.find((i) => i.id === counterProposalId)
       updateSelection({ proposal, counterProposal })
     }
   }, [issue, location.search])
@@ -41,7 +39,7 @@ const IssueProvider = ({ children, id, match, params, location }) => {
   const selectedProposalId = get(selection, 'proposal.id')
   const selectedCounterProposalId = get(selection, 'counterProposal.id')
 
-  const fetchProposal = async proposalId => {
+  const fetchProposal = async (proposalId) => {
     if (proposalDetails[proposalId] || !proposalId) return
     try {
       updateProposalDetails({ ...proposalDetails, [proposalId]: { loading: true } })
@@ -89,25 +87,26 @@ const useIssueFetcher = (id, match) => {
   const [issue, updateIssue] = useState(),
     [selection, updateSelection] = useState({ proposal: null, counterProposal: null }),
     [loading, updateLoading] = useState(true),
+    /* eslint-disable-next-line no-unused-vars */
     [error, updateError] = useState()
 
-  const fetchIssue = async() => {
+  const fetchIssue = async () => {
     updateLoading(true)
     try {
       const path = (await getPathProposalsByPath(`${match.params.pathname}%2F${match.params.id}`)) || []
       const issueDetails = {}
       issueDetails.proposals =
         path.data
-          .filter(i => i && parseFloat(i.theftAmt) > 0)
-          .map(i => ({
+          .filter((i) => i && parseFloat(i.theftAmt) > 0)
+          .map((i) => ({
             ...i,
             year: parseInt(get(i, 'year')),
           })) || []
 
       issueDetails.counter_proposals =
         path.data
-          .filter(i => i && parseFloat(i.theftAmt) <= 0)
-          .map(i => ({
+          .filter((i) => i && parseFloat(i.theftAmt) <= 0)
+          .map((i) => ({
             ...i,
             year: parseInt(get(i, 'year')),
           })) || []
@@ -118,7 +117,6 @@ const useIssueFetcher = (id, match) => {
       updateLoading(false)
       return issueDetails
     } catch (e) {
-      console.log(e)
       updateLoading(false)
     }
   }

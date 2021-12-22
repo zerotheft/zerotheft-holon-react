@@ -4,7 +4,7 @@ export default (apiFunc, initialLoading, callback) => {
   const [loading, updateLoading] = useState(initialLoading || false),
     [res, updateRes] = useState()
 
-  const callApi = async(...args) => {
+  const callApi = async (...args) => {
     try {
       if (!apiFunc) return
       updateLoading(true)

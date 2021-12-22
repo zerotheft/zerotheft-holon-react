@@ -12,7 +12,7 @@ export const CustomFieldWrapper = styled.div`
       align-items: center;
       width: 100%;
       & > label {
-        width: ${props => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
+        width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
         text-align: right;
         text-align: end;
         margin-right: 10px;
@@ -90,8 +90,8 @@ export const CustomFieldWrapper = styled.div`
         border-color: red;
       }
     }
-    ${props =>
-    props.labelType === 'top' &&
+    ${(props) =>
+      props.labelType === 'top' &&
       `
       & > div.innerform-wrapper {
         flex-direction: column;
@@ -104,7 +104,7 @@ export const CustomFieldWrapper = styled.div`
     `}
   `,
   Label = styled.div`
-    width: ${props => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
+    width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
     font-weight: 500;
     color: #797979;
     font-size: 16px;
@@ -172,8 +172,8 @@ export const CustomFieldWrapper = styled.div`
         box-shadow: 0px 0px 0px 2px ${colors.primary}, inset 0px 0px 0px 2px #fff;
       }
     }
-    ${props =>
-    props.disabled &&
+    ${(props) =>
+      props.disabled &&
       `
       & > label {
         color: #bcbcbc;

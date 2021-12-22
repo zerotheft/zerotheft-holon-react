@@ -38,14 +38,14 @@ const TextAreaField = ({
 )
 
 TextAreaField.propTypes = {
-  field      : PropTypes.object,
-  form       : PropTypes.object,
-  label      : PropTypes.string,
-  labelWidth : PropTypes.string,
+  field: PropTypes.object,
+  form: PropTypes.object,
+  label: PropTypes.string,
+  labelWidth: PropTypes.string,
   placeholder: PropTypes.string,
-  readonly   : PropTypes.bool,
-  required   : PropTypes.bool,
-  style      : PropTypes.object,
+  readonly: PropTypes.bool,
+  required: PropTypes.bool,
+  style: PropTypes.object,
 }
 
 export default TextAreaField

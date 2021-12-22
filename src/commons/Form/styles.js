@@ -6,8 +6,8 @@ export const Row = styled.div`
   flex-direction: row;
   margin: 15px 0;
   & > div {
-    ${props =>
-    props.centerized &&
+    ${(props) =>
+      props.centerized &&
       `
         align-items: center;
       `}

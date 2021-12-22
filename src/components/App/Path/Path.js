@@ -17,13 +17,7 @@ import { colors } from 'theme'
 import PathDetails from './PathDetails'
 
 const Path = ({ history, match, isIssuePath }) => {
-  const {
-    paths,
-    loadingPaths: loading,
-    loadingTheft,
-    theftInfo,
-    umbrellaPaths = [],
-  } = useContext(AppContext)
+  const { paths, loadingPaths: loading, loadingTheft, theftInfo, umbrellaPaths = [] } = useContext(AppContext)
 
   const pathInTabs =
     paths &&
@@ -39,9 +33,9 @@ const Path = ({ history, match, isIssuePath }) => {
       return null
     }
     /* eslint-disable-next-line array-callback-return */
-    return Object.keys(master).map(i => {
+    return Object.keys(master).map((i) => {
       const masterClone = { ...master[i] } /* eslint-disable-next-line no-unused-expressions */
-      masterClone && ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach(k => delete masterClone[k])
+      masterClone && ['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach((k) => delete masterClone[k])
 
       if (!isEmpty(master[i]) && ((master[i].metadata && master[i].metadata.umbrella) || master[i].parent)) {
         const newParents = [...parents, i]
@@ -80,7 +74,7 @@ const Path = ({ history, match, isIssuePath }) => {
               }
             >
               <ItemBody>
-                {Object.keys(masterClone).map(j => {
+                {Object.keys(masterClone).map((j) => {
                   return populateList({ [j]: masterClone[j] }, newParents, depth + 1)
                 })}
               </ItemBody>
@@ -151,7 +145,8 @@ const Path = ({ history, match, isIssuePath }) => {
               })
             }}
           /> */}
-                <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(current_path_summary, 'vote') === 'YES' ? 'Yes Theft' : 'No Theft'
+                <div className={`vote-percent ${get(current_path_summary, 'vote') === 'NO' ? 'no' : ''}`}>{`${
+                  get(current_path_summary, 'vote') === 'YES' ? 'Yes Theft' : 'No Theft'
                 }  ${get(current_path_summary, 'votedPercent', '0')}%`}</div>
                 <div className="amt">${convertDollarToString(toNumber(get(current_path_summary, 'amount', 0)))}</div>
                 <CustomButton
@@ -214,9 +209,9 @@ const Path = ({ history, match, isIssuePath }) => {
 export default Path
 
 Path.propTypes = {
-  history    : PropTypes.object,
+  history: PropTypes.object,
   isIssuePath: PropTypes.bool,
-  match      : PropTypes.object,
+  match: PropTypes.object,
 }
 const Wrapper = styled(Container)`
     .content {
@@ -290,9 +285,9 @@ const Wrapper = styled(Container)`
   align-items: center;
   padding: 0 15px;
   cursor: pointer;
-  ${props =>
+  ${(props) =>
     props.type !== 'issue' &&
-      `
+    `
     border: 1px solid #B0A8A8;
     background: #fff;
     border-radius: 5px;
@@ -320,9 +315,9 @@ const Wrapper = styled(Container)`
     justify-content: flex-start;
     min-width: 250px;
   }
-  ${props =>
+  ${(props) =>
     props.type === 'issue' &&
-      `
+    `
     cursor: default;
   `}
 `,

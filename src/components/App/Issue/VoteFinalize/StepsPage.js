@@ -42,22 +42,23 @@ const StepsPage = ({ step = 1, checkSteps, vote }) => {
             in your chrome browser.
           </li>
           <li>
-            Click &quot;import wallet&quot; after installing zerotheft wallet. If you already have a wallet in your zerotheft wallet, click
-            &quot;import account using seed phrase&quot;.
+            Click &quot;import wallet&quot; after installing zerotheft wallet. If you already have a wallet in your
+            zerotheft wallet, click &quot;import account using seed phrase&quot;.
           </li>
           <li>
-            Copy the seed phrase from zerotheft desktop app that you can find in &quot;Key/Phrase&quot; section of &quot;wallet&quot; tab.
+            Copy the seed phrase from zerotheft desktop app that you can find in &quot;Key/Phrase&quot; section of
+            &quot;wallet&quot; tab.
           </li>
           <li>Paste it into the zerotheft wallet input and follow the necessary steps.</li>
         </ol>
       </Step>
       <Step isCompleted={step > 5} isFutureStep={step < 5}>
-        5. Connect holon into your zerotheft wallet account. Select the account that you want to connect to the holon. Make sure
-        that the selected wallet is the wallet that matches with the zerotheft desktop wallet.
+        5. Connect holon into your zerotheft wallet account. Select the account that you want to connect to the holon.
+        Make sure that the selected wallet is the wallet that matches with the zerotheft desktop wallet.
       </Step>
 
       <Button
-        onClick={async() => {
+        onClick={async () => {
           if (step === 4) {
             window.location.href = `${window.location.origin + window.location.pathname}?q=steps`
           }
@@ -85,8 +86,8 @@ const Wrapper = styled.div``,
   Step = styled.div`
     margin-bottom: 8px;
     font-size: 14px;
-    ${props =>
-    props.isCompleted &&
+    ${(props) =>
+      props.isCompleted &&
       `
       color: green;
       background: url(${require('assets/icons/check-circle-solid.svg')}) no-repeat 0 2px transparent;
@@ -96,8 +97,8 @@ const Wrapper = styled.div``,
         color: green;
       }
     `}
-    ${props =>
-    props.isFutureStep &&
+    ${(props) =>
+      props.isFutureStep &&
       `
       opacity: 0.2;
       pointer-events: none;

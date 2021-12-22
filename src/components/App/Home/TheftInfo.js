@@ -55,7 +55,6 @@ const TheftInfo = ({ summary = {} }) => {
 }
 
 TheftInfo.propTypes = {
-  history: PropTypes.object,
   summary: PropTypes.object,
 }
 

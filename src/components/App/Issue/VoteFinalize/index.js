@@ -19,7 +19,14 @@ import ProposalDetail from '../commons/ProposalDetail'
 import { AppContext } from '../../AppContext'
 import { IssueContext } from '../IssueContext'
 import Steps from './Steps'
-import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration, getWalletBalance, getWeb3, sendBalanceToWallet } from './voteConditions'
+import {
+  checkNetwork,
+  checkWalletInstallation,
+  getUserMetamaskAddress,
+  getUserRegistration,
+  getWalletBalance,
+  sendBalanceToWallet,
+} from './voteConditions'
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
@@ -34,7 +41,7 @@ const VoteFinalize = ({ match, history, location }) => {
     voting,
     vote,
     priorVoteInfo,
-    web3
+    web3,
   } = useContext(VoteContext)
 
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
@@ -52,7 +59,8 @@ const VoteFinalize = ({ match, history, location }) => {
   /* eslint-disable-next-line no-useless-escape */
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
-  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
+    isUmbrella ? 'multiIssueReport' : 'ztReport'
   }/${issuePath.replace(/\//g, '-')}`
 
   // const getVotedIdeas = async () => {
@@ -62,120 +70,102 @@ const VoteFinalize = ({ match, history, location }) => {
   //   }
 
   // }
-  const { CENTRALIZED_SERVER_FRONTEND, VOTE_BALANCE } = config;
+  const { CENTRALIZED_SERVER_FRONTEND, VOTE_BALANCE } = config
   const [popupError, updatePopupError] = useState({
-    title       : '',
-    message     : '',
+    title: '',
+    message: '',
     redirectLink: '',
-  });
+  })
 
-  const [currentRequirementStep, updateCurrentRequirementStep] = useState(0);
-  const [modalIsOpen, setIsOpen] = useState(false);
-  const [formValues, updateFormValues] = useState();
-  const closeModal = async() => {
-    setIsOpen(false);
+  const [currentRequirementStep, updateCurrentRequirementStep] = useState(0)
+  const [modalIsOpen, setIsOpen] = useState(false)
+  const [formValues, updateFormValues] = useState()
+  const closeModal = async () => {
+    setIsOpen(false)
     await updatePopupError({
-      title       : '',
-      message     : '',
+      title: '',
+      message: '',
       redirectLink: '',
-    });
-    submitForm(formValues);
+    })
+    submitForm(formValues)
   }
 
-  const generateModal = async(title, message, redirectLink) => {
+  const generateModal = async (title, message, redirectLink) => {
     await updatePopupError({
       title,
       message,
       redirectLink,
-    });
-    setIsOpen(true);
-  };
+    })
+    setIsOpen(true)
+  }
 
-
-
-  const checkRequirements = async() => {
-    const isMetamaskInstalled = (currentRequirementStep <= 1)? await checkWalletInstallation(): true;
+  const checkRequirements = async () => {
+    const isMetamaskInstalled = currentRequirementStep <= 1 ? await checkWalletInstallation() : true
     if (!isMetamaskInstalled) {
-      await updateCurrentRequirementStep(1);
-      await generateModal(
-        'Extension',
-        'Please install extension',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
-      );
-      return false;
+      await updateCurrentRequirementStep(1)
+      await generateModal('Extension', 'Please install extension', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
+      return false
     }
 
-    const isCorrectNetwork = (currentRequirementStep <= 2)? await checkNetwork(web3): true;
+    const isCorrectNetwork = currentRequirementStep <= 2 ? await checkNetwork(web3) : true
     if (!isCorrectNetwork) {
-      await updateCurrentRequirementStep(2);
-      await generateModal(
-        'Extension',
-        'Please add correct network',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
-      );
-      return false;
+      await updateCurrentRequirementStep(2)
+      await generateModal('Extension', 'Please add correct network', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
+      return false
     }
 
-    const userWalletAddress = (currentRequirementStep <= 3) ? await getUserMetamaskAddress(web3): true;
+    const userWalletAddress = currentRequirementStep <= 3 ? await getUserMetamaskAddress(web3) : true
     if (!userWalletAddress) {
-      await updateCurrentRequirementStep(3);
-      await generateModal(
-        'Extension',
-        'Please add or import wallet',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
-      );
+      await updateCurrentRequirementStep(3)
+      await generateModal('Extension', 'Please add or import wallet', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
     }
 
-    const userDetails = (currentRequirementStep <= 4)? await getUserRegistration(userWalletAddress): true;
+    const userDetails = currentRequirementStep <= 4 ? await getUserRegistration(userWalletAddress) : true
     if (!userDetails) {
-      await updateCurrentRequirementStep(4);
+      await updateCurrentRequirementStep(4)
       await generateModal(
         'Voter Id',
         'Please register voter id before voting',
         `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
-      );
-      return false;
+      )
+      return false
     }
 
     if (currentRequirementStep <= 5) {
       if (!userInfo.verifiedCitizen) {
-        await updateCurrentRequirementStep(5);
+        await updateCurrentRequirementStep(5)
         await generateModal(
           'Verify Id',
           'Please verify voter id before voting',
           `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
-        );
-        return false;
+        )
+        return false
       }
     }
 
     if (currentRequirementStep <= 6) {
-      const walletBalance = await getWalletBalance(web3, userWalletAddress);
+      const walletBalance = await getWalletBalance(web3, userWalletAddress)
       if (walletBalance < VOTE_BALANCE) {
-        const transferToWalletStatus = await sendBalanceToWallet(
-          userInfo.verifiedCitizen,
-          userWalletAddress
-        );
+        const transferToWalletStatus = await sendBalanceToWallet(userInfo.verifiedCitizen, userWalletAddress)
         if (transferToWalletStatus !== true) {
-          await updateCurrentRequirementStep(6);
+          await updateCurrentRequirementStep(6)
           await generateModal(
             'Balance',
             'We are unable to transfer fund to your wallet. Please try again.',
             `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
-          );
+          )
 
-          return false;
+          return false
         }
       }
     }
 
-    await updateCurrentRequirementStep(7);
-    setIsOpen(false);
-    return true;
+    await updateCurrentRequirementStep(7)
+    setIsOpen(false)
+    return true
   }
 
-
-  const checkQueryParams = async() => {
+  const checkQueryParams = async () => {
     const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
     if (queryParams && getParameterByName('page') === 'steps') {
       const { step } = await checkStep(hierarchyPath, true)
@@ -193,15 +183,15 @@ const VoteFinalize = ({ match, history, location }) => {
     }
   }
 
-  const submitForm = async values => {
-    updateFormValues(values);
-    const requirementChecks = await checkRequirements();
+  const submitForm = async (values) => {
+    updateFormValues(values)
+    const requirementChecks = await checkRequirements()
     if (!requirementChecks) {
       return
     }
 
     const altTheftAmounts = {}
-    Object.keys(theftAmtYears).forEach(yr => {
+    Object.keys(theftAmtYears).forEach((yr) => {
       if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
 
       // delete values[yr]
@@ -253,29 +243,25 @@ const VoteFinalize = ({ match, history, location }) => {
       <Wrapper>
         <OverlaySpinner loading={voting} />
         {popupError && popupError.message && popupError.message !== '' ? (
-          <Modal
-            isOpen={modalIsOpen}
-            onClose={() => checkRequirements()}>
+          <Modal isOpen={modalIsOpen} onClose={() => checkRequirements()}>
             <div
               style={{
-                display       : 'flex',
-                flexDirection : 'column',
-                alignItems    : 'center',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
               <h3>{popupError.title}</h3>
               <p>
-                {`${popupError.message} from`} <a
-                  href={popupError.redirectLink}
-                  target="_blank"
-                  style={{ textDecoration: 'none' }}
-                  rel="noreferrer"
-                >
-                here.
+                {`${popupError.message} from`}{' '}
+                <a href={popupError.redirectLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer">
+                  here.
                 </a>
               </p>
-              <Button style={{ marginTop: 20 }} onClick={() => closeModal()}>Continue</Button>
+              <Button style={{ marginTop: 20 }} onClick={() => closeModal()}>
+                Continue
+              </Button>
             </div>
           </Modal>
         ) : (
@@ -293,16 +279,17 @@ const VoteFinalize = ({ match, history, location }) => {
               enableReinitialize
               initialValues={
                 initialValues || {
-                  vote  : capitalize(finalVote),
+                  vote: capitalize(finalVote),
                   amount: 'static',
                   ...theftAmtYears,
                 }
               }
-              onSubmit={async values => {
+              onSubmit={async (values) => {
                 submitForm(values)
               }}
             >
-              {// eslint-disable-next-line no-unused-vars
+              {
+                // eslint-disable-next-line no-unused-vars
                 ({ values }) => {
                   return (
                     <Form>
@@ -310,11 +297,11 @@ const VoteFinalize = ({ match, history, location }) => {
                         <Modal onClose={() => showErrorPopUp(false)}>
                           <div
                             style={{
-                              display       : 'flex',
-                              flexDirection : 'column',
-                              alignItems    : 'center',
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
                               justifyContent: 'center',
-                              marginTop     : 30,
+                              marginTop: 30,
                             }}
                           >
                             {get(popup, 'message') || 'There was some error while trying to vote.'}
@@ -339,7 +326,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
                       {finalVote === 'yes' &&
                         theftAmtYears &&
-                        Object.keys(theftAmtYears).map(y => (
+                        Object.keys(theftAmtYears).map((y) => (
                           <Row>
                             <Field name={y} component={EditableField} type="number" min={0} label={y} />
                           </Row>
@@ -364,7 +351,8 @@ const VoteFinalize = ({ match, history, location }) => {
                       </BottomRow>
                     </Form>
                   )
-                }}
+                }
+              }
             </Formik>
           </div>
         </FormWrapper>
@@ -396,7 +384,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 </p>
                 {priorVoteInfo && priorVoteInfo.success && (
                   <Button
-                    onClick={() => { }}
+                    onClick={() => {}}
                     style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }}
                     height={62}
                   >
@@ -438,7 +426,7 @@ const VoteFinalize = ({ match, history, location }) => {
   )
 }
 
-const FinalizeWrapper = props => {
+const FinalizeWrapper = (props) => {
   return (
     <VoteProvider>
       <VoteFinalize {...props} />{' '}
@@ -488,7 +476,6 @@ const Wrapper = styled.div`
       color: ${colors.text.gray};
     }
   `,
-
   // Label = styled.div`
   //   font-weight: 600;
   //   color: #062928;

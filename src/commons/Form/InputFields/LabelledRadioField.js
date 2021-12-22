@@ -13,7 +13,7 @@ const LabelledRadioField = ({ field, readonly = false, values = [], style, inner
   return (
     <Field
       name={field.name}
-      render={RadioField => (
+      render={(RadioField) => (
         <CustomFieldWrapper style={style}>
           <div className="innerform-wrapper" style={innerStyle}>
             <RadioItemsWrapper>
@@ -39,13 +39,13 @@ const LabelledRadioField = ({ field, readonly = false, values = [], style, inner
 }
 
 LabelledRadioField.propTypes = {
-  field     : PropTypes.object,
+  field: PropTypes.object,
   innerStyle: PropTypes.object,
   // eslint-disable-next-line react/no-unused-prop-types
   radioStyle: PropTypes.object,
-  readonly  : PropTypes.bool,
-  style     : PropTypes.object,
-  values    : PropTypes.array,
+  readonly: PropTypes.bool,
+  style: PropTypes.object,
+  values: PropTypes.array,
 }
 
 export default LabelledRadioField

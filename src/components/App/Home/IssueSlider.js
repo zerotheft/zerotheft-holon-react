@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import Carousel from 'react-elastic-carousel'
 import { get } from 'lodash'
@@ -10,7 +10,8 @@ import { getProposalTemplate } from 'apis/proposals'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import Button from 'commons/Buttons'
 import { Container, EmptyText } from 'commons/styles'
-import { AppContext } from '../AppContext'
+
+// import { AppContext } from '../AppContext'
 
 // const getLeafNodes = (data, path = '/path/USA', searchFilter) => {
 //   if (!isObject(data)) return []
@@ -61,7 +62,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     prepareCarouselData()
   }, [])
 
-  const prepareCarouselData = async() => {
+  const prepareCarouselData = async () => {
     const { nextAreas } = await nextAreaToVote()
 
     // const username = uniqBy(
@@ -97,16 +98,28 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     // ).filter(i => i.description)
     // setIssues(mappedIssues)
     const issues = []
+
+    // TODO: We need to look after this loop later.
+    /* eslint-disable-next-line no-restricted-syntax */
     for (const area of nextAreas) {
       let path = area.hierarchy
       const pathElms = path.split('/')
       const title = pathElms.pop()
-      if (title === endNode) { continue }
+      /* eslint-disable-next-line no-continue */
+      if (title === endNode) {
+        continue
+      }
       path = pathElms.join('%2F')
       const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${title}`
+      /* eslint-disable-next-line no-await-in-loop */
       const template = await getProposalTemplate(templatePath)
-      path = path.replace(/%2F/g, ' > ');
-      issues.push({ title, path, rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`, description: displayYaml(template, path) })
+      path = path.replace(/%2F/g, ' > ')
+      issues.push({
+        title,
+        path,
+        rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`,
+        description: displayYaml(template),
+      })
     }
     setIssues(issues)
     setLoader(false)
@@ -118,11 +131,12 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     return str
   }
 
-  const displayYaml = (template, path) => {
+  const displayYaml = (template) => {
     let data
     try {
       data = yaml.safeLoad(template)
     } catch (e) {
+      /* eslint-disable-next-line no-console */
       console.log('loading yaml', e.message)
     }
 
@@ -149,7 +163,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
               <h3>For you to vote on next:</h3>
               {allIssues.length ? (
                 <Carousel pagination={false} enableMouseSwipe={false} style={{ height: '160px' }}>
-                  {allIssues.map(element => {
+                  {allIssues.map((element) => {
                     return (
                       <Item>
                         <Path>
@@ -159,10 +173,13 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
                         <div style={{ fontSize: '15px' }}>{element.description}</div>
                         <Button
                           onClick={() => {
-                            if (afterVote) { updateIssue([]); }
+                            if (afterVote) {
+                              updateIssue([])
+                            }
                             history.push(element.rawPath)
                           }}
-                          plain>
+                          plain
+                        >
                           Read More
                         </Button>
                       </Item>

@@ -36,26 +36,26 @@ export const get = (path, params, apiUrl = API_URL) => {
   return axios(url, {
     method: 'get',
     params,
-  }).catch(e => checkForError(e, 'get'))
+  }).catch((e) => checkForError(e, 'get'))
 }
 
-export const post = async(path, data, apiUrl = API_URL) => {
+export const post = async (path, data, apiUrl = API_URL) => {
   return axios(`${apiUrl}/${path}`, {
     method: 'post',
     data,
-  }).catch(e => checkForError(e, 'post'))
+  }).catch((e) => checkForError(e, 'post'))
 }
 
 export const put = (path, data, apiUrl = API_URL) => {
   return axios(`${apiUrl}/${path}`, {
     method: 'put',
     data,
-  }).catch(e => checkForError(e, 'put'))
+  }).catch((e) => checkForError(e, 'put'))
 }
 
 export const deleteApi = (path, data) => {
   return axios(`${API_URL}/${path}`, {
     method: 'delete',
     data,
-  }).catch(e => checkForError(e, 'delete'))
+  }).catch((e) => checkForError(e, 'delete'))
 }

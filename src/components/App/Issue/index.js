@@ -16,7 +16,7 @@ import Vote from './Vote'
 import VoteFinalize from './VoteFinalize'
 import AfterVote from './AfterVote'
 
-const IssueWrapper = props => (
+const IssueWrapper = (props) => (
   <IssueProvider id={get(props, 'match.params.id')} {...props}>
     <Issue {...props} />
   </IssueProvider>

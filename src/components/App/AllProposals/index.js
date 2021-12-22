@@ -14,41 +14,41 @@ const AllProposals = () => {
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false)
   const filteredProposals =
     allProposals &&
-    allProposals.filter(item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()))
+    allProposals.filter((item) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()))
 
   const columns = useMemo(
     () => [
       {
-        name    : 'ID',
+        name: 'ID',
         selector: 'id',
         sortable: true,
       },
       {
-        name    : 'Theft Amount',
+        name: 'Theft Amount',
         selector: 'name',
         sortable: true,
       },
       {
-        name    : 'Country',
+        name: 'Country',
         selector: 'country',
         sortable: true,
       },
       {
-        name    : 'Path',
+        name: 'Path',
         selector: 'path',
         sortable: true,
       },
 
       {
-        name    : 'Year',
+        name: 'Year',
         selector: 'year',
         sortable: true,
       },
       {
-        name    : 'Date',
+        name: 'Date',
         selector: 'date',
         sortable: true,
-        cell    : props => convertUNIXtoDATETIME(props.date),
+        cell: (props) => convertUNIXtoDATETIME(props.date),
       },
     ],
     []
@@ -82,7 +82,7 @@ const AllProposals = () => {
     }
 
     return (
-      <FilterComponent onFilter={e => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+      <FilterComponent onFilter={(e) => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
     )
   }, [filterText, resetPaginationToggle])
   return (

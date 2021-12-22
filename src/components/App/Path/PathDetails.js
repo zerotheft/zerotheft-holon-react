@@ -5,11 +5,25 @@ import { useHistory } from 'react-router-dom'
 import { toNumber, get } from 'lodash'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFilePdf, faEye } from '@fortawesome/free-solid-svg-icons'
-
+import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
+import IconButton from '@mui/material/IconButton'
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
 import { calculate } from 'components/App/commons/services'
 import Button from 'commons/Buttons'
+import { colors } from 'theme'
 import { convertDollarToString } from 'utils'
 
+const CustomToolTip = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
+  () => ({
+    [`& .${tooltipClasses.arrow}`]: {
+      color: colors.button.blackText,
+    },
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: colors.button.blackText,
+      fontSize: 15,
+    },
+  })
+)
 const PathDetails = ({ url, isPath, summary, viewLink }) => {
   const summaryPath = summary && summary[url]
 
@@ -19,8 +33,24 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
     <Wrapper>
       {voteDetails ? (
         <div className="details-wrapper">
-          <div className={`vote-percent ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>{`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'
-          } ${get(voteDetails, 'votedPercent', '0')}%`}</div>
+          <div
+            className={`vote-percent ${
+              voteDetails.unOfficial ? 'unofficial' : get(voteDetails, 'vote') === 'YES' ? 'no' : ''
+            }`}
+          >
+            {`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'} ${get(
+              voteDetails,
+              'votedPercent',
+              '0'
+            )}%`}
+          </div>
+          {voteDetails.unOfficial && (
+            <CustomToolTip title={`Need ${voteDetails.unlockVotes} votes (${voteDetails.votes})`} arrow placement="top">
+              <IconButton>
+                <ErrorOutlineIcon sx={{ color: colors.orangeColor }} />
+              </IconButton>
+            </CustomToolTip>
+          )}
           <div className={`amt ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>
             ${convertDollarToString(toNumber(get(voteDetails, 'amount', 1)))}
           </div>
@@ -30,7 +60,7 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
       )}
       <div className="button-wrapper">
         <CustomButton
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation()
             history.push(`${viewLink}/proposals`)
           }}
@@ -43,7 +73,7 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
           View
         </CustomButton>
         <CustomButton
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation()
             history.push(`/${isPath ? 'pathReport' : 'leafReport'}/${url.replaceAll('/', '%2F')}`)
           }}
@@ -71,9 +101,9 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
 export default PathDetails
 
 PathDetails.propTypes = {
-  isPath  : PropTypes.bool,
-  summary : PropTypes.object,
-  url     : PropTypes.string,
+  isPath: PropTypes.bool,
+  summary: PropTypes.object,
+  url: PropTypes.string,
   viewLink: PropTypes.string,
 }
 const Wrapper = styled.div`
@@ -98,18 +128,20 @@ const Wrapper = styled.div`
       flex-direction: row;
       align-items: center;
       min-width: 190px;
+
       .amt {
         font-size: 22px;
         color: #000;
         font-weight: 600;
         min-width: 85px;
+        margin-left: 20px;
         &.no {
           color: #888;
           text-decoration: line-through;
         }
       }
       .vote-percent {
-        margin-right: 20px;
+        margin-right: 5px;
         font-size: 16px;
         font-weight: 600;
         color: #6ab768;
@@ -118,6 +150,14 @@ const Wrapper = styled.div`
         &.no {
           color: #d76969;
         }
+        &.unofficial {
+          color: ${colors.orangeColor};
+        }
+      }
+      .overlay-info {
+        z-index: 9;
+        margin: 30px;
+        background: #009938;
       }
     }
   `,

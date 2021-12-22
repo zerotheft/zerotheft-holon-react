@@ -81,10 +81,12 @@ const Step4 = ({ updateCurrentStep }) => {
                     ) : (
                       <>
                         <li>
-                          Create your zerotheft wallet account by clicking create wallet button and follow necessary steps.
+                          Create your zerotheft wallet account by clicking create wallet button and follow necessary
+                          steps.
                         </li>
                         <li>
-                          Connect zerotheft wallet to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
+                          Connect zerotheft wallet to our holon.{' '}
+                          <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
                         </li>
                       </>
                     )}
@@ -92,7 +94,8 @@ const Step4 = ({ updateCurrentStep }) => {
                 ) : (
                   <>
                     <li>
-                      Connect zerotheft wallet to our holon. <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
+                      Connect zerotheft wallet to our holon.{' '}
+                      <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
                     </li>
                     <li>If you see not connected info in your zerotheft wallet, click there and connect the wallet.</li>
                   </>
@@ -131,8 +134,8 @@ const Question = styled.div``,
   Option = styled.div`
     padding: 10px;
     cursor: pointer;
-    color: ${props => (props.selected ? '#fff' : colors.primary)};
-    background: ${props => (props.selected ? colors.primary : '#fff')};
+    color: ${(props) => (props.selected ? '#fff' : colors.primary)};
+    background: ${(props) => (props.selected ? colors.primary : '#fff')};
     :first-of-type {
       border-right: 1px solid ${colors.primary};
     }

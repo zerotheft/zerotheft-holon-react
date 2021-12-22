@@ -83,7 +83,7 @@ const Wrapper = styled(NavLink)`
       text-decoration: line-through;
     }
   }
-  ${props =>
+  ${(props) =>
     props.parent &&
     `
     .name {

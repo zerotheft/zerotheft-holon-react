@@ -23,10 +23,10 @@ const IssueItem = ({ data = {}, style = {}, onClick, hideAmount = false }) => {
 export default IssueItem
 
 IssueItem.propTypes = {
-  data      : PropTypes.object,
+  data: PropTypes.object,
   hideAmount: PropTypes.bool,
-  onClick   : PropTypes.func,
-  style     : PropTypes.object,
+  onClick: PropTypes.func,
+  style: PropTypes.object,
 }
 
 const Wrapper = styled.div`
@@ -39,7 +39,7 @@ const Wrapper = styled.div`
   & > div {
     padding: 10px 15px;
   }
-  ${props =>
+  ${(props) =>
     props.cursor &&
     `
     cursor: pointer;

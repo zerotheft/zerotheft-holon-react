@@ -16,6 +16,7 @@ import { IssueContext } from '../IssueContext'
 
 const AfterVote = ({ match }) => {
   const { vote, issue, updateIssue } = useContext(IssueContext)
+  /* eslint-disable-next-line no-unused-vars */
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
 
   useEffect(() => {
@@ -28,15 +29,15 @@ const AfterVote = ({ match }) => {
 
   // vote = { 'vote': "" }
   // issue = { 'proposals': [], 'counter_proposals': [] }
-  const proposal = [...issue.proposals, ...issue.counter_proposals].find(i => i.id == vote.proposalId)
+  const proposal = [...issue.proposals, ...issue.counter_proposals].find((i) => i.id === vote.proposalId)
   const amount = vote.vote === 'Yes' ? proposal.theftAmt : 0
 
-  const openRating = () => {
-    window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/proposal-feedback/${get(
-      proposal,
-      'id'
-    )}`
-  }
+  // const openRating = () => {
+  //   window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/proposal-feedback/${get(
+  //     proposal,
+  //     'id'
+  //   )}`
+  // }
   return (
     <>
       <Wrapper>
