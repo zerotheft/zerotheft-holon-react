@@ -35,7 +35,7 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
         <div className="details-wrapper">
           <div
             className={`vote-percent ${
-              voteDetails.unOfficial ? 'unofficial' : get(voteDetails, 'vote') === 'YES' ? 'no' : ''
+              voteDetails.unOfficial ? 'unofficial' : get(voteDetails, 'vote') === 'NO' ? 'no' : ''
             }`}
           >
             {`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'} ${get(
