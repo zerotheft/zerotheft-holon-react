@@ -18,8 +18,8 @@ const Extend = styled.span`
       border-left: 5px solid transparent;
       border-right: 5px solid transparent;
       border-bottom: 5px solid ${colors.primary};
-      ${props =>
-    props.down &&
+      ${(props) =>
+        props.down &&
         `
         border-bottom: none;
         border-top: 5px solid ${colors.primary};
@@ -28,8 +28,8 @@ const Extend = styled.span`
       top: -2px;
       margin-left: 3px;
     }
-    ${props =>
-    !props.down &&
+    ${(props) =>
+      !props.down &&
       `
       margin-left: 5px;
     `}

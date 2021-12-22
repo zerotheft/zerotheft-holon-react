@@ -38,10 +38,10 @@ export default styled.button`
     cursor: no-drop;
   }
   color: #fff;
-  width: ${props => (props.width ? `${props.width}px` : 'auto')};
-  height: ${props => `${props.height || 35}px`};
-  ${props => props.css && css(...props.css)};
-  ${props => props.plain && plainProperty}
-  ${props => props.secondary && secondaryProperty}
-  ${props => props.large && largeProperty}
+  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+  height: ${(props) => `${props.height || 35}px`};
+  ${(props) => props.css && css(...props.css)};
+  ${(props) => props.plain && plainProperty}
+  ${(props) => props.secondary && secondaryProperty}
+  ${(props) => props.large && largeProperty}
 `

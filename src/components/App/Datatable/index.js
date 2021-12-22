@@ -10,7 +10,7 @@ import { tabs } from './constants'
 
 createTheme('custom', {
   text: {
-    primary  : colors.background.body,
+    primary: colors.background.body,
     secondary: colors.textTitle,
   },
   background: {
@@ -18,23 +18,24 @@ createTheme('custom', {
   },
   context: {
     background: colors.datatable.context.background,
-    text      : colors.text.white,
+    text: colors.text.white,
   },
 })
 
-const Datatable = ({ history }) => {
+const Datatable = () => {
   const [getCitizensInfoApi, loading, citizenData] = useFetch(getCitizensInfo)
   const [getProposalsInfoApi, load, proposalData] = useFetch(getProposalsInfo)
 
   const [tabInfo, updateTab] = useState(Object.assign(tabs[0], { data: citizenData }))
-  const updateItems = index => {
+  const updateItems = (index) => {
+    /* eslint-disable-next-line default-case */
     switch (index) {
-    case 1:
-      updateTab(Object.assign(tabs[index - 1], { data: citizenData }))
-      break
-    case 2:
-      updateTab(Object.assign(tabs[index - 1], { data: proposalData }))
-      break
+      case 1:
+        updateTab(Object.assign(tabs[index - 1], { data: citizenData }))
+        break
+      case 2:
+        updateTab(Object.assign(tabs[index - 1], { data: proposalData }))
+        break
     }
   }
   useEffect(() => {
@@ -46,7 +47,7 @@ const Datatable = ({ history }) => {
   return (
     <Wrapper>
       <div style={{ display: 'flex', flexDirection: 'row' }}>
-        {tabs.map(tab => {
+        {tabs.map((tab) => {
           return (
             <ListMenu>
               <TabWrapper

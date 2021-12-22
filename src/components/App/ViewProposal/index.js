@@ -44,7 +44,7 @@ export default ViewProposal
 
 ViewProposal.propTypes = {
   history: PropTypes.object,
-  match  : PropTypes.object,
+  match: PropTypes.object,
 }
 
 const HeaderContainer = styled.div`

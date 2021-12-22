@@ -61,7 +61,7 @@ const Report = ({ match, history }) => {
 export const Iframe = styled.iframe`
     overflow: auto;
     width: calc(100% + 17px);
-    border: ${props => props.border || '2px solid var(--lighterGrey)'};
+    border: ${(props) => props.border || '2px solid var(--lighterGrey)'};
     height: calc(100vh - 60px - 45px - 20px);
     scrolling: no;
   `,
@@ -90,5 +90,5 @@ export default Report
 
 Report.propTypes = {
   history: PropTypes.object,
-  match  : PropTypes.object,
+  match: PropTypes.object,
 }

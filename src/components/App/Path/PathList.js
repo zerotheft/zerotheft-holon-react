@@ -27,7 +27,7 @@ const PathList = ({ history }) => {
       {loading && <OverlaySpinner loading />}
       <Container style={{ maxWidth: 1100 }}>
         <ListWrapper>
-          {get(nations, 'data', []).map(i => (
+          {get(nations, 'data', []).map((i) => (
             <div>
               <div className="issue">
                 <div style={{ width: 410 }}>
@@ -47,9 +47,9 @@ const PathList = ({ history }) => {
                     isSearchable={false}
                     styles={SelectStyles}
 
-                  // onChange={selected => {
-                  //   // updateFilter({ ...filterParams, year: selected.value })
-                  // }}
+                    // onChange={selected => {
+                    //   // updateFilter({ ...filterParams, year: selected.value })
+                    // }}
                   />
                 </div>
                 <div style={{ width: 260 }} className="details">
@@ -80,33 +80,33 @@ PathList.propTypes = {
 }
 
 const SelectStyles = {
-  singleValue: styles => ({
+  singleValue: (styles) => ({
     ...styles,
     fontSize: 14,
   }),
-  control: styles => ({
+  control: (styles) => ({
     ...styles,
-    borderColor : '#ccc !important',
+    borderColor: '#ccc !important',
     borderRadius: 0,
-    minHeight   : 0,
-    background  : 'transparent',
-    boxShadow   : 'none !important',
-    width       : 100,
+    minHeight: 0,
+    background: 'transparent',
+    boxShadow: 'none !important',
+    width: 100,
   }),
-  option: styles => ({
+  option: (styles) => ({
     ...styles,
     fontSize: 14,
   }),
-  menu: styles => ({
+  menu: (styles) => ({
     ...styles,
-    margin      : '5px 0 0',
+    margin: '5px 0 0',
     borderRadius: 0,
   }),
-  menuList: styles => ({
+  menuList: (styles) => ({
     ...styles,
     maxHeight: 150,
   }),
-  placeholder: styles => ({
+  placeholder: (styles) => ({
     ...styles,
     fontSize: 14,
   }),

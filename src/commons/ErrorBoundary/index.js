@@ -8,7 +8,7 @@ import ErrorPage from './ErrorPage'
 const { MODE, HONEYBADGER_API_KEY } = mainConfig
 
 const config = {
-  apiKey     : HONEYBADGER_API_KEY,
+  apiKey: HONEYBADGER_API_KEY,
   environment: `${MODE}-holon-frontend`,
 }
 
@@ -20,14 +20,12 @@ class ErrorBoundary extends React.Component {
     this.state = { hasError: false }
   }
 
-  static getDerivedStateFromError(error) {
-    console.log(error, 'e')
+  static getDerivedStateFromError() {
     return { hasError: true }
   }
 
   componentDidCatch(error) {
     honeybadger.notify(error)
-    console.log('caught', error)
   }
 
   render() {

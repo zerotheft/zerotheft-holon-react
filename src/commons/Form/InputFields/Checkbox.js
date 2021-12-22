@@ -29,12 +29,12 @@ const Checkbox = ({ label, field, form, readonly = false, style, labelStyle }) =
 )
 
 Checkbox.propTypes = {
-  field     : PropTypes.object,
-  form      : PropTypes.object,
-  label     : PropTypes.string,
+  field: PropTypes.object,
+  form: PropTypes.object,
+  label: PropTypes.string,
   labelStyle: PropTypes.object,
-  readonly  : PropTypes.bool,
-  style     : PropTypes.object,
+  readonly: PropTypes.bool,
+  style: PropTypes.object,
 }
 
 export default Checkbox

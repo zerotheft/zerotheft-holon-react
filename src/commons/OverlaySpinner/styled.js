@@ -8,7 +8,7 @@ export const Wrapper = styled.div`
   left: ${({ left }) => left}px;
   right: 0;
   background: ${({ backgroundColor }) => backgroundColor};
-  ${props =>
+  ${(props) =>
     props.overlayParent &&
     `
     z-index: 1;  

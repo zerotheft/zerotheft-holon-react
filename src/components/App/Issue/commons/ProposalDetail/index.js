@@ -24,28 +24,18 @@ import { Body, Header, NoChartText } from '../styles'
 
 const { CHAIN_ID, loadContract } = config
 
-const ProposalDetail = ({
-  item,
-  selection,
-  updateSelection,
-  history,
-  reportPath,
-  type,
-  allowSelect = true,
-}) => {
+const ProposalDetail = ({ item, selection, updateSelection, history, reportPath, type, allowSelect = true }) => {
   const [getProposalApi, proposalLoading, proposalInfo] = useFetch(getProposal),
     match = useRouteMatch(),
-    { carryTransaction, getWalletAccount, signMessage } =
-      useWeb3(),
+    { carryTransaction, getWalletAccount, signMessage } = useWeb3(),
     [ratingLoader, updateRatingLoader] = useState(false)
-
 
   // const { proposalDetails } = useContext(IssueContext)
   let maxTheftYear = null
   if (item && item.theftYears) {
     const { theftYears } = item
     let theftYearKeys = Object.keys(theftYears)
-    theftYearKeys = theftYearKeys.map(item => {
+    theftYearKeys = theftYearKeys.map((item) => {
       return parseInt(item)
     })
 
@@ -71,7 +61,7 @@ const ProposalDetail = ({
   // const tempDetail = get(proposalInfo, 'detail', {});
 
   //  update rating if the user clicks on the star
-  const changeRating = async newRating => {
+  const changeRating = async (newRating) => {
     try {
       updateRatingLoader(true)
       const feedbackContract = await loadContract('ZTMFeedbacks')
@@ -89,34 +79,32 @@ const ProposalDetail = ({
         throw new Error('Please select the correct network.')
       }
 
-      // Check if `account` is a verified voter ID 
+      // Check if `account` is a verified voter ID
       const { data } = await getVoterInfos(account.toLowerCase())
-      if (!data.verifiedCitizen) { throw new Error('You are not a verified citizen.') }
+      if (!data.verifiedCitizen) {
+        throw new Error('You are not a verified citizen.')
+      }
 
       // Check if `account` has already provided rating for this proposal
       const ratingData = await getCitizenProposalRating(account, item.id)
-      const methodName = (ratingData.success) ? 'updateProposalRating' : 'addProposalRating'
+      const methodName = ratingData.success ? 'updateProposalRating' : 'addProposalRating'
 
       // Now, sign a message and perform transaction
       const params = [
         { t: 'string', v: item.id },
         { t: 'uint256', v: newRating },
         { t: 'address', v: account },
-      ];
+      ]
       const signedMessage = await signMessage(params, account)
       const txDetails = { userId: data.id, details: `Rated proposal ${item.id}`, txType: 'proposal-rating' }
 
-      await carryTransaction(feedbackContract, methodName, [
-        item.id,
-        newRating,
-        signedMessage,
-      ], txDetails);
+      await carryTransaction(feedbackContract, methodName, [item.id, newRating, signedMessage], txDetails)
       await getProposalApi(item.id)
       toast.success(`Rating successfully ${ratingData.success ? 'updated' : 'provided'}.`)
     } catch (e) {
-      toast.error(e.message || 'Something went wrong.');
+      toast.error(e.message || 'Something went wrong.')
     } finally {
-      updateRatingLoader(false);
+      updateRatingLoader(false)
     }
   }
 
@@ -131,7 +119,6 @@ const ProposalDetail = ({
     )
   }
   return (
-
     <Body>
       <OverlaySpinner loading={ratingLoader} />
       <div className="bodyDescription">
@@ -176,7 +163,8 @@ const ProposalDetail = ({
                     type === 'counter' ? { ...selection, counterProposal: item } : { ...selection, proposal: item }
                   )
                   history.push(
-                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === 'counter' ? 'vote' : 'counter-proposals'
+                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${
+                      type === 'counter' ? 'vote' : 'counter-proposals'
                     }`
                   )
                 }}
@@ -193,7 +181,8 @@ const ProposalDetail = ({
                     type === 'counter' ? { ...selection, counterProposal: null } : { ...selection, proposal: null }
                   )
                   history.push(
-                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${type === 'counter' ? 'vote' : 'counter-proposals'
+                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${
+                      type === 'counter' ? 'vote' : 'counter-proposals'
                     }`
                   )
                 }}
@@ -237,10 +226,10 @@ const ProposalDetail = ({
               <div
                 style={{ fontSize: 22, cursor: 'pointer', marginBottom: 15 }}
 
-              // onClick={() =>
-              // (window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id
-              //   }/proposal-feedback/${get(item, 'id')}`)
-              // }
+                // onClick={() =>
+                // (window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id
+                //   }/proposal-feedback/${get(item, 'id')}`)
+                // }
               >
                 {get(proposalInfo, 'ratings.count', 0)}
                 <span style={{ margin: '0 15px 0 5px' }}>
@@ -264,7 +253,11 @@ const ProposalDetail = ({
             </div>
             {imageExists(`${reportPath}-votesForTheftAmount.svg`) ? (
               <div className="imageWrapper">
-                <img src={`${reportPath}-votesForTheftAmount.svg`} style={{ width: '100%', height: 'auto' }} alt="Chart" />
+                <img
+                  src={`${reportPath}-votesForTheftAmount.svg`}
+                  style={{ width: '100%', height: 'auto' }}
+                  alt="Chart"
+                />
               </div>
             ) : (
               <NoChartText>Unable to meet criteria for chart.</NoChartText>
@@ -310,7 +303,7 @@ const TheftBlockSec = styled.div`
       top: 0px;
       left: 0px;
       height: 100%;
-      width: ${props => props.width || 0}%;
+      width: ${(props) => props.width || 0}%;
       background: green;
     }
     &.noTheftsec {

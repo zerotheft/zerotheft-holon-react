@@ -20,7 +20,8 @@ const Proposals = ({ history, match }) => {
   /* eslint-disable-next-line no-useless-escape */
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
-  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
+    isUmbrella ? 'multiIssueReport' : 'ztReport'
   }/${issuePath.replace(/\//g, '-')}`
 
   const data = get(issue, 'proposals')
