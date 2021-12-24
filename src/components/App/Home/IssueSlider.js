@@ -107,6 +107,7 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
       const title = pathElms.pop()
       /* eslint-disable-next-line no-continue */
       if (title === endNode) {
+        // eslint-disable-next-line no-continue
         continue
       }
       path = pathElms.join('%2F')
