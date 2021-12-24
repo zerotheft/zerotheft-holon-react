@@ -318,19 +318,6 @@ const VoteFinalize = ({ match, history, location }) => {
                   </div>
                 )}
               </p>
-
-              {/* <p>
-                {currentRequirementStep !== 6 ? }
-                {`${popupError.message} from`}{" "}
-                <a
-                  href={popupError.redirectLink}
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                  rel="noreferrer"
-                >
-                  here.
-                </a>
-              </p> */}
               <Button style={{ marginTop: 20 }} onClick={() => continueCheck()}>
                 Continue
               </Button>
