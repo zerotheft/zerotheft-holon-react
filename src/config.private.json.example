@@ -7,5 +7,6 @@
     "NETWORK_NAME":"privatenet",
     "CENTRALIZED_SERVER" : "https://testingapi.zerotheft.net",
     "CENTRALIZED_SERVER_FRONTEND" : "https://testing.zerotheft.net",
-    "GAS_PRICE": 72
+    "GAS_PRICE": 72,
+    "VOTE_BALANCE": 0.01
 }

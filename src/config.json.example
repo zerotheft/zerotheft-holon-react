@@ -6,5 +6,5 @@
   "CENTRALIZED_SERVER" : "http://localhost:3000",
   "CENTRALIZED_SERVER_FRONTEND" : "http://localhost:3001",
   "GAS_PRICE": 52,
-    "VOTE_BALANCE": 0.01,
+  "VOTE_BALANCE": 0.01
 }
