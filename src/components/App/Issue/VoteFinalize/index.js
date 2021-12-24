@@ -126,12 +126,9 @@ const VoteFinalize = ({ match, history, location }) => {
       selection.proposal = data.selection.proposal
       selection.counterProposal = data.selection.counterProposal
     }
-
-    // updateFormValues(data.formValues);
   }
 
   retrieveDataFromLocalStorage()
-
   const generateModal = async (title, message, redirectLink) => {
     await updatePopupError({
       title,
