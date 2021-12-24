@@ -47,6 +47,7 @@ export const getWeb3 = async () => {
 export const checkWalletInstallation = async () => {
   try {
     if (window.ethereum || window.ztm_ethereum || window.web3) {
+      await window.ethereum.enable()
       return true
     }
     return false

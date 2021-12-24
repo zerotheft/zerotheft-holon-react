@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { get, capitalize } from 'lodash'
 import { Formik, Field, Form } from 'formik'
-import { Redirect } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import styled from 'styled-components'
 
@@ -30,7 +29,7 @@ import {
 
 const VoteFinalize = ({ match, history, location }) => {
   const queryParams = location.search
-  const { selection, loading } = useContext(IssueContext)
+  const { selection } = useContext(IssueContext)
   const { umbrellaPaths, holonInfo } = useContext(AppContext)
   const {
     checkStep,
@@ -56,20 +55,16 @@ const VoteFinalize = ({ match, history, location }) => {
   const hierarchyPath = `${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`.replaceAll('%2F', '/')
 
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
+
   /* eslint-disable-next-line no-useless-escape */
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
+
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
+
   const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
     isUmbrella ? 'multiIssueReport' : 'ztReport'
   }/${issuePath.replace(/\//g, '-')}`
 
-  // const getVotedIdeas = async () => {
-  //   if (localStorage.getItem('citizenID')) {
-  //     //fetch user information
-  //     await getCitizenInfoApi(localStorage.getItem('citizenID'))
-  //   }
-
-  // }
   const { CENTRALIZED_SERVER_FRONTEND, VOTE_BALANCE } = config
   const [popupError, updatePopupError] = useState({
     title: '',
@@ -79,6 +74,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
   const [currentRequirementStep, updateCurrentRequirementStep] = useState(0)
   const [modalIsOpen, setIsOpen] = useState(false)
+  const [requirementCheckProgress, updateRequirementCheckProgress] = useState(false)
   const [formValues, updateFormValues] = useState()
   const closeModal = async () => {
     setIsOpen(false)
@@ -87,9 +83,52 @@ const VoteFinalize = ({ match, history, location }) => {
       message: '',
       redirectLink: '',
     })
+  }
+
+  const continueCheck = async () => {
+    setIsOpen(false)
+    await updatePopupError({
+      title: '',
+      message: '',
+      redirectLink: '',
+    })
+
+    if (currentRequirementStep <= 1) {
+      storeDataInLocalStorage()
+      window.location.reload()
+      return
+    }
+
     submitForm(formValues)
   }
 
+  // Store data in local storage for the reload
+  const storeDataInLocalStorage = async () => {
+    if (!get(selection, 'proposal')) {
+      return
+    }
+
+    const storagePayload = {
+      selection,
+      initialValues,
+      queryParams,
+      issuePath,
+      formValues,
+      currentRequirementStep,
+    }
+
+    localStorage.setItem(issuePath, JSON.stringify(storagePayload))
+  }
+
+  const retrieveDataFromLocalStorage = async () => {
+    const data = JSON.parse(localStorage.getItem(issuePath))
+    if (data.selection) {
+      selection.proposal = data.selection.proposal
+      selection.counterProposal = data.selection.counterProposal
+    }
+  }
+
+  retrieveDataFromLocalStorage()
   const generateModal = async (title, message, redirectLink) => {
     await updatePopupError({
       title,
@@ -100,8 +139,10 @@ const VoteFinalize = ({ match, history, location }) => {
   }
 
   const checkRequirements = async () => {
+    updateRequirementCheckProgress(true)
     const isMetamaskInstalled = currentRequirementStep <= 1 ? await checkWalletInstallation() : true
     if (!isMetamaskInstalled) {
+      updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(1)
       await generateModal('Extension', 'Please install extension', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
       return false
@@ -109,6 +150,7 @@ const VoteFinalize = ({ match, history, location }) => {
 
     const isCorrectNetwork = currentRequirementStep <= 2 ? await checkNetwork(web3) : true
     if (!isCorrectNetwork) {
+      updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(2)
       await generateModal('Extension', 'Please add correct network', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
       return false
@@ -116,12 +158,14 @@ const VoteFinalize = ({ match, history, location }) => {
 
     const userWalletAddress = currentRequirementStep <= 3 ? await getUserMetamaskAddress(web3) : true
     if (!userWalletAddress) {
+      updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(3)
       await generateModal('Extension', 'Please add or import wallet', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
     }
 
     const userDetails = currentRequirementStep <= 4 ? await getUserRegistration(userWalletAddress) : true
     if (!userDetails) {
+      updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(4)
       await generateModal(
         'Voter Id',
@@ -133,11 +177,12 @@ const VoteFinalize = ({ match, history, location }) => {
 
     if (currentRequirementStep <= 5) {
       if (!userInfo.verifiedCitizen) {
+        updateRequirementCheckProgress(false)
         await updateCurrentRequirementStep(5)
         await generateModal(
           'Verify Id',
           'Please verify voter id before voting',
-          `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+          `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/identity-verification`
         )
         return false
       }
@@ -148,6 +193,7 @@ const VoteFinalize = ({ match, history, location }) => {
       if (walletBalance < VOTE_BALANCE) {
         const transferToWalletStatus = await sendBalanceToWallet(userInfo.verifiedCitizen, userWalletAddress)
         if (transferToWalletStatus !== true) {
+          updateRequirementCheckProgress(false)
           await updateCurrentRequirementStep(6)
           await generateModal(
             'Balance',
@@ -160,6 +206,7 @@ const VoteFinalize = ({ match, history, location }) => {
       }
     }
 
+    updateRequirementCheckProgress(false)
     await updateCurrentRequirementStep(7)
     setIsOpen(false)
     return true
@@ -209,7 +256,6 @@ const VoteFinalize = ({ match, history, location }) => {
       hierarchyPath,
     }
     localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
-
     history.push({ search: '?page=steps' })
     updateValues(updatedVal)
     showStepsPage(true)
@@ -222,12 +268,10 @@ const VoteFinalize = ({ match, history, location }) => {
     checkQueryParams()
   }, [queryParams])
 
-  // useEffect(() => {
-  //   getVotedIdeas()
-  // }, [])
+  useEffect(() => {
+    storeDataInLocalStorage()
+  }, [])
 
-  if (!loading && !get(selection, 'proposal') && !get(selection, 'counterProposal'))
-    return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
   if (stepsPage)
     return (
       <Steps
@@ -242,8 +286,9 @@ const VoteFinalize = ({ match, history, location }) => {
     <>
       <Wrapper>
         <OverlaySpinner loading={voting} />
+        <OverlaySpinner loading={requirementCheckProgress} />
         {popupError && popupError.message && popupError.message !== '' ? (
-          <Modal isOpen={modalIsOpen} onClose={() => checkRequirements()}>
+          <Modal isOpen={modalIsOpen} onClose={() => closeModal()}>
             <div
               style={{
                 display: 'flex',
@@ -254,12 +299,23 @@ const VoteFinalize = ({ match, history, location }) => {
             >
               <h3>{popupError.title}</h3>
               <p>
-                {`${popupError.message} from`}{' '}
-                <a href={popupError.redirectLink} target="_blank" style={{ textDecoration: 'none' }} rel="noreferrer">
-                  here.
-                </a>
+                {currentRequirementStep === 6 ? (
+                  popupError.message
+                ) : (
+                  <div>
+                    {popupError.message} from{' '}
+                    <a
+                      href={popupError.redirectLink}
+                      target="_blank"
+                      style={{ textDecoration: 'none' }}
+                      rel="noreferrer"
+                    >
+                      here.
+                    </a>
+                  </div>
+                )}
               </p>
-              <Button style={{ marginTop: 20 }} onClick={() => closeModal()}>
+              <Button style={{ marginTop: 20 }} onClick={() => continueCheck()}>
                 Continue
               </Button>
             </div>
@@ -385,7 +441,13 @@ const VoteFinalize = ({ match, history, location }) => {
                 {priorVoteInfo && priorVoteInfo.success && (
                   <Button
                     onClick={() => {}}
-                    style={{ cursor: 'default', background: '#E96F6F', width: '100%', fontSize: 20, fontWeight: '500' }}
+                    style={{
+                      cursor: 'default',
+                      background: '#E96F6F',
+                      width: '100%',
+                      fontSize: 20,
+                      fontWeight: '500',
+                    }}
                     height={62}
                   >
                     PRIOR VOTE
