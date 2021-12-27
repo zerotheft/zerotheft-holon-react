@@ -91,7 +91,7 @@ export const checkInstalledWallet = async () => {
 }
 
 /**
- * Get user metamask address5
+ * Get user metamask address
  *
  * @param null
  * @returns string - metamask account address
