@@ -48,15 +48,16 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
         <div>
           <span
             style={{
-              color         : colors.primary,
-              fontSize      : 15,
-              fontWeight    : '500',
+              color: colors.primary,
+              fontSize: 15,
+              fontWeight: '500',
               textDecoration: 'underline',
-              cursor        : 'pointer',
+              cursor: 'pointer',
             }}
             onClick={() =>
               history.push(
-                `/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'
+                `/path/${get(match, 'params.pathname')}/issue/${id}/${
+                  vote === 'yes' ? 'proposals' : 'counter-proposals'
                 }`
               )
             }
@@ -70,16 +71,17 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
             This Proposal: ID {data.id}
             <span
               style={{
-                marginLeft    : 15,
-                color         : colors.primary,
-                fontSize      : 15,
-                fontWeight    : '500',
+                marginLeft: 15,
+                color: colors.primary,
+                fontSize: 15,
+                fontWeight: '500',
                 textDecoration: 'underline',
-                cursor        : 'pointer',
+                cursor: 'pointer',
               }}
               onClick={() =>
                 history.push(
-                  `/path/${get(match, 'params.pathname')}/issue/${id}/${vote === 'yes' ? 'proposals' : 'counter-proposals'
+                  `/path/${get(match, 'params.pathname')}/issue/${id}/${
+                    vote === 'yes' ? 'proposals' : 'counter-proposals'
                   }`
                 )
               }

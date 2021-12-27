@@ -10,7 +10,7 @@ const Radio = ({ field, readonly = false, values = [], style, innerStyle, radioS
   return (
     <Field
       name={field.name}
-      render={RadioField => (
+      render={(RadioField) => (
         <CustomFieldWrapper style={style}>
           <div className="innerform-wrapper" style={innerStyle}>
             {values.map(({ label, value, component }) => (
@@ -35,12 +35,12 @@ const Radio = ({ field, readonly = false, values = [], style, innerStyle, radioS
 }
 
 Radio.propTypes = {
-  field     : PropTypes.object,
+  field: PropTypes.object,
   innerStyle: PropTypes.object,
   radioStyle: PropTypes.object,
-  readonly  : PropTypes.bool,
-  style     : PropTypes.object,
-  values    : PropTypes.array,
+  readonly: PropTypes.bool,
+  style: PropTypes.object,
+  values: PropTypes.array,
 }
 
 export default Radio

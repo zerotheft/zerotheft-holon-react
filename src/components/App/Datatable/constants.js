@@ -1,28 +1,29 @@
+/* eslint-disable camelcase */
 import React from 'react'
 import moment from 'moment'
 import { convertDollarToString } from 'utils'
 
 const citizenColumns = [
   {
-    name    : 'ID',
+    name: 'ID',
     selector: 'id',
     sortable: true,
-    cell    : ({ id }) => <a href={`/citizen/${id}}`} target="_blank" rel="noreferrer">{`${id.slice(0, 15)}...`}</a>,
+    cell: ({ id }) => <a href={`/citizen/${id}}`} target="_blank" rel="noreferrer">{`${id.slice(0, 15)}...`}</a>,
   },
   {
-    name    : 'Name',
+    name: 'Name',
     sortable: true,
-    cell    : ({ firstName, lastName }) => `${firstName} ${lastName}`,
+    cell: ({ firstName, lastName }) => `${firstName} ${lastName}`,
   },
   {
-    name    : 'Country',
+    name: 'Country',
     selector: 'country',
     sortable: true,
   },
   {
-    name    : 'Linkedin URL',
+    name: 'Linkedin URL',
     sortable: true,
-    cell    : ({ linkedin }) => (
+    cell: ({ linkedin }) => (
       <a href={`https://${linkedin}`} target="_blank" rel="noreferrer">
         {linkedin}
       </a>
@@ -32,52 +33,52 @@ const citizenColumns = [
 
 const proposalColumns = [
   {
-    name    : 'ID',
+    name: 'ID',
     selector: 'id',
     sortable: true,
-    cell    : ({ id }) => (
+    cell: ({ id }) => (
       <a href={`proposals/${id}`} target="_blank" rel="noreferrer">
         {id}
       </a>
     ),
   },
   {
-    name    : 'Country',
+    name: 'Country',
     selector: 'country',
     sortable: true,
   },
   {
-    name    : 'Path',
+    name: 'Path',
     selector: 'path',
     sortable: true,
   },
   {
-    name    : 'Theft Amount',
+    name: 'Theft Amount',
     selector: 'theft_amount',
     sortable: true,
-    cell    : ({ theft_amount }) => `$${convertDollarToString(theft_amount)}`,
+    cell: ({ theft_amount }) => `$${convertDollarToString(theft_amount)}`,
   },
   {
-    name    : 'Date',
+    name: 'Date',
     selector: 'date',
     sortable: true,
-    cell    : ({ date }) => `${moment.unix(date).format('MMMM DD, YYYY, h:mm:ss a')} PT`,
+    cell: ({ date }) => `${moment.unix(date).format('MMMM DD, YYYY, h:mm:ss a')} PT`,
   },
 ]
 
 export const tabs = [
   {
-    id     : 1,
-    path   : 'citizen',
-    name   : 'Citizen',
-    title  : 'Citizen List',
+    id: 1,
+    path: 'citizen',
+    name: 'Citizen',
+    title: 'Citizen List',
     columns: citizenColumns,
   },
   {
-    id     : 2,
-    path   : 'proposal',
-    name   : 'Proposal',
-    title  : 'Proposal List',
+    id: 2,
+    path: 'proposal',
+    name: 'Proposal',
+    title: 'Proposal List',
     columns: proposalColumns,
   },
 ]

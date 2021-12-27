@@ -10,20 +10,20 @@ export const customStyles = {
   },
   headCells: {
     style: {
-      paddingLeft   : '30px', // override the cell padding for head cells
-      paddingRight  : '30px',
-      background    : colors.textTitle,
-      color         : colors.border.table,
-      fontFamily    : 'Poppins',
-      fontWeight    : '500',
-      fontSize      : '15px',
-      lineHeight    : '22px',
+      paddingLeft: '30px', // override the cell padding for head cells
+      paddingRight: '30px',
+      background: colors.textTitle,
+      color: colors.border.table,
+      fontFamily: 'Poppins',
+      fontWeight: '500',
+      fontSize: '15px',
+      lineHeight: '22px',
       letterSspacing: '0.03em',
     },
   },
   cells: {
     style: {
-      paddingLeft : '30px', // override the cell padding for data cells
+      paddingLeft: '30px', // override the cell padding for data cells
       paddingRight: '30px',
     },
   },

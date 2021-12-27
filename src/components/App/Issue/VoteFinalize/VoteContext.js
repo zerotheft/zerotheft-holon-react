@@ -50,7 +50,7 @@ const VoteProvider = ({ children }) => {
 
 export { VoteProvider, VoteContext }
 
-const useVote = voterInfo => {
+const useVote = (voterInfo) => {
   const history = useHistory()
   const location = useLocation()
   const params = useParams()
@@ -72,7 +72,7 @@ const useVote = voterInfo => {
   //   })
   // }
 
-  const vote = async values => {
+  const vote = async (values) => {
     updateVoting(true)
     const holonInfo = await getHolonInfo()
     const voteType = finalVote === 'yes'
@@ -89,7 +89,7 @@ const useVote = voterInfo => {
       }
       if (!holonInfo.holonID || holonInfo.holonID === '') {
         showErrorPopUp({
-          message : 'Holon information missing. Please select holon first',
+          message: 'Holon information missing. Please select holon first',
           holonInfo,
           proposalId,
           voteType: finalVote,
@@ -145,7 +145,11 @@ const useVote = voterInfo => {
       // )
 
       const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
-      const txDetails = { userId: voterInfo.id, details: `Voted to ${voteType ? 'proposal' : 'counter-proposal'} in path ${fullPath}`, txType: 'vote' }
+      const txDetails = {
+        userId: voterInfo.id,
+        details: `Voted to ${voteType ? 'proposal' : 'counter-proposal'} in path ${fullPath}`,
+        txType: 'vote',
+      }
 
       await carryTransaction(
         contract,
@@ -208,7 +212,7 @@ const useVote = voterInfo => {
   //   }
   // }
 
-  const afterVote = async(balance, values) => {
+  const afterVote = async (balance, values) => {
     // do voteData Rollups
     const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
     if (!rollupsRes.success) toast.error('Error in  voting rollups')

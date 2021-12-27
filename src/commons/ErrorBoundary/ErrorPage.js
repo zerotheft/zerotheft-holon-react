@@ -20,7 +20,7 @@ const ErrorPage = ({ onButtonClick }) => {
           plain
           style={{ marginRight: 10 }}
           onClick={() => {
-            window.location.reload()
+            window.location.reload() /* eslint-disable-next-line no-unused-expressions */
             onButtonClick && onButtonClick()
           }}
         >

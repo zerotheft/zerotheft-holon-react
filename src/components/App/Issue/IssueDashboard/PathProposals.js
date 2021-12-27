@@ -13,14 +13,14 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
     [proposalLoading, updateLoader] = useState(true),
     proposals = [...regularProp, ...counterProp]
 
-  const getLeadingProp = allProps => {
+  const getLeadingProp = (allProps) => {
     return allProps.length && allProps.reduce((proposal, temp) => (proposal.votes > temp.votes ? proposal : temp))
   }
 
   const firstLeadingProp = proposals.length && getLeadingProp(proposals)
   const secondLeadingProp = regularProp.length && regularProp.length !== proposals.length && getLeadingProp(regularProp)
 
-  const getLeadingProposals = async firstLeadingProp => {
+  const getLeadingProposals = async (firstLeadingProp) => {
     updateLoader(true)
     const props = []
     const firstProp = await getProposal(firstLeadingProp.id)
@@ -33,6 +33,7 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
     updateLoader(false)
   }
   useEffect(() => {
+    /* eslint-disable-next-line no-unused-expressions */
     firstLeadingProp.id && getLeadingProposals(firstLeadingProp)
     updateLoader(false)
   }, [firstLeadingProp.id])
@@ -47,7 +48,7 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
       <Wrapper>
         <div className="no-proposal">
           <div>
-            <img src={proposal} style={{ height: 75, width: 60 }} />
+            <img src={proposal} style={{ height: 75, width: 60 }} alt="No proposal" />
           </div>
           <div>
             <h2>No Proposal Found</h2>

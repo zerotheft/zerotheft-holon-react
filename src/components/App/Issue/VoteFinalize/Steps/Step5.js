@@ -31,7 +31,9 @@ const Step5 = ({ updateCurrentStep }) => {
           <BodyInfo>We need to configure zerotheft wallet to connect to {name}.</BodyInfo>
           <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
-            <Info>If you have already done the following steps, select &apos;{name}&apos; from network selector tab.</Info>
+            <Info>
+              If you have already done the following steps, select &apos;{name}&apos; from network selector tab.
+            </Info>
             <StyledOrderedList>
               <li>Open my accounts selector at the top right corner section of the zerotheft wallet.</li>
               <li>Click on settings and then go to networks setting.</li>

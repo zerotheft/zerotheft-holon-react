@@ -8,15 +8,18 @@ import Points from '../commons/Points'
 import ProposalDetail from '../commons/ProposalDetail'
 
 const CounterProposals = ({ history, match }) => {
-  const { issue, selection, updateSelection, refetchIssue } = useContext(IssueContext)
-  const { filterParams, umbrellaPaths, holonInfo } = useContext(AppContext)
+  const { issue, selection, updateSelection } = useContext(IssueContext)
+  const { umbrellaPaths, holonInfo } = useContext(AppContext)
   const [selectedItem, updateSelectedItem] = useState(get(selection, 'counterProposal') || {}),
+    /* eslint-disable-next-line no-unused-vars */
     [loading, updateLoading] = useState(false)
 
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
+  /* eslint-disable-next-line no-useless-escape */
   const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
-  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${isUmbrella ? 'multiIssueReport' : 'ztReport'
+  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
+    isUmbrella ? 'multiIssueReport' : 'ztReport'
   }/${issuePath.replace(/\//g, '-')}`
 
   const data = get(issue, 'counter_proposals')
