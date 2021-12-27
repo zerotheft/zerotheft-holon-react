@@ -1,35 +1,46 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
 import styled from 'styled-components'
 
 import Button from 'commons/Buttons'
+import OverlaySpinner from 'commons/OverlaySpinner'
+import { VoteContext } from '../VoteContext'
 
-const Step7 = ({ vote, showStepsPage }) => {
-  const history = useHistory()
+const Step7 = ({ showStepsPage, voteValues }) => {
+  const { vote } = useContext(VoteContext)
+  const [voteProgress, updateVoteProgress] = useState(false)
+
+  const proceedWithVote = async () => {
+    updateVoteProgress(true)
+    await vote(voteValues)
+    showStepsPage(true)
+    updateVoteProgress(false)
+  }
 
   return (
-    <MessageWrapper style={{ flex: 1 }}>
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <FontAwesomeIcon icon={faCheckCircle} size="10x" color="#6AB768" />
-      </div>
-      <Container>
-        <MessageHeader>Congratulations!</MessageHeader>
-        <div style={{ fontSize: 20, fontWeight: 600 }}>You have completed all the steps to vote.</div>
-        <Message style={{ textAlign: 'justify' }}>Please click on vote button to cast your vote.</Message>
-        <Button
-          onClick={() => {
-            vote()
-            showStepsPage(false)
-            history.push({ search: '' })
+    <>
+      <OverlaySpinner loading={voteProgress} />
+      <MessageWrapper style={{ flex: 1 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
           }}
-          style={{ background: '#4C4A4F', marginRight: 18, opacity: 1 }}
         >
-          Vote
-        </Button>
-      </Container>
-    </MessageWrapper>
+          <FontAwesomeIcon icon={faCheckCircle} size="10x" color="#6AB768" />
+        </div>
+        <Container>
+          <MessageHeader>Congratulations!</MessageHeader>
+          <div style={{ fontSize: 20, fontWeight: 600 }}>You have completed all the steps to vote.</div>
+          <Message style={{ textAlign: 'justify' }}>Please click on vote button to cast your vote.</Message>
+          <Button onClick={() => proceedWithVote()} style={{ background: '#4C4A4F', marginRight: 18, opacity: 1 }}>
+            Vote
+          </Button>
+        </Container>
+      </MessageWrapper>
+    </>
   )
 }
 
