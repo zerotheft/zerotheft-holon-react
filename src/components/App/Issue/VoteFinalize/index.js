@@ -13,6 +13,7 @@ import { isChrome, getParameterByName, convertUNIXtoDATETIME } from 'utils'
 import Modal from 'commons/Modal'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import config from 'config'
+import { Redirect } from 'react-router'
 import { VoteContext, VoteProvider } from './VoteContext'
 import ProposalDetail from '../commons/ProposalDetail'
 import { AppContext } from '../../AppContext'
@@ -76,6 +77,7 @@ const VoteFinalize = ({ match, history, location }) => {
   const [modalIsOpen, setIsOpen] = useState(false)
   const [requirementCheckProgress, updateRequirementCheckProgress] = useState(false)
   const [formValues, updateFormValues] = useState()
+  const [localStorageData, updatelocalStorageData] = useState(true)
   const closeModal = async () => {
     setIsOpen(false)
     await updatePopupError({
@@ -93,8 +95,8 @@ const VoteFinalize = ({ match, history, location }) => {
       redirectLink: '',
     })
 
+    storeDataInLocalStorage()
     if (currentRequirementStep <= 1) {
-      storeDataInLocalStorage()
       window.location.reload()
       return
     }
@@ -105,6 +107,12 @@ const VoteFinalize = ({ match, history, location }) => {
   // Store data in local storage for the reload
   const storeDataInLocalStorage = async () => {
     if (!get(selection, 'proposal')) {
+      const data = JSON.parse(localStorage.getItem(issuePath))
+      if (data && data.selection) {
+        updatelocalStorageData(true)
+      } else {
+        updatelocalStorageData(false)
+      }
       return
     }
 
@@ -122,9 +130,11 @@ const VoteFinalize = ({ match, history, location }) => {
 
   const retrieveDataFromLocalStorage = async () => {
     const data = JSON.parse(localStorage.getItem(issuePath))
-    if (data.selection) {
-      selection.proposal = data.selection.proposal
-      selection.counterProposal = data.selection.counterProposal
+    if (data) {
+      if (data.selection) {
+        selection.proposal = data.selection.proposal
+        selection.counterProposal = data.selection.counterProposal
+      }
     }
   }
 
@@ -144,7 +154,11 @@ const VoteFinalize = ({ match, history, location }) => {
     if (!isMetamaskInstalled) {
       updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(1)
-      await generateModal('Extension', 'Please install extension', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
+      await generateModal(
+        'Missing ZTM Extension',
+        'Please install ztm extension',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      )
       return false
     }
 
@@ -152,7 +166,11 @@ const VoteFinalize = ({ match, history, location }) => {
     if (!isCorrectNetwork) {
       updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(2)
-      await generateModal('Extension', 'Please add correct network', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
+      await generateModal(
+        'Incorrect extension network',
+        'Please add correct network',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      )
       return false
     }
 
@@ -160,7 +178,11 @@ const VoteFinalize = ({ match, history, location }) => {
     if (!userWalletAddress) {
       updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(3)
-      await generateModal('Extension', 'Please add or import wallet', `${CENTRALIZED_SERVER_FRONTEND}/register-voter`)
+      await generateModal(
+        'Missing Wallet',
+        'Please add or import wallet',
+        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+      )
     }
 
     const userDetails = currentRequirementStep <= 4 ? await getUserRegistration(userWalletAddress) : true
@@ -168,7 +190,7 @@ const VoteFinalize = ({ match, history, location }) => {
       updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(4)
       await generateModal(
-        'Voter Id',
+        'Unregistered Voter Id',
         'Please register voter id before voting',
         `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
       )
@@ -180,7 +202,7 @@ const VoteFinalize = ({ match, history, location }) => {
         updateRequirementCheckProgress(false)
         await updateCurrentRequirementStep(5)
         await generateModal(
-          'Verify Id',
+          'Unverified Voter Id',
           'Please verify voter id before voting',
           `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/identity-verification`
         )
@@ -196,7 +218,7 @@ const VoteFinalize = ({ match, history, location }) => {
           updateRequirementCheckProgress(false)
           await updateCurrentRequirementStep(6)
           await generateModal(
-            'Balance',
+            'Wallet Transfer',
             'We are unable to transfer fund to your wallet. Please try again.',
             `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
           )
@@ -255,6 +277,7 @@ const VoteFinalize = ({ match, history, location }) => {
       altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '"'),
       hierarchyPath,
     }
+    localStorage.removeItem(issuePath)
     localStorage.setItem('voteDetails', JSON.stringify(updatedVal))
     history.push({ search: '?page=steps' })
     updateValues(updatedVal)
@@ -272,6 +295,9 @@ const VoteFinalize = ({ match, history, location }) => {
     storeDataInLocalStorage()
   }, [])
 
+  if (!localStorageData) {
+    return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
+  }
   if (stepsPage)
     return (
       <Steps
