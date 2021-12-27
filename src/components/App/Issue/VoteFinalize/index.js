@@ -211,9 +211,10 @@ const VoteFinalize = ({ match, history, location }) => {
     }
 
     if (currentRequirementStep <= 6) {
-      const walletBalance = await getWalletBalance(web3, userWalletAddress)
+      const walletAddress = await getUserMetamaskAddress(web3)
+      const walletBalance = await getWalletBalance(web3, walletAddress)
       if (walletBalance < VOTE_BALANCE) {
-        const transferToWalletStatus = await sendBalanceToWallet(userInfo.verifiedCitizen, userWalletAddress)
+        const transferToWalletStatus = await sendBalanceToWallet(userInfo.verifiedCitizen, walletAddress)
         if (transferToWalletStatus !== true) {
           updateRequirementCheckProgress(false)
           await updateCurrentRequirementStep(6)
