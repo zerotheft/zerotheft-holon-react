@@ -65,7 +65,6 @@ const App = ({ history }) => {
         <Route path={ROUTES.VIEW_COUNTER_PROPOSAL} component={ViewProposal} />
         <Route path={ROUTES.PATHREPORT} component={Report} />
         <Route path={ROUTES.LEAFREPORT} component={Report} />
-        {/* <Route path={ROUTES.ALL_CITIZENS} component={AllCitizens} /> */}
         <Route path={ROUTES.ALL_PROPOSALS} component={AllProposals} />
         <Route path={ROUTES.DATALIST} component={Datatable} />
         <Route path={ROUTES.VOTELIST} component={VoteDatatable} />

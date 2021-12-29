@@ -149,6 +149,7 @@ const VoteFinalize = ({ match, history, location }) => {
   }
 
   const checkRequirements = async () => {
+    const walletAddress = await getUserMetamaskAddress(web3)
     updateRequirementCheckProgress(true)
     const isMetamaskInstalled = currentRequirementStep <= 1 ? await checkWalletInstallation() : true
     if (!isMetamaskInstalled) {
@@ -185,7 +186,7 @@ const VoteFinalize = ({ match, history, location }) => {
       )
     }
 
-    const userDetails = currentRequirementStep <= 4 ? await getUserRegistration(userWalletAddress) : true
+    let userDetails = currentRequirementStep <= 4 ? await getUserRegistration(walletAddress) : true
     if (!userDetails) {
       updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(4)
@@ -197,8 +198,9 @@ const VoteFinalize = ({ match, history, location }) => {
       return false
     }
 
+    userDetails = await getUserRegistration(walletAddress)
     if (currentRequirementStep <= 5) {
-      if (!userInfo.verifiedCitizen) {
+      if (!userDetails.verifiedCitizen) {
         updateRequirementCheckProgress(false)
         await updateCurrentRequirementStep(5)
         await generateModal(
@@ -211,7 +213,6 @@ const VoteFinalize = ({ match, history, location }) => {
     }
 
     if (currentRequirementStep <= 6) {
-      const walletAddress = await getUserMetamaskAddress(web3)
       const walletBalance = await getWalletBalance(web3, walletAddress)
       if (walletBalance < VOTE_BALANCE) {
         const transferToWalletStatus = await sendBalanceToWallet(userInfo.verifiedCitizen, walletAddress)
@@ -307,6 +308,7 @@ const VoteFinalize = ({ match, history, location }) => {
           showStepsPage(false)
           vote(initialValues)
         }}
+        voteValues={initialValues}
       />
     )
   return (
