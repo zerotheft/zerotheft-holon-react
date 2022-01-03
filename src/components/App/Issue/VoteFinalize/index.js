@@ -186,7 +186,7 @@ const VoteFinalize = ({ match, history, location }) => {
       )
     }
 
-    let userDetails = currentRequirementStep <= 4 ? await getUserRegistration(walletAddress) : true
+    let userDetails = await getUserRegistration(walletAddress);
     if (!userDetails) {
       updateRequirementCheckProgress(false)
       await updateCurrentRequirementStep(4)
