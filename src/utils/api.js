@@ -27,7 +27,9 @@ const checkForError = (e, type) => {
   //   default:
   //     toast.error('There was some internal error while performing request.')
   // }
-  return { error: e, data: {}, headers: e.response.headers }
+  throw e;
+  
+  // return { error: e, data: {}, headers: e.response.headers }
 }
 
 export const get = (path, params, apiUrl = API_URL) => {
