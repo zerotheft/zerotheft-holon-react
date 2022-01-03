@@ -158,7 +158,7 @@ const VoteFinalize = ({ match, history, location }) => {
       await generateModal(
         'Missing ZTM Extension',
         'Please install ztm extension',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+        `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/install-extension`
       )
       return false
     }
@@ -170,7 +170,7 @@ const VoteFinalize = ({ match, history, location }) => {
       await generateModal(
         'Incorrect extension network',
         'Please add correct network',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+        `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/metamask-guide`
       )
       return false
     }
@@ -182,7 +182,7 @@ const VoteFinalize = ({ match, history, location }) => {
       await generateModal(
         'Missing Wallet',
         'Please add or import wallet',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+        `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/metamask-guide`
       )
     }
 
@@ -193,7 +193,7 @@ const VoteFinalize = ({ match, history, location }) => {
       await generateModal(
         'Unregistered Voter Id',
         'Please register voter id before voting',
-        `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+        `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/donate`
       )
       return false
     }
@@ -206,7 +206,7 @@ const VoteFinalize = ({ match, history, location }) => {
         await generateModal(
           'Unverified Voter Id',
           'Please verify voter id before voting',
-          `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/identity-verification`
+          `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/identity-verification?retry=true`
         )
         return false
       }
@@ -222,7 +222,7 @@ const VoteFinalize = ({ match, history, location }) => {
           await generateModal(
             'Wallet Transfer',
             'We are unable to transfer fund to your wallet. Please try again.',
-            `${CENTRALIZED_SERVER_FRONTEND}/register-voter`
+            `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/donate`
           )
 
           return false
