@@ -8,7 +8,7 @@ import { ButtonsWrapper, Next } from "./Buttons"
 import { Wrapper, Header, Body, InnerWrapper, OrderedList } from "./styles"
 
 const Step4 = ({ updateCurrentStep, checkRequirements }) => {
-  const { checkStep, voterInfo, loadWeb3, buildUrl } = useContext(VoteContext)
+  const { checkStep, voterInfo, loadWeb3 } = useContext(VoteContext)
   const [userType, updateUserType] = useState("newUser")
 
   useEffect(() => {
@@ -19,7 +19,8 @@ const Step4 = ({ updateCurrentStep, checkRequirements }) => {
     if (window.etherem) {
       loadWeb3()
     } else {
-      window.location.href = buildUrl()
+      // window.location.href = buildUrl()
+      window.location.reload()
     }
   }
 
