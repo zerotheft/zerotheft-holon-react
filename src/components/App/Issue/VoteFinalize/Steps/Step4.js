@@ -7,7 +7,7 @@ import { VoteContext } from "../VoteContext"
 import { ButtonsWrapper, Next } from "./Buttons"
 import { Wrapper, Header, Body, InnerWrapper, OrderedList } from "./styles"
 
-const Step4 = ({ updateCurrentStep, checkRequirements }) => {
+const Step4 = ({ updateCurrentStep, proceed }) => {
   const { checkStep, voterInfo, loadWeb3 } = useContext(VoteContext)
   const [userType, updateUserType] = useState("newUser")
 
@@ -104,7 +104,7 @@ const Step4 = ({ updateCurrentStep, checkRequirements }) => {
             </div>
           )}
           <ButtonsWrapper>
-            <Next currentStep={4} updateCurrentStep={updateCurrentStep} checkRequirements={checkRequirements} />
+            <Next currentStep={1} updateCurrentStep={updateCurrentStep} proceed={proceed} />
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>

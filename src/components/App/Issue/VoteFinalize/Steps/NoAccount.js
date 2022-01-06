@@ -1,48 +1,30 @@
 import React from "react"
 import metamaskIcon from "assets/icons/metamask.svg"
 import { ButtonsWrapper, Next } from "./Buttons"
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo } from "./styles"
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo, SubHeader, Info, OrderedList } from "./styles"
 
-const NoAccount = ({ updateCurrentStep, checkRequirements }) => {
+const NoAccount = ({ updateCurrentStep, proceed }) => {
   return (
     <Wrapper>
       <InnerWrapper>
         <Header>Step #3: Create or Import Wallet</Header>
         <Body>
           <BodyInfo>You need to create/import account in order to vote</BodyInfo>
-          {/* <div>
-            <SubHeader>Zerothet Wallet Network Setup</SubHeader>
+          <div>
+            <SubHeader>Zerothet Wallet Account Setup</SubHeader>
             <Info>
-              If you have already done the following steps, select &apos;{name}
-              &apos; from network selector tab.
+              If you have already created or imported an account in wallet, Please click on continue. else, please
+              follow below steps.
             </Info>
-            <StyledOrderedList>
-              <li>
-                Open my accounts selector at the top right corner section of the
-                zerotheft wallet.
-              </li>
-              <li>Click on settings and then go to networks setting.</li>
-              <li>
-                Click &apos;Add Network&apos; button and fill the details as:
-                <br />
-                <div>
-                  <span>Network Name:</span> {name}
-                </div>
-                <div>
-                  <span>New RPC URL:</span> {HTTP_PROVIDER}
-                </div>
-                <div>
-                  <span>Chain ID:</span> {CHAIN_ID}
-                </div>
-                <div>
-                  <span>Currency Symbol:</span> {TOKEN}
-                </div>
-              </li>
-              <li>Click on save</li>
-            </StyledOrderedList>
-          </div> */}
+            <OrderedList>
+              <li>Click on your wallet.</li>
+              <li>Click on import or create wallet.</li>
+              <li>Proceed to create or import wallet</li>
+              <li>Click on continue. </li>
+            </OrderedList>
+          </div>
           <ButtonsWrapper>
-            <Next currentStep={5} updateCurrentStep={updateCurrentStep} checkRequirements={checkRequirements} />
+            <Next currentStep={3} updateCurrentStep={updateCurrentStep} proceed={proceed} />
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>

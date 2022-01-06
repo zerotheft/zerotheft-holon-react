@@ -25,19 +25,11 @@ export const Previous = (props) => {
   )
 }
 
-export const Next = ({ currentStep, updateCurrentStep, checkRequirements, ...props }) => {
+export const Next = ({ currentStep, updateCurrentStep, proceed, ...props }) => {
   return (
     <Button
       onClick={async () => {
-        // const { msg, step } = await checkStep()
-        // if (step === 7) {
-        //   return
-        // }
-        // if (step !== currentStep) updateCurrentStep(step)
-        // else if (msg) {
-        //   toast.error(msg)
-        // }
-        await checkRequirements()
+        await proceed()
       }}
       {...props}
     >

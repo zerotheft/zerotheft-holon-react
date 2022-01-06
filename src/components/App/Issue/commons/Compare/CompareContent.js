@@ -38,7 +38,12 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
             width={175}
             height={55}
             style={{ fontSize: 20, fontWeight: "700" }}
-            onClick={() => history.push(`/path/${get(match, "params.pathname")}/issue/${id}/check`, { vote })}
+            onClick={() =>
+              history.push({
+                pathname: `/path/${get(match, "params.pathname")}/issue/${id}/check`,
+                voteValue: { vote },
+              })
+            }
           >
             I vote {upperCase(vote)}
           </Button>

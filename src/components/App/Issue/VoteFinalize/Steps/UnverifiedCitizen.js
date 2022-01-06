@@ -1,49 +1,36 @@
-import React, { useContext } from "react"
+import React from "react"
 import metamaskIcon from "assets/icons/metamask.svg"
-import Button from "commons/Buttons"
-import { AppContext } from "components/App/AppContext"
-import { VoteContext } from "../VoteContext"
-import { ButtonsWrapper } from "./Buttons"
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo } from "./styles"
+import { LinkText } from "commons/styles"
+import config from "config"
+import { ButtonsWrapper, Next } from "./Buttons"
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo, SubHeader, Info, OrderedList } from "./styles"
 
-const UnverifiedCitizen = ({ checkRequirements }) => {
-  const { ws } = useContext(AppContext)
-  const { voterInfo } = useContext(VoteContext)
-  const shouldCheck = ws && ws.readyState === 1
+const UnverifiedCitizen = ({ proceed }) => {
+  const { CENTRALIZED_SERVER_FRONTEND } = config
+  const retryUrl = `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/identity-verification?retry=true`
   return (
     <Wrapper>
       <InnerWrapper>
-        <Header>Step #5: Please verify your Voter Id</Header>
+        <Header>Step #5: Verify Voter Id</Header>
         <Body>
-          <BodyInfo>You need to verify your public voter ID so that we can keep track of your votes.</BodyInfo>
-          {/* <div>
-            <SubHeader>Register Public Voter</SubHeader>
-
+          <BodyInfo>You need to verify your voter id in order to vote</BodyInfo>
+          <div>
+            <SubHeader>Voter ID verification</SubHeader>
+            <Info>
+              If you have already verified your voter id, Please click on continue. else, please follow below steps.
+            </Info>
             <OrderedList>
               <li>
-                Navigate to register voter.
-                <LinkText onClick={() => window.open(CENTRALIZED_SERVER_FRONTEND)}>Register Voter</LinkText>
+                Please click
+                <LinkText onClick={() => window.open(retryUrl)}> here </LinkText>
+                to verify.
               </li>
-              <li>Select your country and enter your country&apos;s zip code.</li>
-              <li>Enter your linkedin ID and linkedin full name. Click continue button.</li>
-              <li>Login to your linkedin account so that we can verify you.</li>
-              <li>Switch back to this page and click vote.</li>
+              <li>Proceed to verify your Voter Id</li>
+              <li>Once Voter id has been verified, Click on continue. </li>
             </OrderedList>
-          </div> */}
+          </div>
           <ButtonsWrapper>
-            <Button
-              disabled={false && shouldCheck && voterInfo.ethereumAddress}
-              onClick={async () => {
-                // const { msg, step } = await checkStep()
-                // if (step < 6) updateCurrentStep(step)
-                // else if (msg) {
-                //   toast.error(msg)
-                // }
-                await checkRequirements()
-              }}
-            >
-              Continue
-            </Button>
+            <Next currentStep={5} proceed={proceed} />
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>
