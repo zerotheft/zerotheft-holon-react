@@ -1,30 +1,30 @@
-import React, { useState, useContext } from 'react'
-import { API_URL } from 'constants/index'
-import { get } from 'lodash'
+import React, { useState, useContext } from "react"
+import { get } from "lodash"
+import { API_URL } from "constants/index"
 
-import { IssueContext } from '../IssueContext'
-import { AppContext } from '../../AppContext'
-import { Wrapper, Left, Right, WarningWrapper, EmptyProposalWrapper } from '../commons/styles'
-import Points from '../commons/Points'
-import ProposalDetail from '../commons/ProposalDetail'
+import { IssueContext } from "../IssueContext"
+import { AppContext } from "../../AppContext"
+import { Wrapper, Left, Right, WarningWrapper, EmptyProposalWrapper } from "../commons/styles"
+import Points from "../commons/Points"
+import ProposalDetail from "../commons/ProposalDetail"
 
 const Proposals = ({ history, match }) => {
   const { issue, selection, updateSelection } = useContext(IssueContext)
   const { umbrellaPaths, holonInfo } = useContext(AppContext)
-  const [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {}),
+  const [selectedItem, updateSelectedItem] = useState(get(selection, "proposal") || {}),
     // eslint-disable-next-line no-unused-vars
     [loading, updateLoading] = useState(false)
-  const bellCurveData = get(issue, 'bellCurveData') || {}
+  const bellCurveData = get(issue, "bellCurveData") || {}
 
-  const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, '/')
+  const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, "/")
   /* eslint-disable-next-line no-useless-escape */
-  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, '')
+  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, "")
   const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
-  const reportPath = `${API_URL}/${get(holonInfo, 'reportsPath')}/${
-    isUmbrella ? 'multiIssueReport' : 'ztReport'
-  }/${issuePath.replace(/\//g, '-')}`
+  const reportPath = `${API_URL}/${get(holonInfo, "reportsPath")}/${
+    isUmbrella ? "multiIssueReport" : "ztReport"
+  }/${issuePath.replace(/\//g, "-")}`
 
-  const data = get(issue, 'proposals')
+  const data = get(issue, "proposals")
   if (!selectedItem.id) {
     if (data && data.length > 0) {
       updateSelectedItem(data[0])
@@ -34,7 +34,7 @@ const Proposals = ({ history, match }) => {
   const proposalLength = data && data.length > 0 ? data.length : 0
 
   return (
-    <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
+    <Wrapper style={{ height: "calc(100vh - 125px)" }}>
       <WarningWrapper>
         <p>WARNING: The amounts and reasoning comes from citizens. Not from the ZTM company or this website.</p>
       </WarningWrapper>
@@ -44,7 +44,7 @@ const Proposals = ({ history, match }) => {
             No proposals are available. Please
             <a
               href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-proposal`}
-              style={{ cursor: 'pointer' }}
+              style={{ cursor: "pointer" }}
             >
               add new
             </a>
@@ -53,7 +53,7 @@ const Proposals = ({ history, match }) => {
         </EmptyProposalWrapper>
       ) : null}
       <Left
-        style={{ width: 'auto', margin: '0 30px 0 0', display: 'flex', flexDirection: 'column', maxWidth: '440px' }}
+        style={{ width: "auto", margin: "0 30px 0 0", display: "flex", flexDirection: "column", maxWidth: "440px" }}
       >
         {/* <div className='header'>
         <h3>
@@ -66,11 +66,11 @@ const Proposals = ({ history, match }) => {
           updateLoading(false)
         }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
       </div> */}
-        <div style={{ overflowY: 'auto', height: '100%' }}>
-          <div style={{ overflow: 'hidden', height: '100%' }}>
+        <div style={{ overflowY: "auto", height: "100%" }}>
+          <div style={{ overflow: "hidden", height: "100%" }}>
             {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
             <Points
-              data={get(issue, 'proposals', [])}
+              data={get(issue, "proposals", [])}
               issue={issue}
               selectedItem={selectedItem}
               updateSelectedItem={updateSelectedItem}
@@ -79,8 +79,8 @@ const Proposals = ({ history, match }) => {
           </div>
         </div>
       </Left>
-      <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
-        <div style={{ overflow: 'hidden' }}>
+      <Right style={{ flex: "1", overflowY: "auto", padding: "30px 0 0" }}>
+        <div style={{ overflow: "hidden" }}>
           <ProposalDetail
             item={selectedItem}
             selection={selection}

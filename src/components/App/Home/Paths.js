@@ -1,21 +1,21 @@
-import React, { useContext } from 'react'
-import { get, startCase, isEmpty } from 'lodash'
-import styled from 'styled-components'
+import React, { useContext } from "react"
+import { get, startCase, isEmpty } from "lodash"
+import styled from "styled-components"
 
-import Button from 'commons/Buttons'
-import { Container, LoadingText, EmptyText } from 'commons/styles'
-import { AppContext } from '../AppContext'
-import PathItem from './PathItem'
+import Button from "commons/Buttons"
+import { Container, LoadingText, EmptyText } from "commons/styles"
+import { AppContext } from "../AppContext"
+import PathItem from "./PathItem"
 
 const Paths = ({ summary = [] }) => {
   const { paths, loading, loadingTheft, filterParams } = useContext(AppContext)
-  const allPaths = get(paths, get(filterParams, 'initPath'), {})
+  const allPaths = get(paths, get(filterParams, "initPath"), {})
   return (
     <Wrapper>
       <Container>
         <ContentWrapper
           className={
-            !loading && !loadingTheft && !isEmpty(get(paths, get(filterParams, 'initPath'), {})) ? 'divide' : ''
+            !loading && !loadingTheft && !isEmpty(get(paths, get(filterParams, "initPath"), {})) ? "divide" : ""
           }
         >
           {loading || loadingTheft ? (
@@ -23,10 +23,10 @@ const Paths = ({ summary = [] }) => {
           ) : (
             <UL>
               {Object.keys(allPaths).map((key) => {
-                const isIssuePath = isEmpty(get(paths, get(filterParams, 'initPath'), {})[key])
-                const childPaths = get(paths, get(filterParams, 'initPath'), {})[key] || {}
+                const isIssuePath = isEmpty(get(paths, get(filterParams, "initPath"), {})[key])
+                const childPaths = get(paths, get(filterParams, "initPath"), {})[key] || {}
                 const childPathsClone = { ...childPaths }
-                ;['umbrella', 'leaf', 'display_name', 'parent', 'metadata'].forEach((k) => delete childPathsClone[k])
+                ;["umbrella", "leaf", "display_name", "parent", "metadata"].forEach((k) => delete childPathsClone[k])
                 return (
                   <li>
                     <PathItem
@@ -34,10 +34,10 @@ const Paths = ({ summary = [] }) => {
                       parent
                       to={
                         isIssuePath
-                          ? `/path/${get(filterParams, 'initPath')}/issue/${key}`
-                          : `/path/${get(filterParams, 'initPath')}/${key}`
+                          ? `/path/${get(filterParams, "initPath")}/issue/${key}`
+                          : `/path/${get(filterParams, "initPath")}/${key}`
                       }
-                      name={allPaths[key].display_name ? allPaths[key].display_name : startCase(key || 'N/A')}
+                      name={allPaths[key].display_name ? allPaths[key].display_name : startCase(key || "N/A")}
                     />
                     {!isEmpty(childPaths) ? (
                       <ul>
@@ -49,13 +49,13 @@ const Paths = ({ summary = [] }) => {
                                 summary={summary}
                                 to={
                                   isIssue
-                                    ? `/path/${get(filterParams, 'initPath')}%2F${key}/issue/${innerKey}`
-                                    : `/path/${get(filterParams, 'initPath')}%2F${key}%2F${innerKey}`
+                                    ? `/path/${get(filterParams, "initPath")}%2F${key}/issue/${innerKey}`
+                                    : `/path/${get(filterParams, "initPath")}%2F${key}%2F${innerKey}`
                                 }
                                 name={
                                   (childPaths[innerKey].metadata && childPaths[innerKey].metadata.display_name) ||
                                   childPaths[innerKey].display_name ||
-                                  startCase(innerKey || 'N/A')
+                                  startCase(innerKey || "N/A")
                                 }
                               />
                             </li>
@@ -68,16 +68,16 @@ const Paths = ({ summary = [] }) => {
               })}
             </UL>
           )}
-          {!loading && !loadingTheft && isEmpty(get(paths, get(filterParams, 'initPath'), {})) ? (
+          {!loading && !loadingTheft && isEmpty(get(paths, get(filterParams, "initPath"), {})) ? (
             <EmptyText>No Data Available</EmptyText>
           ) : null}
         </ContentWrapper>
         <Button
-          onClick={() => window.open('https://zerotheft.net/propose_problem?path=USA')}
+          onClick={() => window.open("https://zerotheft.net/propose_problem?path=USA")}
           plain
           width={280}
           height={52}
-          style={{ margin: '30px auto 0', backgroundColor: 'transparent' }}
+          style={{ margin: "30px auto 0", backgroundColor: "transparent" }}
         >
           PROPOSE NEW PROBLEM AREA
         </Button>
@@ -104,7 +104,7 @@ const Wrapper = styled.div`
     &.divide {
       &::before,
       &::after {
-        content: '';
+        content: "";
         display: block;
         width: calc(50% - 20px);
         height: 100%;

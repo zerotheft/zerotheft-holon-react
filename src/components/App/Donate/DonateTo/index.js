@@ -1,8 +1,8 @@
-import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
+import React from "react"
+import { Switch, Route, Redirect } from "react-router-dom"
 
-import Holon from './Holon'
-import Zerotheft from './Zerotheft'
+import Holon from "./Holon"
+import Zerotheft from "./Zerotheft"
 
 const DonateTo = ({ match }) => {
   return (

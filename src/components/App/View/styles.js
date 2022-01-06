@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
 export const HeaderContainer = styled.div`
     display: flex;
@@ -6,7 +6,7 @@ export const HeaderContainer = styled.div`
     align-items: center;
     justify-content: space-between;
     h2 {
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
       font-style: normal;
       font-weight: bold;
       font-size: 40px;
@@ -20,7 +20,7 @@ export const HeaderContainer = styled.div`
     display: flex;
     flex-flow: row wrap;
     .btn {
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
       font-style: normal;
       font-weight: normal;
       font-size: 16px;
@@ -74,7 +74,7 @@ export const HeaderContainer = styled.div`
         align-items: center;
         margin-bottom: 30px;
         strong {
-          font-family: 'Poppins', sans-serif;
+          font-family: "Poppins", sans-serif;
           font-weight: 400;
           font-size: 16px;
           /* or 43px */
@@ -85,7 +85,7 @@ export const HeaderContainer = styled.div`
         span {
           display: flex;
           width: calc(100% - 230px);
-          font-family: 'Poppins', sans-serif;
+          font-family: "Poppins", sans-serif;
           font-size: 15px;
           /* or 42px */
           letter-spacing: 0.03em;
@@ -123,7 +123,7 @@ export const HeaderContainer = styled.div`
     flex-flow: column;
     margin-top: 40px;
     h2 {
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
       font-style: normal;
       font-weight: 600;
       font-size: 19px;
@@ -137,7 +137,7 @@ export const HeaderContainer = styled.div`
       background: #7f51c1;
       padding: 13px 20px;
       color: #fff;
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
       font-style: normal;
       font-size: 16px;
       line-height: 24px;
@@ -145,7 +145,7 @@ export const HeaderContainer = styled.div`
     }
     table tbody tr td {
       padding: 13px 20px;
-      font-family: 'Poppins', sans-serif;
+      font-family: "Poppins", sans-serif;
       font-style: normal;
       font-weight: 500;
       font-size: 15px;

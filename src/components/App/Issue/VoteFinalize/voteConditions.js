@@ -1,7 +1,7 @@
-import config from 'config'
-import Web3 from 'web3'
-import { getVoterInfos } from '../../../../apis/centralizedServer'
-import { transferFund } from '../../../../apis/vote'
+import Web3 from "web3"
+import config from "config"
+import { getVoterInfos } from "../../../../apis/centralizedServer"
+import { transferFund } from "../../../../apis/vote"
 
 const { CHAIN_ID } = config
 
@@ -67,25 +67,25 @@ export const checkWalletInstallation = async () => {
  */
 export const checkInstalledWallet = async () => {
   try {
-    let installedExtension = 'none'
+    let installedExtension = "none"
     if (window.ethereum) {
       if (window.ethereum.isMetamask) {
-        installedExtension = 'metamask'
+        installedExtension = "metamask"
       }
       if (window.ethereum.isZTMWallet) {
-        installedExtension = 'ztmwallet'
+        installedExtension = "ztmwallet"
       } else {
-        installedExtension = 'none'
+        installedExtension = "none"
       }
     }
 
     if (window.ztm_ethereum) {
-      installedExtension = 'ztmwallet'
+      installedExtension = "ztmwallet"
     }
 
     return installedExtension
   } catch (error) {
-    return 'none'
+    return "none"
   }
 }
 
@@ -172,7 +172,7 @@ export const checkUserVerification = async (walletAddress) => {
 export const getWalletBalance = async (web3, walletAddress) => {
   try {
     let balance = await web3.eth.getBalance(walletAddress)
-    balance = balance ? web3.utils.fromWei(balance, 'ether') : 0
+    balance = balance ? web3.utils.fromWei(balance, "ether") : 0
     return balance
   } catch (error) {
     return false
@@ -193,7 +193,7 @@ export const sendBalanceToWallet = async (citizen, walletAddress) => {
       receiver: walletAddress,
     })
 
-    if (transferRes.status === 'success') {
+    if (transferRes.status === "success") {
       return true
     }
 

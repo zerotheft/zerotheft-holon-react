@@ -1,13 +1,13 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { NavLink } from 'react-router-dom'
-import { Container } from 'commons/styles'
+import React from "react"
+import PropTypes from "prop-types"
+import styled from "styled-components"
+import { NavLink } from "react-router-dom"
+import { Container } from "commons/styles"
 
 const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, activeTab }) => {
   return (
     <Wrapper style={wrapperStyle}>
-      <Container style={{ display: 'flex', flexDirection: 'column', ...tabInnerStyle }}>
+      <Container style={{ display: "flex", flexDirection: "column", ...tabInnerStyle }}>
         {tabs.map((tab) => {
           return (
             <TabWrapper
@@ -17,13 +17,13 @@ const Tabs = ({ tabs, wrapperStyle, tabStyle, activeStyle, tabInnerStyle, active
               onClick={() => {
                 const elementPosition = document.getElementById(tab.pathId).offsetTop
                 const offsetPosition = elementPosition - 130
-                window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+                window.scrollTo({ top: offsetPosition, behavior: "smooth" })
               }}
               style={tabStyle}
               activeStyle={{
-                fontWeight: '600',
-                background: '#7F51C1',
-                color: 'white',
+                fontWeight: "600",
+                background: "#7F51C1",
+                color: "white",
                 ...activeStyle,
               }}
             >

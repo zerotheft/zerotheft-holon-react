@@ -1,9 +1,9 @@
-import React, { createContext, useState, useEffect, useContext } from 'react'
-import { get } from 'lodash'
+import React, { createContext, useState, useEffect, useContext } from "react"
+import { get } from "lodash"
 
-import { getParameterByName } from 'utils'
-import { getPathProposalsByPath, getProposal } from 'apis/proposals'
-import { AppContext } from 'components/App/AppContext'
+import { getParameterByName } from "utils"
+import { getPathProposalsByPath, getProposal } from "apis/proposals"
+import { AppContext } from "components/App/AppContext"
 
 const IssueContext = createContext()
 
@@ -26,8 +26,8 @@ const IssueProvider = ({ children, id, match, location }) => {
   useEffect(() => {
     if (!issue || selection.proposal || selection.counterProposal) return
 
-    const proposalId = getParameterByName('p')
-    const counterProposalId = getParameterByName('c')
+    const proposalId = getParameterByName("p")
+    const counterProposalId = getParameterByName("c")
 
     if (proposalId || counterProposalId) {
       const proposal = issue.proposals.find((i) => i.id === proposalId)
@@ -36,8 +36,8 @@ const IssueProvider = ({ children, id, match, location }) => {
     }
   }, [issue, location.search])
 
-  const selectedProposalId = get(selection, 'proposal.id')
-  const selectedCounterProposalId = get(selection, 'counterProposal.id')
+  const selectedProposalId = get(selection, "proposal.id")
+  const selectedCounterProposalId = get(selection, "counterProposal.id")
 
   const fetchProposal = async (proposalId) => {
     if (proposalDetails[proposalId] || !proposalId) return
@@ -100,7 +100,7 @@ const useIssueFetcher = (id, match) => {
           .filter((i) => i && parseFloat(i.theftAmt) > 0)
           .map((i) => ({
             ...i,
-            year: parseInt(get(i, 'year')),
+            year: parseInt(get(i, "year")),
           })) || []
 
       issueDetails.counter_proposals =
@@ -108,7 +108,7 @@ const useIssueFetcher = (id, match) => {
           .filter((i) => i && parseFloat(i.theftAmt) <= 0)
           .map((i) => ({
             ...i,
-            year: parseInt(get(i, 'year')),
+            year: parseInt(get(i, "year")),
           })) || []
 
       issueDetails.bellCurveData = path.chartData || {}
@@ -123,6 +123,6 @@ const useIssueFetcher = (id, match) => {
 
   useEffect(() => {
     fetchIssue()
-  }, [get(match, 'params.pathname'), get(match, 'params.id'), filterParams.year])
+  }, [get(match, "params.pathname"), get(match, "params.id"), filterParams.year])
   return [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue]
 }

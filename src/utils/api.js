@@ -1,12 +1,12 @@
-import axios from 'axios'
+import axios from "axios"
 
 // import { get as getLodash } from 'lodash'
 
 // import { toast } from 'react-toastify'
-import { API_URL } from 'constants/index'
+import { API_URL } from "constants/index"
 
 const checkForError = (e, type) => {
-  if (process.env.NODE_ENV === 'development' || type !== 'get') throw e
+  if (process.env.NODE_ENV === "development" || type !== "get") throw e
 
   // switch (e.response.status) {
   //   // case 401:
@@ -27,8 +27,8 @@ const checkForError = (e, type) => {
   //   default:
   //     toast.error('There was some internal error while performing request.')
   // }
-  throw e;
-  
+  throw e
+
   // return { error: e, data: {}, headers: e.response.headers }
 }
 
@@ -36,28 +36,28 @@ export const get = (path, params, apiUrl = API_URL) => {
   const url = path ? `${apiUrl}/${path}` : apiUrl
 
   return axios(url, {
-    method: 'get',
+    method: "get",
     params,
-  }).catch((e) => checkForError(e, 'get'))
+  }).catch((e) => checkForError(e, "get"))
 }
 
 export const post = async (path, data, apiUrl = API_URL) => {
   return axios(`${apiUrl}/${path}`, {
-    method: 'post',
+    method: "post",
     data,
-  }).catch((e) => checkForError(e, 'post'))
+  }).catch((e) => checkForError(e, "post"))
 }
 
 export const put = (path, data, apiUrl = API_URL) => {
   return axios(`${apiUrl}/${path}`, {
-    method: 'put',
+    method: "put",
     data,
-  }).catch((e) => checkForError(e, 'put'))
+  }).catch((e) => checkForError(e, "put"))
 }
 
 export const deleteApi = (path, data) => {
   return axios(`${API_URL}/${path}`, {
-    method: 'delete',
+    method: "delete",
     data,
-  }).catch((e) => checkForError(e, 'delete'))
+  }).catch((e) => checkForError(e, "delete"))
 }

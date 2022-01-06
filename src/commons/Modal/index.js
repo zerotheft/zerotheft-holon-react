@@ -1,9 +1,9 @@
-import React from 'react'
-import Modal from 'react-modal'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from "react"
+import Modal from "react-modal"
+import PropTypes from "prop-types"
+import styled from "styled-components"
 
-import cross from 'assets/icons/cross.svg'
+import cross from "assets/icons/cross.svg"
 
 const Wrapper = styled.div`
     max-width: ${(props) => (props.width ? props.width : 350)}px;

@@ -1,18 +1,18 @@
-import React from 'react'
-import { get } from 'lodash'
-import { Field } from 'formik'
-import PropTypes from 'prop-types'
+import React from "react"
+import { get } from "lodash"
+import { Field } from "formik"
+import PropTypes from "prop-types"
 
-import { CustomFieldWrapper, ErrorSpan } from './styles'
+import { CustomFieldWrapper, ErrorSpan } from "./styles"
 
 const TextAreaField = ({
   label,
   labelWidth,
   field,
   form,
-  placeholder = '',
+  placeholder = "",
   // eslint-disable-next-line react/prop-types
-  labelType = 'side',
+  labelType = "side",
   required = false,
   readonly = false,
   style,
@@ -21,7 +21,7 @@ const TextAreaField = ({
     style={style}
     labelType={labelType}
     labelWidth={labelWidth}
-    className={`${get(form, `errors[${field.name}]`) && get(form, `touched[${field.name}]`) ? 'invalid' : null}`}
+    className={`${get(form, `errors[${field.name}]`) && get(form, `touched[${field.name}]`) ? "invalid" : null}`}
   >
     <div className="innerform-wrapper">
       {(label || labelWidth) && (

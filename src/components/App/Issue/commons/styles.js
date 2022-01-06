@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { colors } from 'theme'
+import styled from "styled-components"
+import { colors } from "theme"
 
 export const Header = styled.div`
     margin-bottom: 15px;
@@ -122,7 +122,7 @@ export const Header = styled.div`
         z-index: 1;
       }
       &::after {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         top: 0;

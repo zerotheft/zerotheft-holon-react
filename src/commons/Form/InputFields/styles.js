@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
-import { colors } from 'theme'
+import { colors } from "theme"
 
 export const CustomFieldWrapper = styled.div`
     display: flex;
@@ -12,7 +12,7 @@ export const CustomFieldWrapper = styled.div`
       align-items: center;
       width: 100%;
       & > label {
-        width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
+        width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : "auto")};
         text-align: right;
         text-align: end;
         margin-right: 10px;
@@ -38,17 +38,17 @@ export const CustomFieldWrapper = styled.div`
           box-shadow: none;
           outline: none;
         }
-        &[type='text'],
-        &[type='number'],
-        &[type='password'] {
+        &[type="text"],
+        &[type="number"],
+        &[type="password"] {
           min-height: 47px;
         }
         ::placeholder {
           color: #9e9b9b;
         }
       }
-      & > input[type='checkbox'],
-      & > input[type='checkbox']:hover {
+      & > input[type="checkbox"],
+      & > input[type="checkbox"]:hover {
         min-width: 13px;
         width: 13px;
         flex: 0;
@@ -60,8 +60,8 @@ export const CustomFieldWrapper = styled.div`
       }
       & > textarea {
         width: 100%;
-        font-family: 'Poppins', 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Oxygen', 'Ubuntu', 'Cantarell',
-          'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+        font-family: "Poppins", "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", "Oxygen", "Ubuntu", "Cantarell",
+          "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
         resize: vertical;
         flex: 1 1 0%;
         min-width: 0;
@@ -91,7 +91,7 @@ export const CustomFieldWrapper = styled.div`
       }
     }
     ${(props) =>
-      props.labelType === 'top' &&
+      props.labelType === "top" &&
       `
       & > div.innerform-wrapper {
         flex-direction: column;
@@ -104,7 +104,7 @@ export const CustomFieldWrapper = styled.div`
     `}
   `,
   Label = styled.div`
-    width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : 'auto')};
+    width: ${(props) => (props.labelWidth ? `${props.labelWidth}px` : "auto")};
     font-weight: 500;
     color: #797979;
     font-size: 16px;
@@ -150,7 +150,7 @@ export const CustomFieldWrapper = styled.div`
     display: block;
   `,
   RadioBtn = styled.div`
-    & > input[type='radio'] {
+    & > input[type="radio"] {
       display: none;
       &:checked + label::before {
         background: ${colors.primary};
@@ -160,7 +160,7 @@ export const CustomFieldWrapper = styled.div`
       position: relative;
       padding-left: 25px;
       &::before {
-        content: '';
+        content: "";
         width: 15px;
         height: 15px;
         display: block;

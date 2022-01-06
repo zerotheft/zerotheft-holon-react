@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from "react"
+import PropTypes from "prop-types"
+import styled from "styled-components"
 
-import { colors } from 'theme'
-import OverlaySpinner from 'commons/OverlaySpinner'
+import { colors } from "theme"
+import OverlaySpinner from "commons/OverlaySpinner"
 
 export const Wrapper = styled.div`
     width: 100%;
@@ -13,9 +13,9 @@ export const Wrapper = styled.div`
     padding-bottom: 100px;
   `,
   Td = styled.td`
-    text-align: ${(props) => props.align || 'left'};
+    text-align: ${(props) => props.align || "left"};
     padding: 7px 10px;
-    min-width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+    min-width: ${(props) => (props.width ? `${props.width}px` : "auto")};
     border-bottom: 1px solid #f4f4f4;
     ${(props) => props.css}
   `,
@@ -105,7 +105,7 @@ const getRows = (item, columns, rowConfig = {}) => (
       className={rowConfig.className ? rowConfig.className(item) : null}
       style={{
         ...(rowConfig.getStyle ? rowConfig.getStyle(item) : {}),
-        cursor: rowConfig.onClick ? 'pointer' : 'default',
+        cursor: rowConfig.onClick ? "pointer" : "default",
       }}
     >
       {Object.keys(columns).map((key) => cell(key, item, columns))}
@@ -119,14 +119,14 @@ const getHeaderColumns = (columns) =>
     return (
       <Th
         key={key}
-        align={columns[key].align || 'left'}
+        align={columns[key].align || "left"}
         style={{
-          cursor: columns[key].label && columns[key].onSort ? 'pointer' : 'default',
+          cursor: columns[key].label && columns[key].onSort ? "pointer" : "default",
         }}
         onClick={columns[key].label && columns[key].onSort ? columns[key].onSort : null}
         maxWidth={columns[key].maxWidth || null}
       >
-        <span>{columns[key].label ? columns[key].label : ''}</span>
+        <span>{columns[key].label ? columns[key].label : ""}</span>
       </Th>
     )
   })
@@ -157,7 +157,7 @@ const Table = ({
         </THead>
         <TBody>{data.length ? data.map((i) => getRows(i, columns, rowConfig)) : null}</TBody>
       </T>
-      {noData && <span style={{ fontStyle: 'italic' }}>No Data Available</span>}
+      {noData && <span style={{ fontStyle: "italic" }}>No Data Available</span>}
     </Wrapper>
   )
 }
@@ -183,7 +183,7 @@ Table.propTypes = {
 }
 
 const align = {
-  left: 'flex-start',
-  center: 'center',
-  right: 'flex-end',
+  left: "flex-start",
+  center: "center",
+  right: "flex-end",
 }

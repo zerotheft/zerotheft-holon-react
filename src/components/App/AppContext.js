@@ -1,32 +1,32 @@
-import React, { createContext, useEffect, useState } from 'react'
-import PropTypes from 'prop-types'
-import { get } from 'lodash'
-import { getYear } from 'date-fns'
+import React, { createContext, useEffect, useState } from "react"
+import PropTypes from "prop-types"
+import { get } from "lodash"
+import { getYear } from "date-fns"
 
-import { getParameterByName } from 'utils'
-import useFetch from 'commons/hooks/useFetch'
-import { holonInfo as getHolonInfo } from 'apis/vote'
-import { getVoterInfos } from 'apis/desktopApp'
-import { getTheftInfo } from 'apis/reports'
-import { getPaths, getUmbrellaPaths } from '../../apis/path'
+import { getParameterByName } from "utils"
+import useFetch from "commons/hooks/useFetch"
+import { holonInfo as getHolonInfo } from "apis/vote"
+import { getVoterInfos } from "apis/desktopApp"
+import { getTheftInfo } from "apis/reports"
+import { getPaths, getUmbrellaPaths } from "../../apis/path"
 
 const AppContext = createContext()
 
 const AppProvider = ({ children }) => {
-  if (getParameterByName('year')) localStorage.setItem('filterYear', getParameterByName('year'))
-  if (!localStorage.getItem('filterYear')) localStorage.setItem('filterYear', getYear(new Date()) - 1)
+  if (getParameterByName("year")) localStorage.setItem("filterYear", getParameterByName("year"))
+  if (!localStorage.getItem("filterYear")) localStorage.setItem("filterYear", getYear(new Date()) - 1)
 
   const [getPathsApi, loading, paths] = useFetch(getPaths)
   /* eslint-disable-next-line no-unused-vars */
   const [getUmbrellaPathsApi, fetchingUmbrella, umbrellaPaths] = useFetch(getUmbrellaPaths)
   /* eslint-disable-next-line no-unused-vars */
   const [getHolonApi, loadingHolon, holonInfo] = useFetch(getHolonInfo)
-  const [filterParams, updateFilter] = useState({ year: localStorage.getItem('filterYear'), initPath: 'USA' }),
+  const [filterParams, updateFilter] = useState({ year: localStorage.getItem("filterYear"), initPath: "USA" }),
     [selectedHolon, updateHolon] = useState(
-      localStorage.getItem('selectedHolon') ? JSON.parse(localStorage.getItem('selectedHolon')) : {}
+      localStorage.getItem("selectedHolon") ? JSON.parse(localStorage.getItem("selectedHolon")) : {}
     ),
     [userInfo, updateUserInfo] = useState()
-  const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem('address'))
+  const [selectedAddress, updateSelectedAddress] = useState(localStorage.getItem("address"))
   const [getTheftApi, loadingTheft, theftInfo] = useFetch(getTheftInfo)
   useEffect(() => {
     getPathsApi({ nation: filterParams.initPath })
@@ -35,13 +35,13 @@ const AppProvider = ({ children }) => {
 
   /* eslint-disable-next-line no-unused-vars */
   const fetchFromApp = async () => {
-    const res = (await getVoterInfos('data.address')) || ''
-    const holon = get(res, 'data.selectedHolon')
-    const address = get(res, 'data.address') || ''
-    const voterId = get(res, 'data.voterId') || ''
+    const res = (await getVoterInfos("data.address")) || ""
+    const holon = get(res, "data.selectedHolon")
+    const address = get(res, "data.address") || ""
+    const voterId = get(res, "data.voterId") || ""
 
     if (holon) {
-      localStorage.setItem('selectedHolon', JSON.stringify(holon))
+      localStorage.setItem("selectedHolon", JSON.stringify(holon))
       updateHolon(holon)
     }
 
@@ -49,8 +49,8 @@ const AppProvider = ({ children }) => {
 
     if (selectedAddress !== address) {
       updateSelectedAddress(address)
-      localStorage.setItem('address', address)
-      localStorage.setItem('citizenID', voterId)
+      localStorage.setItem("address", address)
+      localStorage.setItem("citizenID", voterId)
     }
   }
 
@@ -61,7 +61,7 @@ const AppProvider = ({ children }) => {
     getHolonApi()
   }, [])
   useEffect(() => {
-    getTheftApi(filterParams.initPath, true, get(filterParams, 'year'))
+    getTheftApi(filterParams.initPath, true, get(filterParams, "year"))
   }, [filterParams.year])
   return (
     <AppContext.Provider
@@ -75,7 +75,7 @@ const AppProvider = ({ children }) => {
         updateHolon,
         holonInfo,
         loadingPaths: loading,
-        paths: get(paths, 'data'),
+        paths: get(paths, "data"),
         umbrellaPaths,
         theftInfo,
       }}

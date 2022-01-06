@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from "react"
+import styled from "styled-components"
 
-import { truncateString } from 'utils'
-import { colors } from 'theme'
+import { truncateString } from "utils"
+import { colors } from "theme"
 
 const Extend = styled.span`
     font-size: 14px;
@@ -11,7 +11,7 @@ const Extend = styled.span`
     color: ${colors.primary};
     white-space: nowrap;
     &::after {
-      content: '';
+      content: "";
       display: inline-block;
       width: 0;
       height: 0;
@@ -38,7 +38,7 @@ const Extend = styled.span`
     white-space: pre-line;
   `
 
-const SeeMore = ({ text = '', textLength = 175, initial = false }) => {
+const SeeMore = ({ text = "", textLength = 175, initial = false }) => {
   const [state, changeState] = useState(initial)
   if (text && text.length > textLength)
     return (

@@ -1,16 +1,15 @@
-import React, { useState, useContext, useEffect } from 'react'
-import metamaskIcon from 'assets/icons/metamask.svg'
-import styled from 'styled-components'
-import Button from 'commons/Buttons'
-import { colors } from 'theme'
-import { LinkText } from 'commons/styles'
-import { ButtonsWrapper, Next } from './Buttons'
-import { Wrapper, Header, Body, InnerWrapper, OrderedList } from './styles'
-import { VoteContext } from '../VoteContext'
+import React, { useState, useContext, useEffect } from "react"
+import styled from "styled-components"
+import metamaskIcon from "assets/icons/metamask.svg"
+import Button from "commons/Buttons"
+import { LinkText } from "commons/styles"
+import { VoteContext } from "../VoteContext"
+import { ButtonsWrapper, Next } from "./Buttons"
+import { Wrapper, Header, Body, InnerWrapper, OrderedList } from "./styles"
 
-const Step4 = ({ updateCurrentStep }) => {
+const Step4 = ({ updateCurrentStep, checkRequirements }) => {
   const { checkStep, voterInfo, loadWeb3, buildUrl } = useContext(VoteContext)
-  const [userType, updateUserType] = useState('newUser')
+  const [userType, updateUserType] = useState("newUser")
 
   useEffect(() => {
     checkStep()
@@ -37,19 +36,19 @@ const Step4 = ({ updateCurrentStep }) => {
               <ButtonsWrapper style={{ marginTop: 10 }}>
                 <Button
                   onClick={() => {
-                    updateUserType('oldUser')
+                    updateUserType("oldUser")
                   }}
                 >
                   Yes
                 </Button>
-                <Button plain onClick={() => updateUserType('newUser')}>
+                <Button plain onClick={() => updateUserType("newUser")}>
                   No
                 </Button>
               </ButtonsWrapper>
             </Question>
           ) : (
             <div>
-              <FlexBox>
+              {/* <FlexBox>
                 <div className="metamask-header">Zerotheft Wallet Setup</div>
                 <Selector>
                   <Option selected={userType === 'newUser'} onClick={() => updateUserType('newUser')}>
@@ -59,17 +58,17 @@ const Step4 = ({ updateCurrentStep }) => {
                     Old User
                   </Option>
                 </Selector>
-              </FlexBox>
+              </FlexBox> */}
               <OrderedList>
-                {userType === 'newUser' ? (
+                {userType === "newUser" ? (
                   <>
                     <li>
                       Download and open Zerotheft Wallet
                       <LinkText
                         onClick={() =>
                           window.open(
-                            'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
-                            '_blank'
+                            "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
+                            "_blank"
                           )
                         }
                       >
@@ -85,7 +84,7 @@ const Step4 = ({ updateCurrentStep }) => {
                           steps.
                         </li>
                         <li>
-                          Connect zerotheft wallet to our holon.{' '}
+                          Connect zerotheft wallet to our holon.{" "}
                           <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
                         </li>
                       </>
@@ -94,7 +93,7 @@ const Step4 = ({ updateCurrentStep }) => {
                 ) : (
                   <>
                     <li>
-                      Connect zerotheft wallet to our holon.{' '}
+                      Connect zerotheft wallet to our holon.{" "}
                       <LinkText onClick={() => connectMetamask()}>Connect</LinkText>
                     </li>
                     <li>If you see not connected info in your zerotheft wallet, click there and connect the wallet.</li>
@@ -104,7 +103,7 @@ const Step4 = ({ updateCurrentStep }) => {
             </div>
           )}
           <ButtonsWrapper>
-            <Next currentStep={4} updateCurrentStep={updateCurrentStep} />
+            <Next currentStep={4} updateCurrentStep={updateCurrentStep} checkRequirements={checkRequirements} />
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>
@@ -115,28 +114,4 @@ const Step4 = ({ updateCurrentStep }) => {
 
 export default Step4
 
-const Question = styled.div``,
-  FlexBox = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .metamask-header {
-      font-size: 20px;
-      font-weight: 600;
-    }
-  `,
-  Selector = styled.div`
-    display: flex;
-    border: 1px solid ${colors.primary};
-    border-radius: 4px;
-    overflow: hidden;
-  `,
-  Option = styled.div`
-    padding: 10px;
-    cursor: pointer;
-    color: ${(props) => (props.selected ? '#fff' : colors.primary)};
-    background: ${(props) => (props.selected ? colors.primary : '#fff')};
-    :first-of-type {
-      border-right: 1px solid ${colors.primary};
-    }
-  `
+const Question = styled.div``

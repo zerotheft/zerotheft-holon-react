@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import styled from 'styled-components'
-import { isEmpty, get } from 'lodash'
-import { colors } from 'theme'
-import { getProposal } from 'apis/proposals'
-import { convertJSONtoString } from 'utils'
-import proposal from 'assets/icons/proposal.svg'
-import OverlaySpinner from 'commons/OverlaySpinner'
+import React, { useState, useEffect } from "react"
+import styled from "styled-components"
+import { isEmpty, get } from "lodash"
+import { colors } from "theme"
+import { getProposal } from "apis/proposals"
+import { convertJSONtoString } from "utils"
+import proposal from "assets/icons/proposal.svg"
+import OverlaySpinner from "commons/OverlaySpinner"
 
 const PathProposals = ({ regularProp, counterProp, theftData }) => {
   const [proposalNumber, updateProposal] = useState(0),
@@ -84,12 +84,12 @@ const PathProposals = ({ regularProp, counterProp, theftData }) => {
       </div>
       {leadingProps.length > 0 && (
         <>
-          <h3>Leading Proposal{leadingProps.length > 1 && 's'}</h3>
+          <h3>Leading Proposal{leadingProps.length > 1 && "s"}</h3>
           {leadingProps.map((prop, index) => {
             return (
               <>
                 <h4>{`${index + 1}. ${prop.title}`}</h4>
-                <div className="best-proposal">{convertJSONtoString(get(prop, 'detail', {}))}</div>
+                <div className="best-proposal">{convertJSONtoString(get(prop, "detail", {}))}</div>
               </>
             )
           })}

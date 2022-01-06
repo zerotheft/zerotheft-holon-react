@@ -1,13 +1,12 @@
 import React from "react"
-import styled from "styled-components"
 import metamaskIcon from "assets/icons/metamask.svg"
 import config from "config"
 import { ButtonsWrapper, Next } from "./Buttons"
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from "./styles"
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo } from "./styles"
 
-const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
+const { MODE } = config
 
-const Step5 = ({ updateCurrentStep, checkRequirements }) => {
+const NoAccount = ({ updateCurrentStep, checkRequirements }) => {
   let name
   switch (MODE) {
     case "private":
@@ -26,16 +25,20 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
   return (
     <Wrapper>
       <InnerWrapper>
-        <Header>Step #2: Configure Zerotheft Wallet</Header>
+        <Header>Step #3: Create or Import Wallet</Header>
         <Body>
-          <BodyInfo>We need to configure zerotheft wallet to connect to {name}.</BodyInfo>
-          <div>
+          <BodyInfo>You need to create/import account in zerotheft wallet to connect to {name}.</BodyInfo>
+          {/* <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
             <Info>
-              If you have already done the following steps, select &apos;{name}&apos; from network selector tab.
+              If you have already done the following steps, select &apos;{name}
+              &apos; from network selector tab.
             </Info>
             <StyledOrderedList>
-              <li>Open my accounts selector at the top right corner section of the zerotheft wallet.</li>
+              <li>
+                Open my accounts selector at the top right corner section of the
+                zerotheft wallet.
+              </li>
               <li>Click on settings and then go to networks setting.</li>
               <li>
                 Click &apos;Add Network&apos; button and fill the details as:
@@ -55,7 +58,7 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
               </li>
               <li>Click on save</li>
             </StyledOrderedList>
-          </div>
+          </div> */}
           <ButtonsWrapper>
             <Next currentStep={5} updateCurrentStep={updateCurrentStep} checkRequirements={checkRequirements} />
           </ButtonsWrapper>
@@ -66,15 +69,4 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
   )
 }
 
-export default Step5
-
-const StyledOrderedList = styled(OrderedList)`
-  li {
-    div {
-      margin-top: 5px;
-      span {
-        font-weight: 600;
-      }
-    }
-  }
-`
+export default NoAccount

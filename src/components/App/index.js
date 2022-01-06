@@ -1,34 +1,34 @@
-import React from 'react'
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from "react"
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
+import PropTypes from "prop-types"
+import styled from "styled-components"
 
-import { ToastContainer, Slide } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import { ToastContainer, Slide } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
-import * as ROUTES from 'constants/routes'
-import { colors, height } from 'theme'
-import ErrorBoundary from 'commons/ErrorBoundary'
-import Header from './commons/Header'
-import Footer from './commons/Footer'
-import Home from './Home'
-import Datatable from './Datatable'
-import VoteDatatable from './Datatable/VoteDatatable'
-import HierarchyYaml from './Datatable/hierarchy'
-import Citizen from './View/Citizen'
-import Vote from './View/Vote'
-import Holon from './Holon'
-import AllProposals from './AllProposals'
-import Issue from './Issue'
-import Path from './Path/Path'
-import Donate from './Donate'
-import DonateTo from './Donate/DonateTo'
-import Report from './Report'
+import * as ROUTES from "constants/routes"
+import { colors, height } from "theme"
+import ErrorBoundary from "commons/ErrorBoundary"
+import Header from "./commons/Header"
+import Footer from "./commons/Footer"
+import Home from "./Home"
+import Datatable from "./Datatable"
+import VoteDatatable from "./Datatable/VoteDatatable"
+import HierarchyYaml from "./Datatable/hierarchy"
+import Citizen from "./View/Citizen"
+import Vote from "./View/Vote"
+import Holon from "./Holon"
+import AllProposals from "./AllProposals"
+import Issue from "./Issue"
+import Path from "./Path/Path"
+import Donate from "./Donate"
+import DonateTo from "./Donate/DonateTo"
+import Report from "./Report"
 
-import { Web3Provider } from './Web3Context'
-import { AppProvider } from './AppContext'
-import NotFound from './NotFound'
-import ViewProposal from './ViewProposal'
+import { Web3Provider } from "./Web3Context"
+import { AppProvider } from "./AppContext"
+import NotFound from "./NotFound"
+import ViewProposal from "./ViewProposal"
 
 const Wrapper = styled.section`
   min-height: 100vh;

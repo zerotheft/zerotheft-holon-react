@@ -64,7 +64,7 @@
     "eject": "react-scripts eject",
     "lint:js": "eslint src --ext .js,.jsx; exit 0",
     "lint:fix": "eslint src --ext .js,.jsx --fix",
-    "prettify": "prettier --write --no-semi --print-width 120 --single-quote 'src/**/*.js'",
+    "prettify": "prettier --write --no-semi --print-width 120 'src/**/*.js'",
     "prepare": "husky install"
   },
   "devDependencies": {

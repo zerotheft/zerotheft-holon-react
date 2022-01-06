@@ -1,34 +1,34 @@
-import React, { useContext } from 'react'
-import { get, lowerCase, upperCase, isEmpty } from 'lodash'
-import { useHistory, useRouteMatch } from 'react-router-dom'
-import StarRatings from 'react-star-ratings'
-import styled from 'styled-components'
+import React, { useContext } from "react"
+import { get, lowerCase, upperCase, isEmpty } from "lodash"
+import { useHistory, useRouteMatch } from "react-router-dom"
+import StarRatings from "react-star-ratings"
+import styled from "styled-components"
 
-import { colors } from 'theme'
-import Button from 'commons/Buttons'
-import { convertJSONtoString } from 'utils'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFrown } from "@fortawesome/free-regular-svg-icons"
+import { colors } from "theme"
+import Button from "commons/Buttons"
+import { convertJSONtoString } from "utils"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFrown } from '@fortawesome/free-regular-svg-icons'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { IssueContext } from '../../IssueContext'
+import OverlaySpinner from "commons/OverlaySpinner"
+import { IssueContext } from "../../IssueContext"
 
-const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
+const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
   const history = useHistory()
   const match = useRouteMatch()
   const { proposalDetails } = useContext(IssueContext)
 
   const details = data ? proposalDetails[data.id] : null
 
-  if (lowerCase(vote) !== 'yes' && lowerCase(vote) !== 'no') return null
+  if (lowerCase(vote) !== "yes" && lowerCase(vote) !== "no") return null
 
   return (
-    <Wrapper style={{ background: vote === 'yes' ? '#EBF3F5' : 'white' }}>
+    <Wrapper style={{ background: vote === "yes" ? "#EBF3F5" : "white" }}>
       <Header>
         <div className="left">
           <div>{vote}</div>
           <div>
-            there was {vote === 'no' && 'NO'} theft by
+            there was {vote === "no" && "NO"} theft by
             <br />
             rigged economy
           </div>
@@ -37,8 +37,8 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
           <Button
             width={175}
             height={55}
-            style={{ fontSize: 20, fontWeight: '700' }}
-            onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${id}/finalize`, { vote })}
+            style={{ fontSize: 20, fontWeight: "700" }}
+            onClick={() => history.push(`/path/${get(match, "params.pathname")}/issue/${id}/check`, { vote })}
           >
             I vote {upperCase(vote)}
           </Button>
@@ -50,14 +50,14 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
             style={{
               color: colors.primary,
               fontSize: 15,
-              fontWeight: '500',
-              textDecoration: 'underline',
-              cursor: 'pointer',
+              fontWeight: "500",
+              textDecoration: "underline",
+              cursor: "pointer",
             }}
             onClick={() =>
               history.push(
-                `/path/${get(match, 'params.pathname')}/issue/${id}/${
-                  vote === 'yes' ? 'proposals' : 'counter-proposals'
+                `/path/${get(match, "params.pathname")}/issue/${id}/${
+                  vote === "yes" ? "proposals" : "counter-proposals"
                 }`
               )
             }
@@ -74,14 +74,14 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
                 marginLeft: 15,
                 color: colors.primary,
                 fontSize: 15,
-                fontWeight: '500',
-                textDecoration: 'underline',
-                cursor: 'pointer',
+                fontWeight: "500",
+                textDecoration: "underline",
+                cursor: "pointer",
               }}
               onClick={() =>
                 history.push(
-                  `/path/${get(match, 'params.pathname')}/issue/${id}/${
-                    vote === 'yes' ? 'proposals' : 'counter-proposals'
+                  `/path/${get(match, "params.pathname")}/issue/${id}/${
+                    vote === "yes" ? "proposals" : "counter-proposals"
                   }`
                 )
               }
@@ -92,9 +92,9 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
           <div>
             <p>Theft Amount : {data.summary}</p>
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
             <p>
-              <span style={{ color: '#8D8D8D' }}>AUTHOR</span> {get(data, 'author.name', 'Anonymous')}
+              <span style={{ color: "#8D8D8D" }}>AUTHOR</span> {get(data, "author.name", "Anonymous")}
             </p>
             {/* <p>
           {get(data, 'ratings.count', 0)}
@@ -109,12 +109,12 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
           <FontAwesomeIcon icon={faFrown} color={colors.red} />{get(data, 'complaints.count', 0)}
         </p> */}
           </div>
-          <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             <p style={{ fontSize: 24 }}>
-              {get(data, 'ratings.count', 0)}
-              <span style={{ margin: '0 5px' }}>
+              {get(data, "ratings.count", 0)}
+              <span style={{ margin: "0 5px" }}>
                 <StarRatings
-                  rating={get(data, 'ratings.rating', 0)}
+                  rating={get(data, "ratings.rating", 0)}
                   starDimension="24px"
                   starSpacing="1px"
                   starRatedColor={colors.yellow}
@@ -122,12 +122,12 @@ const CompareContent = ({ vote = 'yes', data = {}, id, hideBtn = false }) => {
                   name="count_rating"
                 />
               </span>
-              <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(data, 'complaints.count', 0)}
+              <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(data, "complaints.count", 0)}
             </p>
           </div>
           {data && details && (
             <>
-              <div className="description" style={{ position: 'relative', minHeight: 50 }}>
+              <div className="description" style={{ position: "relative", minHeight: 50 }}>
                 {details.loading ? (
                   <OverlaySpinner overlayParent loading backgroundColor="transparent" />
                 ) : (

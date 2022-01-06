@@ -1,24 +1,24 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { get } from 'lodash'
-import { NavLink, Link } from 'react-router-dom'
-import Select from 'react-select'
-import styled from 'styled-components'
+import React, { useState, useContext, useEffect } from "react"
+import { get } from "lodash"
+import { NavLink, Link } from "react-router-dom"
+import Select from "react-select"
+import styled from "styled-components"
 
-import config from 'config'
-import BRANDLOGO from 'assets/icons/zerotheft.svg'
+import config from "config"
+import BRANDLOGO from "assets/icons/zerotheft.svg"
 
-import { getNations } from 'apis/path'
-import useFetch from 'commons/hooks/useFetch'
+import { getNations } from "apis/path"
+import useFetch from "commons/hooks/useFetch"
 
-import * as ROUTES from 'constants/routes'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { Container } from 'commons/styles'
-import { colors } from 'theme'
-import HolonIcon from './svgs/holon'
-import PathIcon from './svgs/path'
-import DonateIcon from './svgs/donate'
-import HomeIcon from './svgs/home'
-import { AppContext } from '../../AppContext'
+import * as ROUTES from "constants/routes"
+import OverlaySpinner from "commons/OverlaySpinner"
+import { Container } from "commons/styles"
+import { colors } from "theme"
+import { AppContext } from "../../AppContext"
+import HolonIcon from "./svgs/holon"
+import PathIcon from "./svgs/path"
+import DonateIcon from "./svgs/donate"
+import HomeIcon from "./svgs/home"
 
 const { CENTRALIZED_SERVER_FRONTEND } = config
 
@@ -26,8 +26,8 @@ const Header = () => {
   const [getNationsApi, loading, nations] = useFetch(getNations)
   const { selectedHolon, filterParams } = useContext(AppContext)
   const [country, selectCountry] = useState({
-    value: get(filterParams, 'initPath', 'USA'),
-    label: get(filterParams, 'initPath', 'USA'),
+    value: get(filterParams, "initPath", "USA"),
+    label: get(filterParams, "initPath", "USA"),
   })
 
   useEffect(() => {
@@ -110,13 +110,13 @@ const Header = () => {
             value={country}
             isSearchable={false}
             options={[
-              ...get(nations, 'data', []).map((i) => ({ label: i.nation, value: i.nation })),
-              { value: 'none', label: 'Select Another Country' },
+              ...get(nations, "data", []).map((i) => ({ label: i.nation, value: i.nation })),
+              { value: "none", label: "Select Another Country" },
             ]}
             onChange={async (i) => {
-              if (i.value === 'none') {
-                await selectCountry({ value: 'USA', label: 'USA' })
-                window.open('https://zerotheft.net/the-zt-global-expansion/', true)
+              if (i.value === "none") {
+                await selectCountry({ value: "USA", label: "USA" })
+                window.open("https://zerotheft.net/the-zt-global-expansion/", true)
               } else selectCountry(i)
             }}
             styles={{
@@ -131,17 +131,17 @@ const Header = () => {
               control: (styles) => ({
                 ...styles,
                 width: 90,
-                borderColor: 'transparent !important',
-                border: 'none !important',
+                borderColor: "transparent !important",
+                border: "none !important",
               }),
               singleValue: (styles) => ({
                 ...styles,
                 fontSize: 15,
                 fontWeight: 500,
-                color: '#77707D',
+                color: "#77707D",
               }),
               indicatorSeparator: () => ({
-                display: 'none',
+                display: "none",
               }),
             }}
           />

@@ -1,18 +1,18 @@
-import React, { useContext, useEffect } from 'react'
-import { get } from 'lodash'
-import { Redirect } from 'react-router-dom'
-import { numberWithCommas } from 'utils'
-import StarRatings from 'react-star-ratings'
-import styled from 'styled-components'
+import React, { useContext, useEffect } from "react"
+import { get } from "lodash"
+import { Redirect } from "react-router-dom"
+import StarRatings from "react-star-ratings"
+import styled from "styled-components"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFrown, faCheckCircle } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFrown, faCheckCircle } from "@fortawesome/free-regular-svg-icons"
+import { numberWithCommas } from "utils"
 
-import { getCitizenInfo } from 'apis/vote'
-import useFetch from 'commons/hooks/useFetch'
-import IssueSlider from 'components/App/Home/IssueSlider'
-import { colors } from 'theme'
-import { IssueContext } from '../IssueContext'
+import { getCitizenInfo } from "apis/vote"
+import useFetch from "commons/hooks/useFetch"
+import IssueSlider from "components/App/Home/IssueSlider"
+import { colors } from "theme"
+import { IssueContext } from "../IssueContext"
 
 const AfterVote = ({ match }) => {
   const { vote, issue, updateIssue } = useContext(IssueContext)
@@ -20,7 +20,7 @@ const AfterVote = ({ match }) => {
   const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
 
   useEffect(() => {
-    getCitizenInfoApi(localStorage.getItem('citizenID'))
+    getCitizenInfoApi(localStorage.getItem("citizenID"))
   }, [])
 
   if (!vote) {
@@ -30,7 +30,7 @@ const AfterVote = ({ match }) => {
   // vote = { 'vote': "" }
   // issue = { 'proposals': [], 'counter_proposals': [] }
   const proposal = [...issue.proposals, ...issue.counter_proposals].find((i) => i.id === vote.proposalId)
-  const amount = vote.vote === 'Yes' ? proposal.theftAmt : 0
+  const amount = vote.vote === "Yes" ? proposal.theftAmt : 0
 
   // const openRating = () => {
   //   window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/proposal-feedback/${get(
@@ -54,19 +54,19 @@ const AfterVote = ({ match }) => {
                     {vote.comment}
                   </>
                 ) : (
-                  'NONE'
+                  "NONE"
                 )}
               </p>
               <p>
                 Amount Stolen : ${numberWithCommas(amount)}
-                {vote.vote === 'Yes' && !vote.custom_amount && '(from Problem Proposal)'}
+                {vote.vote === "Yes" && !vote.custom_amount && "(from Problem Proposal)"}
               </p>
-              <p style={{ display: 'none' }}>Chosen Proposal : ID 23412</p>
-              <p style={{ fontSize: 23, fontWeight: '400' }}>
-                {get(proposal, 'ratings.count', 0)}
-                <span style={{ margin: '0 5px' }}>
+              <p style={{ display: "none" }}>Chosen Proposal : ID 23412</p>
+              <p style={{ fontSize: 23, fontWeight: "400" }}>
+                {get(proposal, "ratings.count", 0)}
+                <span style={{ margin: "0 5px" }}>
                   <StarRatings
-                    rating={get(proposal, 'ratings.rating', 0)}
+                    rating={get(proposal, "ratings.rating", 0)}
                     starDimension="23px"
                     starSpacing="1px"
                     starRatedColor={colors.yellow}
@@ -75,7 +75,7 @@ const AfterVote = ({ match }) => {
                   />
                 </span>
                 <FontAwesomeIcon icon={faFrown} color={colors.red} style={{ marginRight: 5 }} />
-                {get(proposal, 'complaints.count', 0)}
+                {get(proposal, "complaints.count", 0)}
               </p>
               {/* <Button
                 onClick={() => {
@@ -102,13 +102,13 @@ const AfterVote = ({ match }) => {
             <h5>Your ZeroTheft Public Voter Registration:</h5>
             {userInfo && userInfo.success && (
               <div className="content">
-                <p style={{ fontSize: 18, fontWeight: '500' }}>
+                <p style={{ fontSize: 18, fontWeight: "500" }}>
                   <span>Your Voter Address:</span>
-                  <span>{localStorage.getItem('address')}</span>
+                  <span>{localStorage.getItem("address")}</span>
                 </p>
-                <p style={{ fontSize: 18, fontWeight: '500' }}>
+                <p style={{ fontSize: 18, fontWeight: "500" }}>
                   <span>Your Citizen ID:</span>
-                  <span>{localStorage.getItem('citizenID')}</span>
+                  <span>{localStorage.getItem("citizenID")}</span>
                 </p>
                 <p>
                   <span>Your Name:</span>
@@ -125,7 +125,7 @@ const AfterVote = ({ match }) => {
           </ThankyouWrapper>
         </div>
       </Wrapper>
-      <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+      <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
         <IssueSlider afterVote endNode={match.params.id} updateIssue={updateIssue} onlySlider />
       </div>
     </>

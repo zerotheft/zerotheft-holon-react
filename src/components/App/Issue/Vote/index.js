@@ -1,18 +1,18 @@
-import React, { useContext } from 'react'
-import { get } from 'lodash'
-import { Redirect } from 'react-router-dom'
-import styled from 'styled-components'
+import React, { useContext } from "react"
+import { get } from "lodash"
+import { Redirect } from "react-router-dom"
+import styled from "styled-components"
 
-import { colors } from 'theme'
-import { IssueContext } from '../IssueContext'
-import Compare from '../commons/Compare'
+import { colors } from "theme"
+import { IssueContext } from "../IssueContext"
+import Compare from "../commons/Compare"
 
 const Vote = ({ match }) => {
   const { issue, selection } = useContext(IssueContext)
-  const title = get(issue, 'title', 'N/A')
+  const title = get(issue, "title", "N/A")
 
-  if (!get(selection, 'proposal') && !get(selection, 'counterProposal'))
-    return <Redirect to={`/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}`} />
+  if (!get(selection, "proposal") && !get(selection, "counterProposal"))
+    return <Redirect to={`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}`} />
 
   return (
     <Wrapper>
@@ -23,7 +23,7 @@ const Vote = ({ match }) => {
           (Ethically, not legally)
         </div>
       </Header>
-      <Compare data={selection} title={title} id={get(match, 'params.id')} />
+      <Compare data={selection} title={title} id={get(match, "params.id")} />
     </Wrapper>
   )
 }

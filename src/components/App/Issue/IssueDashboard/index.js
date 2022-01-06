@@ -1,26 +1,26 @@
-import React, { useEffect, useContext, useState } from 'react'
+import React, { useEffect, useContext, useState } from "react"
 import {
   get,
 
   // isEmpty,
   // filter as filterArray,
-} from 'lodash'
+} from "lodash"
 
 // import yaml from 'js-yaml';
-import styled from 'styled-components'
-import { convertDollarToString, numberWithCommas } from 'utils'
-import { colors } from 'theme'
-import { getReport, getTheftInfo } from 'apis/reports'
-import { getProposalTemplate } from 'apis/proposals'
-import useFetch from 'commons/hooks/useFetch'
-import OverlaySpinner from 'commons/OverlaySpinner'
+import styled from "styled-components"
+import { convertDollarToString, numberWithCommas } from "utils"
+import { colors } from "theme"
+import { getReport, getTheftInfo } from "apis/reports"
+import { getProposalTemplate } from "apis/proposals"
+import useFetch from "commons/hooks/useFetch"
+import OverlaySpinner from "commons/OverlaySpinner"
 
 // import Button from "commons/Buttons";
 // import SeeMore from 'commons/SeeMore';
 
 // import { EmptyText } from "commons/styles";
-import { AppContext } from 'components/App/AppContext'
-import { IssueContext } from '../IssueContext'
+import { AppContext } from "components/App/AppContext"
+import { IssueContext } from "../IssueContext"
 import {
   // Header,
   Left,
@@ -28,18 +28,18 @@ import {
   Wrapper,
 
   // WarningWrapper,
-} from '../commons/styles'
+} from "../commons/styles"
 
 // import Path from "../../Path/Path";
 // import SummaryReport from "./SummaryReport";
-import PathProposals from './PathProposals'
-import Points from '../commons/Points'
+import Points from "../commons/Points"
+import PathProposals from "./PathProposals"
 
 // const dateRange = range(1999, new Date().getFullYear())
 //   .reverse()
 //   .map(i => ({ label: i, value: i }));
 const Dashboard = ({ match }) => {
-  const decodedPath = decodeURIComponent(get(match, 'params.pathname'))
+  const decodedPath = decodeURIComponent(get(match, "params.pathname"))
   const { issue, loading: issueLoading } = useContext(IssueContext)
   const [getReportApi, loading] = useFetch(getReport)
   const [getTemplateApi, templateLoading] = useFetch(getProposalTemplate)
@@ -48,7 +48,7 @@ const Dashboard = ({ match }) => {
 
   // const { pathname } = location;
   const { selection } = useContext(IssueContext)
-  const [selectedItem, updateSelectedItem] = useState(get(selection, 'proposal') || {})
+  const [selectedItem, updateSelectedItem] = useState(get(selection, "proposal") || {})
 
   // const displayYaml = template => {
   //   let data;
@@ -76,16 +76,16 @@ const Dashboard = ({ match }) => {
   // };
 
   useEffect(() => {
-    if (get(match, 'params.pathname') && get(match, 'params.id') && get(filterParams, 'year')) {
-      getReportApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year'))
+    if (get(match, "params.pathname") && get(match, "params.id") && get(filterParams, "year")) {
+      getReportApi(`${get(match, "params.pathname")}%2F${get(match, "params.id")}`, false, get(filterParams, "year"))
     }
-    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year'))
-  }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
+    getTheftApi(`${get(match, "params.pathname")}%2F${get(match, "params.id")}`, false, get(filterParams, "year"))
+  }, [get(match, "params.pathname"), get(match, "params.id"), get(filterParams, "year")])
 
   useEffect(() => {
-    const templatePath = `${decodedPath.replace('USA', 'proposals')}/${get(match, 'params.id')}`
+    const templatePath = `${decodedPath.replace("USA", "proposals")}/${get(match, "params.id")}`
     getTemplateApi(templatePath)
-  }, [get(match, 'params.id'), get(match, 'params.pathname')])
+  }, [get(match, "params.id"), get(match, "params.pathname")])
 
   // const allProposals = [
   //   ...(get(issue, 'proposals') || []),
@@ -94,26 +94,26 @@ const Dashboard = ({ match }) => {
 
   // const filteredProposals = sortedUniqBy(isEmpty(filterParams.year) ? filterArray(allProposals, { year: filterParams.year }) : allProposals, 'description')
   // const filteredProposals = sortedUniqBy(allProposals, 'description');
-  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
+  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll("%2F", "/")]
   const yes = theftData && ((theftData.for / theftData.votes) * 100).toFixed()
   const no = 100 - yes
   if (issueLoading || templateLoading || loading || loadingTheft) return <OverlaySpinner loading />
   return (
-    <Wrapper style={{ height: 'calc(100vh - 125px)' }}>
+    <Wrapper style={{ height: "calc(100vh - 125px)" }}>
       <Left
         style={{
-          width: 'auto',
-          margin: '0 30px 0 0',
-          display: 'flex',
-          flexDirection: 'column',
-          maxWidth: '440px',
+          width: "auto",
+          margin: "0 30px 0 0",
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: "440px",
         }}
       >
-        <div style={{ overflowY: 'auto', height: '100%' }}>
-          <div style={{ overflow: 'hidden', height: '100%' }}>
+        <div style={{ overflowY: "auto", height: "100%" }}>
+          <div style={{ overflow: "hidden", height: "100%" }}>
             {/* <Points data={filterParams.year ? Filter(get(issue, 'proposals', []), { year: parseInt(filterParams.year) }) : get(issue, 'proposals', [])} issue={issue} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} loading={loading} /> */}
             <Points
-              data={get(issue, 'proposals', [])}
+              data={get(issue, "proposals", [])}
               issue={issue}
               selectedItem={selectedItem}
               updateSelectedItem={updateSelectedItem}
@@ -123,16 +123,16 @@ const Dashboard = ({ match }) => {
           </div>
         </div>
       </Left>
-      <Right style={{ flex: '1', overflowY: 'auto', padding: '30px 0 0' }}>
-        <div style={{ overflow: 'hidden' }}>
-          <div style={{ width: '80%', float: 'left' }}>
+      <Right style={{ flex: "1", overflowY: "auto", padding: "30px 0 0" }}>
+        <div style={{ overflow: "hidden" }}>
+          <div style={{ width: "80%", float: "left" }}>
             <PathProposals
-              regularProp={get(issue, 'proposals') || []}
-              counterProp={get(issue, 'counter_proposals') || []}
+              regularProp={get(issue, "proposals") || []}
+              counterProp={get(issue, "counter_proposals") || []}
               theftData={theftData}
             />
           </div>
-          <div style={{ width: '20%', float: 'right' }}>
+          <div style={{ width: "20%", float: "right" }}>
             <SelectWrapper>
               {theftData && (no || yes) && (
                 <TheftInfo>
@@ -148,12 +148,12 @@ const Dashboard = ({ match }) => {
                     </div>
                     <div className="rightTheftSec">
                       <h2>
-                        Amount of theft: <span>${convertDollarToString(parseFloat(get(theftData, 'theft')))}</span>
+                        Amount of theft: <span>${convertDollarToString(parseFloat(get(theftData, "theft")))}</span>
                       </h2>
                     </div>
                   </div>
 
-                  <div className="totlVotersSec">Total Voters : {numberWithCommas(get(theftData, 'votes'))}</div>
+                  <div className="totlVotersSec">Total Voters : {numberWithCommas(get(theftData, "votes"))}</div>
                 </TheftInfo>
               )}
             </SelectWrapper>
@@ -374,7 +374,7 @@ const TheftInfo = styled.div`
       z-index: 1;
     }
     &::before {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       top: 0px;
