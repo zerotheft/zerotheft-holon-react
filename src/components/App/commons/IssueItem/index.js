@@ -1,16 +1,16 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { get } from 'lodash'
-import styled from 'styled-components'
+import React from "react"
+import PropTypes from "prop-types"
+import { get } from "lodash"
+import styled from "styled-components"
 
-import { numberWithCommas } from 'utils'
+import { numberWithCommas } from "utils"
 
 const IssueItem = ({ data = {}, style = {}, onClick, hideAmount = false }) => {
   return (
     <Wrapper style={style} onClick={() => (onClick ? onClick() : null)} cursor={onClick}>
       <div>
-        <div>id: {get(data, 'id', 'N/A')}</div>
-        {!hideAmount && get(data, 'amount') && <div>${numberWithCommas(get(data, 'amount'))}</div>}
+        <div>id: {get(data, "id", "N/A")}</div>
+        {!hideAmount && get(data, "amount") && <div>${numberWithCommas(get(data, "amount"))}</div>}
       </div>
       <div>
         <div>Proposal</div>

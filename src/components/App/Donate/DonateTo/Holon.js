@@ -1,8 +1,8 @@
-import React from 'react'
+import React from "react"
 
-import CopyIcon from 'assets/icons/copy-icon.svg'
-import MainWrapper from './commons/MainWrapper'
-import { ContentWrapper, EthAddress, History } from './commons/styles'
+import CopyIcon from "assets/icons/copy-icon.svg"
+import MainWrapper from "./commons/MainWrapper"
+import { ContentWrapper, EthAddress, History } from "./commons/styles"
 
 const Holon = () => {
   return (
@@ -21,7 +21,7 @@ const Holon = () => {
         <EthAddress>
           <p>Send to Ethereum Address</p>
           <img className="copy" src={CopyIcon} alt="copy" />
-          <p style={{ fontWeight: '700' }}>0xDC25EF3F5B8A186998338A2ADA83795FBA2D695E</p>
+          <p style={{ fontWeight: "700" }}>0xDC25EF3F5B8A186998338A2ADA83795FBA2D695E</p>
         </EthAddress>
         <History>
           <h5>Your history of donations to Holons:</h5>

@@ -1,17 +1,17 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { useHistory } from 'react-router-dom'
-import { toNumber, get } from 'lodash'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFilePdf, faEye } from '@fortawesome/free-solid-svg-icons'
-import Tooltip, { tooltipClasses } from '@mui/material/Tooltip'
-import IconButton from '@mui/material/IconButton'
-import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline'
-import { calculate } from 'components/App/commons/services'
-import Button from 'commons/Buttons'
-import { colors } from 'theme'
-import { convertDollarToString } from 'utils'
+import React from "react"
+import PropTypes from "prop-types"
+import styled from "styled-components"
+import { useHistory } from "react-router-dom"
+import { toNumber, get } from "lodash"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFilePdf, faEye } from "@fortawesome/free-solid-svg-icons"
+import Tooltip, { tooltipClasses } from "@mui/material/Tooltip"
+import IconButton from "@mui/material/IconButton"
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
+import { calculate } from "components/App/commons/services"
+import Button from "commons/Buttons"
+import { colors } from "theme"
+import { convertDollarToString } from "utils"
 
 const CustomToolTip = styled(({ className, ...props }) => <Tooltip {...props} arrow classes={{ popper: className }} />)(
   () => ({
@@ -35,13 +35,13 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
         <div className="details-wrapper">
           <div
             className={`vote-percent ${
-              voteDetails.unOfficial ? 'unofficial' : get(voteDetails, 'vote') === 'NO' ? 'no' : ''
+              voteDetails.unOfficial ? "unofficial" : get(voteDetails, "vote") === "NO" ? "no" : ""
             }`}
           >
-            {`${get(voteDetails, 'vote') === 'NO' ? 'No Theft' : 'Yes theft'} ${get(
+            {`${get(voteDetails, "vote") === "NO" ? "No Theft" : "Yes theft"} ${get(
               voteDetails,
-              'votedPercent',
-              '0'
+              "votedPercent",
+              "0"
             )}%`}
           </div>
           {voteDetails.unOfficial && (
@@ -51,8 +51,8 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
               </IconButton>
             </CustomToolTip>
           )}
-          <div className={`amt ${get(voteDetails, 'vote') === 'NO' ? 'no' : ''}`}>
-            ${convertDollarToString(toNumber(get(voteDetails, 'amount', 1)))}
+          <div className={`amt ${get(voteDetails, "vote") === "NO" ? "no" : ""}`}>
+            ${convertDollarToString(toNumber(get(voteDetails, "amount", 1)))}
           </div>
         </div>
       ) : (
@@ -65,7 +65,7 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
             history.push(`${viewLink}/proposals`)
           }}
           plain
-          style={{ color: '#777373' }}
+          style={{ color: "#777373" }}
           width={90}
           height={34}
         >
@@ -75,9 +75,9 @@ const PathDetails = ({ url, isPath, summary, viewLink }) => {
         <CustomButton
           onClick={(e) => {
             e.stopPropagation()
-            history.push(`/${isPath ? 'pathReport' : 'leafReport'}/${url.replaceAll('/', '%2F')}`)
+            history.push(`/${isPath ? "pathReport" : "leafReport"}/${url.replaceAll("/", "%2F")}`)
           }}
-          style={{ backgroundColor: '#E9E9E9', color: '#777373' }}
+          style={{ backgroundColor: "#E9E9E9", color: "#777373" }}
           width={105}
           height={34}
         >

@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
 export const Wrapper = styled.div`
   z-index: 501;
@@ -13,12 +13,12 @@ export const Wrapper = styled.div`
     `
     z-index: 1;  
     position: absolute;
-    background: ${props.backgroundColor || 'rgba(255, 255, 255, 0.7)'};
+    background: ${props.backgroundColor || "rgba(255, 255, 255, 0.7)"};
   `}
 `
 
-const unfilled = 'rgba(47, 85, 151, 0.3)',
-  filled = 'rgba(47, 85, 151, 0.9)'
+const unfilled = "rgba(47, 85, 151, 0.3)",
+  filled = "rgba(47, 85, 151, 0.9)"
 
 export const Spinner = styled.div`
   position: absolute;

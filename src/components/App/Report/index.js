@@ -1,12 +1,12 @@
-import React, { useEffect, useContext } from 'react'
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
-import { get } from 'lodash'
-import useFetch from 'commons/hooks/useFetch'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { getReport, getNationReport } from 'apis/reports'
-import { AppContext } from 'components/App/AppContext'
-import { colors } from 'theme'
+import React, { useEffect, useContext } from "react"
+import styled from "styled-components"
+import PropTypes from "prop-types"
+import { get } from "lodash"
+import useFetch from "commons/hooks/useFetch"
+import OverlaySpinner from "commons/OverlaySpinner"
+import { getReport, getNationReport } from "apis/reports"
+import { AppContext } from "components/App/AppContext"
+import { colors } from "theme"
 
 const Report = ({ match, history }) => {
   const [getReportApi, fetching, reportResponse] = useFetch(getReport)
@@ -16,14 +16,14 @@ const Report = ({ match, history }) => {
 
   useEffect(() => {
     if (pathName) {
-      if (pathName === get(filterParams, 'initPath')) {
-        getNationReportApi(pathName, get(filterParams, 'year'))
+      if (pathName === get(filterParams, "initPath")) {
+        getNationReportApi(pathName, get(filterParams, "year"))
       } else {
-        getReportApi(pathName, !!pathName, get(filterParams, 'year'))
+        getReportApi(pathName, !!pathName, get(filterParams, "year"))
       }
     }
-    if (leafName) getReportApi(leafName, false, get(filterParams, 'year'))
-  }, [get(filterParams, 'year')])
+    if (leafName) getReportApi(leafName, false, get(filterParams, "year"))
+  }, [get(filterParams, "year")])
 
   return (
     <>
@@ -37,19 +37,19 @@ const Report = ({ match, history }) => {
           <GoBackDiv>
             <span onClick={() => history.goBack()}>&#60;Go Back</span>
           </GoBackDiv>
-          {get(reportResponse, 'report') || get(nationReportResponse, 'report') ? (
+          {get(reportResponse, "report") || get(nationReportResponse, "report") ? (
             <IframeWrapper>
               <Iframe
-                src={get(reportResponse, 'report') || get(nationReportResponse, 'report')}
+                src={get(reportResponse, "report") || get(nationReportResponse, "report")}
                 width="100%"
                 height="100%"
               />
             </IframeWrapper>
           ) : (
             <NoReportWrapper>
-              {get(reportResponse, 'message') ||
-                get(nationReportResponse, 'message') ||
-                'Report is not available yet. Please come back later or error encountered.'}
+              {get(reportResponse, "message") ||
+                get(nationReportResponse, "message") ||
+                "Report is not available yet. Please come back later or error encountered."}
             </NoReportWrapper>
           )}
         </>
@@ -61,7 +61,7 @@ const Report = ({ match, history }) => {
 export const Iframe = styled.iframe`
     overflow: auto;
     width: calc(100% + 17px);
-    border: ${(props) => props.border || '2px solid var(--lighterGrey)'};
+    border: ${(props) => props.border || "2px solid var(--lighterGrey)"};
     height: calc(100vh - 60px - 45px - 20px);
     scrolling: no;
   `,

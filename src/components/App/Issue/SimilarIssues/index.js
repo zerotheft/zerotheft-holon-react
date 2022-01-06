@@ -1,21 +1,21 @@
-import React, { useEffect } from 'react'
-import { get, reject } from 'lodash'
-import styled from 'styled-components'
+import React, { useEffect } from "react"
+import { get, reject } from "lodash"
+import styled from "styled-components"
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFileAlt } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFileAlt } from "@fortawesome/free-solid-svg-icons"
 
-import { colors } from 'theme'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import useFetch from 'commons/hooks/useFetch'
-import { getPathProposals } from 'apis/path'
-import { convertUNIXtoDATETIME } from 'utils'
+import { colors } from "theme"
+import OverlaySpinner from "commons/OverlaySpinner"
+import useFetch from "commons/hooks/useFetch"
+import { getPathProposals } from "apis/path"
+import { convertUNIXtoDATETIME } from "utils"
 
 const SimilarIssues = ({ history, match }) => {
   const [getPathProposalsApi, loading, res] = useFetch(getPathProposals)
 
   useEffect(() => {
-    if (get(match, 'params.pathname')) getPathProposalsApi(get(match, 'params.pathname'))
+    if (get(match, "params.pathname")) getPathProposalsApi(get(match, "params.pathname"))
   }, [])
 
   return (
@@ -32,16 +32,16 @@ const SimilarIssues = ({ history, match }) => {
             </th>
           </thead>
           <tbody>
-            {reject(get(res, 'issues', []), { id: get(match, 'params.id') }).map((i) => (
+            {reject(get(res, "issues", []), { id: get(match, "params.id") }).map((i) => (
               <tr>
                 <td
                   className="issue"
-                  onClick={() => history.push(`/path/${get(match, 'params.pathname')}/issue/${i.id}`)}
+                  onClick={() => history.push(`/path/${get(match, "params.pathname")}/issue/${i.id}`)}
                 >
                   <div>
-                    <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 5, color: colors.primary }} />{' '}
-                    {i.title || 'N/A'}{' '}
-                    <span style={{ fontSize: 14, fontStyle: 'italic' }}>
+                    <FontAwesomeIcon icon={faFileAlt} style={{ marginRight: 5, color: colors.primary }} />{" "}
+                    {i.title || "N/A"}{" "}
+                    <span style={{ fontSize: 14, fontStyle: "italic" }}>
                       (proposals: {i.total_proposals || 0}, counter proposals: {i.total_counter_proposals || 0})
                     </span>
                     <br />
@@ -52,7 +52,7 @@ const SimilarIssues = ({ history, match }) => {
             ))}
           </tbody>
         </table>
-        {!get(res, 'issues', []).length && <div style={{ padding: 10, fontStyle: 'italic' }}>No issues available</div>}
+        {!get(res, "issues", []).length && <div style={{ padding: 10, fontStyle: "italic" }}>No issues available</div>}
       </ListWrapper>
     </div>
   )

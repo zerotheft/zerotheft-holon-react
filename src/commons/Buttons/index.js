@@ -1,6 +1,6 @@
-import styled, { css } from 'styled-components'
+import styled, { css } from "styled-components"
 
-import { colors } from 'theme'
+import { colors } from "theme"
 
 const plainProperty = `
   background: #fff;
@@ -38,7 +38,7 @@ export default styled.button`
     cursor: no-drop;
   }
   color: #fff;
-  width: ${(props) => (props.width ? `${props.width}px` : 'auto')};
+  width: ${(props) => (props.width ? `${props.width}px` : "auto")};
   height: ${(props) => `${props.height || 35}px`};
   ${(props) => props.css && css(...props.css)};
   ${(props) => props.plain && plainProperty}

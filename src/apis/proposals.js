@@ -1,5 +1,5 @@
-import { get } from 'utils/api'
-import { get as lodGet } from 'lodash'
+import { get as lodGet } from "lodash"
+import { get } from "utils/api"
 
 export const getProposal = async (id) => {
   try {
@@ -10,8 +10,8 @@ export const getProposal = async (id) => {
     return data
   } catch (e) {
     return {
-      status: lodGet(e, 'response.status'),
-      error: lodGet(e, 'response.status') === 404 ? 'Record Not Found.' : e.message,
+      status: lodGet(e, "response.status"),
+      error: lodGet(e, "response.status") === 404 ? "Record Not Found." : e.message,
     }
   }
 }
@@ -22,8 +22,8 @@ export const getProposalTemplate = async (path) => {
     return data && data.content
   } catch (e) {
     return {
-      status: lodGet(e, 'response.status'),
-      error: lodGet(e, 'response.status') === 404 ? 'Record Not Found.' : e.message,
+      status: lodGet(e, "response.status"),
+      error: lodGet(e, "response.status") === 404 ? "Record Not Found." : e.message,
     }
   }
 }
@@ -35,12 +35,12 @@ export const getPathProposalsByPath = async (path) => {
 
 export const getExportedProposals = async () => {
   try {
-    const { data } = await get('api/exported-proposals')
+    const { data } = await get("api/exported-proposals")
     return data && data.content
   } catch (e) {
     return {
-      status: lodGet(e, 'response.status'),
-      error: lodGet(e, 'response.status') === 404 ? 'Record Not Found.' : e.message,
+      status: lodGet(e, "response.status"),
+      error: lodGet(e, "response.status") === 404 ? "Record Not Found." : e.message,
     }
   }
 }

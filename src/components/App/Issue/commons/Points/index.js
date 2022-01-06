@@ -1,9 +1,9 @@
-import React from 'react'
-import StarRatings from 'react-star-ratings'
-import Progress from 'react-progressbar'
-import { get, orderBy } from 'lodash'
-import { useRouteMatch } from 'react-router-dom'
-import styled from 'styled-components'
+import React from "react"
+import StarRatings from "react-star-ratings"
+import Progress from "react-progressbar"
+import { get, orderBy } from "lodash"
+import { useRouteMatch } from "react-router-dom"
+import styled from "styled-components"
 
 // import OverlaySpinner from 'commons/OverlaySpinner'
 // import { useRouteMatch } from 'react-router-dom'
@@ -12,12 +12,12 @@ import styled from 'styled-components'
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faFrown } from '@fortawesome/free-regular-svg-icons'
 
-import OverlaySpinner from 'commons/OverlaySpinner'
+import OverlaySpinner from "commons/OverlaySpinner"
 
 // import Button from 'commons/Buttons'
 // import { EmptyText } from 'commons/styles'
 // import { convertDollarToString } from 'utils'
-import { colors } from 'theme'
+import { colors } from "theme"
 
 // import { IssueContext } from '../../IssueContext'
 
@@ -43,23 +43,23 @@ const Points = ({
       (item) => {
         return item.ratings.rating
       },
-      ['desc']
+      ["desc"]
     )
   return (
-    <Wrapper style={{ height: '100%' }}>
+    <Wrapper style={{ height: "100%" }}>
       {loading && <OverlaySpinner loading overlayParent />}
-      <div style={{ height: '90%', overflowY: 'auto' }}>
-        <div style={{ overflow: 'hidden' }}>
+      <div style={{ height: "90%", overflowY: "auto" }}>
+        <div style={{ overflow: "hidden" }}>
           {data.length
             ? data.map((i) => (
                 <Item active={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
                   <div className="itemWrap">
                     <div>
                       {/* <div>#<span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> </div> */}
-                      <div style={{ fontWeight: '200' }}>#{i.id} </div>
+                      <div style={{ fontWeight: "200" }}>#{i.id} </div>
                       {/* <div>Theft Amount: </div> */}
                       <StarRatings
-                        rating={get(i, 'ratings.rating', 0)}
+                        rating={get(i, "ratings.rating", 0)}
                         starDimension="20px"
                         starSpacing="1px"
                         starRatedColor={colors.yellow}
@@ -86,20 +86,20 @@ const Points = ({
                     </div>
                     <div
                       style={{
-                        textAlign: 'right',
-                        width: 'auto',
-                        maxWidth: '150px',
-                        minWidth: '65px',
-                        marginLeft: '15px',
+                        textAlign: "right",
+                        width: "auto",
+                        maxWidth: "150px",
+                        minWidth: "65px",
+                        marginLeft: "15px",
                       }}
                     >
-                      <div style={{ border: '1px solid #D5C9C9', borderRadius: '2px' }}>
+                      <div style={{ border: "1px solid #D5C9C9", borderRadius: "2px" }}>
                         <Progress completed={75} color="yellow" height="15px" />
                       </div>
                       {/* <div>ID: <span style={{ fontWeight: '600' }}>{idx + 1 || 'N/A'}</span> | Votes: <span>{get(i, 'votes', 0)}</span></div> */}
                       <div>
-                        <span style={{ fontWeight: '600' }}>{i.summary}</span> | Votes:{' '}
-                        <span>{get(i, 'votes', 0)}</span>
+                        <span style={{ fontWeight: "600" }}>{i.summary}</span> | Votes:{" "}
+                        <span>{get(i, "votes", 0)}</span>
                       </div>
                       <div>
                         {/*
@@ -119,11 +119,11 @@ const Points = ({
                   </div>
                 </Item>
               ))
-            : ''}
+            : ""}
         </div>
       </div>
       {viewPage ? (
-        ''
+        ""
       ) : (
         <ButtonWrapper>
           {data.length ? <div className="none">None of these are accurate</div> : null}
@@ -131,10 +131,10 @@ const Points = ({
             <div className="btns">
               <a
                 href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${
-                  counter ? 'counter-' : ''
+                  counter ? "counter-" : ""
                 }proposal`}
               >
-                Add {counter ? 'Counter' : ''} Proposal
+                Add {counter ? "Counter" : ""} Proposal
               </a>
             </div>
           ) : null}
@@ -170,7 +170,7 @@ const Item = styled.div`
     }
     &.bottom-border {
       &::after {
-        content: '';
+        content: "";
         display: block;
         height: 1px;
         background: #d3d0d0;

@@ -1,16 +1,16 @@
-import React, { useContext } from 'react'
-import { LinkText } from 'commons/styles'
-import config from 'config'
-import { Wrapper, Header, Body, SubHeader, OrderedList } from './styles'
-import { ButtonsWrapper, Previous, Next } from './Buttons'
-import { VoteContext } from '../VoteContext'
+import React, { useContext } from "react"
+import { LinkText } from "commons/styles"
+import config from "config"
+import { VoteContext } from "../VoteContext"
+import { Wrapper, Header, Body, SubHeader, OrderedList } from "./styles"
+import { ButtonsWrapper, Previous, Next } from "./Buttons"
 
 const { MODE } = config
 
 const networks = {
-  private: 'privatenet',
-  staging: 'testnet',
-  production: 'mainnet',
+  private: "privatenet",
+  staging: "testnet",
+  production: "mainnet",
 }
 
 const Step2 = ({ updateCurrentStep }) => {
@@ -20,7 +20,7 @@ const Step2 = ({ updateCurrentStep }) => {
     <Wrapper>
       <div>
         <Header>
-          Step #2: Make sure the app launches {voterInfo.network !== MODE && 'and select the right environment'}
+          Step #2: Make sure the app launches {voterInfo.network !== MODE && "and select the right environment"}
         </Header>
         <Body>
           <span style={{ maxWidth: 500 }}>
@@ -43,7 +43,7 @@ const Step2 = ({ updateCurrentStep }) => {
                     Settings
                   </LinkText>
                 </li>
-                <li>Select {networks[MODE] || 'testnet'} and save.</li>
+                <li>Select {networks[MODE] || "testnet"} and save.</li>
                 <li>Get back to this page and click next.</li>
               </OrderedList>
             </div>

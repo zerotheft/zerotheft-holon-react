@@ -1,9 +1,9 @@
-import React from 'react'
-import { get } from 'lodash'
-import { Field } from 'formik'
-import PropTypes from 'prop-types'
+import React from "react"
+import { get } from "lodash"
+import { Field } from "formik"
+import PropTypes from "prop-types"
 
-import { CustomFieldWrapper, ErrorSpan } from './styles'
+import { CustomFieldWrapper, ErrorSpan } from "./styles"
 
 const EditableField = ({
   label,
@@ -12,12 +12,12 @@ const EditableField = ({
   max,
   field,
   form,
-  placeholder = '',
+  placeholder = "",
   required = false,
   readonly = false,
-  type = 'text',
+  type = "text",
   // eslint-disable-next-line react/prop-types
-  labelType = 'side',
+  labelType = "side",
   style,
   inputStyles = {},
 }) => (
@@ -25,7 +25,7 @@ const EditableField = ({
     style={style}
     labelWidth={labelWidth}
     labelType={labelType}
-    className={`${get(form, `errors[${field.name}]`) && get(form, `touched[${field.name}]`) ? 'invalid' : null}`}
+    className={`${get(form, `errors[${field.name}]`) && get(form, `touched[${field.name}]`) ? "invalid" : null}`}
   >
     <div className="innerform-wrapper">
       {(label || labelWidth) && (

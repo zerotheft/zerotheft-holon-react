@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react'
-import { useHistory } from 'react-router-dom'
-import Carousel from 'react-elastic-carousel'
-import { get } from 'lodash'
-import { colors } from 'theme'
-import styled from 'styled-components'
-import yaml from 'js-yaml'
-import { nextAreaToVote } from 'apis/path'
-import { getProposalTemplate } from 'apis/proposals'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import Button from 'commons/Buttons'
-import { Container, EmptyText } from 'commons/styles'
+import React, { useState, useEffect } from "react"
+import { useHistory } from "react-router-dom"
+import Carousel from "react-elastic-carousel"
+import { get } from "lodash"
+import styled from "styled-components"
+import yaml from "js-yaml"
+import { colors } from "theme"
+import { nextAreaToVote } from "apis/path"
+import { getProposalTemplate } from "apis/proposals"
+import OverlaySpinner from "commons/OverlaySpinner"
+import Button from "commons/Buttons"
+import { Container, EmptyText } from "commons/styles"
 
 // import { AppContext } from '../AppContext'
 
@@ -103,21 +103,21 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
     /* eslint-disable-next-line no-restricted-syntax */
     for (const area of nextAreas) {
       let path = area.hierarchy
-      const pathElms = path.split('/')
+      const pathElms = path.split("/")
       const title = pathElms.pop()
       if (title === endNode) {
         /* eslint-disable-next-line no-continue */
         continue
       }
-      path = pathElms.join('%2F')
-      const templatePath = `${path.replace('USA', 'proposals').replace(/%2F/g, '/')}/${title}`
+      path = pathElms.join("%2F")
+      const templatePath = `${path.replace("USA", "proposals").replace(/%2F/g, "/")}/${title}`
       /* eslint-disable-next-line no-await-in-loop */
       const template = await getProposalTemplate(templatePath)
-      path = path.replace(/%2F/g, ' > ')
+      path = path.replace(/%2F/g, " > ")
       issues.push({
         title,
         path,
-        rawPath: `/path/${pathElms.join('%2F')}/issue/${title}/proposals`,
+        rawPath: `/path/${pathElms.join("%2F")}/issue/${title}/proposals`,
         description: displayYaml(template),
       })
     }
@@ -137,10 +137,10 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
       data = yaml.safeLoad(template)
     } catch (e) {
       /* eslint-disable-next-line no-console */
-      console.log('loading yaml', e.message)
+      console.log("loading yaml", e.message)
     }
 
-    const details = get(data, 'describe_problem_area') || ''
+    const details = get(data, "describe_problem_area") || ""
     return truncateString(details, 100)
   }
   return (
@@ -155,22 +155,22 @@ const IssueSlider = ({ afterVote = false, updateIssue, onlySlider = false, endNo
             </p>
           </Welcome>
         )}
-        <SliderContent className={!onlySlider ? '' : 'full'}>
+        <SliderContent className={!onlySlider ? "" : "full"}>
           {loading ? (
             <OverlaySpinner loading overlayParent />
           ) : (
             <>
               <h3>For you to vote on next:</h3>
               {allIssues.length ? (
-                <Carousel pagination={false} enableMouseSwipe={false} style={{ height: '160px' }}>
+                <Carousel pagination={false} enableMouseSwipe={false} style={{ height: "160px" }}>
                   {allIssues.map((element) => {
                     return (
                       <Item>
                         <Path>
-                          {get(element, 'path', '').replace(/_/g, ' ')} {'>'}
-                          {get(element, 'title', '').replace(/_/g, ' ')}
+                          {get(element, "path", "").replace(/_/g, " ")} {">"}
+                          {get(element, "title", "").replace(/_/g, " ")}
                         </Path>
-                        <div style={{ fontSize: '15px' }}>{element.description}</div>
+                        <div style={{ fontSize: "15px" }}>{element.description}</div>
                         <Button
                           onClick={() => {
                             if (afterVote) {

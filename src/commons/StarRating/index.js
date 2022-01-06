@@ -1,6 +1,6 @@
-import React from 'react'
-import StarRatings from 'react-star-ratings'
-import { colors } from 'theme'
+import React from "react"
+import StarRatings from "react-star-ratings"
+import { colors } from "theme"
 
 const StarRating = ({ value = 0, dimension = 15 }) => {
   return (

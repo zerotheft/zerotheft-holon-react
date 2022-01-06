@@ -1,7 +1,7 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react"
+import PropTypes from "prop-types"
 
-import { Wrapper, Spinner } from './styled'
+import { Wrapper, Spinner } from "./styled"
 
 const OverlaySpinner = ({ left, top, backgroundColor, loading, style, overlayParent, loaderStyle }) => {
   if (!loading) return null
@@ -15,7 +15,7 @@ const OverlaySpinner = ({ left, top, backgroundColor, loading, style, overlayPar
 OverlaySpinner.defaultProps = {
   left: 0,
   top: 0,
-  backgroundColor: 'rgba(0,0,0,0.5)',
+  backgroundColor: "rgba(0,0,0,0.5)",
 }
 
 OverlaySpinner.propTypes = {

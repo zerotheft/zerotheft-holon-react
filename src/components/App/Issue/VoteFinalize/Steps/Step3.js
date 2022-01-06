@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
-import Button from 'commons/Buttons'
-import { Wrapper, Header, Body } from './styles'
-import { ButtonsWrapper, Next } from './Buttons'
-import { VoteContext } from '../VoteContext'
+import React, { useContext } from "react"
+import Button from "commons/Buttons"
+import { VoteContext } from "../VoteContext"
+import { Wrapper, Header, Body } from "./styles"
+import { ButtonsWrapper, Next } from "./Buttons"
 
 const Step3 = ({ updateCurrentStep }) => {
   const { buildUrl } = useContext(VoteContext)

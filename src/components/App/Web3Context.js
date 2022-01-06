@@ -1,6 +1,6 @@
-import React, { createContext, useState } from 'react'
-import PropTypes from 'prop-types'
-import Web3 from 'web3'
+import React, { createContext, useState } from "react"
+import PropTypes from "prop-types"
+import Web3 from "web3"
 
 const Web3Context = createContext()
 
@@ -59,7 +59,7 @@ const getWeb3 = () =>
       resolve(web3)
     } else {
       /* eslint-disable-next-line prefer-promise-reject-errors */
-      reject('No Metamask')
+      reject("No Metamask")
     }
   })
 

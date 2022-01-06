@@ -1,10 +1,9 @@
-import React from 'react'
-import { APP_VERSION } from 'constants/index'
+import React from "react"
+import styled from "styled-components"
+import { APP_VERSION } from "constants/index"
 
-import styled from 'styled-components'
-
-import { colors, height } from 'theme'
-import { Container } from 'commons/styles'
+import { colors, height } from "theme"
+import { Container } from "commons/styles"
 
 const Footer = () => {
   return (

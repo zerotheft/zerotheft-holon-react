@@ -1,47 +1,33 @@
-import React from "react";
-import styled from "styled-components";
-import metamaskIcon from "assets/icons/metamask.svg";
-import config from "config";
-import { ButtonsWrapper, Next } from "./Buttons";
-import {
-  Wrapper,
-  Header,
-  Body,
-  InnerWrapper,
-  BodyInfo,
-  OrderedList,
-  SubHeader,
-  Info,
-} from "./styles";
+import React from "react"
+import metamaskIcon from "assets/icons/metamask.svg"
+import config from "config"
+import { ButtonsWrapper, Next } from "./Buttons"
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo } from "./styles"
 
-const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config;
+const { MODE } = config
 
 const NoAccount = ({ updateCurrentStep, checkRequirements }) => {
-  console.log("No account");
-  let name;
+  let name
   switch (MODE) {
     case "private":
-      name = "ETC Privatenet";
-      break;
+      name = "ETC Privatenet"
+      break
     case "staging":
-      name = "Polygon Testnet";
-      break;
+      name = "Polygon Testnet"
+      break
     case "production":
-      name = "Polygon Mainnet";
-      break;
+      name = "Polygon Mainnet"
+      break
     default:
-      name = "Local Network";
-      break;
+      name = "Local Network"
+      break
   }
   return (
     <Wrapper>
       <InnerWrapper>
         <Header>Step #3: Create or Import Wallet</Header>
         <Body>
-          <BodyInfo>
-            You need to create/import account in zerotheft wallet to connect to{" "}
-            {name}.
-          </BodyInfo>
+          <BodyInfo>You need to create/import account in zerotheft wallet to connect to {name}.</BodyInfo>
           {/* <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
             <Info>
@@ -80,18 +66,7 @@ const NoAccount = ({ updateCurrentStep, checkRequirements }) => {
       </InnerWrapper>
       <img src={metamaskIcon} alt="Metamask" style={{ height: 300 }} />
     </Wrapper>
-  );
-};
+  )
+}
 
-export default NoAccount;
-
-const StyledOrderedList = styled(OrderedList)`
-  li {
-    div {
-      margin-top: 5px;
-      span {
-        font-weight: 600;
-      }
-    }
-  }
-`;
+export default NoAccount

@@ -1,33 +1,33 @@
-import React, { useContext } from 'react'
-import PropTypes from 'prop-types'
-import { Switch, Route } from 'react-router-dom'
-import { get } from 'lodash'
+import React, { useContext } from "react"
+import PropTypes from "prop-types"
+import { Switch, Route } from "react-router-dom"
+import { get } from "lodash"
 
-import * as ROUTES from 'constants/routes'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { getParameterByName } from 'utils'
-import { IssueProvider, IssueContext } from './IssueContext'
-import MainWrapper from './commons/MainWrapper'
+import * as ROUTES from "constants/routes"
+import OverlaySpinner from "commons/OverlaySpinner"
+import { getParameterByName } from "utils"
+import { IssueProvider, IssueContext } from "./IssueContext"
+import MainWrapper from "./commons/MainWrapper"
 
 // import IssueDashboard from './IssueDashboard'
-import Proposals from './Proposals'
-import CounterProposals from './CounterProposals'
-import Vote from './Vote'
-import VoteFinalize from './VoteFinalize'
-import AfterVote from './AfterVote'
-import Steps from './VoteFinalize/Steps'
+import Proposals from "./Proposals"
+import CounterProposals from "./CounterProposals"
+import Vote from "./Vote"
+import VoteFinalize from "./VoteFinalize"
+import AfterVote from "./AfterVote"
+import Steps from "./VoteFinalize/Steps"
 
 const IssueWrapper = (props) => (
-  <IssueProvider id={get(props, 'match.params.id')} {...props}>
+  <IssueProvider id={get(props, "match.params.id")} {...props}>
     <Issue {...props} />
   </IssueProvider>
 )
 
 const Issue = ({ match }) => {
   const { loading } = useContext(IssueContext)
-  const stepsPage = getParameterByName('page') === 'steps'
+  const stepsPage = getParameterByName("page") === "steps"
 
-  const pathCrumbsTemp = match.params.pathname.split('%2F')
+  const pathCrumbsTemp = match.params.pathname.split("%2F")
   pathCrumbsTemp.push(match.params.id)
 
   return (

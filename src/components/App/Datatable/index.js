@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 
-import DataTable, { createTheme } from 'react-data-table-component'
-import { getCitizensInfo, getProposalsInfo } from 'apis/datas'
-import useFetch from 'commons/hooks/useFetch'
-import { capitalize } from 'lodash'
-import { colors } from 'theme'
-import { Wrapper, TableWrapper, ListMenu, TabWrapper, customStyles } from './commons/styles'
-import { tabs } from './constants'
+import DataTable, { createTheme } from "react-data-table-component"
+import { capitalize } from "lodash"
+import { getCitizensInfo, getProposalsInfo } from "apis/datas"
+import useFetch from "commons/hooks/useFetch"
+import { colors } from "theme"
+import { Wrapper, TableWrapper, ListMenu, TabWrapper, customStyles } from "./commons/styles"
+import { tabs } from "./constants"
 
-createTheme('custom', {
+createTheme("custom", {
   text: {
     primary: colors.background.body,
     secondary: colors.textTitle,
@@ -46,14 +46,14 @@ const Datatable = () => {
   if (load || loading) return null
   return (
     <Wrapper>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ display: "flex", flexDirection: "row" }}>
         {tabs.map((tab) => {
           return (
             <ListMenu>
               <TabWrapper
                 key={tab.id}
                 to="/datalist"
-                className={tab.id === tabInfo.id ? 'selected' : ''}
+                className={tab.id === tabInfo.id ? "selected" : ""}
                 onClick={() => {
                   updateItems(tab.id)
                 }}
@@ -67,7 +67,7 @@ const Datatable = () => {
       <TableWrapper>
         <DataTable
           className="datatableWrapper"
-          title={tabInfo.title.replaceAll('_', ' ').replace(/\w+/g, capitalize)}
+          title={tabInfo.title.replaceAll("_", " ").replace(/\w+/g, capitalize)}
           columns={tabInfo.columns}
           data={tabInfo.data}
           theme="custom"

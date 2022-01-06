@@ -1,26 +1,26 @@
 // eslint-disable no-throw-literal
-import React, { useState, useContext, useEffect } from 'react'
-import styled from 'styled-components'
-import StarRatings from 'react-star-ratings'
-import { toast } from 'react-toastify'
-import { useRouteMatch } from 'react-router-dom'
-import { get, isEmpty } from 'lodash'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFrown } from '@fortawesome/free-regular-svg-icons'
+import React, { useState, useContext, useEffect } from "react"
+import styled from "styled-components"
+import StarRatings from "react-star-ratings"
+import { toast } from "react-toastify"
+import { useRouteMatch } from "react-router-dom"
+import { get, isEmpty } from "lodash"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFrown } from "@fortawesome/free-regular-svg-icons"
 
-import config from 'config'
-import { colors } from 'theme'
-import Button from 'commons/Buttons'
-import { imageExists, convertJSONtoString, numberWithCommas } from 'utils'
-import useWeb3 from 'utils/useWeb3'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import useFetch from 'commons/hooks/useFetch'
-import { getVoterInfos } from 'apis/centralizedServer'
-import { getProposal } from 'apis/proposals'
-import { getCitizenProposalRating } from 'apis/datas'
-import { getTheftInfo } from 'apis/reports'
-import { AppContext } from 'components/App/AppContext'
-import { Body, Header, NoChartText } from '../styles'
+import config from "config"
+import { colors } from "theme"
+import Button from "commons/Buttons"
+import { imageExists, convertJSONtoString, numberWithCommas } from "utils"
+import useWeb3 from "utils/useWeb3"
+import OverlaySpinner from "commons/OverlaySpinner"
+import useFetch from "commons/hooks/useFetch"
+import { getVoterInfos } from "apis/centralizedServer"
+import { getProposal } from "apis/proposals"
+import { getCitizenProposalRating } from "apis/datas"
+import { getTheftInfo } from "apis/reports"
+import { AppContext } from "components/App/AppContext"
+import { Body, Header, NoChartText } from "../styles"
 
 const { CHAIN_ID, loadContract } = config
 
@@ -46,15 +46,15 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
   const { filterParams } = useContext(AppContext)
 
   useEffect(() => {
-    getTheftApi(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`, false, get(filterParams, 'year'))
-  }, [get(match, 'params.pathname'), get(match, 'params.id'), get(filterParams, 'year')])
+    getTheftApi(`${get(match, "params.pathname")}%2F${get(match, "params.id")}`, false, get(filterParams, "year"))
+  }, [get(match, "params.pathname"), get(match, "params.id"), get(filterParams, "year")])
 
   useEffect(() => {
     // eslint-disable-next-line no-unused-expressions
     item && getProposalApi(item.id)
   }, [item])
 
-  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll('%2F', '/')]
+  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll("%2F", "/")]
   const yes = theftData && ((theftData.for / theftData.votes) * 100).toFixed()
   const no = 100 - yes
 
@@ -64,45 +64,45 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
   const changeRating = async (newRating) => {
     try {
       updateRatingLoader(true)
-      const feedbackContract = await loadContract('ZTMFeedbacks')
+      const feedbackContract = await loadContract("ZTMFeedbacks")
 
       const { account, web3 } = await getWalletAccount()
 
       // Check if chrome wallet extn is installed
       const chromeWallet = !!window.web3
       if (!chromeWallet) {
-        throw new Error('No zerotheft wallet found.')
+        throw new Error("No zerotheft wallet found.")
       }
 
       // Check if correct network is selected
       if (web3.currentProvider.chainId !== `0x${CHAIN_ID.toString(16)}`) {
-        throw new Error('Please select the correct network.')
+        throw new Error("Please select the correct network.")
       }
 
       // Check if `account` is a verified voter ID
       const { data } = await getVoterInfos(account.toLowerCase())
       if (!data.verifiedCitizen) {
-        throw new Error('You are not a verified citizen.')
+        throw new Error("You are not a verified citizen.")
       }
 
       // Check if `account` has already provided rating for this proposal
       const ratingData = await getCitizenProposalRating(account, item.id)
-      const methodName = ratingData.success ? 'updateProposalRating' : 'addProposalRating'
+      const methodName = ratingData.success ? "updateProposalRating" : "addProposalRating"
 
       // Now, sign a message and perform transaction
       const params = [
-        { t: 'string', v: item.id },
-        { t: 'uint256', v: newRating },
-        { t: 'address', v: account },
+        { t: "string", v: item.id },
+        { t: "uint256", v: newRating },
+        { t: "address", v: account },
       ]
       const signedMessage = await signMessage(params, account)
-      const txDetails = { userId: data.id, details: `Rated proposal ${item.id}`, txType: 'proposal-rating' }
+      const txDetails = { userId: data.id, details: `Rated proposal ${item.id}`, txType: "proposal-rating" }
 
       await carryTransaction(feedbackContract, methodName, [item.id, newRating, signedMessage], txDetails)
       await getProposalApi(item.id)
-      toast.success(`Rating successfully ${ratingData.success ? 'updated' : 'provided'}.`)
+      toast.success(`Rating successfully ${ratingData.success ? "updated" : "provided"}.`)
     } catch (e) {
-      toast.error(e.message || 'Something went wrong.')
+      toast.error(e.message || "Something went wrong.")
     } finally {
       updateRatingLoader(false)
     }
@@ -123,13 +123,13 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
       <OverlaySpinner loading={ratingLoader} />
       <div className="bodyDescription">
         {proposalInfo ? (
-          <div className="detail-wrapper" style={{ position: 'relative', minHeight: 50 }}>
-            {convertJSONtoString(get(proposalInfo, 'detail', {}))}
+          <div className="detail-wrapper" style={{ position: "relative", minHeight: 50 }}>
+            {convertJSONtoString(get(proposalInfo, "detail", {}))}
           </div>
         ) : (
           <>
-            {get(item, 'title') && <h5>{get(item, 'title')}</h5>}
-            <p>{get(item, 'description')}</p>
+            {get(item, "title") && <h5>{get(item, "title")}</h5>}
+            <p>{get(item, "description")}</p>
           </>
         )}
       </div>
@@ -148,7 +148,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                   </TheftBlockSec>
                 </div>
               </div>
-              <div className="totlVotersSec">Total Voters : {numberWithCommas(get(theftData, 'votes'))}</div>
+              <div className="totlVotersSec">Total Voters : {numberWithCommas(get(theftData, "votes"))}</div>
             </SelectWrapper>
           )}
           <h4>If there was theft, which makes the best case.</h4>
@@ -160,11 +160,11 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                 height={44}
                 onClick={() => {
                   updateSelection(
-                    type === 'counter' ? { ...selection, counterProposal: item } : { ...selection, proposal: item }
+                    type === "counter" ? { ...selection, counterProposal: item } : { ...selection, proposal: item }
                   )
                   history.push(
-                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${
-                      type === 'counter' ? 'vote' : 'counter-proposals'
+                    `/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/${
+                      type === "counter" ? "vote" : "counter-proposals"
                     }`
                   )
                 }}
@@ -178,15 +178,15 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                 width={125}
                 onClick={() => {
                   updateSelection(
-                    type === 'counter' ? { ...selection, counterProposal: null } : { ...selection, proposal: null }
+                    type === "counter" ? { ...selection, counterProposal: null } : { ...selection, proposal: null }
                   )
                   history.push(
-                    `/path/${get(match, 'params.pathname')}/issue/${get(match, 'params.id')}/${
-                      type === 'counter' ? 'vote' : 'counter-proposals'
+                    `/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/${
+                      type === "counter" ? "vote" : "counter-proposals"
                     }`
                   )
                 }}
-                style={{ marginLeft: 10, background: 'transparent', borderWidth: 2 }}
+                style={{ marginLeft: 10, background: "transparent", borderWidth: 2 }}
               >
                 Skip This
               </Button>
@@ -198,7 +198,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
           <>
             {imageExists(`${reportPath}-theftValue-view.svg`) ? (
               <div className="imageWrapper">
-                <img src={`${reportPath}-theftValue-view.svg`} style={{ width: '100%', height: 'auto' }} alt="Report" />
+                <img src={`${reportPath}-theftValue-view.svg`} style={{ width: "100%", height: "auto" }} alt="Report" />
               </div>
             ) : (
               <NoChartText>Report is not available yet.</NoChartText>
@@ -215,26 +215,26 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                 </div>
                 <div className="warning">
                   Warning: <br /> The amount claimed to be stolen in this area is
-                  <span style={{ fontSize: '20px' }}>{item.summary}</span> lower than the average of
-                  <span style={{ fontSize: '20px' }}>$291B</span>
+                  <span style={{ fontSize: "20px" }}>{item.summary}</span> lower than the average of
+                  <span style={{ fontSize: "20px" }}>$291B</span>
                 </div>
               </div>
               <div>
-                <span style={{ color: '#8D8D8D', marginRight: 5 }}>AUTHOR:</span>
-                <span style={{ fontWeight: 500, marginLeft: '5px' }}>{get(item, 'author.name', 'Anonymous')}</span>
+                <span style={{ color: "#8D8D8D", marginRight: 5 }}>AUTHOR:</span>
+                <span style={{ fontWeight: 500, marginLeft: "5px" }}>{get(item, "author.name", "Anonymous")}</span>
               </div>
               <div
-                style={{ fontSize: 22, cursor: 'pointer', marginBottom: 15 }}
+                style={{ fontSize: 22, cursor: "pointer", marginBottom: 15 }}
 
                 // onClick={() =>
                 // (window.location.href = `zerotheft://home/path/${match.params.pathname}%2F${match.params.id
                 //   }/proposal-feedback/${get(item, 'id')}`)
                 // }
               >
-                {get(proposalInfo, 'ratings.count', 0)}
-                <span style={{ margin: '0 15px 0 5px' }}>
+                {get(proposalInfo, "ratings.count", 0)}
+                <span style={{ margin: "0 15px 0 5px" }}>
                   <StarRatings
-                    rating={get(proposalInfo, 'ratings.rating', 0)}
+                    rating={get(proposalInfo, "ratings.rating", 0)}
                     starDimension="24px"
                     starSpacing="1px"
                     starRatedColor={colors.yellow}
@@ -243,9 +243,9 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                     changeRating={changeRating}
                   />
                 </span>
-                <span style={{ float: 'right' }}>
-                  <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(item, 'complaints.count', 0)}
-                  <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: '3px' }}>
+                <span style={{ float: "right" }}>
+                  <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(item, "complaints.count", 0)}
+                  <span style={{ fontSize: 12, fontWeight: 500, marginLeft: 5, verticalAlign: "3px" }}>
                     Rate/Comment
                   </span>
                 </span>
@@ -255,7 +255,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
               <div className="imageWrapper">
                 <img
                   src={`${reportPath}-votesForTheftAmount.svg`}
-                  style={{ width: '100%', height: 'auto' }}
+                  style={{ width: "100%", height: "auto" }}
                   alt="Chart"
                 />
               </div>
@@ -297,7 +297,7 @@ const TheftBlockSec = styled.div`
       z-index: 1;
     }
     &::before {
-      content: '';
+      content: "";
       display: block;
       position: absolute;
       top: 0px;

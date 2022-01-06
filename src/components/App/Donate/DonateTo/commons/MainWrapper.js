@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-import { NavLink } from 'react-router-dom'
-import styled from 'styled-components'
+import React, { useContext } from "react"
+import { NavLink } from "react-router-dom"
+import styled from "styled-components"
 
-import { Container } from 'commons/styles'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { colors } from 'theme'
-import { DONATE_TO } from 'constants/routes'
-import { AppContext } from '../../../AppContext'
+import { Container } from "commons/styles"
+import OverlaySpinner from "commons/OverlaySpinner"
+import { colors } from "theme"
+import { DONATE_TO } from "constants/routes"
+import { AppContext } from "../../../AppContext"
 
 const MainWrapper = ({ loading, children }) => {
   const { selectedHolon } = useContext(AppContext)
@@ -70,7 +70,7 @@ const Wrapper = styled.div``,
       padding: 0 25px;
       position: relative;
       &::after {
-        content: '';
+        content: "";
         display: block;
         width: 100%;
         height: 6px;

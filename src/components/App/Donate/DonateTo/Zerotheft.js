@@ -1,14 +1,14 @@
-import React from 'react'
-import { Formik, Field, Form } from 'formik'
-import { getYear } from 'date-fns'
-import * as Yup from 'yup'
-import styled from 'styled-components'
-import { colors } from 'theme'
+import React from "react"
+import { Formik, Field, Form } from "formik"
+import { getYear } from "date-fns"
+import * as Yup from "yup"
+import styled from "styled-components"
+import { colors } from "theme"
 
-import { Row } from 'commons/Form/styles'
-import { LabelledRadioField, Radio, TextField, SelectField, Checkbox, TextAreaField } from 'commons/Form/InputFields'
-import Button from 'commons/Buttons'
-import MainWrapper from './commons/MainWrapper'
+import { Row } from "commons/Form/styles"
+import { LabelledRadioField, Radio, TextField, SelectField, Checkbox, TextAreaField } from "commons/Form/InputFields"
+import Button from "commons/Buttons"
+import MainWrapper from "./commons/MainWrapper"
 
 const ZeroTheft = () => {
   return (
@@ -33,12 +33,12 @@ const ZeroTheft = () => {
           enableReinitialize
           initialValues={{
             amount: 50,
-            payType: 'one-time',
+            payType: "one-time",
             first_name: null,
             last_name: null,
             email: null,
             phone: null,
-            payBy: 'credit-card',
+            payBy: "credit-card",
             credit_card: {
               card_number: null,
               expire: {
@@ -47,7 +47,7 @@ const ZeroTheft = () => {
               },
               cvv: null,
             },
-            address: '',
+            address: "",
             state: null,
             country: null,
             zip: null,
@@ -55,19 +55,19 @@ const ZeroTheft = () => {
             comment: null,
           }}
           validationSchema={Yup.object().shape({
-            first_name: Yup.string().nullable().required('Name Required.'),
-            email: Yup.string().nullable().required('Email Required.'),
+            first_name: Yup.string().nullable().required("Name Required."),
+            email: Yup.string().nullable().required("Email Required."),
             phone: Yup.string()
               .nullable()
-              .required('Phone Required.')
+              .required("Phone Required.")
               .matches(
                 /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-                'Phone number is not valid'
+                "Phone number is not valid"
               )
-              .min(10, 'to short')
-              .max(10, 'to long'),
-            address: Yup.string().nullable().required('Address Required.'),
-            zip: Yup.string().nullable().required('Zip/Postal Code Required.'),
+              .min(10, "to short")
+              .max(10, "to long"),
+            address: Yup.string().nullable().required("Address Required."),
+            zip: Yup.string().nullable().required("Zip/Postal Code Required."),
           })}
           /* eslint-disable-next-line no-console */
           onSubmit={(values) => console.log(values)}
@@ -75,21 +75,21 @@ const ZeroTheft = () => {
           {({ values, isValid }) => {
             return (
               <Form>
-                <Row style={{ flexWrap: 'wrap' }}>
+                <Row style={{ flexWrap: "wrap" }}>
                   <Field
                     component={LabelledRadioField}
                     name="amount"
                     values={[
-                      { value: 50, label: '$50' },
-                      { value: 100, label: '$100' },
-                      { value: 250, label: '$250' },
-                      { value: 500, label: '$500' },
-                      { value: 1000, label: '$1,000' },
-                      { value: 5000, label: '$5,000' },
-                      { value: 10000, label: '$10,000' },
-                      { value: 'other', label: 'other' },
+                      { value: 50, label: "$50" },
+                      { value: 100, label: "$100" },
+                      { value: 250, label: "$250" },
+                      { value: 500, label: "$500" },
+                      { value: 1000, label: "$1,000" },
+                      { value: 5000, label: "$5,000" },
+                      { value: 10000, label: "$10,000" },
+                      { value: "other", label: "other" },
                     ]}
-                    style={{ margin: '10px 0' }}
+                    style={{ margin: "10px 0" }}
                   />
                   <Field
                     component={TextField}
@@ -97,27 +97,27 @@ const ZeroTheft = () => {
                     min="0"
                     name="custom_amount"
                     placeholder="Enter Custom Amount"
-                    style={{ display: values.amount !== 'other' ? 'none' : 'flex' }}
+                    style={{ display: values.amount !== "other" ? "none" : "flex" }}
                     inputStyles={{ minWidth: 150, maxWidth: 350 }}
                   />
                 </Row>
-                <Row style={{ padding: '10px 0', borderBottom: '1px solid #C4C4C4' }}>
+                <Row style={{ padding: "10px 0", borderBottom: "1px solid #C4C4C4" }}>
                   <Field
                     component={Radio}
                     name="payType"
                     values={[
-                      { value: 'one-time', label: 'One Time' },
-                      { value: 'monthly', label: 'Monthly' },
+                      { value: "one-time", label: "One Time" },
+                      { value: "monthly", label: "Monthly" },
                     ]}
                     radioStyle={{
-                      color: '#7C7B7D',
+                      color: "#7C7B7D",
                       fontSize: 16,
-                      fontWeight: '500',
-                      width: 'auto',
+                      fontWeight: "500",
+                      width: "auto",
                     }}
                   />
                 </Row>
-                <Row style={{ flexWrap: 'wrap' }}>
+                <Row style={{ flexWrap: "wrap" }}>
                   <Field
                     name="first_name"
                     component={TextField}
@@ -142,7 +142,7 @@ const ZeroTheft = () => {
                     labelType="top"
                     style={{ margin: 10, minWidth: 350 }}
                   />
-                  <div style={{ width: '100%', maxWidth: '33%' }}>
+                  <div style={{ width: "100%", maxWidth: "33%" }}>
                     <Field
                       name="phone"
                       component={TextField}
@@ -153,18 +153,18 @@ const ZeroTheft = () => {
                     />
                   </div>
                 </Row>
-                <Row style={{ margin: '30px 0' }}>
+                <Row style={{ margin: "30px 0" }}>
                   <Field
                     component={LabelledRadioField}
                     name="payBy"
                     values={[
-                      { value: 'credit-card', label: 'Credit Card' },
-                      { value: 'e-check', label: 'E-Check' },
-                      { value: 'paypal', label: 'Paypal' },
-                      { value: 'amazon-pay', label: 'Amazon Pay' },
-                      { value: 'crypto', label: 'Crypto' },
+                      { value: "credit-card", label: "Credit Card" },
+                      { value: "e-check", label: "E-Check" },
+                      { value: "paypal", label: "Paypal" },
+                      { value: "amazon-pay", label: "Amazon Pay" },
+                      { value: "crypto", label: "Crypto" },
                     ]}
-                    style={{ margin: '10px 0' }}
+                    style={{ margin: "10px 0" }}
                   />
                 </Row>
                 <Row>
@@ -211,7 +211,7 @@ const ZeroTheft = () => {
                     style={{ margin: 10, minWidth: 350 }}
                   />
                 </Row>
-                <Row style={{ flexWrap: 'wrap' }}>
+                <Row style={{ flexWrap: "wrap" }}>
                   <Field
                     component={TextField}
                     name="address"
@@ -226,9 +226,9 @@ const ZeroTheft = () => {
                     label="State (required for U.S)"
                     labelType="top"
                     options={[
-                      { value: 'NY', label: 'NY' },
-                      { value: 'LA', label: 'LA' },
-                      { value: 'VIR', label: 'VIR' },
+                      { value: "NY", label: "NY" },
+                      { value: "LA", label: "LA" },
+                      { value: "VIR", label: "VIR" },
                     ]}
                     placeholder="Select Your State"
                     searchable={false}
@@ -241,13 +241,13 @@ const ZeroTheft = () => {
                     labelType="top"
                     placeholder="Select Your Country"
                     options={[
-                      { value: 'USA', label: 'USA' },
-                      { value: 'Nepal', label: 'Nepal' },
+                      { value: "USA", label: "USA" },
+                      { value: "Nepal", label: "Nepal" },
                     ]}
                     searchable={false}
                     style={{ margin: 10, minWidth: 350 }}
                   />
-                  <div style={{ width: '100%', maxWidth: '33%' }}>
+                  <div style={{ width: "100%", maxWidth: "33%" }}>
                     <Field
                       component={TextField}
                       name="zip"
@@ -304,7 +304,7 @@ const Content = styled.div`
       padding: 5px;
     }
     li:before {
-      content: '✓';
+      content: "✓";
     }
   `,
   Title = styled.div`

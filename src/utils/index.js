@@ -1,7 +1,7 @@
-import React from 'react'
-import { fromUnixTime, format } from 'date-fns'
-import { startCase, isObject, isArray, isEmpty, isNumber, isEqual, transform } from 'lodash'
-import styled from 'styled-components'
+import React from "react"
+import { fromUnixTime, format } from "date-fns"
+import { startCase, isObject, isArray, isEmpty, isNumber, isEqual, transform } from "lodash"
+import styled from "styled-components"
 
 export const truncateString = (str, num) => {
   if (num && str && str.length > num) {
@@ -37,17 +37,17 @@ export const isChrome = () => {
   const isChromium = window.chrome
   const winNav = window.navigator
   const vendorName = winNav.vendor
-  const isOpera = typeof window.opr !== 'undefined'
-  const isIEedge = winNav.userAgent.indexOf('Edge') > -1
-  const isIOSChrome = winNav.userAgent.match('CriOS')
+  const isOpera = typeof window.opr !== "undefined"
+  const isIEedge = winNav.userAgent.indexOf("Edge") > -1
+  const isIOSChrome = winNav.userAgent.match("CriOS")
 
   if (isIOSChrome) {
     return false
   }
   if (
     isChromium !== null &&
-    typeof isChromium !== 'undefined' &&
-    vendorName === 'Google Inc.' &&
+    typeof isChromium !== "undefined" &&
+    vendorName === "Google Inc." &&
     isOpera === false &&
     isIEedge === false
   ) {
@@ -63,11 +63,11 @@ export const addMissingHttp = (url) => {
   return url
 }
 
-export const getDate = (date, dateFormat = 'dd MMM, yyyy') => {
+export const getDate = (date, dateFormat = "dd MMM, yyyy") => {
   return date && format(new Date(date), dateFormat)
 }
 
-export const convertUNIXtoDATETIME = (date, dateFormat = 'dd MMM, yyyy') => {
+export const convertUNIXtoDATETIME = (date, dateFormat = "dd MMM, yyyy") => {
   if (!date) return null
   return getDate(fromUnixTime(date), dateFormat)
 }
@@ -83,14 +83,14 @@ export const convertUNIXtoDATETIME = (date, dateFormat = 'dd MMM, yyyy') => {
 // }
 
 export const displayContent = (data) => {
-  if (!isEmpty(data) && data.toString().includes('http')) {
-    if (data.toString().split(' ').length > 1) {
-      let mainContent = ''
+  if (!isEmpty(data) && data.toString().includes("http")) {
+    if (data.toString().split(" ").length > 1) {
+      let mainContent = ""
       data
         .toString()
-        .split(' ')
+        .split(" ")
         .forEach((value) => {
-          if (value.includes('http')) {
+          if (value.includes("http")) {
             mainContent += `<a href={data} target='_blank'> ${value}</a>`
           } else {
             mainContent += ` ${value}`
@@ -99,14 +99,14 @@ export const displayContent = (data) => {
       return (
         <div
           className="dataValue"
-          style={{ wordBreak: 'break-word' }} /* eslint-disable react/no-danger */
+          style={{ wordBreak: "break-word" }} /* eslint-disable react/no-danger */
           dangerouslySetInnerHTML={{ __html: mainContent }}
         />
       )
     }
 
     return (
-      <div className="dataValue" style={{ wordBreak: 'break-word' }}>
+      <div className="dataValue" style={{ wordBreak: "break-word" }}>
         <a href={data} target="_blank" rel="noreferrer">
           {data}
         </a>
@@ -115,8 +115,8 @@ export const displayContent = (data) => {
   }
 
   return (
-    <div className="dataValue" style={{ wordBreak: 'break-word', display: 'inline-block', width: 'auto' }}>
-      {data || ''}{' '}
+    <div className="dataValue" style={{ wordBreak: "break-word", display: "inline-block", width: "auto" }}>
+      {data || ""}{" "}
     </div>
   )
 }
@@ -137,20 +137,20 @@ export const convertJSONtoString = (data) => {
 
 export const convertStringDollarToNumeric = (dollar) => {
   try {
-    dollar = dollar.replace(',', '')
+    dollar = dollar.replace(",", "")
     let realAmount = 0
     let onlyNumericVal = 0
     const suffix = dollar.slice(-1)
-    if (suffix === 'T') {
+    if (suffix === "T") {
       onlyNumericVal = parseFloat(dollar.slice(1, -1))
       realAmount = onlyNumericVal * 1000000000000
-    } else if (suffix === 'B') {
+    } else if (suffix === "B") {
       onlyNumericVal = parseFloat(dollar.slice(1, -1))
       realAmount = onlyNumericVal * 1000000000
-    } else if (suffix === 'M') {
+    } else if (suffix === "M") {
       onlyNumericVal = parseFloat(dollar.slice(1, -1))
       realAmount = onlyNumericVal * 1000000
-    } else if (suffix === 'K') {
+    } else if (suffix === "K") {
       onlyNumericVal = parseFloat(dollar.slice(1, -1))
       realAmount = onlyNumericVal * 1000
     } else {
@@ -163,7 +163,7 @@ export const convertStringDollarToNumeric = (dollar) => {
 }
 
 export const removeDecimelIfNeeded = (number) => {
-  const [num, decimel] = number.toString().split('.')
+  const [num, decimel] = number.toString().split(".")
   return parseInt(decimel) === 0 ? num : number
 }
 
@@ -189,12 +189,12 @@ export const convertDollarToString = (value, decimal = 2) => {
 
 export function getParameterByName(name, url = window.location.href) {
   /* eslint-disable no-useless-escape */
-  name = name.replace(/[\[\]]/g, '\\$&')
+  name = name.replace(/[\[\]]/g, "\\$&")
   const regex = new RegExp(`[?&]${name}(=([^&#]*)|&|#|$)`),
     results = regex.exec(url)
   if (!results) return null
-  if (!results[2]) return ''
-  return decodeURIComponent(results[2].replace(/\+/g, ' '))
+  if (!results[2]) return ""
+  return decodeURIComponent(results[2].replace(/\+/g, " "))
 }
 
 /**
@@ -204,7 +204,7 @@ export function getParameterByName(name, url = window.location.href) {
  * */
 export const imageExists = (imageUrl) => {
   const http = new XMLHttpRequest()
-  http.open('HEAD', imageUrl, false)
+  http.open("HEAD", imageUrl, false)
   http.send()
   return http.status !== 404
 }

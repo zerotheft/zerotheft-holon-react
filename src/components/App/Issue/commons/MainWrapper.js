@@ -1,10 +1,10 @@
-import React from 'react'
-import { startCase } from 'lodash'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
+import React from "react"
+import { startCase } from "lodash"
+import { Link } from "react-router-dom"
+import styled from "styled-components"
 
-import { Container } from 'commons/styles'
-import { colors } from 'theme'
+import { Container } from "commons/styles"
+import { colors } from "theme"
 
 // const checkRoute = (routes, currentRoute) => {
 //   if (!currentRoute || isEmpty(routes)) return true
@@ -14,7 +14,7 @@ import { colors } from 'theme'
 
 const MainWrapper = ({ stepsPage, pathname, children, pathCrumbTemp }) => {
   // const history = useHistory()
-  const pathCrumbs = pathCrumbTemp && pathCrumbTemp.length > 0 ? pathCrumbTemp : pathname.split('%2F')
+  const pathCrumbs = pathCrumbTemp && pathCrumbTemp.length > 0 ? pathCrumbTemp : pathname.split("%2F")
 
   return (
     <Wrapper>
@@ -23,7 +23,7 @@ const MainWrapper = ({ stepsPage, pathname, children, pathCrumbTemp }) => {
           <Container>
             <ul className="breadcrumb">
               {pathCrumbs.map((crumb, index, { length }) => {
-                const currentPath = pathCrumbs.slice(0, index + 1).join('%2F')
+                const currentPath = pathCrumbs.slice(0, index + 1).join("%2F")
                 return index + 1 === length ? (
                   <li>{startCase(crumb)}</li>
                 ) : (
@@ -76,7 +76,7 @@ const Wrapper = styled.div`
         &:not(:last-of-type) {
           &::after {
             color: #a4a4a4;
-            content: '>';
+            content: ">";
             margin: 0 10px;
           }
         }

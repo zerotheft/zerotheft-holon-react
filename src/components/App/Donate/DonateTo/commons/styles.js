@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
-import { colors } from 'theme'
+import { colors } from "theme"
 
 export const ContentWrapper = styled.div`
     p {
@@ -24,7 +24,7 @@ export const ContentWrapper = styled.div`
           position: absolute;
           top: 14px;
           left: 0;
-          content: '';
+          content: "";
           width: 20px;
           height: 10px;
           border: 2px solid #322d2d;

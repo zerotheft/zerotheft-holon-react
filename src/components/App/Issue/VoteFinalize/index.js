@@ -1,37 +1,27 @@
-import React, { useContext, useState, useEffect } from "react";
-import { get, capitalize } from "lodash";
-import { Formik, Field, Form } from "formik";
-import { toast } from "react-toastify";
-import styled from "styled-components";
+import React, { useContext, useState, useEffect } from "react"
+import { get, capitalize } from "lodash"
+import { Formik, Field, Form } from "formik"
+import { toast } from "react-toastify"
+import styled from "styled-components"
 
-import { API_URL } from "constants/index";
-import { Row } from "commons/Form/styles";
-import { TextAreaField, EditableField } from "commons/Form/InputFields";
-import Button from "commons/Buttons";
-import { colors } from "theme";
-import { isChrome, getParameterByName, convertUNIXtoDATETIME } from "utils";
-import Modal from "commons/Modal";
-import OverlaySpinner from "commons/OverlaySpinner";
-import config from "config";
-import { Redirect } from "react-router";
-import { VoteContext, VoteProvider } from "./VoteContext";
-import ProposalDetail from "../commons/ProposalDetail";
-import { AppContext } from "../../AppContext";
-import { IssueContext } from "../IssueContext";
-import Steps from "./Steps";
-import {
-  checkNetwork,
-  checkWalletInstallation,
-  getUserMetamaskAddress,
-  getUserRegistration,
-  getWalletBalance,
-  sendBalanceToWallet,
-} from "./voteConditions";
+import { Redirect } from "react-router"
+import { API_URL } from "constants/index"
+import { Row } from "commons/Form/styles"
+import { TextAreaField, EditableField } from "commons/Form/InputFields"
+import Button from "commons/Buttons"
+import { colors } from "theme"
+import { isChrome, getParameterByName, convertUNIXtoDATETIME } from "utils"
+import Modal from "commons/Modal"
+import OverlaySpinner from "commons/OverlaySpinner"
+import ProposalDetail from "../commons/ProposalDetail"
+import { AppContext } from "../../AppContext"
+import { IssueContext } from "../IssueContext"
+import { VoteContext, VoteProvider } from "./VoteContext"
 
-const VoteFinalize = ({ match, history, location }) => {
-  const queryParams = location.search;
-  const { selection } = useContext(IssueContext);
-  const { umbrellaPaths, holonInfo } = useContext(AppContext);
+const VoteFinalize = ({ match, location }) => {
+  const queryParams = location.search
+  const { selection } = useContext(IssueContext)
+  const { umbrellaPaths, holonInfo } = useContext(AppContext)
   const {
     checkStep,
     voterInfo: userInfo,
@@ -41,54 +31,43 @@ const VoteFinalize = ({ match, history, location }) => {
     voting,
     vote,
     priorVoteInfo,
-    web3,
-  } = useContext(VoteContext);
+  } = useContext(VoteContext)
 
   // const [getCitizenInfoApi, loadingUser, userInfo] = useFetch(getCitizenInfo)
-  const [initialValues, updateValues] = useState();
-  const [commentState, showHideComment] = useState(false);
+  const [initialValues, updateValues] = useState()
+  const [commentState, showHideComment] = useState(false)
 
-  const [stepsPage, showStepsPage] = useState(
-    queryParams && getParameterByName("page") === "steps"
-  );
+  // const [stepsPage, showStepsPage] = useState(queryParams && getParameterByName('page') === 'steps')
 
   // const amount = finalVote === 'yes' ? get(selection, 'proposal.theftAmt') : get(selection, 'counterProposal.theftAmt')
   const theftAmtYears =
-    finalVote === "yes"
-      ? get(selection, "proposal.theftYears")
-      : get(selection, "counterProposal.theftYears");
-  const hierarchyPath = `${get(match, "params.pathname")}%2F${get(
-    match,
-    "params.id"
-  )}`.replaceAll("%2F", "/");
+    finalVote === "yes" ? get(selection, "proposal.theftYears") : get(selection, "counterProposal.theftYears")
+  const hierarchyPath = `${get(match, "params.pathname")}%2F${get(match, "params.id")}`.replaceAll("%2F", "/")
 
-  const issuePath = `${match.params.pathname}/${match.params.id}`.replace(
-    /%2F/g,
-    "/"
-  );
+  const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, "/")
 
   /* eslint-disable-next-line no-useless-escape */
-  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, "");
+  const issuePathNoNation = issuePath.replace(/[^\/]+\/?/, "")
 
-  const isUmbrella = !!get(umbrellaPaths, issuePathNoNation);
+  const isUmbrella = !!get(umbrellaPaths, issuePathNoNation)
 
   const reportPath = `${API_URL}/${get(holonInfo, "reportsPath")}/${
     isUmbrella ? "multiIssueReport" : "ztReport"
-  }/${issuePath.replace(/\//g, "-")}`;
+  }/${issuePath.replace(/\//g, "-")}`
 
-  const [formValues, updateFormValues] = useState();
-  const [localStorageData, updatelocalStorageData] = useState(true);
+  const [formValues, updateFormValues] = useState()
+  const [localStorageData, updatelocalStorageData] = useState(true)
 
   // Store data in local storage for the reload
   const storeDataInLocalStorage = async () => {
     if (!get(selection, "proposal")) {
-      const data = JSON.parse(localStorage.getItem(issuePath));
+      const data = JSON.parse(localStorage.getItem(issuePath))
       if (data && data.selection) {
-        updatelocalStorageData(true);
+        updatelocalStorageData(true)
       } else {
-        updatelocalStorageData(false);
+        updatelocalStorageData(false)
       }
-      return;
+      return
     }
 
     const storagePayload = {
@@ -97,89 +76,80 @@ const VoteFinalize = ({ match, history, location }) => {
       queryParams,
       issuePath,
       formValues,
-    };
+    }
 
-    localStorage.setItem(issuePath, JSON.stringify(storagePayload));
-  };
+    localStorage.setItem(issuePath, JSON.stringify(storagePayload))
+  }
 
   const retrieveDataFromLocalStorage = async () => {
-    const data = JSON.parse(localStorage.getItem(issuePath));
+    const data = JSON.parse(localStorage.getItem(issuePath))
     if (data) {
       if (data.selection) {
-        selection.proposal = data.selection.proposal;
-        selection.counterProposal = data.selection.counterProposal;
+        selection.proposal = data.selection.proposal
+        selection.counterProposal = data.selection.counterProposal
       }
     }
-  };
+  }
 
-  retrieveDataFromLocalStorage();
+  retrieveDataFromLocalStorage()
 
   const checkQueryParams = async () => {
-    const hierarchyPath = `${get(match, "params.pathname")}%2F${get(
-      match,
-      "params.id"
-    )}`.replaceAll("%2F", "/");
+    const hierarchyPath = `${get(match, "params.pathname")}%2F${get(match, "params.id")}`.replaceAll("%2F", "/")
     if (queryParams && getParameterByName("page") === "steps") {
-      const { step } = await checkStep(hierarchyPath, true);
-      if (step > 6) return null;
-      showStepsPage(true);
+      const { step } = await checkStep(hierarchyPath, true)
+      if (step > 6) return null
+
+      // showStepsPage(true)
       if (getParameterByName("details")) {
-        const details = localStorage.getItem("voteDetails");
+        const details = localStorage.getItem("voteDetails")
         if (details) {
-          updateValues(JSON.parse(details));
+          updateValues(JSON.parse(details))
         }
       }
     } else {
-      showStepsPage(false);
-      checkStep(hierarchyPath);
+      // showStepsPage(false)
+      checkStep(hierarchyPath)
     }
-  };
+  }
 
   const submitForm = async (values) => {
-    updateFormValues(values);
-    const altTheftAmounts = {};
+    updateFormValues(values)
+    const altTheftAmounts = {}
     Object.keys(theftAmtYears).forEach((yr) => {
-      if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr];
-    });
+      if (theftAmtYears[yr] !== values[yr]) altTheftAmounts[yr] = values[yr]
+    })
     if (!isChrome()) {
-      toast.error("Please open on chrome browser to vote!!!");
-      return;
+      toast.error("Please open on chrome browser to vote!!!")
+      return
     }
     const updatedVal = {
       ...values,
       priorVoteInfo,
       altTheftAmounts: JSON.stringify(altTheftAmounts).replace('"', '"'),
       hierarchyPath,
-    };
-    localStorage.removeItem(issuePath);
-    localStorage.setItem("voteDetails", JSON.stringify(updatedVal));
+    }
+    localStorage.removeItem(issuePath)
+    localStorage.setItem("voteDetails", JSON.stringify(updatedVal))
 
     // history.push({ search: '?page=steps' })
-    updateValues(updatedVal);
+    updateValues(updatedVal)
 
     // showStepsPage(true);
 
     // For vote if all steps are completed
-    vote(updatedVal);
-  };
+    vote(updatedVal)
+  }
 
   useEffect(() => {
-    checkQueryParams();
-  }, [queryParams]);
+    checkQueryParams()
+  }, [queryParams])
 
   useEffect(() => {
-    storeDataInLocalStorage();
-  }, []);
+    storeDataInLocalStorage()
+  }, [])
 
   if (!localStorageData) {
-    return (
-      <Redirect
-        to={`/path/${get(match, "params.pathname")}/issue/${get(
-          match,
-          "params.id"
-        )}`}
-      />
-    );
+    return <Redirect to={`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}`} />
   }
 
   // if (stepsPage)
@@ -201,11 +171,7 @@ const VoteFinalize = ({ match, history, location }) => {
           <div>
             <TitleSummary>
               <h3>This Finalizes Your Vote That</h3>
-              <span>
-                {finalVote === "yes"
-                  ? "Yes there is theft"
-                  : "No there is not theft"}
-              </span>
+              <span>{finalVote === "yes" ? "Yes there is theft" : "No there is not theft"}</span>
               <h3>In this Area</h3>
             </TitleSummary>
             {/* <h4>Do you consider this as theft via a rigged economy?</h4> */}
@@ -219,7 +185,7 @@ const VoteFinalize = ({ match, history, location }) => {
                 }
               }
               onSubmit={async (values) => {
-                submitForm(values);
+                submitForm(values)
               }}
             >
               {
@@ -238,8 +204,7 @@ const VoteFinalize = ({ match, history, location }) => {
                               marginTop: 30,
                             }}
                           >
-                            {get(popup, "message") ||
-                              "There was some error while trying to vote."}
+                            {get(popup, "message") || "There was some error while trying to vote."}
                             {/* <Button style={{ marginTop: 10 }} onClick={voteWithHolon}>Vote through holon</Button> */}
                           </div>
                         </Modal>
@@ -263,13 +228,7 @@ const VoteFinalize = ({ match, history, location }) => {
                         theftAmtYears &&
                         Object.keys(theftAmtYears).map((y) => (
                           <Row>
-                            <Field
-                              name={y}
-                              component={EditableField}
-                              type="number"
-                              min={0}
-                              label={y}
-                            />
+                            <Field name={y} component={EditableField} type="number" min={0} label={y} />
                           </Row>
                         ))}
                       {commentState && (
@@ -284,16 +243,14 @@ const VoteFinalize = ({ match, history, location }) => {
                         </Button>
                         <span
                           onClick={() => {
-                            showHideComment(!commentState);
+                            showHideComment(!commentState)
                           }}
                         >
-                          {!commentState
-                            ? "Add a comment"
-                            : "Do not add a comment"}
+                          {!commentState ? "Add a comment" : "Do not add a comment"}
                         </span>
                       </BottomRow>
                     </Form>
-                  );
+                  )
                 }
               }
             </Formik>
@@ -305,34 +262,23 @@ const VoteFinalize = ({ match, history, location }) => {
               <div className="content">
                 <h3>Finalize your vote</h3>
                 <h5>Your Zerotheft Public Voter Registeration:</h5>
-                <p
-                  className="data-row"
-                  style={{ fontSize: 18, fontWeight: "500" }}
-                >
+                <p className="data-row" style={{ fontSize: 18, fontWeight: "500" }}>
                   <span>Your Voter Address:</span>
                   <span>{userInfo.ethereumAddress}</span>
                 </p>
-                <p
-                  className="data-row"
-                  style={{ fontSize: 18, fontWeight: "500" }}
-                >
+                <p className="data-row" style={{ fontSize: 18, fontWeight: "500" }}>
                   <span>Your Citizen ID:</span>
                   <span>{userInfo.unverifiedCitizen}</span>
                 </p>
                 <p className="data-row">
                   <span>Your Name:</span>
                   <span className="max">
-                    {userInfo.firstName} {userInfo.middleName}{" "}
-                    {userInfo.lastName}
+                    {userInfo.firstName} {userInfo.middleName} {userInfo.lastName}
                   </span>
                 </p>
                 <p className="data-row">
                   <span>Your Linked-in Account:</span>
-                  <a
-                    href={userInfo.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <a href={userInfo.linkedin} target="_blank" rel="noopener noreferrer">
                     {userInfo.linkedin}
                   </a>
                 </p>
@@ -355,23 +301,16 @@ const VoteFinalize = ({ match, history, location }) => {
               {priorVoteInfo && priorVoteInfo.success && (
                 <div className="content bottom">
                   <p className="data-row">
-                    You voted on this problem for this year already. Voting
-                    again will override your existing vote.
+                    You voted on this problem for this year already. Voting again will override your existing vote.
                   </p>
                   <p className="data-row" style={{ fontSize: 22 }}>
-                    Prior Vote:{" "}
-                    {get(priorVoteInfo, "voteIsTheft") === "True"
-                      ? "YES"
-                      : "NO"}
+                    Prior Vote: {get(priorVoteInfo, "voteIsTheft") === "True" ? "YES" : "NO"}
                   </p>
                   <p className="data-row" style={{ fontWeight: "500" }}>
                     {/* <span>
                 Amount Stolen : ${get(priorVoteInfo, 'altTheftAmt') || get(priorVoteInfo, 'theftAmt')}
               </span> */}
-                    <span>
-                      Voted on :{" "}
-                      {convertUNIXtoDATETIME(get(priorVoteInfo, "date"))}
-                    </span>
+                    <span>Voted on : {convertUNIXtoDATETIME(get(priorVoteInfo, "date"))}</span>
                   </p>
                   {/* TODO: When we maintain the proper historical data then we will show this button
             <Button plain onClick={() => window.open('zerotheft://settings/history')} style={{ width: '100%', fontSize: 20, fontWeight: '500', background: 'transparent', borderWidth: 2 }} height={62}>View Voting History</Button> */}
@@ -385,24 +324,22 @@ const VoteFinalize = ({ match, history, location }) => {
         <ProposalDetail
           allowSelect={false}
           reportPath={reportPath}
-          item={
-            finalVote === "yes" ? selection.proposal : selection.counterProposal
-          }
+          item={finalVote === "yes" ? selection.proposal : selection.counterProposal}
           type={finalVote === "yes" ? "proposal" : "counter"}
         />
       </ProposalWrapper>
     </>
-  );
-};
+  )
+}
 
 const FinalizeWrapper = (props) => {
   return (
     <VoteProvider>
       <VoteFinalize {...props} />{" "}
     </VoteProvider>
-  );
-};
-export default FinalizeWrapper;
+  )
+}
+export default FinalizeWrapper
 
 const Wrapper = styled.div`
     padding-top: 80px;
@@ -524,4 +461,4 @@ const Wrapper = styled.div`
     margin-top: 30px;
     padding: 30px;
     border-top: 1px solid #c9c9c9;
-  `;
+  `

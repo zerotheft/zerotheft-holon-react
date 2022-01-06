@@ -1,26 +1,26 @@
-import React from 'react'
-import metamaskIcon from 'assets/icons/metamask.svg'
-import styled from 'styled-components'
-import config from 'config'
-import { ButtonsWrapper, Next } from './Buttons'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from './styles'
+import React from "react"
+import styled from "styled-components"
+import metamaskIcon from "assets/icons/metamask.svg"
+import config from "config"
+import { ButtonsWrapper, Next } from "./Buttons"
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from "./styles"
 
 const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
 
 const Step5 = ({ updateCurrentStep, checkRequirements }) => {
   let name
   switch (MODE) {
-    case 'private':
-      name = 'ETC Privatenet'
+    case "private":
+      name = "ETC Privatenet"
       break
-    case 'staging':
-      name = 'Polygon Testnet'
+    case "staging":
+      name = "Polygon Testnet"
       break
-    case 'production':
-      name = 'Polygon Mainnet'
+    case "production":
+      name = "Polygon Mainnet"
       break
     default:
-      name = 'Local Network'
+      name = "Local Network"
       break
   }
   return (

@@ -1,17 +1,16 @@
-import React, { useContext } from 'react'
-import metamaskIcon from 'assets/icons/metamask.svg'
-import Button from 'commons/Buttons'
-import { LinkText } from 'commons/styles'
-import { toast } from 'react-toastify'
-import { AppContext } from 'components/App/AppContext'
-import config from 'config'
-import { VoteContext } from '../VoteContext'
-import { ButtonsWrapper } from './Buttons'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, SubHeader, OrderedList } from './styles'
+import React, { useContext } from "react"
+import metamaskIcon from "assets/icons/metamask.svg"
+import Button from "commons/Buttons"
+import { LinkText } from "commons/styles"
+import { AppContext } from "components/App/AppContext"
+import config from "config"
+import { VoteContext } from "../VoteContext"
+import { ButtonsWrapper } from "./Buttons"
+import { Wrapper, Header, Body, InnerWrapper, BodyInfo, SubHeader, OrderedList } from "./styles"
 
-const Step6 = ({ updateCurrentStep, checkRequirements }) => {
+const Step6 = ({ checkRequirements }) => {
   const { ws } = useContext(AppContext)
-  const { checkStep, voterInfo } = useContext(VoteContext)
+  const { voterInfo } = useContext(VoteContext)
   const shouldCheck = ws && ws.readyState === 1
   const { CENTRALIZED_SERVER_FRONTEND } = config
   return (
