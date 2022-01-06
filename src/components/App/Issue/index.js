@@ -15,6 +15,7 @@ import CounterProposals from './CounterProposals'
 import Vote from './Vote'
 import VoteFinalize from './VoteFinalize'
 import AfterVote from './AfterVote'
+import Steps from './VoteFinalize/Steps'
 
 const IssueWrapper = (props) => (
   <IssueProvider id={get(props, 'match.params.id')} {...props}>
@@ -43,6 +44,7 @@ const Issue = ({ match }) => {
         <Route exact path={ROUTES.COUNTER_PROPOSALS} component={CounterProposals} />
         <Route path={ROUTES.VOTE} component={Vote} />
         <Route path={ROUTES.VOTE_FINALIZE} component={VoteFinalize} />
+        <Route path={ROUTES.VOTE_CONDITIONS} component={Steps} />
         <Route path={ROUTES.AFTER_VOTE} component={AfterVote} />
         <Route path={ROUTES.ISSUE} component={Proposals} />
       </Switch>

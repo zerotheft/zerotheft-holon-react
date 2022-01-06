@@ -7,16 +7,8 @@ import Button from 'commons/Buttons'
 import OverlaySpinner from 'commons/OverlaySpinner'
 import { VoteContext } from '../VoteContext'
 
-const Step7 = ({ showStepsPage, voteValues }) => {
-  const { vote } = useContext(VoteContext)
+const Step7 = ({ proceedToVote }) => {
   const [voteProgress, updateVoteProgress] = useState(false)
-
-  const proceedWithVote = async () => {
-    updateVoteProgress(true)
-    await vote(voteValues)
-    showStepsPage(true)
-    updateVoteProgress(false)
-  }
 
   return (
     <>
@@ -35,8 +27,8 @@ const Step7 = ({ showStepsPage, voteValues }) => {
           <MessageHeader>Congratulations!</MessageHeader>
           <div style={{ fontSize: 20, fontWeight: 600 }}>You have completed all the steps to vote.</div>
           <Message style={{ textAlign: 'justify' }}>Please click on vote button to cast your vote.</Message>
-          <Button onClick={() => proceedWithVote()} style={{ background: '#4C4A4F', marginRight: 18, opacity: 1 }}>
-            Vote
+          <Button onClick={() => proceedToVote()} style={{ background: '#4C4A4F', marginRight: 18, opacity: 1 }}>
+            Proceed to vote
           </Button>
         </Container>
       </MessageWrapper>

@@ -13,6 +13,7 @@ export const ISSUE = `${PATH_DETAIL}/issue/:id`,
   COUNTER_PROPOSALS = `${PATH_DETAIL}/issue/:id/counter-proposals`,
   VOTE = `${PATH_DETAIL}/issue/:id/vote`,
   VOTE_FINALIZE = `${PATH_DETAIL}/issue/:id/finalize`,
+  VOTE_CONDITIONS = `${PATH_DETAIL}/issue/:id/check`,
   AFTER_VOTE = `${PATH_DETAIL}/issue/:id/voted`
 
 export const VIEW_PROPOSAL = '/proposals/:id'

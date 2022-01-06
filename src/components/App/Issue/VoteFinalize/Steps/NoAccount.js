@@ -1,41 +1,58 @@
-import React from 'react'
-import metamaskIcon from 'assets/icons/metamask.svg'
-import styled from 'styled-components'
-import config from 'config'
-import { ButtonsWrapper, Next } from './Buttons'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, Info } from './styles'
+import React from "react";
+import styled from "styled-components";
+import metamaskIcon from "assets/icons/metamask.svg";
+import config from "config";
+import { ButtonsWrapper, Next } from "./Buttons";
+import {
+  Wrapper,
+  Header,
+  Body,
+  InnerWrapper,
+  BodyInfo,
+  OrderedList,
+  SubHeader,
+  Info,
+} from "./styles";
 
-const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
+const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config;
 
-const Step5 = ({ updateCurrentStep, checkRequirements }) => {
-  let name
+const NoAccount = ({ updateCurrentStep, checkRequirements }) => {
+  console.log("No account");
+  let name;
   switch (MODE) {
-    case 'private':
-      name = 'ETC Privatenet'
-      break
-    case 'staging':
-      name = 'Polygon Testnet'
-      break
-    case 'production':
-      name = 'Polygon Mainnet'
-      break
+    case "private":
+      name = "ETC Privatenet";
+      break;
+    case "staging":
+      name = "Polygon Testnet";
+      break;
+    case "production":
+      name = "Polygon Mainnet";
+      break;
     default:
-      name = 'Local Network'
-      break
+      name = "Local Network";
+      break;
   }
   return (
     <Wrapper>
       <InnerWrapper>
-        <Header>Step #2: Configure Zerotheft Wallet</Header>
+        <Header>Step #3: Create or Import Wallet</Header>
         <Body>
-          <BodyInfo>We need to configure zerotheft wallet to connect to {name}.</BodyInfo>
-          <div>
+          <BodyInfo>
+            You need to create/import account in zerotheft wallet to connect to{" "}
+            {name}.
+          </BodyInfo>
+          {/* <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
             <Info>
-              If you have already done the following steps, select &apos;{name}&apos; from network selector tab.
+              If you have already done the following steps, select &apos;{name}
+              &apos; from network selector tab.
             </Info>
             <StyledOrderedList>
-              <li>Open my accounts selector at the top right corner section of the zerotheft wallet.</li>
+              <li>
+                Open my accounts selector at the top right corner section of the
+                zerotheft wallet.
+              </li>
               <li>Click on settings and then go to networks setting.</li>
               <li>
                 Click &apos;Add Network&apos; button and fill the details as:
@@ -55,7 +72,7 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
               </li>
               <li>Click on save</li>
             </StyledOrderedList>
-          </div>
+          </div> */}
           <ButtonsWrapper>
             <Next currentStep={5} updateCurrentStep={updateCurrentStep} checkRequirements={checkRequirements} />
           </ButtonsWrapper>
@@ -63,10 +80,10 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
       </InnerWrapper>
       <img src={metamaskIcon} alt="Metamask" style={{ height: 300 }} />
     </Wrapper>
-  )
-}
+  );
+};
 
-export default Step5
+export default NoAccount;
 
 const StyledOrderedList = styled(OrderedList)`
   li {
@@ -77,4 +94,4 @@ const StyledOrderedList = styled(OrderedList)`
       }
     }
   }
-`
+`;

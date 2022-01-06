@@ -27,20 +27,21 @@ export const Previous = (props) => {
   )
 }
 
-export const Next = ({ currentStep, updateCurrentStep, ...props }) => {
-  const { checkStep } = useContext(VoteContext)
+export const Next = ({ currentStep, updateCurrentStep, checkRequirements, ...props }) => {
+  // const { checkStep } = useContext(VoteContext)
 
   return (
     <Button
       onClick={async () => {
-        const { msg, step } = await checkStep()
-        if (step === 7) {
-          return
-        }
-        if (step !== currentStep) updateCurrentStep(step)
-        else if (msg) {
-          toast.error(msg)
-        }
+        // const { msg, step } = await checkStep()
+        // if (step === 7) {
+        //   return
+        // }
+        // if (step !== currentStep) updateCurrentStep(step)
+        // else if (msg) {
+        //   toast.error(msg)
+        // }
+        await checkRequirements()
       }}
       {...props}
     >
