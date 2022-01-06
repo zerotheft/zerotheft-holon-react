@@ -25,7 +25,7 @@ export const Previous = (props) => {
   )
 }
 
-export const Next = ({ currentStep, updateCurrentStep, checkRequirements, ...props }) => {
+export const Next = ({ currentStep, updateCurrentStep, proceed, ...props }) => {
   return (
     <Button
       onClick={async () => {
@@ -37,7 +37,19 @@ export const Next = ({ currentStep, updateCurrentStep, checkRequirements, ...pro
         // else if (msg) {
         //   toast.error(msg)
         // }
-        await checkRequirements()
+        // if (currentStep === 1) {
+        //   await proceedWithExtensionInstall();
+        // } else if (currentStep === 2) {
+        //   await proceedWithExtensionNetwork();
+        // } else if (currentStep === 3) {
+        //   await proceedWithWalletAccount();
+        // } else if (currentStep === 4) {
+        //   await proceedWithRegistration();
+        // }
+        // else {
+        //   await checkRequirements();
+        // }
+        await proceed()
       }}
       {...props}
     >

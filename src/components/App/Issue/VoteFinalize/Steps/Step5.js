@@ -7,7 +7,7 @@ import { Wrapper, Header, Body, InnerWrapper, BodyInfo, OrderedList, SubHeader, 
 
 const { MODE, TOKEN, CHAIN_ID, HTTP_PROVIDER } = config
 
-const Step5 = ({ updateCurrentStep, checkRequirements }) => {
+const Step5 = ({ updateCurrentStep, proceed }) => {
   let name
   switch (MODE) {
     case "private":
@@ -32,7 +32,8 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
           <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
             <Info>
-              If you have already done the following steps, select &apos;{name}&apos; from network selector tab.
+              If you have already done the following steps, select &apos;{name}
+              &apos; from network selector tab.
             </Info>
             <StyledOrderedList>
               <li>Open my accounts selector at the top right corner section of the zerotheft wallet.</li>
@@ -57,7 +58,7 @@ const Step5 = ({ updateCurrentStep, checkRequirements }) => {
             </StyledOrderedList>
           </div>
           <ButtonsWrapper>
-            <Next currentStep={5} updateCurrentStep={updateCurrentStep} checkRequirements={checkRequirements} />
+            <Next currentStep={2} updateCurrentStep={updateCurrentStep} proceed={proceed} />
           </ButtonsWrapper>
         </Body>
       </InnerWrapper>

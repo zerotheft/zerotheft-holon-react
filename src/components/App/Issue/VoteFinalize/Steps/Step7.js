@@ -5,7 +5,7 @@ import styled from "styled-components"
 
 import Button from "commons/Buttons"
 
-const Step7 = ({ proceedToVote }) => {
+const Step7 = ({ proceed }) => {
   return (
     <>
       <MessageWrapper style={{ flex: 1 }}>
@@ -22,7 +22,7 @@ const Step7 = ({ proceedToVote }) => {
           <MessageHeader>Congratulations!</MessageHeader>
           <div style={{ fontSize: 20, fontWeight: 600 }}>You have completed all the steps to vote.</div>
           <Message style={{ textAlign: "justify" }}>Please click on vote button to cast your vote.</Message>
-          <Button onClick={() => proceedToVote()} style={{ background: "#4C4A4F", marginRight: 18, opacity: 1 }}>
+          <Button onClick={() => proceed()} style={{ background: "#4C4A4F", marginRight: 18, opacity: 1 }}>
             Proceed to vote
           </Button>
         </Container>
