@@ -49,7 +49,7 @@ const Step4 = ({ updateCurrentStep, checkRequirements }) => {
             </Question>
           ) : (
             <div>
-              <FlexBox>
+              {/* <FlexBox>
                 <div className="metamask-header">Zerotheft Wallet Setup</div>
                 <Selector>
                   <Option selected={userType === 'newUser'} onClick={() => updateUserType('newUser')}>
@@ -59,7 +59,7 @@ const Step4 = ({ updateCurrentStep, checkRequirements }) => {
                     Old User
                   </Option>
                 </Selector>
-              </FlexBox>
+              </FlexBox> */}
               <OrderedList>
                 {userType === 'newUser' ? (
                   <>
