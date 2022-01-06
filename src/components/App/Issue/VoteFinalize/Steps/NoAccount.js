@@ -1,33 +1,15 @@
 import React from "react"
 import metamaskIcon from "assets/icons/metamask.svg"
-import config from "config"
 import { ButtonsWrapper, Next } from "./Buttons"
 import { Wrapper, Header, Body, InnerWrapper, BodyInfo } from "./styles"
 
-const { MODE } = config
-
 const NoAccount = ({ updateCurrentStep, checkRequirements }) => {
-  let name
-  switch (MODE) {
-    case "private":
-      name = "ETC Privatenet"
-      break
-    case "staging":
-      name = "Polygon Testnet"
-      break
-    case "production":
-      name = "Polygon Mainnet"
-      break
-    default:
-      name = "Local Network"
-      break
-  }
   return (
     <Wrapper>
       <InnerWrapper>
         <Header>Step #3: Create or Import Wallet</Header>
         <Body>
-          <BodyInfo>You need to create/import account in zerotheft wallet to connect to {name}.</BodyInfo>
+          <BodyInfo>You need to create/import account in order to vote</BodyInfo>
           {/* <div>
             <SubHeader>Zerothet Wallet Network Setup</SubHeader>
             <Info>
