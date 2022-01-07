@@ -4,16 +4,26 @@ import { get } from "lodash"
 import { getParameterByName } from "utils"
 import { getPathProposalsByPath, getProposal } from "apis/proposals"
 import { AppContext } from "components/App/AppContext"
+import { Web3Context } from "../Web3Context"
+import {
+  checkNetwork,
+  checkWalletInstallation,
+  getUserMetamaskAddress,
+  getUserRegistration,
+} from "./VoteFinalize/voteConditions"
 
 const IssueContext = createContext()
 
 const IssueProvider = ({ children, id, match, location }) => {
+  let { web3 } = useContext(Web3Context)
+  const { loadWeb3 } = useContext(Web3Context)
   const [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
 
   // const [getPriorVoteApi, loadingPriorVote, priorVoteInfo] = useFetch(getPriorVote)
   // const { userInfo = {}, filterParams } = useContext(AppContext)
-  const [proposalDetails, updateProposalDetails] = useState({})
+  const [proposalDetails, updateProposalDetails] = useState({}),
+    [currentRequirementStep, updateCurrentRequirementStep] = useState(0)
 
   // useEffect(() => {
   //   // console.log(`${get(match, 'params.pathname')}%2F${get(match, 'params.id')}`).replaceAll('%2F', '/')
@@ -50,6 +60,43 @@ const IssueProvider = ({ children, id, match, location }) => {
     }
   }
 
+  const checkRequirements = async () => {
+    if (!web3) {
+      web3 = await loadWeb3()
+    }
+    const isMetamaskInstalled = await checkWalletInstallation()
+    if (!isMetamaskInstalled) {
+      await updateCurrentRequirementStep(1)
+      return false
+    }
+
+    const isCorrectNetwork = await checkNetwork(web3)
+    if (!isCorrectNetwork) {
+      await updateCurrentRequirementStep(2)
+      return false
+    }
+
+    const userWalletAddress = await getUserMetamaskAddress(web3)
+    if (!userWalletAddress) {
+      await updateCurrentRequirementStep(3)
+      return false
+    }
+
+    const userDetails = await getUserRegistration(userWalletAddress)
+    if (!userDetails) {
+      await updateCurrentRequirementStep(4)
+      return false
+    }
+
+    if (!userDetails.verifiedCitizen) {
+      await updateCurrentRequirementStep(5)
+      return false
+    }
+
+    await updateCurrentRequirementStep(6)
+    return true
+  }
+
   useEffect(() => {
     fetchProposal(selectedProposalId)
   }, [selectedProposalId])
@@ -73,6 +120,9 @@ const IssueProvider = ({ children, id, match, location }) => {
         updateSelection,
         updateIssue,
         proposalDetails,
+        currentRequirementStep,
+        updateCurrentRequirementStep,
+        checkRequirements,
       }}
     >
       {children}

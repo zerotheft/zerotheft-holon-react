@@ -4,16 +4,8 @@ import { toast } from "react-toastify"
 import { get } from "lodash"
 import { Redirect, useLocation } from "react-router"
 import OverlaySpinner from "commons/OverlaySpinner"
-import config from "config"
 import { VoteContext, VoteProvider } from "../VoteContext"
-import {
-  checkNetwork,
-  checkWalletInstallation,
-  getUserMetamaskAddress,
-  getUserRegistration,
-  getWalletBalance,
-  sendBalanceToWallet,
-} from "../voteConditions"
+import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration } from "../voteConditions"
 
 import { IssueContext } from "../../IssueContext"
 import Step4 from "./Step4"
@@ -22,17 +14,15 @@ import NoAccount from "./NoAccount"
 import Step6 from "./Step6"
 import Step7 from "./Step7"
 import UnverifiedCitizen from "./UnverifiedCitizen"
-import FundTransfer from "./FundTransfer"
 
 const Steps = ({ match, history }) => {
   const location = useLocation()
   let voteValue = location.voteValue ? location.voteValue.vote : null
   const { web3 } = useContext(VoteContext)
-  const { selection } = useContext(IssueContext)
+  const { selection, currentRequirementStep, updateCurrentRequirementStep, checkRequirements } =
+    useContext(IssueContext)
 
-  const { VOTE_BALANCE } = config
   const [requirementCheckProgress, updateRequirementCheckProgress] = useState(false)
-  const [currentRequirementStep, updateCurrentRequirementStep] = useState(1)
   const [localStorageData, updatelocalStorageData] = useState(true)
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, "/")
 
@@ -87,6 +77,7 @@ const Steps = ({ match, history }) => {
     if (isMetamaskInstalled) {
       await updateCurrentRequirementStep(2)
     } else {
+      toast.warning("Please install ztm wallet extension by following the steps on screen")
       window.location.reload()
     }
     updateRequirementCheckProgress(false)
@@ -96,7 +87,8 @@ const Steps = ({ match, history }) => {
     updateRequirementCheckProgress(true)
     const isCorrectNetwork = await checkNetwork(web3)
     if (isCorrectNetwork) {
-      await updateCurrentRequirementStep(3)
+      updateCurrentRequirementStep(false)
+      await checkRequirements()
     } else {
       toast.warning("Please follow the instructions on screen to setup network.")
     }
@@ -108,7 +100,7 @@ const Steps = ({ match, history }) => {
     const userWalletAddress = await getUserMetamaskAddress(web3)
     if (userWalletAddress) {
       updateRequirementCheckProgress(false)
-      await updateCurrentRequirementStep(4)
+      await checkRequirements()
     } else {
       toast.warning("Please follow the instructions on screen to create or import wallet.")
     }
@@ -120,7 +112,8 @@ const Steps = ({ match, history }) => {
     const userWalletAddress = await getUserMetamaskAddress(web3)
     const userDetails = await getUserRegistration(userWalletAddress)
     if (userDetails) {
-      await updateCurrentRequirementStep(5)
+      updateRequirementCheckProgress(false)
+      await checkRequirements()
     } else {
       toast.warning("Please follow the instructions on screen to register your Voter ID.")
     }
@@ -133,30 +126,29 @@ const Steps = ({ match, history }) => {
     const userDetails = await getUserRegistration(userWalletAddress)
     if (userDetails.verifiedCitizen) {
       updateRequirementCheckProgress(false)
-      await proceedWithBalanceTransfer()
     } else {
       toast.warning("Please follow the instructions on screen to verify your Voter ID.")
     }
     updateRequirementCheckProgress(false)
   }
 
-  const proceedWithBalanceTransfer = async () => {
-    updateRequirementCheckProgress(true)
-    const userWalletAddress = await getUserMetamaskAddress(web3)
-    const userDetails = await getUserRegistration(userWalletAddress)
-    const walletBalance = await getWalletBalance(web3, userWalletAddress)
-    if (walletBalance < VOTE_BALANCE) {
-      const transferToWalletStatus = await sendBalanceToWallet(userDetails.verifiedCitizen, userWalletAddress)
-      if (transferToWalletStatus !== true) {
-        await updateCurrentRequirementStep(6)
-        return
-      }
+  // const proceedWithBalanceTransfer = async () => {
+  //   updateRequirementCheckProgress(true)
+  //   const userWalletAddress = await getUserMetamaskAddress(web3)
+  //   const userDetails = await getUserRegistration(userWalletAddress)
+  //   const walletBalance = await getWalletBalance(web3, userWalletAddress)
+  //   if (walletBalance < VOTE_BALANCE) {
+  //     const transferToWalletStatus = await sendBalanceToWallet(userDetails.verifiedCitizen, userWalletAddress)
+  //     if (transferToWalletStatus !== true) {
+  //       await updateCurrentRequirementStep(6)
+  //       return
+  //     }
 
-      toast.success("We have successfully funded your wallet for funding. Please proceed with voting")
-    }
-    await updateCurrentRequirementStep(7)
-    updateRequirementCheckProgress(false)
-  }
+  //     toast.success("We have successfully funded your wallet for funding. Please proceed with voting")
+  //   }
+  //   await updateCurrentRequirementStep(7)
+  //   updateRequirementCheckProgress(false)
+  // }
 
   const proceedToVote = async () => {
     await setCitizenID()
@@ -169,8 +161,18 @@ const Steps = ({ match, history }) => {
     storeDataInLocalStorage()
   }, [])
 
+  useEffect(() => {
+    checkRequirements()
+  }, [])
+
   if (!localStorageData) {
     return <Redirect to={`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}`} />
+  }
+
+  if (currentRequirementStep === 6) {
+    history.push(`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/finalize`, {
+      vote: voteValue,
+    })
   }
 
   return (
@@ -184,8 +186,7 @@ const Steps = ({ match, history }) => {
             3: <NoAccount proceed={proceedWithWalletAccount} />,
             4: <Step6 proceed={proceedWithRegistration} />,
             5: <UnverifiedCitizen proceed={proceedWithVerification} />,
-            6: <FundTransfer proceed={proceedWithBalanceTransfer} />,
-            7: <Step7 proceed={proceedToVote} />,
+            6: <Step7 proceed={proceedToVote} />,
           }[currentRequirementStep]
         }
         {/* <Step updateCurrentStep={updateCurrentStep} {...props} /> */}

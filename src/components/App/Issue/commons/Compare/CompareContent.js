@@ -16,9 +16,21 @@ import { IssueContext } from "../../IssueContext"
 const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
   const history = useHistory()
   const match = useRouteMatch()
-  const { proposalDetails } = useContext(IssueContext)
+  const { proposalDetails, checkRequirements, currentRequirementStep } = useContext(IssueContext)
 
   const details = data ? proposalDetails[data.id] : null
+
+  const proceedToVoting = async () => {
+    await checkRequirements()
+    if (currentRequirementStep === 6) {
+      history.push(`/path/${get(match, "params.pathname")}/issue/${id}/finalize`, { vote })
+    } else {
+      history.push({
+        pathname: `/path/${get(match, "params.pathname")}/issue/${id}/check`,
+        voteValue: { vote },
+      })
+    }
+  }
 
   if (lowerCase(vote) !== "yes" && lowerCase(vote) !== "no") return null
 
@@ -38,12 +50,9 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
             width={175}
             height={55}
             style={{ fontSize: 20, fontWeight: "700" }}
-            onClick={() =>
-              history.push({
-                pathname: `/path/${get(match, "params.pathname")}/issue/${id}/check`,
-                voteValue: { vote },
-              })
-            }
+            onClick={async () => {
+              await proceedToVoting()
+            }}
           >
             I vote {upperCase(vote)}
           </Button>
@@ -97,7 +106,13 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
           <div>
             <p>Theft Amount : {data.summary}</p>
           </div>
-          <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
             <p>
               <span style={{ color: "#8D8D8D" }}>AUTHOR</span> {get(data, "author.name", "Anonymous")}
             </p>
@@ -114,7 +129,13 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
           <FontAwesomeIcon icon={faFrown} color={colors.red} />{get(data, 'complaints.count', 0)}
         </p> */}
           </div>
-          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
             <p style={{ fontSize: 24 }}>
               {get(data, "ratings.count", 0)}
               <span style={{ margin: "0 5px" }}>

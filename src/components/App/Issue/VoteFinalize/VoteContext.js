@@ -84,7 +84,13 @@ const useVote = (voterInfo) => {
     try {
       const balance = await getBalance()
       if (balance === 0 && holonInfo.canBeFunded) {
-        showErrorPopUp({ message: "Insufficient Fund", holonInfo, proposalId, voteType: finalVote, ...values })
+        showErrorPopUp({
+          message: "Insufficient Fund",
+          holonInfo,
+          proposalId,
+          voteType: finalVote,
+          ...values,
+        })
         return
       }
       if (!holonInfo.holonID || holonInfo.holonID === "") {
@@ -173,9 +179,22 @@ const useVote = (voterInfo) => {
       // console.log('after vote')
 
       const idxRes = await callSmartContractGetFunc(contract, "getLastVoteIndex")
-      await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
+      await afterVote(balance, {
+        account,
+        voteType: finalVote,
+        voteIndex: idxRes.voteIndex,
+        proposalId,
+        ...values,
+      })
     } catch (e) {
-      if (holonInfo.canBeFunded) showErrorPopUp({ message: "", holonInfo, proposalId, voteType: finalVote, ...values })
+      if (holonInfo.canBeFunded)
+        showErrorPopUp({
+          message: "",
+          holonInfo,
+          proposalId,
+          voteType: finalVote,
+          ...values,
+        })
       toast.error("Error while voting on this proposal.")
     } finally {
       updateVoting(false)
