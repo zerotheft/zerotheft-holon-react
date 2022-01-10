@@ -126,6 +126,7 @@ const Steps = ({ match, history }) => {
     const userDetails = await getUserRegistration(userWalletAddress)
     if (userDetails.verifiedCitizen) {
       updateRequirementCheckProgress(false)
+      await checkRequirements()
     } else {
       toast.warning("Please follow the instructions on screen to verify your Voter ID.")
     }
