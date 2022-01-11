@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from "react"
-import styled from "styled-components"
 import { toast } from "react-toastify"
 import { get } from "lodash"
 import { Redirect, useLocation } from "react-router"
 import OverlaySpinner from "commons/OverlaySpinner"
+import { ToastContext } from "commons/ToastContext"
 import { VoteContext, VoteProvider } from "../VoteContext"
 import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration } from "../voteConditions"
 
@@ -19,6 +19,7 @@ const Steps = ({ match, history }) => {
   const location = useLocation()
   let voteValue = location.voteValue ? location.voteValue.vote : null
   const { web3 } = useContext(VoteContext)
+  const { setToastProperties } = useContext(ToastContext)
   const { selection, currentRequirementStep, updateCurrentRequirementStep, checkRequirements } =
     useContext(IssueContext)
 
@@ -90,7 +91,8 @@ const Steps = ({ match, history }) => {
       updateCurrentRequirementStep(false)
       await checkRequirements()
     } else {
-      toast.warning("Please follow the instructions on screen to setup network.")
+      const message = "Please follow the instructions on screen to setup network."
+      setToastProperties({ message, type: "error" })
     }
     updateRequirementCheckProgress(false)
   }
@@ -102,7 +104,8 @@ const Steps = ({ match, history }) => {
       updateRequirementCheckProgress(false)
       await checkRequirements()
     } else {
-      toast.warning("Please follow the instructions on screen to create or import wallet.")
+      const message = "Please follow the instructions on screen to create or import wallet."
+      setToastProperties({ message, type: "error" })
     }
     updateRequirementCheckProgress(false)
   }
@@ -115,7 +118,8 @@ const Steps = ({ match, history }) => {
       updateRequirementCheckProgress(false)
       await checkRequirements()
     } else {
-      toast.warning("Please follow the instructions on screen to register your Voter ID.")
+      const message = "Please follow the instructions on screen to register your Voter ID."
+      setToastProperties({ message, type: "error" })
     }
     updateRequirementCheckProgress(false)
   }
@@ -128,7 +132,9 @@ const Steps = ({ match, history }) => {
       updateRequirementCheckProgress(false)
       await checkRequirements()
     } else {
-      toast.warning("Please follow the instructions on screen to verify your Voter ID.")
+      toast.warning()
+      const message = "Please follow the instructions on screen to verify your Voter ID."
+      setToastProperties({ message, type: "error" })
     }
     updateRequirementCheckProgress(false)
   }
@@ -178,20 +184,18 @@ const Steps = ({ match, history }) => {
 
   return (
     <div>
-      <Body>
-        <OverlaySpinner loading={requirementCheckProgress} />
+      <OverlaySpinner loading={requirementCheckProgress} />
+      {
         {
-          {
-            1: <Step4 proceed={proceedWithExtensionInstall} />,
-            2: <Step5 proceed={proceedWithExtensionNetwork} />,
-            3: <NoAccount proceed={proceedWithWalletAccount} />,
-            4: <Step6 proceed={proceedWithRegistration} />,
-            5: <UnverifiedCitizen proceed={proceedWithVerification} />,
-            6: <Step7 proceed={proceedToVote} />,
-          }[currentRequirementStep]
-        }
-        {/* <Step updateCurrentStep={updateCurrentStep} {...props} /> */}
-      </Body>
+          1: <Step4 proceed={proceedWithExtensionInstall} />,
+          2: <Step5 proceed={proceedWithExtensionNetwork} />,
+          3: <NoAccount proceed={proceedWithWalletAccount} />,
+          4: <Step6 proceed={proceedWithRegistration} />,
+          5: <UnverifiedCitizen proceed={proceedWithVerification} />,
+          6: <Step7 proceed={proceedToVote} />,
+        }[currentRequirementStep]
+      }
+      {/* <Step updateCurrentStep={updateCurrentStep} {...props} /> */}
     </div>
   )
 }
@@ -205,10 +209,3 @@ const stepWrapper = (props) => {
 }
 
 export default stepWrapper
-
-const Body = styled.div`
-  box-shadow: 0px -1px 15px rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-  padding: 58px 80px;
-  margin: 40px 0;
-`

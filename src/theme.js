@@ -9,6 +9,8 @@ export const colors = {
     backgroundColor: "#D8D8D8",
     lightText: "#6A6078",
     greyText: "#796868",
+    greyHeader: "#616161",
+    grey500: "#9E9E9E",
     borders: {
       table: "#f2f2f2",
       dropdown: "#E7E9F1",
@@ -21,7 +23,7 @@ export const colors = {
       greyBackground: "#C4C4C4",
     },
     background: {
-      body: "#FFF",
+      body: "#FAFAFA",
       header: "#F2F4F9",
       fade: "#F2F4F9",
       white: "#FFFFFF",
