@@ -6,9 +6,11 @@ import styled from "styled-components"
 import { ToastContainer, Slide } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
+import { createTheme, ThemeProvider } from "@mui/material"
 import * as ROUTES from "constants/routes"
 import { colors, height } from "theme"
 import ErrorBoundary from "commons/ErrorBoundary"
+import { ToastProvider } from "commons/ToastContext"
 import Header from "./commons/Header"
 import Footer from "./commons/Footer"
 import Home from "./Home"
@@ -37,15 +39,27 @@ const Wrapper = styled.section`
   overflow: auto;
 `
 
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: colors.primary,
+    },
+  },
+})
+
 const AppWrapper = (props) => (
   <Router preserverScrollPosition={false}>
-    <ErrorBoundary>
-      <AppProvider>
-        <Web3Provider>
-          <App {...props} />
-        </Web3Provider>
-      </AppProvider>
-    </ErrorBoundary>
+    <ThemeProvider theme={theme}>
+      <ToastProvider>
+        <ErrorBoundary>
+          <AppProvider>
+            <Web3Provider>
+              <App {...props} />
+            </Web3Provider>
+          </AppProvider>
+        </ErrorBoundary>
+      </ToastProvider>
+    </ThemeProvider>
   </Router>
 )
 
