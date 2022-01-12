@@ -139,24 +139,6 @@ const Steps = ({ match, history }) => {
     updateRequirementCheckProgress(false)
   }
 
-  // const proceedWithBalanceTransfer = async () => {
-  //   updateRequirementCheckProgress(true)
-  //   const userWalletAddress = await getUserMetamaskAddress(web3)
-  //   const userDetails = await getUserRegistration(userWalletAddress)
-  //   const walletBalance = await getWalletBalance(web3, userWalletAddress)
-  //   if (walletBalance < VOTE_BALANCE) {
-  //     const transferToWalletStatus = await sendBalanceToWallet(userDetails.verifiedCitizen, userWalletAddress)
-  //     if (transferToWalletStatus !== true) {
-  //       await updateCurrentRequirementStep(6)
-  //       return
-  //     }
-
-  //     toast.success("We have successfully funded your wallet for funding. Please proceed with voting")
-  //   }
-  //   await updateCurrentRequirementStep(7)
-  //   updateRequirementCheckProgress(false)
-  // }
-
   const proceedToVote = async () => {
     await setCitizenID()
     history.push(`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/finalize`, {

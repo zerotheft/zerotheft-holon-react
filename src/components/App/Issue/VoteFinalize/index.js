@@ -20,7 +20,7 @@ import { VoteContext, VoteProvider } from "./VoteContext"
 
 const VoteFinalize = ({ match, location }) => {
   const queryParams = location.search
-  const { selection } = useContext(IssueContext)
+  const { selection, checkAndTransferFund } = useContext(IssueContext)
   const { umbrellaPaths, holonInfo } = useContext(AppContext)
   const {
     checkStep,
@@ -57,6 +57,7 @@ const VoteFinalize = ({ match, location }) => {
 
   const [formValues, updateFormValues] = useState()
   const [localStorageData, updatelocalStorageData] = useState(true)
+  const [loading, updateLoading] = useState(false)
 
   // Store data in local storage for the reload
   const storeDataInLocalStorage = async () => {
@@ -113,6 +114,13 @@ const VoteFinalize = ({ match, location }) => {
   }
 
   const submitForm = async (values) => {
+    updateLoading(true)
+    const fundTransferStatus = await checkAndTransferFund()
+    if (!fundTransferStatus) {
+      updateLoading(false)
+      return
+    }
+
     updateFormValues(values)
     const altTheftAmounts = {}
     Object.keys(theftAmtYears).forEach((yr) => {
@@ -137,6 +145,7 @@ const VoteFinalize = ({ match, location }) => {
     // showStepsPage(true);
 
     // For vote if all steps are completed
+    updateLoading(false)
     vote(updatedVal)
   }
 
@@ -152,21 +161,11 @@ const VoteFinalize = ({ match, location }) => {
     return <Redirect to={`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}`} />
   }
 
-  // if (stepsPage)
-  //   return (
-  //     <Steps
-  //       showStepsPage={showStepsPage}
-  //       vote={() => {
-  //         showStepsPage(false);
-  //         vote(initialValues);
-  //       }}
-  //       voteValues={initialValues}
-  //     />
-  //   );
   return (
     <>
       <Wrapper>
         <OverlaySpinner loading={voting} />
+        <OverlaySpinner loading={loading} />
         <FormWrapper>
           <div>
             <TitleSummary>
