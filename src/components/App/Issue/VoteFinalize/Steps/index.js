@@ -140,8 +140,6 @@ const Steps = ({ match, history }) => {
   }
 
   const proceedToVote = async () => {
-    console.log("hello world")
-
     await setCitizenID()
     history.push(`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/finalize`, {
       vote: voteValue,
