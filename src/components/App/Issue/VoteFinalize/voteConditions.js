@@ -184,21 +184,21 @@ export const getWalletBalance = async (web3, walletAddress) => {
  *
  * @param string - walletAddress - wallet address of the extension
  * @param object - citizen object
+ * @param string - amount to be funded
+ * @param string - details of the transfer
  * @returns boolena - flag if balance has been sent or not
  */
-export const sendBalanceToWallet = async (citizen, walletAddress) => {
+export const sendBalanceToWallet = async (citizen, walletAddress, amount, details) => {
   try {
     const transferRes = await transferFund({
       userId: citizen.id,
       receiver: walletAddress,
+      fundType: "voting",
+      value: amount,
+      details,
     })
-
-    if (transferRes.status === "success") {
-      return true
-    }
-
-    return false
+    return transferRes
   } catch (error) {
-    return false
+    return error
   }
 }

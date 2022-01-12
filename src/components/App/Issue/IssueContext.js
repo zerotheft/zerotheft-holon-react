@@ -4,12 +4,16 @@ import { get } from "lodash"
 import { getParameterByName } from "utils"
 import { getPathProposalsByPath, getProposal } from "apis/proposals"
 import { AppContext } from "components/App/AppContext"
+import config from "config"
+import { ToastContext } from "commons/ToastContext"
 import { Web3Context } from "../Web3Context"
 import {
   checkNetwork,
   checkWalletInstallation,
   getUserMetamaskAddress,
   getUserRegistration,
+  getWalletBalance,
+  sendBalanceToWallet,
 } from "./VoteFinalize/voteConditions"
 
 const IssueContext = createContext()
@@ -17,6 +21,7 @@ const IssueContext = createContext()
 const IssueProvider = ({ children, id, match, location }) => {
   let { web3 } = useContext(Web3Context)
   const { loadWeb3 } = useContext(Web3Context)
+  const { setToastProperties } = useContext(ToastContext)
   const [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
 
@@ -48,11 +53,15 @@ const IssueProvider = ({ children, id, match, location }) => {
 
   const selectedProposalId = get(selection, "proposal.id")
   const selectedCounterProposalId = get(selection, "counterProposal.id")
+  const { VOTE_BALANCE } = config
 
   const fetchProposal = async (proposalId) => {
     if (proposalDetails[proposalId] || !proposalId) return
     try {
-      updateProposalDetails({ ...proposalDetails, [proposalId]: { loading: true } })
+      updateProposalDetails({
+        ...proposalDetails,
+        [proposalId]: { loading: true },
+      })
       const proposal = await getProposal(proposalId)
       updateProposalDetails({ ...proposalDetails, [proposalId]: proposal })
     } catch {
@@ -97,6 +106,35 @@ const IssueProvider = ({ children, id, match, location }) => {
     return true
   }
 
+  const checkAndTransferFund = async () => {
+    const userWalletAddress = await getUserMetamaskAddress(web3)
+    const userDetails = await getUserRegistration(userWalletAddress)
+    const walletBalance = await getWalletBalance(web3, userWalletAddress)
+    let message = ""
+    if (walletBalance < VOTE_BALANCE) {
+      const amountToBefunded = VOTE_BALANCE - walletBalance
+      const details = `Funded to ${userWalletAddress} during the time of voting process where citizen balance is ${walletBalance}.`
+      const transferToWalletStatus = await sendBalanceToWallet(
+        userDetails,
+        userWalletAddress,
+        amountToBefunded,
+        details
+      )
+
+      if (transferToWalletStatus.status === "success") {
+        message = `We have successfully transferred ${amountToBefunded} to your wallet for voting.`
+        setToastProperties({ message, type: "success" })
+      } else {
+        setToastProperties({
+          message: transferToWalletStatus.response.data.error,
+          type: "error",
+        })
+        return false
+      }
+    }
+    return true
+  }
+
   useEffect(() => {
     fetchProposal(selectedProposalId)
   }, [selectedProposalId])
@@ -123,6 +161,7 @@ const IssueProvider = ({ children, id, match, location }) => {
         currentRequirementStep,
         updateCurrentRequirementStep,
         checkRequirements,
+        checkAndTransferFund,
       }}
     >
       {children}
@@ -135,7 +174,10 @@ export { IssueProvider, IssueContext }
 const useIssueFetcher = (id, match) => {
   const { filterParams } = useContext(AppContext)
   const [issue, updateIssue] = useState(),
-    [selection, updateSelection] = useState({ proposal: null, counterProposal: null }),
+    [selection, updateSelection] = useState({
+      proposal: null,
+      counterProposal: null,
+    }),
     [loading, updateLoading] = useState(true),
     /* eslint-disable-next-line no-unused-vars */
     [error, updateError] = useState()
