@@ -113,20 +113,24 @@ const IssueProvider = ({ children, id, match, location }) => {
     let message = ""
     if (walletBalance < VOTE_BALANCE) {
       const amountToBefunded = VOTE_BALANCE - walletBalance
-      const details = `Funded to ${userWalletAddress} during the time of votimg process where citizen balance is ${walletBalance}.`
+      const details = `Funded to ${userWalletAddress} during the time of voting process where citizen balance is ${walletBalance}.`
       const transferToWalletStatus = await sendBalanceToWallet(
         userDetails,
         userWalletAddress,
         amountToBefunded,
         details
       )
-      if (transferToWalletStatus !== true) {
-        message = "Insufficient funds. Please fund your wallet before voting."
-        setToastProperties({ message, type: "warning" })
+
+      if (transferToWalletStatus.status === "success") {
+        message = `We have successfully transferred ${amountToBefunded} to your wallet for voting.`
+        setToastProperties({ message, type: "success" })
+      } else {
+        setToastProperties({
+          message: transferToWalletStatus.response.data.error,
+          type: "error",
+        })
         return false
       }
-      message = `We have successfully transferred ${amountToBefunded} to your wallet for voting.`
-      setToastProperties({ message, type: "success" })
     }
     return true
   }

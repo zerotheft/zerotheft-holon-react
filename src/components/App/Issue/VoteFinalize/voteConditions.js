@@ -197,13 +197,8 @@ export const sendBalanceToWallet = async (citizen, walletAddress, amount, detail
       value: amount,
       details,
     })
-
-    if (transferRes.status === "success") {
-      return true
-    }
-
-    return false
+    return transferRes
   } catch (error) {
-    return false
+    return error
   }
 }
