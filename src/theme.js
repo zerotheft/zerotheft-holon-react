@@ -1,5 +1,5 @@
 export const colors = {
-    primary: "#7F51C1",
+    primary: "#8058BF",
     solidBorder: "#C9C9C9",
     warningColor: "#890606",
     orangeColor: "#E5AE06",
