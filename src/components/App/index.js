@@ -44,6 +44,10 @@ const theme = createTheme({
     primary: {
       main: colors.primary,
     },
+    neutral: {
+      main: colors.background.white,
+      contrastText: "#64748B",
+    },
   },
 })
 
