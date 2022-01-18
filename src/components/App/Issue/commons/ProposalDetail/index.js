@@ -80,10 +80,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
       }
 
       // Check if `account` is a verified voter ID
-      const { success, error, data } = await getVoterInfos(account.toLowerCase())
-      if (success) {
-        throw new Error(error)
-      }
+      const { data } = await getVoterInfos(account.toLowerCase())
       if (!data.verifiedCitizen) {
         throw new Error("You are not a verified citizen.")
       }
@@ -105,7 +102,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
       await getProposalApi(item.id)
       toast.success(`Your rating (${newRating}) ${ratingData.success ? "updated" : "recorded"} successfully.`)
     } catch (e) {
-      toast.error(e.message || "Something went wrong.")
+      toast.error(e || "Something went wrong.")
     } finally {
       updateRatingLoader(false)
     }
