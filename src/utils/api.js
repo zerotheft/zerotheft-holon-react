@@ -5,8 +5,9 @@ import axios from "axios"
 // import { toast } from 'react-toastify'
 import { API_URL } from "constants/index"
 
+// eslint-disable-next-line no-unused-vars
 const checkForError = (e, type) => {
-  if (process.env.NODE_ENV === "development" || type !== "get") throw e
+  // if (process.env.NODE_ENV === "development" || type !== "get") throw e
 
   // switch (e.response.status) {
   //   // case 401:
@@ -27,9 +28,9 @@ const checkForError = (e, type) => {
   //   default:
   //     toast.error('There was some internal error while performing request.')
   // }
-  throw e
+  // throw e
 
-  // return { error: e, data: {}, headers: e.response.headers }
+  return { success: false, error: e.response.data.error, data: {}, headers: e.response.headers }
 }
 
 export const get = (path, params, apiUrl = API_URL) => {
