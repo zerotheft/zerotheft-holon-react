@@ -2,9 +2,11 @@ import styled from "styled-components"
 import { colors } from "theme"
 
 export const HeadlineH1 = styled.h1`
-    font-size: 3rem;
-    font-weight: 700;
-    letter-spacing: -1.25%;
+    font-size: 48px;
+    font-weight: bold;
+    letter-spacing: -0.0125em;
+    line-height: 56px;
+    color: ${colors.primary};
   `,
   HeadlineH2 = styled.h2`
     font-size: 2.125rem;
@@ -26,31 +28,73 @@ export const HeadlineH1 = styled.h1`
     font-weight: 400;
     letter-spacing: 0.009rem;
   `,
+  SubTitle1 = styled.p`
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    color: ${colors.primary};
+  `,
   GrayHeadlineH3 = styled.h3`
     font-size: 20px;
     font-weight: 500;
     letter-spacing: 0.15px;
     line-height: 28px;
-    color: ${colors.greyHeader};
+    color: ${colors.grey700};
   `,
-  GrayHeadlineH4 = styled.h4`
-    font-size: 1.25rem;
+  GrayHeadlineH4 = styled.p`
+    font-size: 20px;
     font-weight: 500;
-    letter-spacing: 0.009rem;
-    color: ${colors.greyHeader};
+    letter-spacing: 0.15px;
+    line-height: 28px;
+    color: ${colors.grey700};
+  `,
+  GrayBody1 = styled.p`
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 0.44px;
+    line-height: 24px;
+    color: ${colors.grey500};
+  `,
+  GrayBody2 = styled.p`
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.25px;
+    line-height: 20px;
+    color: ${colors.grey500};
+  `,
+  GraySubtitle1 = styled.p`
+    font-size: 14px;
+    font-weight: bold;
+    letter-spacing: 0.1px;
+    line-height: 24px;
+    color: ${colors.grey700};
   `,
   GrayHeadlineH5 = styled.h5`
-    font-size: 16px;
-    font-weight: bold;
+    font-weight: normal;
+    font-size: 18px;
     line-height: 24px;
-    letter-spacing: 0.1px;
-    color: ${colors.greyHeader};
+    letter-spacing: 0.15px;
+    color: ${colors.grey500};
   `,
   GrayTextP = styled.p`
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 0.25px;
     color: ${colors.greyHeader};
+  `,
+  GrayTextP500 = styled.p`
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.25px;
+    color: ${colors.grey500};
+  `,
+  GrayTextP500Bold = styled.p`
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    color: ${colors.grey700};
+    font-weight: bold;
   `,
   GraySubTextP = styled.p`
     font-size: 12px;
@@ -67,6 +111,20 @@ export const HeadlineH1 = styled.h1`
     letter-spacing: 0.4px;
     color: ${colors.grey500};
     text-transform: capitalize;
+  `,
+  GrayCaption1 = styled.p`
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    color: ${colors.grey700};
+  `,
+  DarkCaption1 = styled.p`
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    color: ${colors.text.dark};
   `,
   GraySubTextUL = styled.ul`
     font-size: 14px;
@@ -94,9 +152,56 @@ export const HeadlineH1 = styled.h1`
   PageHeader = styled.h2`
     color: ${colors.text.normal};
   `,
+  BoldListText = styled.h6`
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: 0.1px;
+    color: ${colors.grey800};
+  `,
+  LightListText = styled.h6`
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    color: ${colors.grey700};
+    display: inline-block;
+  `,
   CardSection = styled.div`
     background-color: white;
     padding: 20px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+  `,
+  GrayCardSection = styled.div`
+    background-color: ${colors.grey50};
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 10px;
+  `,
+  ErrorCardSection = styled.div`
+    background-color: ${colors.errorLight};
+    padding: 20px;
+    border-radius: 6px;
+    margin-top: 10px;
+  `,
+  ErrorOverline1 = styled.p`
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 16px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: ${colors.text.white};
+  `,
+  ErrorBody1 = styled.p`
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    color: ${colors.text.white};
+  `,
+  CardSectionNoPadding = styled.div`
+    background-color: white;
     border: 1px solid #eee;
     border-radius: 5px;
   `,
