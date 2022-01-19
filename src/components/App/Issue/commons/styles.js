@@ -90,11 +90,12 @@ export const Header = styled.div`
     }
   `,
   WarningWrapper = styled.div`
+    margin-top: -5px;
     position: fixed;
     background-color: ${colors.warningWrapper.backgroundColor};
-    width: 100%;
     border-radius: 5px;
-    padding: 6px 16px;
+    width: 100%;
+    padding: 2px 16px;
     z-index: 5;
     & > p {
       font-size: 14px;

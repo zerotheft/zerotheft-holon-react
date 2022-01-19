@@ -132,7 +132,7 @@ const ProposalReport = ({ item, reportPath }) => {
             <Card>
               <CardContent>
                 <GrayHeadlineH4>Was there theft?</GrayHeadlineH4>
-                <div className="wrapLeftRightsec">
+                <div className="wrapLeftRightsec" style={{ marginTop: "10px" }}>
                   <div className="leftTheftSec">
                     <TheftBlockSec className="yesTheftsec" width={yes}>
                       <span>Yes {yes}%</span>
@@ -143,17 +143,16 @@ const ProposalReport = ({ item, reportPath }) => {
                   </div>
                 </div>
                 <GraySubtitle1>Total Voters : {numberWithCommas(get(theftData, "votes"))}</GraySubtitle1>
-
-                {imageExists(`${reportPath}-theftValue-view.svg`) ? (
+                {imageExists(`${reportPath}-votesForTheftAmount.svg`) ? (
                   <div className="imageWrapper">
                     <img
-                      src={`${reportPath}-theftValue-view.svg`}
+                      src={`${reportPath}-votesForTheftAmount.svg`}
                       style={{ width: "100%", height: "auto" }}
-                      alt="Report"
+                      alt="Chart"
                     />
                   </div>
                 ) : (
-                  <NoChartText>Report is not available yet.</NoChartText>
+                  <NoChartText>Unable to meet criteria for chart.</NoChartText>
                 )}
               </CardContent>
             </Card>
@@ -164,7 +163,7 @@ const ProposalReport = ({ item, reportPath }) => {
           <CardContent>
             <Grid container>
               <Grid item xs={8}>
-                <GrayHeadlineH5>{item.id}</GrayHeadlineH5>
+                <GrayHeadlineH5>#{item.id}</GrayHeadlineH5>
                 <Rating value={get(proposalInfo, "ratings.rating", 0)} name="proposal_rating" readOnly />
               </Grid>
               <Grid item xs={4}>
@@ -226,16 +225,16 @@ const ProposalReport = ({ item, reportPath }) => {
             )} */}
             {!isEmpty(item) && (
               <>
-                {imageExists(`${reportPath}-votesForTheftAmount.svg`) ? (
+                {imageExists(`${reportPath}-theftValue-view.svg`) ? (
                   <div className="imageWrapper">
                     <img
-                      src={`${reportPath}-votesForTheftAmount.svg`}
+                      src={`${reportPath}-theftValue-view.svg`}
                       style={{ width: "100%", height: "auto" }}
-                      alt="Chart"
+                      alt="Report"
                     />
                   </div>
                 ) : (
-                  <NoChartText>Unable to meet criteria for chart.</NoChartText>
+                  <NoChartText>Report is not available yet.</NoChartText>
                 )}
 
                 <GrayCardSection>
@@ -269,12 +268,13 @@ const TheftBlockSec = styled.div`
   display: flex;
   border-radius: 2px;
   flex-flow: column;
-  height: auto;
+  height: 30px;
   margin-bottom: 10px;
   align-item: center;
-  background: ${colors.button.greyBackground};
-  font-family: Poppins;
+  background: ${colors.grey200};
   font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
   position: relative;
   span {
     display: flex;
@@ -295,11 +295,11 @@ const TheftBlockSec = styled.div`
     left: 0px;
     height: 100%;
     width: ${(props) => props.width || 0}%;
-    background: green;
+    background: ${colors.background.green};
   }
   &.noTheftsec {
     &::before {
-      background: red;
+      background: ${colors.background.red};
     }
   }
 `

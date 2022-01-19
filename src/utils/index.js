@@ -2,6 +2,7 @@ import React from "react"
 import { fromUnixTime, format } from "date-fns"
 import { startCase, isObject, isArray, isEmpty, isNumber, isEqual, transform } from "lodash"
 import styled from "styled-components"
+import { colors } from "theme"
 
 export const truncateString = (str, num) => {
   if (num && str && str.length > num) {
@@ -210,13 +211,14 @@ export const imageExists = (imageUrl) => {
 }
 
 const DataObject = styled.ul`
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 5px;
+  font-weight: 400;
+  color: ${colors.grey800};
   .dataValue {
     white-space: pre-line;
   }
   .dataKey {
-    font-weight: bold;
     display: inline-block;
     width: auto;
   }

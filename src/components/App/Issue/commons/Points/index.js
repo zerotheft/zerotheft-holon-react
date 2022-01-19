@@ -13,10 +13,12 @@ import {
   GrayCaption1,
   GrayCardSection,
   GrayHeadlineH4,
+  ButtonText1,
 } from "commons/newStyles"
 import { numberWithCommas } from "utils"
 import useFetch from "commons/hooks/useFetch"
 import { getTheftInfo } from "apis/reports"
+import { colors } from "theme"
 
 // import { IssueContext } from '../../IssueContext'
 
@@ -50,8 +52,8 @@ const Points = ({
   return (
     <>
       {loading && <OverlaySpinner loading overlayParent />}
-      <Box sx={{ px: 1, py: 1 }}>
-        <SubTitle1>Select proposal</SubTitle1>
+      <Box sx={{ px: 1, pt: 1 }}>
+        <SubTitle1>Select {counter ? "counter" : ""} proposal</SubTitle1>
       </Box>
       <Box sx={{ width: "100%" }}>
         <List
@@ -63,27 +65,36 @@ const Points = ({
           {data.length ? (
             data.map((i) => (
               <>
+                <Divider />
                 <ListItem disablePadding selected={i.id === selectedItem.id} onClick={() => updateSelectedItem(i)}>
                   <ListItemButton key={i.id}>
                     <Grid container>
-                      <Grid item xs={7}>
+                      <Grid item xs={6}>
                         <BoldListText>#{i.id}</BoldListText>
                         <Box>
-                          <Rating value={get(i, "ratings.rating", 0)} name="proposal_rating" readOnly />
+                          <Rating
+                            value={get(i, "ratings.rating", 0)}
+                            name="proposal_rating"
+                            readOnly
+                            sx={{ verticalAlign: "middle" }}
+                          />
                           <LightListText>({numberWithCommas(get(theftData, "votes"))})</LightListText>
                         </Box>
                       </Grid>
-                      <Grid item xs={5}>
-                        <div style={{ float: "left" }}>
+                      <Grid item xs={6}>
+                        <div style={{ float: "left", width: "85%" }}>
                           <div>
                             <LinearProgress
                               variant="determinate"
                               value={80}
-                              color="secondary"
-                              sx={{ height: "14px" }}
+                              sx={{
+                                height: "20px",
+                                borderRadius: "2px",
+                                color: colors.text.gray,
+                              }}
                             />
                           </div>
-                          <div style={{ marginTop: "15px" }}>
+                          <div style={{ marginTop: "10px" }}>
                             <GrayCaption1>
                               <span>{i.summary}</span> | Votes: <span>{get(i, "votes", 0)}</span>
                             </GrayCaption1>
@@ -96,7 +107,6 @@ const Points = ({
                     </Grid>
                   </ListItemButton>
                 </ListItem>
-                <Divider />
               </>
             ))
           ) : (
@@ -110,7 +120,7 @@ const Points = ({
                       counter ? "counter-" : ""
                     }proposal`}
                   >
-                    Add {counter ? "Counter" : ""} Proposal
+                    <ButtonText1>Add {counter ? "Counter" : ""} Proposal</ButtonText1>
                   </Button>
                 </div>
               </GrayCardSection>
@@ -136,11 +146,12 @@ const Points = ({
             <div className="btns">
               <Button
                 variant="contained"
+                sx={{ marginY: "15px", padding: "6px" }}
                 href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${
                   counter ? "counter-" : ""
                 }proposal`}
               >
-                Add {counter ? "Counter" : ""} Proposal
+                <ButtonText1>Add {counter ? "Counter" : ""} Proposal</ButtonText1>
               </Button>
             </div>
           ) : null}
