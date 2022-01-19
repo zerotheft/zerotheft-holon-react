@@ -44,8 +44,7 @@ const ProposalDetail = ({
       </Body>
     )
   }
-  
-  
+
   return (
     <Box>
       <Card>
@@ -71,9 +70,9 @@ const ProposalDetail = ({
                       variant="outlined"
                       onClick={navigateToPrevious}
                       disabled={previousDisableStatus}
-                      sx={{ height: "inherit" }}
+                      sx={{ height: "inherit", minWidth: "40px" }}
                     >
-                      <ArrowBackIos fontSize="small" />
+                      <ArrowBackIos fontSize="small" sx={{ mr: "-8px" }} />
                     </Button>
                     <Button
                       variant="contained"
@@ -97,9 +96,9 @@ const ProposalDetail = ({
                       variant="outlined"
                       onClick={navigateToNext}
                       disabled={nextDisableStatus}
-                      sx={{ height: "inherit" }}
+                      sx={{ height: "inherit", minWidth: "40px" }}
                     >
-                      <ArrowForwardIos fontSize="small" />
+                      <ArrowForwardIos fontSize="small" sx={{ ml: "-8px" }} />
                     </Button>
                   </div>
                 </Grid>
