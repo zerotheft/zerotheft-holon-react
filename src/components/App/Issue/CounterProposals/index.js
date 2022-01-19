@@ -3,6 +3,7 @@ import { get } from "lodash"
 import { Grid } from "@mui/material"
 import { API_URL } from "constants/index"
 import { CardSectionNoPadding } from "commons/newStyles"
+import OverlaySpinner from "commons/OverlaySpinner"
 import { IssueContext } from "../IssueContext"
 import { AppContext } from "../../AppContext"
 import Points from "../commons/Points"
@@ -10,11 +11,9 @@ import ProposalDetail from "../commons/ProposalDetail"
 import ProposalReport from "../commons/proposalReport"
 
 const CounterProposals = ({ history, match }) => {
-  const { issue, selection, updateSelection } = useContext(IssueContext)
+  const { issue, selection, updateSelection, loading } = useContext(IssueContext)
   const { umbrellaPaths, holonInfo } = useContext(AppContext)
-  const [selectedItem, updateSelectedItem] = useState(get(selection, "counterProposal") || {}),
-    /* eslint-disable-next-line no-unused-vars */
-    [loading, updateLoading] = useState(false)
+  const [selectedItem, updateSelectedItem] = useState(get(selection, "counterProposal") || {})
 
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, "/")
   /* eslint-disable-next-line no-useless-escape */
@@ -50,6 +49,9 @@ const CounterProposals = ({ history, match }) => {
     updateSelectedItem(proposalsData[currentProposalIndex - 1])
   }
 
+  if (loading) {
+    return <OverlaySpinner />
+  }
   return (
     <>
       <Grid container spacing={2} sx={{ mt: 0 }}>
