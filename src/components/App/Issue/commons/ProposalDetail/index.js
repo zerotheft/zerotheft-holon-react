@@ -100,9 +100,9 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
 
       await carryTransaction(feedbackContract, methodName, [item.id, newRating, signedMessage], txDetails)
       await getProposalApi(item.id)
-      toast.success(`Rating successfully ${ratingData.success ? "updated" : "provided"}.`)
+      toast.success(`Your rating (${newRating}) ${ratingData.success ? "updated" : "recorded"} successfully.`)
     } catch (e) {
-      toast.error(e.message || "Something went wrong.")
+      toast.error(e || "Something went wrong.")
     } finally {
       updateRatingLoader(false)
     }
@@ -163,7 +163,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                     type === "counter" ? { ...selection, counterProposal: item } : { ...selection, proposal: item }
                   )
                   history.push(
-                    `/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/${
+                    `/ path / ${get(match, "params.pathname")} /issue/${get(match, "params.id")} /${
                       type === "counter" ? "vote" : "counter-proposals"
                     }`
                   )
@@ -181,7 +181,7 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                     type === "counter" ? { ...selection, counterProposal: null } : { ...selection, proposal: null }
                   )
                   history.push(
-                    `/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/${
+                    `/ path / ${get(match, "params.pathname")} /issue/${get(match, "params.id")} /${
                       type === "counter" ? "vote" : "counter-proposals"
                     }`
                   )
@@ -196,9 +196,13 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
 
         {!isEmpty(item) && (
           <>
-            {imageExists(`${reportPath}-theftValue-view.svg`) ? (
+            {imageExists(`${reportPath} -theftValue - view.svg`) ? (
               <div className="imageWrapper">
-                <img src={`${reportPath}-theftValue-view.svg`} style={{ width: "100%", height: "auto" }} alt="Report" />
+                <img
+                  src={`${reportPath} -theftValue - view.svg`}
+                  style={{ width: "100%", height: "auto" }}
+                  alt="Report"
+                />
               </div>
             ) : (
               <NoChartText>Report is not available yet.</NoChartText>
@@ -251,10 +255,10 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
                 </span>
               </div>
             </div>
-            {imageExists(`${reportPath}-votesForTheftAmount.svg`) ? (
+            {imageExists(`${reportPath} - votesForTheftAmount.svg`) ? (
               <div className="imageWrapper">
                 <img
-                  src={`${reportPath}-votesForTheftAmount.svg`}
+                  src={`${reportPath} -votesForTheftAmount.svg`}
                   style={{ width: "100%", height: "auto" }}
                   alt="Chart"
                 />
@@ -276,61 +280,61 @@ const ProposalDetail = ({ item, selection, updateSelection, history, reportPath,
 export default ProposalDetail
 
 const TheftBlockSec = styled.div`
-    display: flex;
-    flex-flow: column;
-    height: auto;
-    margin-bottom: 10px;
-    align-item: center;
-    background: ${colors.button.greyBackground};
-    font-family: Poppins;
-    font-size: 18px;
-    position: relative;
+display: flex;
+flex - flow: column;
+height: auto;
+margin - bottom: 10px;
+align - item: center;
+background: ${colors.button.greyBackground};
+font - family: Poppins;
+font - size: 18px;
+position: relative;
     span {
-      display: flex;
-      flex-flow: column;
-      height: 100%;
-      white-space: nowrap;
-      justify-content: center;
-      color: white;
-      padding-left: 10px;
-      position: relative;
-      z-index: 1;
-    }
+  display: flex;
+  flex - flow: column;
+  height: 100 %;
+  white - space: nowrap;
+  justify - content: center;
+  color: white;
+  padding - left: 10px;
+  position: relative;
+  z - index: 1;
+}
     &::before {
-      content: "";
-      display: block;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      height: 100%;
-      width: ${(props) => props.width || 0}%;
-      background: green;
-    }
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 100 %;
+  width: ${(props) => props.width || 0}%;
+  background: green;
+}
     &.noTheftsec {
       &::before {
-        background: red;
-      }
-    }
-  `,
+    background: red;
+  }
+}
+`,
   SelectWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-self: flex-start;
+display: flex;
+flex - direction: column;
+justify - content: flex - start;
+align - self: flex - start;
     .btns {
-      display: flex;
-      justify-content: flex-start;
-      align-self: flex-start;
-      border-radius: 8px;
-      margin-right: 10px;
-    }
+  display: flex;
+  justify - content: flex - start;
+  align - self: flex - start;
+  border - radius: 8px;
+  margin - right: 10px;
+}
     & > span {
-      font-size: 15px;
-      font-weight: 500;
-      color: #000;
-      margin-right: 10px;
-    }
-  `
+  font - size: 15px;
+  font - weight: 500;
+  color: #000;
+  margin - right: 10px;
+}
+`
 
 // TitleContent = styled.div`
 //   display: flex;
