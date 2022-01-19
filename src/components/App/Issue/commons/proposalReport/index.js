@@ -31,15 +31,16 @@ import {
   ErrorBody1,
   GrayHeadlineH5,
 } from "commons/newStyles"
+import OverlaySpinner from "commons/OverlaySpinner"
 import { Header, NoChartText } from "../styles"
 
 const { CHAIN_ID, loadContract } = config
 
 const ProposalReport = ({ item, reportPath }) => {
-  const [getProposalApi, proposalInfo] = useFetch(getProposal),
+  const [getProposalApi] = useFetch(getProposal),
     match = useRouteMatch(),
     { carryTransaction, getWalletAccount, signMessage } = useWeb3(),
-    [updateRatingLoader] = useState(false)
+    [ratingLoader, updateRatingLoader] = useState(false)
 
   // const { ProposalReports } = useContext(IssueContext)
   let maxTheftYear = null
@@ -126,6 +127,7 @@ const ProposalReport = ({ item, reportPath }) => {
 
   return (
     <Box>
+      <OverlaySpinner loading={ratingLoader} />
       <div className="detailsWithCharts">
         <Header>
           {theftData && (no || yes) && (
@@ -164,7 +166,13 @@ const ProposalReport = ({ item, reportPath }) => {
             <Grid container>
               <Grid item xs={8}>
                 <GrayHeadlineH5>#{item.id}</GrayHeadlineH5>
-                <Rating value={get(proposalInfo, "ratings.rating", 0)} name="proposal_rating" readOnly />
+                <Rating
+                  value={get(item, "ratings.rating", 0)}
+                  name="proposal_rating"
+                  onChange={(event, newValue) => {
+                    changeRating(newValue)
+                  }}
+                />
               </Grid>
               <Grid item xs={4}>
                 <Box sx={{ float: "right" }}>
