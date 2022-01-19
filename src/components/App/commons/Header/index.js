@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import MenuIcon from "@mui/icons-material/Menu"
-import { Home, Language, MoreVert, ViewList } from "@mui/icons-material"
+import { Apps, Dvr, Home, Language, MoreVert, ViewList } from "@mui/icons-material"
 import config from "config"
 import BRANDLOGO from "assets/icons/zerotheft.svg"
 
@@ -105,16 +105,15 @@ const Header = () => {
               </a>
 
               <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active">
-                <Button startIcon={<ViewList />} key="path" variant="text" sx={buttonSx}>
+                <Button startIcon={<Dvr />} key="path" variant="text" sx={buttonSx}>
                   Path
                 </Button>
               </NavLink>
 
               <Button
-                startIcon={<MoreVert />}
+                startIcon={<Apps />}
                 key="more"
                 onClick={handleOpenMoreMenu}
-                onMouseOver={handleOpenMoreMenu}
                 variant="text"
                 sx={buttonSx}
                 activeClassName="active"

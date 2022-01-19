@@ -4,7 +4,7 @@ import { useRouteMatch } from "react-router-dom"
 import { get } from "lodash"
 
 import { Box } from "@mui/system"
-import { Button, ButtonGroup, Card, CardContent, Grid } from "@mui/material"
+import { Button, Card, CardContent, Grid } from "@mui/material"
 import { ArrowBackIos, ArrowForwardIos, Info } from "@mui/icons-material"
 import { colors } from "theme"
 import { convertJSONtoString } from "utils"
@@ -66,12 +66,18 @@ const ProposalDetail = ({
                   </Box>
                 </Grid>
                 <Grid item xs={8}>
-                  <ButtonGroup sx={{ float: "right" }}>
-                    <Button variant="outlined" onClick={navigateToPrevious} disabled={previousDisableStatus}>
-                      <ArrowBackIos />
+                  <div style={{ float: "right", height: "36px" }}>
+                    <Button
+                      variant="outlined"
+                      onClick={navigateToPrevious}
+                      disabled={previousDisableStatus}
+                      sx={{ height: "inherit" }}
+                    >
+                      <ArrowBackIos fontSize="small" />
                     </Button>
                     <Button
                       variant="contained"
+                      sx={{ marginX: "10px", height: "inherit" }}
                       onClick={() => {
                         updateSelection(
                           type === "counter"
@@ -87,10 +93,15 @@ const ProposalDetail = ({
                     >
                       VOTE FOR THIS ONE
                     </Button>
-                    <Button variant="outlined" onClick={navigateToNext} disabled={nextDisableStatus}>
-                      <ArrowForwardIos />
+                    <Button
+                      variant="outlined"
+                      onClick={navigateToNext}
+                      disabled={nextDisableStatus}
+                      sx={{ height: "inherit" }}
+                    >
+                      <ArrowForwardIos fontSize="small" />
                     </Button>
-                  </ButtonGroup>
+                  </div>
                 </Grid>
               </Grid>
 

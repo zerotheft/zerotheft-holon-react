@@ -53,12 +53,12 @@ const CounterProposals = ({ history, match }) => {
   return (
     <>
       <Grid container spacing={2} sx={{ mt: 0 }}>
-        <Grid item xs={3}>
+        <div style={{ width: "375px" }}>
           <CardSectionNoPadding
             style={{
               height: "calc(100vh - 140px)",
               position: "fixed",
-              width: "calc(25% - 25px)",
+              width: "inherit",
             }}
           >
             <Points
@@ -70,31 +70,33 @@ const CounterProposals = ({ history, match }) => {
               loading={loading}
             />
           </CardSectionNoPadding>
-        </Grid>
-        <Grid item xs={6}>
-          <ProposalDetail
-            item={selectedItem}
-            navigateToNext={navigateToNext}
-            navigateToPrevious={navigateToPrevious}
-            nextDisableStatus={proposalsData.indexOf(selectedItem) + 1 >= proposalsData.length}
-            previousDisableStatus={proposalsData.indexOf(selectedItem) - 1 < 0}
-            updateSelection={updateSelection}
-            selection={selection}
-            history={history}
-            type="counter"
-            proposalLength={proposalLength}
-          />
-        </Grid>
-        <Grid item xs={3}>
-          <ProposalReport
-            item={selectedItem}
-            selection={selection}
-            updateSelection={updateSelection}
-            history={history}
-            reportPath={reportPath}
-            type="counter"
-            proposalLength={proposalLength}
-          />
+        </div>
+        <Grid container spacing={2} sx={{ ml: "375px" }}>
+          <Grid item xs={8}>
+            <ProposalDetail
+              item={selectedItem}
+              navigateToNext={navigateToNext}
+              navigateToPrevious={navigateToPrevious}
+              nextDisableStatus={proposalsData.indexOf(selectedItem) + 1 >= proposalsData.length}
+              previousDisableStatus={proposalsData.indexOf(selectedItem) - 1 < 0}
+              updateSelection={updateSelection}
+              selection={selection}
+              history={history}
+              type="counter"
+              proposalLength={proposalLength}
+            />
+          </Grid>
+          <Grid item xs={4}>
+            <ProposalReport
+              item={selectedItem}
+              selection={selection}
+              updateSelection={updateSelection}
+              history={history}
+              reportPath={reportPath}
+              type="counter"
+              proposalLength={proposalLength}
+            />
+          </Grid>
         </Grid>
       </Grid>
     </>

@@ -47,7 +47,7 @@ export const HeadlineH1 = styled.h1`
     font-weight: 500;
     letter-spacing: 0.15px;
     line-height: 28px;
-    color: ${colors.grey700};
+    color: ${colors.grey800};
   `,
   GrayBody1 = styled.p`
     font-size: 16px;
@@ -132,6 +132,16 @@ export const HeadlineH1 = styled.h1`
     line-height: 24px;
     letter-spacing: 0.25px;
     color: ${colors.greyHeader};
+  `,
+  ButtonText1 = styled.p`
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    color: ${colors.text.white};
+    padding: 6px;
   `,
   MaterialLinkText = styled.span`
     color: ${colors.primary};

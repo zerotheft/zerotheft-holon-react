@@ -11,6 +11,7 @@ export const colors = {
     greyText: "#796868",
     greyHeader: "#616161",
     grey50: "#FAFAFA",
+    grey200: "#EEEEEE",
     grey500: "#9E9E9E",
     grey700: "#616161",
     grey800: "#424242",
@@ -30,6 +31,8 @@ export const colors = {
       header: "#F2F4F9",
       fade: "#F2F4F9",
       white: "#FFFFFF",
+      green: "#10AF46",
+      red: "#ED7777",
     },
     datatable: {
       row: {
@@ -52,6 +55,7 @@ export const colors = {
       dark: "#263238",
     },
     secondary: "#4B4B4B",
+    secondaryVariant1: "#DBA505",
     error: "#D33030",
     errorLight: "#ED7777",
     success: "#2D812D",
