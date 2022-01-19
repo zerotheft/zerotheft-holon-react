@@ -44,7 +44,8 @@ const ProposalDetail = ({
       </Body>
     )
   }
-
+  
+  
   return (
     <Box>
       <Card>
