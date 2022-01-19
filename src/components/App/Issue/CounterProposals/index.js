@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react"
 import { get } from "lodash"
+import { Grid } from "@mui/material"
 import { API_URL } from "constants/index"
+import { CardSectionNoPadding } from "commons/newStyles"
 import { IssueContext } from "../IssueContext"
 import { AppContext } from "../../AppContext"
-import { Wrapper, Left, Right, EmptyProposalWrapper, WarningWrapper } from "../commons/styles"
 import Points from "../commons/Points"
 import ProposalDetail from "../commons/ProposalDetail"
+import ProposalReport from "../commons/proposalReport"
 
 const CounterProposals = ({ history, match }) => {
   const { issue, selection, updateSelection } = useContext(IssueContext)
@@ -22,75 +24,80 @@ const CounterProposals = ({ history, match }) => {
     isUmbrella ? "multiIssueReport" : "ztReport"
   }/${issuePath.replace(/\//g, "-")}`
 
-  const data = get(issue, "counter_proposals")
+  const proposalsData = get(issue, "counter_proposals", [])
   if (!selectedItem.id) {
-    if (data && data.length > 0) {
-      updateSelectedItem(data[0])
+    if (proposalsData && proposalsData.length > 0) {
+      updateSelectedItem(proposalsData[0])
     }
   }
-  const proposalLength = data && data.length > 0 ? data.length : 0
+  const proposalLength = proposalsData && proposalsData.length > 0 ? proposalsData.length : 0
+
+  const navigateToNext = async () => {
+    const currentProposalIndex = proposalsData.indexOf(selectedItem)
+    if (currentProposalIndex + 1 >= proposalsData.length) {
+      return
+    }
+
+    updateSelectedItem(proposalsData[currentProposalIndex + 1])
+  }
+
+  const navigateToPrevious = async () => {
+    const currentProposalIndex = proposalsData.indexOf(selectedItem)
+    if (currentProposalIndex - 1 < 0) {
+      return
+    }
+
+    updateSelectedItem(proposalsData[currentProposalIndex - 1])
+  }
 
   return (
-    <Wrapper style={{ height: "calc(100vh - 125px)" }}>
-      <WarningWrapper>
-        <p>WARNING: The amounts and reasoning comes from citizens. Not from the ZTM company or this website.</p>
-      </WarningWrapper>
-
-      {proposalLength === 0 ? (
-        <EmptyProposalWrapper>
-          <p>
-            No counter proposals are available. Please
-            <a
-              href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-counter-proposal`}
-              style={{ cursor: "pointer" }}
-            >
-              {" "}
-              add new{" "}
-            </a>
-            counter proposal.
-          </p>
-        </EmptyProposalWrapper>
-      ) : null}
-      <Left
-        style={{ width: "auto", margin: "0 30px 0 0", display: "flex", flexDirection: "column", maxWidth: "440px" }}
-      >
-        {/* <div className='header'>
-        <h3>
-          Select which below has the best<br />
-          <span style={{ fontSize: 22 }}>counterpoint that there is little or no rigged economic theft</span>
-        </h3>
-        <Button onClick={async () => {
-          await updateLoading(true)
-          await refetchIssue()
-          updateLoading(false)
-        }} className='refresh'><FontAwesomeIcon icon={faSyncAlt} /></Button>
-      </div> */}
-        <div style={{ overflowY: "auto", height: "100%" }}>
-          <div style={{ overflow: "hidden", height: "100%" }}>
+    <>
+      <Grid container spacing={2} sx={{ mt: 0 }}>
+        <Grid item xs={3}>
+          <CardSectionNoPadding
+            style={{
+              height: "calc(100vh - 140px)",
+              position: "fixed",
+              width: "calc(25% - 25px)",
+            }}
+          >
             <Points
-              data={get(issue, "counter_proposals", [])}
+              data={proposalsData}
               issue={issue}
               counter
               selectedItem={selectedItem}
               updateSelectedItem={updateSelectedItem}
               loading={loading}
             />
-          </div>
-        </div>
-      </Left>
-      <Right style={{ flex: "1", overflowY: "auto" }}>
-        <div style={{ overflow: "hidden" }}>
+          </CardSectionNoPadding>
+        </Grid>
+        <Grid item xs={6}>
           <ProposalDetail
             item={selectedItem}
-            type="counter"
-            selection={selection}
-            reportPath={reportPath}
-            history={history}
+            navigateToNext={navigateToNext}
+            navigateToPrevious={navigateToPrevious}
+            nextDisableStatus={proposalsData.indexOf(selectedItem) + 1 >= proposalsData.length}
+            previousDisableStatus={proposalsData.indexOf(selectedItem) - 1 < 0}
             updateSelection={updateSelection}
+            selection={selection}
+            history={history}
+            type="counter"
+            proposalLength={proposalLength}
           />
-        </div>
-      </Right>
-    </Wrapper>
+        </Grid>
+        <Grid item xs={3}>
+          <ProposalReport
+            item={selectedItem}
+            selection={selection}
+            updateSelection={updateSelection}
+            history={history}
+            reportPath={reportPath}
+            type="counter"
+            proposalLength={proposalLength}
+          />
+        </Grid>
+      </Grid>
+    </>
   )
 }
 

@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { ToastContainer, Slide } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
-import { createTheme, ThemeProvider } from "@mui/material"
+import { Container, createTheme, ThemeProvider } from "@mui/material"
 import * as ROUTES from "constants/routes"
 import { colors, height } from "theme"
 import ErrorBoundary from "commons/ErrorBoundary"
@@ -73,25 +73,28 @@ const App = ({ history }) => {
   return (
     <Wrapper>
       <Header history={history} />
-      <Switch>
-        <Route path={ROUTES.HOLON} component={Holon} />
-        <Route path={ROUTES.ISSUE} component={Issue} />
-        <Route path={ROUTES.PATH_DETAIL} component={Path} />
-        <Route path={ROUTES.DONATE} component={Donate} />
-        <Route path={ROUTES.DONATE_TO} component={DonateTo} />
-        <Route path={ROUTES.VIEW_PROPOSAL} component={ViewProposal} />
-        <Route path={ROUTES.VIEW_COUNTER_PROPOSAL} component={ViewProposal} />
-        <Route path={ROUTES.PATHREPORT} component={Report} />
-        <Route path={ROUTES.LEAFREPORT} component={Report} />
-        <Route path={ROUTES.ALL_PROPOSALS} component={AllProposals} />
-        <Route path={ROUTES.DATALIST} component={Datatable} />
-        <Route path={ROUTES.VOTELIST} component={VoteDatatable} />
-        <Route path={ROUTES.CITIZEN_VIEW} component={Citizen} />
-        <Route path={ROUTES.VOTE_VIEW} component={Vote} />
-        <Route path={ROUTES.HIERARCHY} component={HierarchyYaml} />
-        <Route path={ROUTES.HOME} component={Home} />
-        <Route path="/" component={NotFound} />
-      </Switch>
+      <Container maxWidth="false">
+        <Switch>
+          <Route path={ROUTES.HOLON} component={Holon} />
+          <Route path={ROUTES.ISSUE} component={Issue} />
+          <Route path={ROUTES.PATH_DETAIL} component={Path} />
+          <Route path={ROUTES.DONATE} component={Donate} />
+          <Route path={ROUTES.DONATE_TO} component={DonateTo} />
+          <Route path={ROUTES.VIEW_PROPOSAL} component={ViewProposal} />
+          <Route path={ROUTES.VIEW_COUNTER_PROPOSAL} component={ViewProposal} />
+          <Route path={ROUTES.PATHREPORT} component={Report} />
+          <Route path={ROUTES.LEAFREPORT} component={Report} />
+          <Route path={ROUTES.ALL_PROPOSALS} component={AllProposals} />
+          <Route path={ROUTES.DATALIST} component={Datatable} />
+          <Route path={ROUTES.VOTELIST} component={VoteDatatable} />
+          <Route path={ROUTES.CITIZEN_VIEW} component={Citizen} />
+          <Route path={ROUTES.VOTE_VIEW} component={Vote} />
+          <Route path={ROUTES.HIERARCHY} component={HierarchyYaml} />
+          <Route path={ROUTES.HOME} component={Home} />
+          <Route path="/" component={NotFound} />
+        </Switch>
+      </Container>
+
       <ToastContainer
         autoClose={5000}
         closeButton={false}
