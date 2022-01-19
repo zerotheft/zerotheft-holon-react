@@ -48,6 +48,9 @@
     "yarn": "^1.22.10",
     "yup": "^0.29.3"
   },
+  "resolutions": {
+    "react-error-overlay": "6.0.9"
+  },
   "scripts": {
     "fetch-contract": "node contractAddress.js",
     "start": "PORT=3002 react-scripts start",
