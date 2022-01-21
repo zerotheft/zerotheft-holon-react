@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react"
 
-import { colors } from 'theme'
-import DataTable, { createTheme } from 'react-data-table-component'
-import { getVotesInfo } from 'apis/datas'
-import useFetch from 'commons/hooks/useFetch'
-import { startCase, capitalize } from 'lodash'
-import { Wrapper, TableWrapper, ListMenu, TabWrapper, customStyles } from '../commons/styles'
-import { tab } from './constants'
+import DataTable, { createTheme } from "react-data-table-component"
+import { startCase, capitalize } from "lodash"
+import { colors } from "theme"
+import { getVotesInfo } from "apis/datas"
+import useFetch from "commons/hooks/useFetch"
+import { Wrapper, TableWrapper, ListMenu, TabWrapper, customStyles } from "../commons/styles"
+import { tab } from "./constants"
 
-createTheme('custom', {
+createTheme("custom", {
   text: {
     primary: colors.background.body,
     secondary: colors.textTitle,
@@ -23,7 +23,7 @@ createTheme('custom', {
 })
 
 const VoteDatatable = ({ history }) => {
-  const votePath = history.location.pathname && history.location.pathname.replace('/votelist', '')
+  const votePath = history.location.pathname && history.location.pathname.replace("/votelist", "")
   const [getVotesInfoApi, loader, voteData] = useFetch(getVotesInfo)
 
   const hierarchy = {
@@ -40,7 +40,7 @@ const VoteDatatable = ({ history }) => {
     },
     economic_crisis: {
       ltcm: true,
-      '2008_mortgage': true,
+      "2008_mortgage": true,
       saving_and_loan_bails_out: true,
     },
     tax: {
@@ -53,22 +53,22 @@ const VoteDatatable = ({ history }) => {
   }
 
   const [tabInfo, updateTab] = useState(
-    Object.assign(tab, { data: voteData, title: `Vote List for ${votePath.split('/').join(' > ')}` })
+    Object.assign(tab, { data: voteData, title: `Vote List for ${votePath.split("/").join(" > ")}` })
   )
   const updateItems = () => {
-    updateTab(Object.assign(tab, { data: voteData, title: `Vote List for ${votePath.split('/').join(' > ')}` }))
+    updateTab(Object.assign(tab, { data: voteData, title: `Vote List for ${votePath.split("/").join(" > ")}` }))
   }
   useEffect(() => {
-    const path = history.location.pathname && history.location.pathname.replace('/votelist', '')
+    const path = history.location.pathname && history.location.pathname.replace("/votelist", "")
 
     getVotesInfoApi(path)
 
-    if (path.includes('votelist')) updateItems()
+    if (path.includes("votelist")) updateItems()
   }, [history.location])
   if (loader) return null
   return (
     <Wrapper>
-      <div style={{ display: 'flex', flexDirection: 'row' }}>
+      <div style={{ display: "flex", flexDirection: "row" }}>
         <ListMenu>
           <TabWrapper
             key={tab.id}
@@ -86,7 +86,7 @@ const VoteDatatable = ({ history }) => {
               return (
                 <li>
                   <span
-                    style={{ cursor: 'pointer' }}
+                    style={{ cursor: "pointer" }}
                     onClick={() => {
                       history.push(`/votelist/${key}`)
                       updateItems(tab.id)
@@ -99,7 +99,7 @@ const VoteDatatable = ({ history }) => {
                       return (
                         <li>
                           <span
-                            style={{ cursor: 'pointer' }}
+                            style={{ cursor: "pointer" }}
                             onClick={() => {
                               history.push(`/votelist/${key}/${innerKey}`)
                               updateItems(tab.id)
@@ -112,7 +112,7 @@ const VoteDatatable = ({ history }) => {
                               return (
                                 <li>
                                   <span
-                                    style={{ cursor: 'pointer' }}
+                                    style={{ cursor: "pointer" }}
                                     onClick={() => {
                                       history.push(`/votelist/${key}/$ }{innerKey}/${lastKey}`)
                                       updateItems(tab.id)
@@ -137,7 +137,7 @@ const VoteDatatable = ({ history }) => {
       <TableWrapper>
         <DataTable
           className="datatableWrapper"
-          title={tabInfo.title.replaceAll('_', ' ').replace(/\w+/g, capitalize)}
+          title={tabInfo.title.replaceAll("_", " ").replace(/\w+/g, capitalize)}
           columns={tabInfo.columns}
           data={tabInfo.data}
           theme="custom"

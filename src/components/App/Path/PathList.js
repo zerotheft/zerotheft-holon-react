@@ -1,18 +1,18 @@
-import React, { useEffect, useContext } from 'react'
-import PropTypes from 'prop-types'
-import { get, random } from 'lodash'
-import styled from 'styled-components'
-import { getYear } from 'date-fns'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolder, faFile } from '@fortawesome/free-solid-svg-icons'
-import { Wrapper, Container } from 'commons/styles'
-import Button from 'commons/Buttons'
-import useFetch from 'commons/hooks/useFetch'
-import { getNations } from 'apis/path'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { colors } from 'theme'
-import { AppContext } from 'components/App/AppContext'
-import Select from 'react-select'
+import React, { useEffect, useContext } from "react"
+import PropTypes from "prop-types"
+import { get, random } from "lodash"
+import styled from "styled-components"
+import { getYear } from "date-fns"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFolder, faFile } from "@fortawesome/free-solid-svg-icons"
+import Select from "react-select"
+import { Wrapper, Container } from "commons/styles"
+import Button from "commons/Buttons"
+import useFetch from "commons/hooks/useFetch"
+import { getNations } from "apis/path"
+import OverlaySpinner from "commons/OverlaySpinner"
+import { colors } from "theme"
+import { AppContext } from "components/App/AppContext"
 
 const PathList = ({ history }) => {
   const { filterParams } = useContext(AppContext)
@@ -27,19 +27,19 @@ const PathList = ({ history }) => {
       {loading && <OverlaySpinner loading />}
       <Container style={{ maxWidth: 1100 }}>
         <ListWrapper>
-          {get(nations, 'data', []).map((i) => (
+          {get(nations, "data", []).map((i) => (
             <div>
               <div className="issue">
                 <div style={{ width: 410 }}>
                   <FontAwesomeIcon icon={faFolder} style={{ marginRight: 5, color: colors.primary }} />
-                  <span style={{ cursor: 'pointer' }} onClick={() => history.push(`/path/${i.nation}`)}>
-                    {i.nation || 'N/A'}
+                  <span style={{ cursor: "pointer" }} onClick={() => history.push(`/path/${i.nation}`)}>
+                    {i.nation || "N/A"}
                   </span>
                 </div>
-                <div style={{ width: 180, filter: loading ? 'blur(2px)' : '', display: 'none', alignItems: 'center' }}>
+                <div style={{ width: 180, filter: loading ? "blur(2px)" : "", display: "none", alignItems: "center" }}>
                   <span style={{ paddingRight: 5 }}>for </span>
                   <Select
-                    defaultValue={{ label: get(filterParams, 'year'), value: get(filterParams, 'year') }}
+                    defaultValue={{ label: get(filterParams, "year"), value: get(filterParams, "year") }}
                     options={new Array(20).fill(undefined).map((i, idx) => {
                       const year = getYear(new Date()) - (idx + 1)
                       return { label: year, value: year }
@@ -54,7 +54,7 @@ const PathList = ({ history }) => {
                 </div>
                 <div style={{ width: 260 }} className="details">
                   {/* <div className={`vote ${'YES' === 'YES' ? 'active' : ''} ${true && 'blurred'}`}> */}
-                  <div className={`vote active ${true && 'blurred'}`}>
+                  <div className={`vote active ${true && "blurred"}`}>
                     <div className="status">NO</div>
                     <div className="percent">{random(51, 95)}%</div>
                   </div>
@@ -67,7 +67,7 @@ const PathList = ({ history }) => {
               </div>
             </div>
           ))}
-          {!get(nations, 'data', []).length && <div style={{ padding: 10, fontStyle: 'italic' }}>Empty Path</div>}
+          {!get(nations, "data", []).length && <div style={{ padding: 10, fontStyle: "italic" }}>Empty Path</div>}
         </ListWrapper>
       </Container>
     </Wrapper>
@@ -86,11 +86,11 @@ const SelectStyles = {
   }),
   control: (styles) => ({
     ...styles,
-    borderColor: '#ccc !important',
+    borderColor: "#ccc !important",
     borderRadius: 0,
     minHeight: 0,
-    background: 'transparent',
-    boxShadow: 'none !important',
+    background: "transparent",
+    boxShadow: "none !important",
     width: 100,
   }),
   option: (styles) => ({
@@ -99,7 +99,7 @@ const SelectStyles = {
   }),
   menu: (styles) => ({
     ...styles,
-    margin: '5px 0 0',
+    margin: "5px 0 0",
     borderRadius: 0,
   }),
   menuList: (styles) => ({

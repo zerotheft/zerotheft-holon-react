@@ -1,11 +1,11 @@
-import React from 'react'
-import { Field, useFormikContext } from 'formik'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from "react"
+import { Field, useFormikContext } from "formik"
+import PropTypes from "prop-types"
+import styled from "styled-components"
 
-import { colors } from 'theme'
+import { colors } from "theme"
 // eslint-disable-next-line no-unused-vars
-import { CustomFieldWrapper, RadioBtn } from './styles'
+import { CustomFieldWrapper, RadioBtn } from "./styles"
 
 const LabelledRadioField = ({ field, readonly = false, values = [], style, innerStyle }) => {
   const { setFieldValue } = useFormikContext()
@@ -55,10 +55,10 @@ const RadioItemsWrapper = styled.div`
     flex-direction: row;
   `,
   RadioItem = styled.div`
-    input[type='radio'] {
+    input[type="radio"] {
       display: none;
     }
-    input[type='radio'] ~ label {
+    input[type="radio"] ~ label {
       border: 2px solid #ccc;
       color: #4d4a50;
       font-size: 17px;
@@ -69,7 +69,7 @@ const RadioItemsWrapper = styled.div`
       display: inline-block;
       user-select: none;
     }
-    input[type='radio']:checked ~ label {
+    input[type="radio"]:checked ~ label {
       background: ${colors.primary};
       color: #fff;
       border-color: ${colors.primary};

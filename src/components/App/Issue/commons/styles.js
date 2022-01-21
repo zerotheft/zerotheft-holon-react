@@ -1,5 +1,5 @@
-import styled from 'styled-components'
-import { colors } from 'theme'
+import styled from "styled-components"
+import { colors } from "theme"
 
 export const Header = styled.div`
     margin-bottom: 15px;
@@ -90,23 +90,24 @@ export const Header = styled.div`
     }
   `,
   WarningWrapper = styled.div`
-    position: absolute;
-    top: 0px;
-    right: 10px;
+    margin-top: -5px;
+    position: fixed;
+    background-color: ${colors.warningWrapper.backgroundColor};
+    border-radius: 5px;
+    width: 100%;
+    padding: 2px 16px;
     z-index: 5;
     & > p {
-      padding: 3px 10px;
-      font-size: 15px;
-      margin: 0 auto;
-      background: ${colors.warningWrapper.backgroundColor};
-      border-radius: 5px;
-      width: fit-content;
+      font-size: 14px;
+      margin: 4px 0px;
+      letter-spacing: 0.15px;
+      line-height: 143%;
     }
   `,
   EmptyProposalWrapper = styled.div`
     position: absolute;
     top: 65%;
-    width: 100%;
+    // width: 100%;
     z-index: 5;
     & > p {
       text-align: center;
@@ -122,7 +123,7 @@ export const Header = styled.div`
         z-index: 1;
       }
       &::after {
-        content: '';
+        content: "";
         display: block;
         position: absolute;
         top: 0;

@@ -1,10 +1,10 @@
-import React from 'react'
-import { toast } from 'react-toastify'
-import styled from 'styled-components'
+import React from "react"
+import { toast } from "react-toastify"
+import styled from "styled-components"
 
-import Button from 'commons/Buttons'
-import { LinkText } from 'commons/styles'
-import { DESKTOP_APP_DOWNLOAD_LINK } from 'constants/index'
+import Button from "commons/Buttons"
+import { LinkText } from "commons/styles"
+import { DESKTOP_APP_DOWNLOAD_LINK } from "constants/index"
 
 const StepsPage = ({ step = 1, checkSteps, vote }) => {
   return (
@@ -90,7 +90,7 @@ const Wrapper = styled.div``,
       props.isCompleted &&
       `
       color: green;
-      background: url(${require('assets/icons/check-circle-solid.svg')}) no-repeat 0 2px transparent;
+      background: url(${require("assets/icons/check-circle-solid.svg")}) no-repeat 0 2px transparent;
       background-size: 15px;
       padding-left: 20px;
       a {

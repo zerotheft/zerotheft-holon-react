@@ -1,57 +1,54 @@
-import React, { useContext } from 'react'
-import metamaskIcon from 'assets/icons/metamask.svg'
-import Button from 'commons/Buttons'
-import { LinkText } from 'commons/styles'
-import { toast } from 'react-toastify'
-import { AppContext } from 'components/App/AppContext'
-import config from 'config'
-import { VoteContext } from '../VoteContext'
-import { ButtonsWrapper } from './Buttons'
-import { Wrapper, Header, Body, InnerWrapper, BodyInfo, SubHeader, OrderedList } from './styles'
+import React from "react"
+import { Button, Grid } from "@mui/material"
+import config from "config"
+import {
+  CardSection,
+  GrayHeadlineH3,
+  GrayHeadlineH5,
+  GraySubTextUL,
+  GrayTextP,
+  MaterialLinkText,
+} from "commons/newStyles"
+import { ButtonsWrapper } from "./Buttons"
+import { Body, OrderedList } from "./styles"
 
-const Step6 = ({ updateCurrentStep }) => {
-  const { ws } = useContext(AppContext)
-  const { checkStep, voterInfo } = useContext(VoteContext)
-  const shouldCheck = ws && ws.readyState === 1
+const Step6 = ({ proceed }) => {
   const { CENTRALIZED_SERVER_FRONTEND } = config
+  const registrationLink = `${CENTRALIZED_SERVER_FRONTEND}/donation-wizard/donate`
   return (
-    <Wrapper>
-      <InnerWrapper>
-        <Header>Step #3: Register your public voter ID</Header>
-        <Body>
-          <BodyInfo>We need your public voter ID so that we can keep track of your votes.</BodyInfo>
-          <div>
-            <SubHeader>Register Public Voter</SubHeader>
-
-            <OrderedList>
-              <li>
-                Navigate to register voter.
-                <LinkText onClick={() => window.open(CENTRALIZED_SERVER_FRONTEND)}>Register Voter</LinkText>
-              </li>
-              <li>Select your country and enter your country&apos;s zip code.</li>
-              <li>Enter your linkedin ID and linkedin full name. Click continue button.</li>
-              <li>Login to your linkedin account so that we can verify you.</li>
-              <li>Switch back to this page and click vote.</li>
-            </OrderedList>
-          </div>
-          <ButtonsWrapper>
-            <Button
-              disabled={false && shouldCheck && voterInfo.ethereumAddress}
-              onClick={async () => {
-                const { msg, step } = await checkStep()
-                if (step < 6) updateCurrentStep(step)
-                else if (msg) {
-                  toast.error(msg)
-                }
-              }}
-            >
-              Vote
-            </Button>
-          </ButtonsWrapper>
-        </Body>
-      </InnerWrapper>
-      <img src={metamaskIcon} alt="Metamask" style={{ height: 300 }} />
-    </Wrapper>
+    <CardSection>
+      <Grid container>
+        <Grid item lg={12}>
+          <GrayHeadlineH3>Register your public voter ID</GrayHeadlineH3>
+          <GrayTextP>We need your public voter ID so that we can keep track of your votes.</GrayTextP>
+          <Body>
+            <div>
+              <GrayHeadlineH5>Register Public Voter</GrayHeadlineH5>
+              <GraySubTextUL>
+                <OrderedList>
+                  <li>
+                    Navigate to register voter.{" "}
+                    <MaterialLinkText onClick={() => window.open(registrationLink)}>Register Voter</MaterialLinkText>
+                  </li>
+                  <li>Proceed with the flow provided on page to register your Voter Id</li>
+                  <li>Switch back to this page and click continue.</li>
+                </OrderedList>
+              </GraySubTextUL>
+              <ButtonsWrapper>
+                <Button
+                  variant="contained"
+                  onClick={async () => {
+                    await proceed()
+                  }}
+                >
+                  Continue
+                </Button>
+              </ButtonsWrapper>
+            </div>
+          </Body>
+        </Grid>
+      </Grid>
+    </CardSection>
   )
 }
 

@@ -1,16 +1,16 @@
-import React from 'react'
-import { get } from 'lodash'
-import { Field } from 'formik'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import React from "react"
+import { get } from "lodash"
+import { Field } from "formik"
+import PropTypes from "prop-types"
+import styled from "styled-components"
 
-import { colors } from 'theme'
-import { CustomFieldWrapper, ErrorSpan } from './styles'
+import { colors } from "theme"
+import { CustomFieldWrapper, ErrorSpan } from "./styles"
 
 const Checkbox = ({ label, field, form, readonly = false, style, labelStyle }) => (
   <CustomFieldWrapper
     style={style}
-    className={`${get(form, `errors[${field.name}]`) && get(form, `touched[${field.name}]`) ? 'invalid' : null}`}
+    className={`${get(form, `errors[${field.name}]`) && get(form, `touched[${field.name}]`) ? "invalid" : null}`}
   >
     <div className="innerform-wrapper" style={!label ? { marginTop: 4 } : {}}>
       <CheckboxWrapper>
@@ -40,10 +40,10 @@ Checkbox.propTypes = {
 export default Checkbox
 
 const CheckboxWrapper = styled.div`
-  input[type='checkbox'] {
+  input[type="checkbox"] {
     display: none;
   }
-  input[type='checkbox'] ~ label {
+  input[type="checkbox"] ~ label {
     font-size: 16px;
     color: #797979;
     font-weight: 600;
@@ -53,7 +53,7 @@ const CheckboxWrapper = styled.div`
     margin: 0;
     position: relative;
     &::before {
-      content: '';
+      content: "";
       display: block;
       width: 18px;
       height: 18px;
@@ -61,7 +61,7 @@ const CheckboxWrapper = styled.div`
       margin-right: 15px;
     }
     &::after {
-      content: '';
+      content: "";
       width: 12px;
       height: 5px;
       border: 3px solid #fff;
@@ -72,7 +72,7 @@ const CheckboxWrapper = styled.div`
       left: 3px;
     }
   }
-  input[type='checkbox']:checked ~ label {
+  input[type="checkbox"]:checked ~ label {
     &::before {
       border-color: ${colors.primary};
       background: ${colors.primary};

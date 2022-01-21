@@ -1,30 +1,30 @@
-import styled from 'styled-components'
-import { colors } from 'theme'
-import { NavLink } from 'react-router-dom'
+import styled from "styled-components"
+import { NavLink } from "react-router-dom"
+import { colors } from "theme"
 
 export const customStyles = {
   rows: {
     style: {
-      height: '35px', // override the row height
+      height: "35px", // override the row height
     },
   },
   headCells: {
     style: {
-      paddingLeft: '30px', // override the cell padding for head cells
-      paddingRight: '30px',
+      paddingLeft: "30px", // override the cell padding for head cells
+      paddingRight: "30px",
       background: colors.textTitle,
       color: colors.border.table,
-      fontFamily: 'Poppins',
-      fontWeight: '500',
-      fontSize: '15px',
-      lineHeight: '22px',
-      letterSspacing: '0.03em',
+      fontFamily: "Poppins",
+      fontWeight: "500",
+      fontSize: "15px",
+      lineHeight: "22px",
+      letterSspacing: "0.03em",
     },
   },
   cells: {
     style: {
-      paddingLeft: '30px', // override the cell padding for data cells
-      paddingRight: '30px',
+      paddingLeft: "30px", // override the cell padding for data cells
+      paddingRight: "30px",
     },
   },
 }
@@ -43,7 +43,7 @@ export const TableWrapper = styled.div`
   .datatableWrapper {
     border-radius: 0;
   }
-  & div[role='rowgroup'] {
+  & div[role="rowgroup"] {
     & > div {
       color: ${colors.datatable.row.textColor};
       &:nth-of-type(2n) {
@@ -51,7 +51,7 @@ export const TableWrapper = styled.div`
       }
     }
   }
-  & div[role='heading'] {
+  & div[role="heading"] {
     color: ${colors.textTitle};
   }
 `

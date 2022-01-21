@@ -1,7 +1,7 @@
-import config from 'config'
-import Web3 from 'web3'
-import { getVoterInfos } from '../../../../apis/centralizedServer'
-import { transferFund } from '../../../../apis/vote'
+import Web3 from "web3"
+import config from "config"
+import { getVoterInfos } from "../../../../apis/centralizedServer"
+import { transferFund } from "../../../../apis/vote"
 
 const { CHAIN_ID } = config
 
@@ -67,25 +67,25 @@ export const checkWalletInstallation = async () => {
  */
 export const checkInstalledWallet = async () => {
   try {
-    let installedExtension = 'none'
+    let installedExtension = "none"
     if (window.ethereum) {
       if (window.ethereum.isMetamask) {
-        installedExtension = 'metamask'
+        installedExtension = "metamask"
       }
       if (window.ethereum.isZTMWallet) {
-        installedExtension = 'ztmwallet'
+        installedExtension = "ztmwallet"
       } else {
-        installedExtension = 'none'
+        installedExtension = "none"
       }
     }
 
     if (window.ztm_ethereum) {
-      installedExtension = 'ztmwallet'
+      installedExtension = "ztmwallet"
     }
 
     return installedExtension
   } catch (error) {
-    return 'none'
+    return "none"
   }
 }
 
@@ -172,7 +172,7 @@ export const checkUserVerification = async (walletAddress) => {
 export const getWalletBalance = async (web3, walletAddress) => {
   try {
     let balance = await web3.eth.getBalance(walletAddress)
-    balance = balance ? web3.utils.fromWei(balance, 'ether') : 0
+    balance = balance ? web3.utils.fromWei(balance, "ether") : 0
     return balance
   } catch (error) {
     return false
@@ -184,21 +184,21 @@ export const getWalletBalance = async (web3, walletAddress) => {
  *
  * @param string - walletAddress - wallet address of the extension
  * @param object - citizen object
+ * @param string - amount to be funded
+ * @param string - details of the transfer
  * @returns boolena - flag if balance has been sent or not
  */
-export const sendBalanceToWallet = async (citizen, walletAddress) => {
+export const sendBalanceToWallet = async (citizen, walletAddress, amount, details) => {
   try {
     const transferRes = await transferFund({
       userId: citizen.id,
       receiver: walletAddress,
+      fundType: "voting",
+      value: amount,
+      details,
     })
-
-    if (transferRes.status === 'success') {
-      return true
-    }
-
-    return false
+    return transferRes
   } catch (error) {
-    return false
+    return error
   }
 }

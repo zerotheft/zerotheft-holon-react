@@ -1,15 +1,15 @@
-import React, { useContext } from 'react'
-import { useHistory } from 'react-router-dom'
-import { get, isEmpty } from 'lodash'
-import PropTypes from 'prop-types'
-import { colors } from 'theme'
-import styled from 'styled-components'
+import React, { useContext } from "react"
+import { useHistory } from "react-router-dom"
+import { get, isEmpty } from "lodash"
+import PropTypes from "prop-types"
+import styled from "styled-components"
+import { colors } from "theme"
 
-import Button from 'commons/Buttons'
-import { Container } from 'commons/styles'
+import Button from "commons/Buttons"
+import { Container } from "commons/styles"
 
-import { convertDollarToString } from 'utils'
-import { AppContext } from '../AppContext'
+import { convertDollarToString } from "utils"
+import { AppContext } from "../AppContext"
 
 const TheftInfo = ({ summary = {} }) => {
   const history = useHistory()
@@ -19,7 +19,7 @@ const TheftInfo = ({ summary = {} }) => {
       <Container>
         <TitleContent>
           <h3>The TOTAL amount stolen in the Rigged Economy:</h3>
-          <Button onClick={() => history.push(`/pathReport/${get(filterParams, 'initPath')}`)} height={44} width={170}>
+          <Button onClick={() => history.push(`/pathReport/${get(filterParams, "initPath")}`)} height={44} width={170}>
             View Report
           </Button>
         </TitleContent>

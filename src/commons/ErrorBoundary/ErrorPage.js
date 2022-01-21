@@ -1,10 +1,10 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import styled from 'styled-components'
-import { faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import React from "react"
+import PropTypes from "prop-types"
+import styled from "styled-components"
+import { faExclamationTriangle } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
-import Button from 'commons/Buttons'
+import Button from "commons/Buttons"
 
 const ErrorPage = ({ onButtonClick }) => {
   return (
@@ -15,7 +15,7 @@ const ErrorPage = ({ onButtonClick }) => {
         There was some internal issue while fetching data from blockchain. We are currently finding the issue. Please
         try again later.
       </Paragraph>
-      <div style={{ display: 'flex' }}>
+      <div style={{ display: "flex" }}>
         <Button
           plain
           style={{ marginRight: 10 }}

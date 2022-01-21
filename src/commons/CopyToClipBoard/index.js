@@ -1,8 +1,8 @@
-import React from 'react'
-import styled from 'styled-components'
+import React from "react"
+import styled from "styled-components"
 
-import { colors } from 'theme'
-import { truncateString } from 'utils'
+import { colors } from "theme"
+import { truncateString } from "utils"
 
 // eslint-disable-next-line react/prop-types
 const CopyToClipBoard = ({ text, length = 13 }) => {

@@ -1,10 +1,11 @@
-import React from 'react'
-import { startCase } from 'lodash'
-import { Link } from 'react-router-dom'
-import styled from 'styled-components'
-
-import { Container } from 'commons/styles'
-import { colors } from 'theme'
+import React from "react"
+import { startCase } from "lodash"
+import { Breadcrumbs, Grid, Link } from "@mui/material"
+import { Box } from "@mui/system"
+import { NavigateNext, Warning } from "@mui/icons-material"
+import { DarkCaption1, GrayCaption1 } from "commons/newStyles"
+import { colors } from "theme"
+import { WarningWrapper } from "./styles"
 
 // const checkRoute = (routes, currentRoute) => {
 //   if (!currentRoute || isEmpty(routes)) return true
@@ -14,82 +15,51 @@ import { colors } from 'theme'
 
 const MainWrapper = ({ stepsPage, pathname, children, pathCrumbTemp }) => {
   // const history = useHistory()
-  const pathCrumbs = pathCrumbTemp && pathCrumbTemp.length > 0 ? pathCrumbTemp : pathname.split('%2F')
+  const pathCrumbs = pathCrumbTemp && pathCrumbTemp.length > 0 ? pathCrumbTemp : pathname.split("%2F")
 
   return (
-    <Wrapper>
-      {!stepsPage && (
-        <BreadcrumbWrapper>
-          <Container>
-            <ul className="breadcrumb">
-              {pathCrumbs.map((crumb, index, { length }) => {
-                const currentPath = pathCrumbs.slice(0, index + 1).join('%2F')
-                return index + 1 === length ? (
-                  <li>{startCase(crumb)}</li>
-                ) : (
-                  <li>
-                    <Link to={`/path/${currentPath}`}>{startCase(crumb)}</Link>
-                  </li>
-                )
-              })}
-            </ul>
-            {/* <h4>{history.location.pathname.includes('voted') ? 'You Added Your Vote on:' : 'Add your vote on:'} <span>{title ? startCase(title) : 'N/A'}</span></h4> */}
-          </Container>
-        </BreadcrumbWrapper>
-      )}
-      <Container>{children}</Container>
-    </Wrapper>
+    <Grid container>
+      <Grid item xs={12}>
+        {!stepsPage && (
+          <Box>
+            <Grid container>
+              <Grid item xs={5}>
+                <Breadcrumbs sx={{ position: "fixed" }}>
+                  {pathCrumbs.map((crumb, index, { length }) => {
+                    const currentPath = pathCrumbs.slice(0, index + 1).join("%2F")
+                    return index + 1 === length ? (
+                      <DarkCaption1>{startCase(crumb)}</DarkCaption1>
+                    ) : (
+                      <Link
+                        underline="hover"
+                        key={crumb}
+                        color="inherit"
+                        href={`/path/${currentPath}`}
+                        separator={<NavigateNext fontSize="small" />}
+                      >
+                        <GrayCaption1>{startCase(crumb)}</GrayCaption1>
+                      </Link>
+                    )
+                  })}
+                </Breadcrumbs>
+              </Grid>
+              <Grid item xs={7}>
+                <WarningWrapper>
+                  <p>
+                    <Warning sx={{ float: "left", color: colors.secondaryVariant1 }} />
+                    The amounts and reasoning comes from citizens. Not from the ZTM company or this website.{" "}
+                  </p>
+                </WarningWrapper>
+              </Grid>
+            </Grid>
+          </Box>
+        )}
+      </Grid>
+      <Grid item xs={12} sx={{ marginTop: "30px" }}>
+        {children}
+      </Grid>
+    </Grid>
   )
 }
 
 export default MainWrapper
-
-const Wrapper = styled.div`
-    position: relative;
-    overflow-x: hidden;
-  `,
-  BreadcrumbWrapper = styled.div`
-    width: 100%;
-    position: absolute;
-    top: 0px;
-    left: 0;
-    background: ${colors.background.white};
-    z-index: 2;
-    ul.breadcrumb {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      font-family: Poppins;
-      li {
-        font-size: 15px;
-        font-weight: 500;
-        color: ${colors.primary};
-        a {
-          color: #a4a4a4;
-          transition: color 0.3s ease;
-          text-decoration: none;
-          &:hover {
-            color: ${colors.primary};
-          }
-        }
-
-        &:not(:last-of-type) {
-          &::after {
-            color: #a4a4a4;
-            content: '>';
-            margin: 0 10px;
-          }
-        }
-      }
-    }
-    h4 {
-      margin-top: 5px;
-      font-size: 19px;
-      font-weight: 600;
-      color: #898293;
-      text-transform: uppercase;
-      span {
-        color: ${colors.primary};
-      }
-    }
-  `

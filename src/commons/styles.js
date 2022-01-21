@@ -1,6 +1,6 @@
-import styled from 'styled-components'
+import styled from "styled-components"
 
-import { fontSize, colors } from 'theme'
+import { fontSize, colors } from "theme"
 
 export const Wrapper = styled.div`
     padding: 40px 0;
@@ -15,7 +15,7 @@ export const Wrapper = styled.div`
         color: ${colors.link};
         text-decoration: none;
         &:not(:last-child):after {
-          content: '>';
+          content: ">";
           padding: 0 5px;
           color: ${colors.link};
         }
@@ -28,7 +28,7 @@ export const Wrapper = styled.div`
         }
         :first-child {
           &::before {
-            content: '';
+            content: "";
             width: 14px;
             height: 14px;
             border: 1px solid #aaa;
@@ -49,7 +49,7 @@ export const Wrapper = styled.div`
       padding: 10px 0;
       color: ${colors.link};
       &::before {
-        content: '';
+        content: "";
         width: 12px;
         height: 12px;
         border: 1px solid #aaa;
@@ -137,7 +137,7 @@ export const Wrapper = styled.div`
     font-style: italic;
     &::before,
     &::after {
-      content: ' .';
+      content: " .";
       animation: dots 1s steps(5, end) infinite;
     }
     &::before {

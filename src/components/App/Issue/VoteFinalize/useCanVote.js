@@ -1,11 +1,11 @@
-import { useState, useEffect, useContext } from 'react'
-import { getVoterInfos } from 'apis/centralizedServer'
-import { Web3Context } from 'components/App/Web3Context'
-import { AppContext } from 'components/App/AppContext'
-import { getPriorVote } from 'apis/vote'
-import useFetch from 'commons/hooks/useFetch'
+import { useState, useEffect, useContext } from "react"
+import { getVoterInfos } from "apis/centralizedServer"
+import { Web3Context } from "components/App/Web3Context"
+import { AppContext } from "components/App/AppContext"
+import { getPriorVote } from "apis/vote"
+import useFetch from "commons/hooks/useFetch"
 
-import config from 'config'
+import config from "config"
 
 const { CHAIN_ID } = config
 
@@ -48,7 +48,7 @@ export default () => {
 
   const checkSteps = async (path, skipWaiting) => {
     let newStep = 4
-    let msg = ''
+    let msg = ""
     const { account: metamaskAccount, web3 } = (await getMetamaskAccount(skipWaiting)) || {}
     try {
       // Get the voter Information from central server
@@ -56,19 +56,19 @@ export default () => {
       const metamask = !!window.web3
       if (!metamask) {
         newStep = 4
-        msg = 'No zerotheft wallet found'
+        msg = "No zerotheft wallet found"
       } else if (!metamaskAccount) {
         newStep = 4
-        msg = 'Please login to the zerotheft wallet.'
+        msg = "Please login to the zerotheft wallet."
       } else if (web3.currentProvider.chainId !== `0x${chainID.toString(16)}`) {
         newStep = 5
-        msg = 'Please select the correct network.'
+        msg = "Please select the correct network."
       } else if (!voterInfo.verifiedCitizen) {
         newStep = 6
-        msg = 'Your account is not a verified yet.'
+        msg = "Your account is not a verified yet."
       } else {
         newStep = 7
-        localStorage.setItem('citizenID', voterInfo.verifiedCitizen)
+        localStorage.setItem("citizenID", voterInfo.verifiedCitizen)
       }
     } catch (e) {
       newStep = 4

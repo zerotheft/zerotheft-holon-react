@@ -24,9 +24,25 @@
   "plugins": [
     "prettier",
     "react",
-    "jsx-a11y"
+    "jsx-a11y",
+    "import"
   ],
   "rules": {
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          "sibling",
+          "index",
+          "object",
+          "type"
+        ]
+      }
+    ],
     "no-shadow": "off",
     "no-plusplus": "off",
     "no-param-reassign": "off",

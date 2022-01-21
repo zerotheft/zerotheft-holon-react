@@ -1,8 +1,8 @@
-import React from 'react'
-import { Field, useFormikContext } from 'formik'
-import PropTypes from 'prop-types'
+import React from "react"
+import { Field, useFormikContext } from "formik"
+import PropTypes from "prop-types"
 
-import { CustomFieldWrapper, RadioBtn } from './styles'
+import { CustomFieldWrapper, RadioBtn } from "./styles"
 
 const Radio = ({ field, readonly = false, values = [], style, innerStyle, radioStyle }) => {
   const { setFieldValue } = useFormikContext()
@@ -14,7 +14,7 @@ const Radio = ({ field, readonly = false, values = [], style, innerStyle, radioS
         <CustomFieldWrapper style={style}>
           <div className="innerform-wrapper" style={innerStyle}>
             {values.map(({ label, value, component }) => (
-              <RadioBtn style={{ marginRight: 20, display: 'flex', width: '100%', ...radioStyle }} disabled={readonly}>
+              <RadioBtn style={{ marginRight: 20, display: "flex", width: "100%", ...radioStyle }} disabled={readonly}>
                 <input
                   id={`${RadioField.field.name}-${value}`}
                   name={RadioField.field.name}

@@ -1,281 +1,338 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { get } from 'lodash'
-import { NavLink, Link } from 'react-router-dom'
-import Select from 'react-select'
-import styled from 'styled-components'
+import React, { useState, useContext, useEffect } from "react"
+import { get } from "lodash"
+import { Link, NavLink } from "react-router-dom"
+import styled from "styled-components"
 
-import config from 'config'
-import BRANDLOGO from 'assets/icons/zerotheft.svg'
+import { AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
+import { Box } from "@mui/system"
+import MenuIcon from "@mui/icons-material/Menu"
+import { Apps, Dvr, Home, Language, MoreVert, ViewList } from "@mui/icons-material"
+import config from "config"
+import BRANDLOGO from "assets/icons/zerotheft.svg"
 
-import { getNations } from 'apis/path'
-import useFetch from 'commons/hooks/useFetch'
+import { getNations } from "apis/path"
+import useFetch from "commons/hooks/useFetch"
 
-import * as ROUTES from 'constants/routes'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { Container } from 'commons/styles'
-import { colors } from 'theme'
-import HolonIcon from './svgs/holon'
-import PathIcon from './svgs/path'
-import DonateIcon from './svgs/donate'
-import HomeIcon from './svgs/home'
-import { AppContext } from '../../AppContext'
+import * as ROUTES from "constants/routes"
+
+// import { Container } from "commons/styles";
+import { colors } from "theme"
+
+import { AppContext } from "../../AppContext"
 
 const { CENTRALIZED_SERVER_FRONTEND } = config
 
 const Header = () => {
-  const [getNationsApi, loading, nations] = useFetch(getNations)
-  const { selectedHolon, filterParams } = useContext(AppContext)
-  const [country, selectCountry] = useState({
-    value: get(filterParams, 'initPath', 'USA'),
-    label: get(filterParams, 'initPath', 'USA'),
+  // const history = useHistory();
+  const [getNationsApi] = useFetch(getNations)
+  const { filterParams } = useContext(AppContext)
+
+  const [country] = useState({
+    value: get(filterParams, "initPath", "USA"),
+    label: get(filterParams, "initPath", "USA"),
   })
+
+  const [anchorElNav, setAnchorElNav] = useState(null)
+  const [anchorElMore, setAnchorElMore] = useState(null)
+  const [anchorElMoreSmall, setAnchorElMoreSmall] = useState(null)
+
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget)
+  }
+
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null)
+  }
+
+  const handleOpenMoreMenu = (event) => {
+    setAnchorElMore(event.currentTarget)
+  }
+
+  const handleCloseMoreMenu = () => {
+    setAnchorElMore(null)
+  }
+
+  const handleOpenMoreMenuSmall = (event) => {
+    setAnchorElMoreSmall(event.currentTarget)
+  }
+
+  const handleCloseMoreMenuSmall = () => {
+    setAnchorElMoreSmall(null)
+  }
+
+  const buttonSx = {
+    px: 2,
+    display: "flex",
+    color: colors.grey500,
+    fontSize: "14px",
+  }
+
+  const SubButtonSx = {
+    display: "flex",
+    color: colors.grey500,
+  }
 
   useEffect(() => {
     getNationsApi()
   }, [])
 
   return (
-    <Wrapper>
-      {loading && <OverlaySpinner loading />}
-      {/* <Container>
-      <TopHeader>
-        {selectedHolon.id ? `Connected to: ${selectedHolon.port}` : 'Not connected to any holons'}
-        <a href="zerotheft://holon"><span style={{ marginLeft: 15 }}>{selectedHolon.id ? 'Change' : 'Select'} Holon</span></a>
-      </TopHeader>
-    </Container> */}
-      <Container>
-        <LeftWrapper>
-          <BrandLogo>
-            <Link to="/">
-              <img src={BRANDLOGO} alt="brand logo" />
-            </Link>
-          </BrandLogo>
-          <MenuWrapper>
-            <li>
-              <NavLink to="/" activeClassName="active1">
-                <HomeIcon />
-                Home
+    <AppBar color="neutral">
+      <Container maxWidth="false">
+        <Toolbar disableGutters>
+          <NavLink to="/">
+            <Box component="img" alt="Your logo." src={BRANDLOGO} sx={{ display: { xs: "none", md: "flex" } }} />
+          </NavLink>
+
+          <Box
+            sx={{
+              flexGrow: 1,
+              display: { xs: "none", md: "flex" },
+              justifyContent: "center",
+            }}
+          >
+            <MenuAnchor>
+              <NavLink to={ROUTES.HOME} exact activeClassName="active">
+                <Button startIcon={<Home />} key="home" variant="text" sx={buttonSx}>
+                  Home
+                </Button>
               </NavLink>
-            </li>
-            <li>
+
               <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
-                <HolonIcon />
-                Holons
+                <Button startIcon={<Language />} key="holon" variant="text" sx={buttonSx}>
+                  Holons
+                </Button>
               </a>
-            </li>
-            <li>
+
               <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active">
-                <PathIcon />
-                Paths
+                <Button startIcon={<Dvr />} key="path" variant="text" sx={buttonSx}>
+                  Path
+                </Button>
               </NavLink>
-            </li>
-            {selectedHolon.id && (
-              <li>
-                <NavLink to={ROUTES.DONATE} activeClassName="active">
-                  <DonateIcon />
-                  Donate
-                </NavLink>
-              </li>
-            )}
-            <li className="more">
-              <PathIcon />
-              More
-              <ul>
-                <li>
+
+              <Button
+                startIcon={<Apps />}
+                key="more"
+                onClick={handleOpenMoreMenu}
+                variant="text"
+                sx={buttonSx}
+                activeClassName="active"
+              >
+                More
+              </Button>
+
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElMore}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElMore)}
+                onClose={handleCloseMoreMenu}
+              >
+                <SubMenuAnchor>
                   <NavLink to={ROUTES.DATALIST} activeClassName="active">
-                    Citizens/Proposals
+                    <MenuItem key="citizens">
+                      <Typography textAlign="center">Citizens/Proposals</Typography>
+                    </MenuItem>
                   </NavLink>
-                </li>
-                <li>
+
                   <NavLink to={ROUTES.VOTELIST} activeClassName="active">
-                    Votes
+                    <MenuItem key="votes">
+                      <Typography textAlign="center">Votes</Typography>
+                    </MenuItem>
                   </NavLink>
-                </li>
-                <li>
+
                   <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
-                    HierarchyYaml
+                    <MenuItem key="hierarchyYaml">
+                      <Typography textAlign="center">HierarchyYaml</Typography>
+                    </MenuItem>
                   </NavLink>
-                </li>
-                <li>
+
                   <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
-                    Exported Data
+                    <MenuItem key="exportedData">
+                      <Typography textAlign="center">Exported Data</Typography>
+                    </MenuItem>
                   </a>
-                </li>
-              </ul>
-            </li>
-          </MenuWrapper>
-        </LeftWrapper>
-        <RightWrapper>
-          <Select
-            value={country}
-            isSearchable={false}
-            options={[
-              ...get(nations, 'data', []).map((i) => ({ label: i.nation, value: i.nation })),
-              { value: 'none', label: 'Select Another Country' },
-            ]}
-            onChange={async (i) => {
-              if (i.value === 'none') {
-                await selectCountry({ value: 'USA', label: 'USA' })
-                window.open('https://zerotheft.net/the-zt-global-expansion/', true)
-              } else selectCountry(i)
-            }}
-            styles={{
-              container: (styles) => ({
-                ...styles,
-                marginRight: 5,
-              }),
-              menu: (styles) => ({
-                ...styles,
-                width: 210,
-              }),
-              control: (styles) => ({
-                ...styles,
-                width: 90,
-                borderColor: 'transparent !important',
-                border: 'none !important',
-              }),
-              singleValue: (styles) => ({
-                ...styles,
-                fontSize: 15,
-                fontWeight: 500,
-                color: '#77707D',
-              }),
-              indicatorSeparator: () => ({
-                display: 'none',
-              }),
-            }}
-          />
-          {/* <Select
-          defaultValue={{ value: filterParams.year, label: filterParams.year }}
-          options={new Array(61).fill(undefined).map((val, index) => ({ label: getYear(new Date) - (index + 1), value: getYear(new Date) - (index + 1) }))}
-          onChange={selected => {
-            localStorage.setItem("filterYear", selected.value)
-            updateFilter({ ...filterParams, year: selected.value })
-          }}
-          isSearchable={false}
-          styles={{
-            control: styles => ({
-              ...styles,
-              width: 90,
-              border: 'none'
-            }),
-            singleValue: styles => ({
-              ...styles,
-              fontSize: 15,
-              fontWeight: 500,
-              color: '#77707D'
-            }),
-            indicatorSeparator: () => ({
-              display: 'none'
-            })
-          }}
-        /> */}
-        </RightWrapper>
+                </SubMenuAnchor>
+              </Menu>
+            </MenuAnchor>
+          </Box>
+
+          <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
+            <IconButton
+              size="large"
+              aria-label="Nav menu"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenNavMenu}
+              color="inherit"
+            >
+              <MenuIcon />
+            </IconButton>
+            <Menu
+              id="menu-appbar"
+              anchorEl={anchorElNav}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "left",
+              }}
+              open={Boolean(anchorElNav)}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: "block", md: "none" },
+              }}
+            >
+              <SubMenuAnchor>
+                <MenuItem key="home">
+                  <NavLink to={ROUTES.HOME} exact activeClassName="active">
+                    <Button startIcon={<Home />} key="home" variant="text" sx={SubButtonSx}>
+                      Home
+                    </Button>
+                  </NavLink>
+                </MenuItem>
+              </SubMenuAnchor>
+
+              <SubMenuAnchor>
+                <MenuItem key="holon">
+                  <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
+                    <Button startIcon={<Language />} key="holon" variant="text" sx={SubButtonSx}>
+                      Holons
+                    </Button>
+                  </a>
+                </MenuItem>
+              </SubMenuAnchor>
+
+              <SubMenuAnchor>
+                <MenuItem key="path">
+                  <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active">
+                    <Button startIcon={<ViewList />} key="path" variant="text" sx={SubButtonSx}>
+                      Path
+                    </Button>
+                  </NavLink>
+                </MenuItem>
+              </SubMenuAnchor>
+
+              <SubMenuAnchor>
+                <MenuItem key="more">
+                  <Button
+                    startIcon={<MoreVert />}
+                    key="more"
+                    onClick={handleOpenMoreMenuSmall}
+                    variant="text"
+                    sx={SubButtonSx}
+                  >
+                    More
+                  </Button>
+                </MenuItem>
+              </SubMenuAnchor>
+            </Menu>
+
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElMoreSmall}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElMoreSmall)}
+              onClose={handleCloseMoreMenuSmall}
+            >
+              <SubMenuAnchor>
+                <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                  <MenuItem key="citizens">
+                    <Typography textAlign="center">Citizens/Proposals</Typography>
+                  </MenuItem>
+                </NavLink>
+
+                <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                  <MenuItem key="votes">
+                    <Typography textAlign="center">Votes</Typography>
+                  </MenuItem>
+                </NavLink>
+
+                <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                  <MenuItem key="hierarchyYaml">
+                    <Typography textAlign="center">HierarchyYaml</Typography>
+                  </MenuItem>
+                </NavLink>
+
+                <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                  <MenuItem key="exportedData">
+                    <Typography textAlign="center">Exported Data</Typography>
+                  </MenuItem>
+                </a>
+              </SubMenuAnchor>
+            </Menu>
+          </Box>
+
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ pt: 1, flexGrow: 1, display: { xs: "flex", md: "none" } }}
+          >
+            <Link to="/">
+              <img src={BRANDLOGO} alt="Zerotheft Movement" />
+            </Link>
+          </Typography>
+        </Toolbar>
       </Container>
-    </Wrapper>
+    </AppBar>
   )
 }
 
 export default Header
 
-const Wrapper = styled.header`
-  height: 60px;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  box-shadow: 0px 1px 0px 0px #cddadd;
+const MenuAnchor = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 6;
-  background: #fff;
-  & > ${Container} {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 10px;
+  a {
+    text-decoration: none;
+    button {
+      min-height: 100%;
+    }
   }
-`
-
-// TopHeader = styled.div`
-//   display: flex;
-//   flex-direction: row;
-//   margin: 5px 0;
-//   align-items: center;
-//   a {
-//     color: ${colors.primary};
-//   }
-// `
-const BrandLogo = styled.div`
-  img {
-    display: block;
-  }
-`
-const LeftWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex: 1;
-  max-width: 750px;
-  justify-content: space-between;
-`
-const RightWrapper = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
-const MenuWrapper = styled.ul`
-  display: flex;
-  flex-direction: row;
-  .more {
-    cursor: pointer;
-    color: #8c8989;
-    position: relative;
-    ul {
-      opacity: 0;
-      visibility: hidden;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
-      border-radius: 4px;
-      background: #fff;
-      transition: 0.5s ease-in-out;
-      top: 10px;
-      position: absolute;
-      li {
-        margin: 0;
-        a {
-          padding: 3px 10px;
+  .active {
+    button {
+      color: ${colors.primary};
+      svg {
+        path {
+          fill: ${colors.primary};
         }
       }
     }
   }
-  li.more:hover ul {
-    opacity: 1;
-    visibility: visible;
-    top: 50px;
+`
+
+const SubMenuAnchor = styled.div`
+  a {
+    text-decoration: none;
+    color: ${colors.grey500};
   }
-  li {
-    margin: 0 20px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    a {
-      text-decoration: none;
-      color: #8c8989;
-      font-size: 15px;
-      font-weight: 500;
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+  .active {
+    button {
+      color: ${colors.primary};
       svg {
-        margin-right: 10px;
-      }
-      &.active {
-        color: ${colors.primary};
-        svg {
-          path {
-            fill: ${colors.primary};
-          }
+        path {
+          fill: ${colors.primary};
         }
       }
     }

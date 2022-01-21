@@ -1,12 +1,10 @@
-import React, { useContext } from 'react'
+import React from "react"
 
 // import PropTypes from 'prop-types'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLongArrowAltLeft, faLongArrowAltRight } from '@fortawesome/free-solid-svg-icons'
-import styled from 'styled-components'
-import { toast } from 'react-toastify'
-import Button from 'commons/Buttons'
-import { VoteContext } from '../VoteContext'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faLongArrowAltLeft, faLongArrowAltRight } from "@fortawesome/free-solid-svg-icons"
+import styled from "styled-components"
+import Button from "commons/Buttons"
 
 export const ButtonsWrapper = styled.div`
   display: flex;
@@ -27,20 +25,11 @@ export const Previous = (props) => {
   )
 }
 
-export const Next = ({ currentStep, updateCurrentStep, ...props }) => {
-  const { checkStep } = useContext(VoteContext)
-
+export const Next = ({ currentStep, updateCurrentStep, proceed, ...props }) => {
   return (
     <Button
       onClick={async () => {
-        const { msg, step } = await checkStep()
-        if (step === 7) {
-          return
-        }
-        if (step !== currentStep) updateCurrentStep(step)
-        else if (msg) {
-          toast.error(msg)
-        }
+        await proceed()
       }}
       {...props}
     >

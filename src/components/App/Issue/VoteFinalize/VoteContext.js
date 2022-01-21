@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useState } from 'react'
-import { useHistory, useLocation, useParams } from 'react-router-dom'
-import { holonInfo as getHolonInfo, voteDataRollups } from 'apis/vote'
-import config from 'config'
-import useWeb3 from 'utils/useWeb3'
-import { toast } from 'react-toastify'
-import { get } from 'lodash'
-import { getParameterByName } from 'utils'
-import { IssueContext } from '../IssueContext'
-import useCanVote from './useCanVote'
+import React, { createContext, useContext, useState } from "react"
+import { useHistory, useLocation, useParams } from "react-router-dom"
+import { toast } from "react-toastify"
+import { get } from "lodash"
+import { holonInfo as getHolonInfo, voteDataRollups } from "apis/vote"
+import config from "config"
+import useWeb3 from "utils/useWeb3"
+import { getParameterByName } from "utils"
+import { IssueContext } from "../IssueContext"
+import useCanVote from "./useCanVote"
 
 const { loadContract } = config
 const VoteContext = createContext()
@@ -18,7 +18,7 @@ const VoteProvider = ({ children }) => {
   const { voting, finalVote, popup, showErrorPopUp, vote } = useVote(voterInfo)
   const { selection } = useContext(IssueContext)
   const buildUrl = () => {
-    let query = '?page=steps&details=true'
+    let query = "?page=steps&details=true"
     if (finalVote) query += `&vote=${finalVote}`
     if (selection.proposal) query += `&p=${selection.proposal.id}`
     if (selection.counterProposal) query += `&c=${selection.counterProposal.id}`
@@ -57,9 +57,9 @@ const useVote = (voterInfo) => {
 
   // const { userInfo } = useContext(AppContext)
   const [voting, updateVoting] = useState(false)
-  const currentVote = getParameterByName('vote')
+  const currentVote = getParameterByName("vote")
   /* eslint-disable-next-line no-unused-vars */
-  const [finalVote, updateFinalVote] = useState(get(location, 'state.vote') || currentVote || 'yes')
+  const [finalVote, updateFinalVote] = useState(get(location, "state.vote") || currentVote || "yes")
   const { carryTransaction, callSmartContractGetFunc, getBalance, convertToAscii, convertStringToHash, web3 } =
     useWeb3()
   const [popup, showErrorPopUp] = useState()
@@ -75,21 +75,27 @@ const useVote = (voterInfo) => {
   const vote = async (values) => {
     updateVoting(true)
     const holonInfo = await getHolonInfo()
-    const voteType = finalVote === 'yes'
-    const yesTheftProposalId = get(selection, 'proposal.id', '')
-    const noTheftProposalId = get(selection, 'counterProposal.id', '')
+    const voteType = finalVote === "yes"
+    const yesTheftProposalId = get(selection, "proposal.id", "")
+    const noTheftProposalId = get(selection, "counterProposal.id", "")
 
     const proposalId = voteType ? yesTheftProposalId : noTheftProposalId
-    const contract = await loadContract('ZTMVotes')
+    const contract = await loadContract("ZTMVotes")
     try {
       const balance = await getBalance()
       if (balance === 0 && holonInfo.canBeFunded) {
-        showErrorPopUp({ message: 'Insufficient Fund', holonInfo, proposalId, voteType: finalVote, ...values })
+        showErrorPopUp({
+          message: "Insufficient Fund",
+          holonInfo,
+          proposalId,
+          voteType: finalVote,
+          ...values,
+        })
         return
       }
-      if (!holonInfo.holonID || holonInfo.holonID === '') {
+      if (!holonInfo.holonID || holonInfo.holonID === "") {
         showErrorPopUp({
-          message: 'Holon information missing. Please select holon first',
+          message: "Holon information missing. Please select holon first",
           holonInfo,
           proposalId,
           voteType: finalVote,
@@ -103,24 +109,24 @@ const useVote = (voterInfo) => {
       const accounts = await web3.eth.getAccounts()
       const account = accounts[0]
 
-      const votingArea = await convertToAscii('RiggedEconomy')
+      const votingArea = await convertToAscii("RiggedEconomy")
       const hierarchyPath = convertStringToHash(values.hierarchyPath)
-      const voteTypeDetail = await convertToAscii('TrueFalse_AmountsPerYear')
-      const voteValue = voteType ? 'True' : 'False'
+      const voteTypeDetail = await convertToAscii("TrueFalse_AmountsPerYear")
+      const voteValue = voteType ? "True" : "False"
       const verificationOnVote = await convertToAscii(
-        'RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured'
+        "RIGGED=Economy is rigged. Philosphic theft (not necessarily legal theft) has occured"
       )
-      const amountValue = values.altTheftAmounts || ''
+      const amountValue = values.altTheftAmounts || ""
 
       const messageParams = [
-        { t: 'bytes32', v: votingArea },
-        { t: 'bytes32', v: hierarchyPath },
-        { t: 'bytes32', v: voteTypeDetail },
-        { t: 'string', v: voteValue },
-        { t: 'string', v: amountValue }, // custom amount added by citizen
-        { t: 'address', v: account },
-        { t: 'string', v: yesTheftProposalId },
-        { t: 'string', v: noTheftProposalId },
+        { t: "bytes32", v: votingArea },
+        { t: "bytes32", v: hierarchyPath },
+        { t: "bytes32", v: voteTypeDetail },
+        { t: "string", v: voteValue },
+        { t: "string", v: amountValue }, // custom amount added by citizen
+        { t: "address", v: account },
+        { t: "string", v: yesTheftProposalId },
+        { t: "string", v: noTheftProposalId },
       ]
       const sha3 = web3.utils.soliditySha3(...messageParams)
       const signedMessage = await web3.eth.personal.sign(sha3, account)
@@ -144,16 +150,16 @@ const useVote = (voterInfo) => {
       //   voterInfo
       // )
 
-      const fullPath = `${params.pathname.replaceAll('%2F', '/')}/${params.id}`
+      const fullPath = `${params.pathname.replaceAll("%2F", "/")}/${params.id}`
       const txDetails = {
         userId: voterInfo.id,
-        details: `Voted to ${voteType ? 'proposal' : 'counter-proposal'} in path ${fullPath}`,
-        txType: 'vote',
+        details: `Voted to ${voteType ? "proposal" : "counter-proposal"} in path ${fullPath}`,
+        txType: "vote",
       }
 
       await carryTransaction(
         contract,
-        'createVote',
+        "createVote",
         [
           votingArea,
           hierarchyPath,
@@ -163,7 +169,7 @@ const useVote = (voterInfo) => {
           verificationOnVote,
           yesTheftProposalId,
           noTheftProposalId,
-          values.comment || '',
+          values.comment || "",
           holonInfo.holonID,
           signedMessage,
         ],
@@ -172,11 +178,24 @@ const useVote = (voterInfo) => {
 
       // console.log('after vote')
 
-      const idxRes = await callSmartContractGetFunc(contract, 'getLastVoteIndex')
-      await afterVote(balance, { account, voteType: finalVote, voteIndex: idxRes.voteIndex, proposalId, ...values })
+      const idxRes = await callSmartContractGetFunc(contract, "getLastVoteIndex")
+      await afterVote(balance, {
+        account,
+        voteType: finalVote,
+        voteIndex: idxRes.voteIndex,
+        proposalId,
+        ...values,
+      })
     } catch (e) {
-      if (holonInfo.canBeFunded) showErrorPopUp({ message: '', holonInfo, proposalId, voteType: finalVote, ...values })
-      toast.error('Error while voting on this proposal.')
+      if (holonInfo.canBeFunded)
+        showErrorPopUp({
+          message: "",
+          holonInfo,
+          proposalId,
+          voteType: finalVote,
+          ...values,
+        })
+      toast.error("Error while voting on this proposal.")
     } finally {
       updateVoting(false)
     }
@@ -215,7 +234,7 @@ const useVote = (voterInfo) => {
   const afterVote = async (balance, values) => {
     // do voteData Rollups
     const rollupsRes = await voteDataRollups({ voteIndex: values.voteIndex })
-    if (!rollupsRes.success) toast.error('Error in  voting rollups')
+    if (!rollupsRes.success) toast.error("Error in  voting rollups")
 
     // TODO: Voting history is no more maintained in desktop app. so keeping it for now
     // const newBalance = await getBalance()
@@ -239,11 +258,11 @@ const useVote = (voterInfo) => {
     updateVoteStore(values)
 
     // save voter address in local storage
-    localStorage.setItem('address', values.account)
+    localStorage.setItem("address", values.account)
 
     // await refetchIssue()
-    history.push(`/path/${get(params, 'pathname')}/issue/${get(params, 'id')}/voted`)
-    toast.success('You have voted to the proposal successfully')
+    history.push(`/path/${get(params, "pathname")}/issue/${get(params, "id")}/voted`)
+    toast.success("You have voted to the proposal successfully")
   }
 
   return {

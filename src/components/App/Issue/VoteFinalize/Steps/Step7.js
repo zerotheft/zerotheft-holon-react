@@ -1,32 +1,19 @@
-import React, { useContext, useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheckCircle } from '@fortawesome/free-solid-svg-icons'
-import styled from 'styled-components'
+import React from "react"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons"
+import styled from "styled-components"
 
-import Button from 'commons/Buttons'
-import OverlaySpinner from 'commons/OverlaySpinner'
-import { VoteContext } from '../VoteContext'
+import Button from "commons/Buttons"
 
-const Step7 = ({ showStepsPage, voteValues }) => {
-  const { vote } = useContext(VoteContext)
-  const [voteProgress, updateVoteProgress] = useState(false)
-
-  const proceedWithVote = async () => {
-    updateVoteProgress(true)
-    await vote(voteValues)
-    showStepsPage(true)
-    updateVoteProgress(false)
-  }
-
+const Step7 = ({ proceed }) => {
   return (
     <>
-      <OverlaySpinner loading={voteProgress} />
       <MessageWrapper style={{ flex: 1 }}>
         <div
           style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
           }}
         >
           <FontAwesomeIcon icon={faCheckCircle} size="10x" color="#6AB768" />
@@ -34,9 +21,9 @@ const Step7 = ({ showStepsPage, voteValues }) => {
         <Container>
           <MessageHeader>Congratulations!</MessageHeader>
           <div style={{ fontSize: 20, fontWeight: 600 }}>You have completed all the steps to vote.</div>
-          <Message style={{ textAlign: 'justify' }}>Please click on vote button to cast your vote.</Message>
-          <Button onClick={() => proceedWithVote()} style={{ background: '#4C4A4F', marginRight: 18, opacity: 1 }}>
-            Vote
+          <Message style={{ textAlign: "justify" }}>Please click on vote button to cast your vote.</Message>
+          <Button onClick={() => proceed()} style={{ background: "#4C4A4F", marginRight: 18, opacity: 1 }}>
+            Proceed to vote
           </Button>
         </Container>
       </MessageWrapper>

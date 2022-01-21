@@ -1,16 +1,16 @@
-import React, { useEffect, useMemo } from 'react'
-import styled from 'styled-components'
-import Button from 'commons/Buttons'
-import useFetch from 'commons/hooks/useFetch'
-import DataTable from 'react-data-table-component'
-import { Wrapper, Container } from 'commons/styles'
-import { convertUNIXtoDATETIME } from 'utils'
-import { getExportedProposals } from 'apis/proposals'
+import React, { useEffect, useMemo } from "react"
+import styled from "styled-components"
+import DataTable from "react-data-table-component"
+import Button from "commons/Buttons"
+import useFetch from "commons/hooks/useFetch"
+import { Wrapper, Container } from "commons/styles"
+import { convertUNIXtoDATETIME } from "utils"
+import { getExportedProposals } from "apis/proposals"
 
 const AllProposals = () => {
   // eslint-disable-next-line no-unused-vars
   const [getExportedProposalsApi, loading, allProposals] = useFetch(getExportedProposals)
-  const [filterText, setFilterText] = React.useState('')
+  const [filterText, setFilterText] = React.useState("")
   const [resetPaginationToggle, setResetPaginationToggle] = React.useState(false)
   const filteredProposals =
     allProposals &&
@@ -19,34 +19,34 @@ const AllProposals = () => {
   const columns = useMemo(
     () => [
       {
-        name: 'ID',
-        selector: 'id',
+        name: "ID",
+        selector: "id",
         sortable: true,
       },
       {
-        name: 'Theft Amount',
-        selector: 'name',
+        name: "Theft Amount",
+        selector: "name",
         sortable: true,
       },
       {
-        name: 'Country',
-        selector: 'country',
+        name: "Country",
+        selector: "country",
         sortable: true,
       },
       {
-        name: 'Path',
-        selector: 'path',
+        name: "Path",
+        selector: "path",
         sortable: true,
       },
 
       {
-        name: 'Year',
-        selector: 'year',
+        name: "Year",
+        selector: "year",
         sortable: true,
       },
       {
-        name: 'Date',
-        selector: 'date',
+        name: "Date",
+        selector: "date",
         sortable: true,
         cell: (props) => convertUNIXtoDATETIME(props.date),
       },
@@ -77,7 +77,7 @@ const AllProposals = () => {
     const handleClear = () => {
       if (filterText) {
         setResetPaginationToggle(!resetPaginationToggle)
-        setFilterText('')
+        setFilterText("")
       }
     }
 

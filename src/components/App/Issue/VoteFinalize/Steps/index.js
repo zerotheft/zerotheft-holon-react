@@ -1,81 +1,193 @@
-import React, { useEffect, useState, useContext } from 'react'
-import styled from 'styled-components'
-import Step7 from './Step7'
-import { VoteContext } from '../VoteContext'
+import React, { useEffect, useState, useContext } from "react"
+import { toast } from "react-toastify"
+import { get } from "lodash"
+import { Redirect, useLocation } from "react-router"
+import OverlaySpinner from "commons/OverlaySpinner"
+import { ToastContext } from "commons/ToastContext"
+import { VoteContext, VoteProvider } from "../VoteContext"
+import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration } from "../voteConditions"
 
-// import { vote } from 'apis/vote'
+import { IssueContext } from "../../IssueContext"
+import Step4 from "./Step4"
+import Step5 from "./Step5"
+import NoAccount from "./NoAccount"
+import Step6 from "./Step6"
+import Step7 from "./Step7"
+import UnverifiedCitizen from "./UnverifiedCitizen"
 
-// const steps = range(4, 8);
-// const stepComponents = [Step4, Step5, Step6, Step7];
+const Steps = ({ match, history }) => {
+  const location = useLocation()
+  let voteValue = location.voteValue ? location.voteValue.vote : null
+  const { web3 } = useContext(VoteContext)
+  const { setToastProperties } = useContext(ToastContext)
+  const { selection, currentRequirementStep, updateCurrentRequirementStep, checkRequirements } =
+    useContext(IssueContext)
 
-const Steps = (props) => {
-  const { step, voterInfo } = useContext(VoteContext)
-  /* eslint-disable-next-line no-unused-vars */
-  const [currentStep, updateCurrentStep] = useState(step)
-  const Step = Step7
-  useEffect(() => {
-    updateCurrentStep(step)
-  }, [step])
+  const [requirementCheckProgress, updateRequirementCheckProgress] = useState(false)
+  const [localStorageData, updatelocalStorageData] = useState(true)
+  const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, "/")
+
+  // Store data in local storage for the reload
+  const storeDataInLocalStorage = async () => {
+    if (!get(selection, "proposal") && !location.voteValue) {
+      const data = JSON.parse(localStorage.getItem(issuePath))
+      if (data && data.selection && data.vote) {
+        updatelocalStorageData(true)
+      } else {
+        updatelocalStorageData(false)
+      }
+      return
+    }
+
+    if (!location.voteValue || !selection) return
+
+    const storagePayload = {
+      selection,
+      vote: location.voteValue.vote,
+    }
+
+    localStorage.setItem(issuePath, JSON.stringify(storagePayload))
+  }
+
+  const retrieveDataFromLocalStorage = async () => {
+    const data = JSON.parse(localStorage.getItem(issuePath))
+    if (data) {
+      if (data.selection) {
+        selection.proposal = data.selection.proposal
+        selection.counterProposal = data.selection.counterProposal
+      }
+
+      if (data.vote) {
+        voteValue = data.vote
+      }
+    }
+  }
+
+  retrieveDataFromLocalStorage()
 
   const setCitizenID = async () => {
-    localStorage.setItem('citizenID', voterInfo.unverifiedCitizen)
+    const userWalletAddress = await getUserMetamaskAddress(web3)
+    const userDetails = await getUserRegistration(userWalletAddress)
+    localStorage.setItem("citizenID", userDetails.unverifiedCitizen)
     return true
   }
 
+  const proceedWithExtensionInstall = async () => {
+    updateRequirementCheckProgress(true)
+    const isMetamaskInstalled = await checkWalletInstallation()
+    if (isMetamaskInstalled) {
+      await updateCurrentRequirementStep(2)
+    } else {
+      toast.warning("Please install ztm wallet extension by following the steps on screen")
+      window.location.reload()
+    }
+    updateRequirementCheckProgress(false)
+  }
+
+  const proceedWithExtensionNetwork = async () => {
+    updateRequirementCheckProgress(true)
+    const isCorrectNetwork = await checkNetwork(web3)
+    if (isCorrectNetwork) {
+      updateCurrentRequirementStep(false)
+      await checkRequirements()
+    } else {
+      const message = "Please follow the instructions on screen to setup network."
+      setToastProperties({ message, type: "error" })
+    }
+    updateRequirementCheckProgress(false)
+  }
+
+  const proceedWithWalletAccount = async () => {
+    updateRequirementCheckProgress(true)
+    const userWalletAddress = await getUserMetamaskAddress(web3)
+    if (userWalletAddress) {
+      updateRequirementCheckProgress(false)
+      await checkRequirements()
+    } else {
+      const message = "Please follow the instructions on screen to create or import wallet."
+      setToastProperties({ message, type: "error" })
+    }
+    updateRequirementCheckProgress(false)
+  }
+
+  const proceedWithRegistration = async () => {
+    updateRequirementCheckProgress(true)
+    const userWalletAddress = await getUserMetamaskAddress(web3)
+    const userDetails = await getUserRegistration(userWalletAddress)
+    if (userDetails) {
+      updateRequirementCheckProgress(false)
+      await checkRequirements()
+    } else {
+      const message = "Please follow the instructions on screen to register your Voter ID."
+      setToastProperties({ message, type: "error" })
+    }
+    updateRequirementCheckProgress(false)
+  }
+
+  const proceedWithVerification = async () => {
+    updateRequirementCheckProgress(true)
+    const userWalletAddress = await getUserMetamaskAddress(web3)
+    const userDetails = await getUserRegistration(userWalletAddress)
+    if (userDetails.verifiedCitizen) {
+      updateRequirementCheckProgress(false)
+      await checkRequirements()
+    } else {
+      toast.warning()
+      const message = "Please follow the instructions on screen to verify your Voter ID."
+      setToastProperties({ message, type: "error" })
+    }
+    updateRequirementCheckProgress(false)
+  }
+
+  const proceedToVote = async () => {
+    await setCitizenID()
+    history.push(`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/finalize`, {
+      vote: voteValue,
+    })
+  }
+
   useEffect(() => {
-    setCitizenID()
+    storeDataInLocalStorage()
   }, [])
+
+  useEffect(() => {
+    checkRequirements()
+  }, [])
+
+  if (!localStorageData) {
+    return <Redirect to={`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}`} />
+  }
+
+  if (currentRequirementStep === 6) {
+    history.push(`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}/finalize`, {
+      vote: voteValue,
+    })
+  }
 
   return (
     <div>
-      <Body>
-        <Step updateCurrentStep={updateCurrentStep} {...props} />
-      </Body>
+      <OverlaySpinner loading={requirementCheckProgress} />
+      {
+        {
+          1: <Step4 proceed={proceedWithExtensionInstall} />,
+          2: <Step5 proceed={proceedWithExtensionNetwork} />,
+          3: <NoAccount proceed={proceedWithWalletAccount} />,
+          4: <Step6 proceed={proceedWithRegistration} />,
+          5: <UnverifiedCitizen proceed={proceedWithVerification} />,
+          6: <Step7 proceed={proceedToVote} />,
+        }[currentRequirementStep]
+      }
+      {/* <Step updateCurrentStep={updateCurrentStep} {...props} /> */}
     </div>
   )
 }
 
-export default Steps
+const stepWrapper = (props) => {
+  return (
+    <VoteProvider>
+      <Steps {...props} />
+    </VoteProvider>
+  )
+}
 
-// const Header = styled.div`
-//     display: flex;
-//     justify-content: space-between;
-//   `,
-//   HeaderTitle = styled.div`
-//     font-size: 30px;
-//     font-weight: 600;
-//   `,
-//   StyledSteps = styled.div`
-//     display: flex;
-//     img {
-//       height: 30px;
-//     }
-//     div:last-child {
-//       img {
-//         display: none;
-//       }
-//     }
-//   `,
-//   StepWrapper = styled.div`
-//     display: flex;
-//     align-items: center;
-//   `,
-//   Circle = styled.div`
-//     height: 70px;
-//     width: 70px;
-//     display: flex;
-//     align-items: center;
-//     justify-content: center;
-//     color: #fff;
-//     font-size: 30px;
-//     font-weight: 600;
-//     background-color: ${props =>
-//     props.active ? colors.primary : colors.backgroundColor};
-//     border-radius: 50%;
-//   `,
-const Body = styled.div`
-  box-shadow: 0px -1px 15px rgba(0, 0, 0, 0.12);
-  border-radius: 8px;
-  padding: 58px 80px;
-  margin: 40px 0;
-`
+export default stepWrapper

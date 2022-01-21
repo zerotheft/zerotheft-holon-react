@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState } from "react"
 
 export default (apiFunc, initialLoading, callback) => {
   const [loading, updateLoading] = useState(initialLoading || false),

@@ -1,9 +1,9 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react"
+import PropTypes from "prop-types"
 
-import Honeybadger from '@honeybadger-io/js'
-import mainConfig from 'config'
-import ErrorPage from './ErrorPage'
+import Honeybadger from "@honeybadger-io/js"
+import mainConfig from "config"
+import ErrorPage from "./ErrorPage"
 
 const { MODE, HONEYBADGER_API_KEY } = mainConfig
 

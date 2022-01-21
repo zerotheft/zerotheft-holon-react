@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
-import { startCase, compact, concat, get } from 'lodash'
-import styled from 'styled-components'
-import PropTypes from 'prop-types'
+import React, { useEffect } from "react"
+import { startCase, compact, concat, get } from "lodash"
+import styled from "styled-components"
+import PropTypes from "prop-types"
 
-import { Wrapper, Container } from 'commons/styles'
-import Button from 'commons/Buttons'
-import { convertJSONtoString } from 'utils'
-import { getProposal } from 'apis/proposals'
-import useFetch from 'commons/hooks/useFetch'
-import OverlaySpinner from 'commons/OverlaySpinner'
+import { Wrapper, Container } from "commons/styles"
+import Button from "commons/Buttons"
+import { convertJSONtoString } from "utils"
+import { getProposal } from "apis/proposals"
+import useFetch from "commons/hooks/useFetch"
+import OverlaySpinner from "commons/OverlaySpinner"
 
 const ViewProposal = ({ match, history }) => {
   const [getProposalApi, loading, proposal] = useFetch(getProposal, true)
@@ -20,10 +20,10 @@ const ViewProposal = ({ match, history }) => {
   if (loading) return <OverlaySpinner loading />
   if (!proposal || !proposal.detail) return <div style={{ padding: 40 }}>Proposal is not available.</div>
 
-  const hierarchy = proposal.detail.Hierarchy || proposal.detail.hierarchy || ''
-  const pathArray = compact(hierarchy.split('/'))
+  const hierarchy = proposal.detail.Hierarchy || proposal.detail.hierarchy || ""
+  const pathArray = compact(hierarchy.split("/"))
   const issue = pathArray.pop()
-  const path = concat(get(proposal, 'detail.summary_country', 'USA'), pathArray).join('%2F')
+  const path = concat(get(proposal, "detail.summary_country", "USA"), pathArray).join("%2F")
 
   return (
     <Wrapper>

@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react'
-import { Wrapper, Container } from 'commons/styles'
-import { HeaderContainer, ButtonSection, DataSection, VoteDetailSection } from '../styles'
+import React from "react"
+import { Wrapper, Container } from "commons/styles"
+import { HeaderContainer, ButtonSection, DataSection, VoteDetailSection } from "../styles"
 
 const Citizen = () => {
   return (

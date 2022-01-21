@@ -1,7 +1,7 @@
-import { useContext } from 'react'
-import { Web3Context } from 'components/App/Web3Context'
-import { saveTransaction } from 'apis/centralizedServer'
-import config from 'config'
+import { useContext } from "react"
+import { Web3Context } from "components/App/Web3Context"
+import { saveTransaction } from "apis/centralizedServer"
+import config from "config"
 
 const { GAS_PRICE } = config
 
@@ -63,7 +63,7 @@ const getBalance = async (web3, address) => {
     defAddress = accounts[0]
   }
   const bal = await web3.eth.getBalance(defAddress)
-  return bal ? web3.utils.fromWei(bal, 'ether') : 0
+  return bal ? web3.utils.fromWei(bal, "ether") : 0
 }
 
 const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [], txDetails, gasLimit = 3000000) => {
@@ -91,7 +91,7 @@ const carryTransaction = async (web3, loadWeb3, contract, methodName, args = [],
       ...{
         nonce: web3.utils.toHex(txCount),
         gasLimit: web3.utils.toHex(300000),
-        gasPrice: web3.utils.toHex(web3.utils.toWei(GAS_PRICE.toString() || '30', 'gwei')),
+        gasPrice: web3.utils.toHex(web3.utils.toWei(GAS_PRICE.toString() || "30", "gwei")),
       },
       ...obj,
     }

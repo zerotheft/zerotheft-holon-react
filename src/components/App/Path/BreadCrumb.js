@@ -1,15 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { colors } from 'theme'
-import { get, startCase } from 'lodash'
-import styled from 'styled-components'
+import React from "react"
+import PropTypes from "prop-types"
+import { get, startCase } from "lodash"
+import styled from "styled-components"
+import { colors } from "theme"
 
-import { Container } from 'commons/styles'
+import { Container } from "commons/styles"
 
 const BreadCrumbs = ({ match }) => {
-  let breadcrumb = get(match, 'params.pathname').split('%2F')
+  let breadcrumb = get(match, "params.pathname").split("%2F")
   if (breadcrumb.length) {
-    let currentPath = ''
+    let currentPath = ""
     breadcrumb = breadcrumb.map((i) => {
       currentPath = currentPath ? `${currentPath}%2F${i}` : i
       return { label: i, path: currentPath }
@@ -44,7 +44,7 @@ const Wrapper = styled(Container)`
     li {
       &:not(:last-of-type) {
         &::after {
-          content: '>';
+          content: ">";
           margin: 0 5px;
         }
       }
