@@ -1,8 +1,11 @@
 import React from "react"
-import { get, orderBy } from "lodash"
+import { get } from "lodash"
 import { useRouteMatch } from "react-router-dom"
 import { Button, Divider, Grid, LinearProgress, List, ListItem, ListItemButton, Rating } from "@mui/material"
 import { Box } from "@mui/system"
+
+import { styled } from "@mui/material/styles"
+
 import { NavigateNext } from "@mui/icons-material"
 import OverlaySpinner from "commons/OverlaySpinner"
 
@@ -16,8 +19,6 @@ import {
   ButtonText1,
 } from "commons/newStyles"
 import { numberWithCommas } from "utils"
-import useFetch from "commons/hooks/useFetch"
-import { getTheftInfo } from "apis/reports"
 import { colors } from "theme"
 
 // import { IssueContext } from '../../IssueContext'
@@ -34,26 +35,20 @@ const Points = ({
 }) => {
   const match = useRouteMatch()
 
-  const [theftInfo] = useFetch(getTheftInfo)
-  const theftData = theftInfo && theftInfo[`${match.params.pathname}/${match.params.id}`.replaceAll("%2F", "/")]
+  const StyledRating = styled(Rating)({
+    "& .MuiRating-iconFilled": {
+      color: colors.secondaryVariant2,
+    },
+    "& .MuiRating-iconEmpty": {
+      color: colors.grey300,
+    },
+  })
 
-  // const history = useHistory()
-
-  // const { selection, updateSelection } = useContext(IssueContext)
-  data =
-    data.length > 0 &&
-    orderBy(
-      data,
-      (item) => {
-        return item.ratings.rating
-      },
-      ["desc"]
-    )
   return (
     <>
       {loading && <OverlaySpinner loading overlayParent />}
       <Box sx={{ px: 1, pt: 1 }}>
-        <SubTitle1>Select {counter ? "counter" : ""} proposal</SubTitle1>
+        <SubTitle1>Select {counter ? "Counter" : ""} Proposal</SubTitle1>
       </Box>
       <Box sx={{ width: "100%" }}>
         <List
@@ -72,13 +67,15 @@ const Points = ({
                       <Grid item xs={6}>
                         <BoldListText>#{i.id}</BoldListText>
                         <Box>
-                          <Rating
+                          <StyledRating
                             value={get(i, "ratings.rating", 0)}
                             name="proposal_rating"
                             readOnly
-                            sx={{ verticalAlign: "middle" }}
+                            sx={{
+                              verticalAlign: "middle",
+                            }}
                           />
-                          <LightListText>({numberWithCommas(get(theftData, "votes"))})</LightListText>
+                          <LightListText>({numberWithCommas(get(i, "ratings.count", 0))})</LightListText>
                         </Box>
                       </Grid>
                       <Grid item xs={6}>
@@ -87,10 +84,13 @@ const Points = ({
                             <LinearProgress
                               variant="determinate"
                               value={80}
+                              color="success"
                               sx={{
                                 height: "20px",
                                 borderRadius: "2px",
                                 color: colors.text.gray,
+                                backgroundColor: colors.background.white,
+                                border: `1px solid ${colors.bar.border}`,
                               }}
                             />
                           </div>
@@ -101,7 +101,7 @@ const Points = ({
                           </div>
                         </div>
                         <div style={{ float: "right" }}>
-                          <NavigateNext />
+                          <NavigateNext sx={{ color: colors.grey500 }} />
                         </div>
                       </Grid>
                     </Grid>
@@ -139,14 +139,18 @@ const Points = ({
             left: "10px",
             right: "10px",
             textAlign: "center",
+            paddingTop: "10px",
+            paddingBottom: "10px",
           }}
         >
-          {data.length ? <GrayHeadlineH4>None of these are accurate</GrayHeadlineH4> : null}
+          {data.length ? (
+            <GrayHeadlineH4 style={{ fontSize: "18px" }}>None of these are accurate</GrayHeadlineH4>
+          ) : null}
           {data.length ? (
             <div className="btns">
               <Button
                 variant="contained"
-                sx={{ marginY: "15px", padding: "6px" }}
+                sx={{ marginTop: "10px", padding: "6px" }}
                 href={`zerotheft://home/path/${match.params.pathname}%2F${match.params.id}/create-${
                   counter ? "counter-" : ""
                 }proposal`}

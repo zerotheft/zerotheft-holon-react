@@ -1,9 +1,9 @@
 import React, { useContext } from "react"
 import { get } from "lodash"
 import { Redirect } from "react-router-dom"
-import styled from "styled-components"
 
-import { colors } from "theme"
+import { Grid } from "@mui/material"
+import { CardSection, PrimaryHeadlineH2 } from "commons/newStyles"
 import { IssueContext } from "../IssueContext"
 import Compare from "../commons/Compare"
 
@@ -15,36 +15,28 @@ const Vote = ({ match }) => {
     return <Redirect to={`/path/${get(match, "params.pathname")}/issue/${get(match, "params.id")}`} />
 
   return (
-    <Wrapper>
-      <Header>
-        <div>VOTE</div>
-        <div>
-          if there was or was not theft <br />
-          (Ethically, not legally)
-        </div>
-      </Header>
-      <Compare data={selection} title={title} id={get(match, "params.id")} />
-    </Wrapper>
+    <>
+      <Grid container spacing={2} sx={{ mt: 0 }}>
+        <Grid item lg={12} xs={12} sm={12} xl={12} md={12} style={{ paddingTop: "0px" }}>
+          <CardSection>
+            <Grid container sx={{ alignItems: "center", pt: 0, mt: 0 }}>
+              <Grid item lg={1} xs={1} sm={1} xl={1} md={1}>
+                <PrimaryHeadlineH2>VOTE</PrimaryHeadlineH2>
+              </Grid>
+              <Grid item lg={11} xs={11} sm={11} xl={11} md={11}>
+                <div>
+                  If there was or was not theft <br /> (Ethically, not Legally)
+                </div>
+              </Grid>
+            </Grid>
+          </CardSection>
+        </Grid>
+        <Grid item xs={12} sx={{ mt: "20px" }} style={{ paddingTop: "0px" }}>
+          <Compare data={selection} title={title} id={get(match, "params.id")} />
+        </Grid>
+      </Grid>
+    </>
   )
 }
 
 export default Vote
-
-const Wrapper = styled.div`
-    padding-top: 75px;
-  `,
-  Header = styled.div`
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    & > div:first-of-type {
-      font-size: 74px;
-      font-weight: 800;
-      color: ${colors.primary};
-    }
-    & > div:last-of-type {
-      font-size: 19px;
-      font-weight: 500;
-      margin-left: 15px;
-    }
-  `

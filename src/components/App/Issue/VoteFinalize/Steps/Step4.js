@@ -1,59 +1,65 @@
 import React, { useContext, useEffect } from "react"
 import { Button, Grid } from "@mui/material"
+import { NavigateNext } from "@mui/icons-material"
+import { ZTM_WALLET_URL } from "constants/index"
 import { CardSection, GrayHeadlineH3, GraySubTextdimP, GraySubTextUL, MaterialLinkText } from "commons/newStyles"
 import metamaskIcon from "assets/icons/metamask.svg"
+import config from "config"
+import { ToastContext } from "commons/ToastContext"
+import useWeb3 from "utils/useWeb3"
 import { VoteContext } from "../VoteContext"
 import { OrderedList } from "./styles"
 import { ButtonsWrapper } from "./Buttons"
 
-const Step4 = ({ proceed }) => {
-  const { checkStep, loadWeb3 } = useContext(VoteContext)
-
+const Step4 = () => {
+  const { checkStep } = useContext(VoteContext)
+  const { CHAIN_NAME } = config
+  const { setToastProperties } = useContext(ToastContext)
+  const { isWalletInstalled } = useWeb3()
+  const { installed } = isWalletInstalled()
   useEffect(() => {
     checkStep()
   }, [])
 
-  const connectMetamask = () => {
-    if (window.etherem) {
-      loadWeb3()
-    } else {
-      // window.location.href = buildUrl()
-      window.location.reload()
+  const handleContinue = async () => {
+    window.location.reload()
+    if (!installed) {
+      const message = "Please install wallet extension."
+      setToastProperties({ message, type: "error" })
     }
   }
 
   return (
     <CardSection>
-      <Grid container>
-        <Grid item xs={12} md={6} sm={8} lg={8} xl={8}>
-          <GrayHeadlineH3>Setup Zerotheft Wallet</GrayHeadlineH3>{" "}
+      <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        <Grid item xs={12} md={6} sm={9} lg={6} xl={9}>
+          <GrayHeadlineH3>Please install our Chrome Extension</GrayHeadlineH3>
           <GraySubTextUL>
+            <p>
+              You need to install the wallet to have the necessary funds to deploy your votes and proposals on the
+              {CHAIN_NAME} blockchain. Follow the steps below to install ZTM Browser Extension.
+            </p>
             <OrderedList>
               <li>
-                Download and open Zerotheft Wallet{" "}
-                <MaterialLinkText
-                  onClick={() =>
-                    window.open(
-                      "https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn",
-                      "_blank"
-                    )
-                  }
-                >
-                  Download Metamask
-                </MaterialLinkText>
+                Download wallet extension from{" "}
+                <a href={`${ZTM_WALLET_URL}`}>
+                  <MaterialLinkText>here</MaterialLinkText>
+                </a>
               </li>
-              <li>Create your zerotheft wallet account by clicking create wallet button and follow necessary steps.</li>
-              <li>
-                Connect zerotheft wallet to our holon.{" "}
-                <MaterialLinkText onClick={() => connectMetamask()}>Connect</MaterialLinkText>
-              </li>
+              <li> Unzip the file </li>
+              <li> Go to chrome://extensions/ </li>
+              <li>On the right side, Enable developer mode by toggling the button</li>
+              <li> From menu bar, click on load unpacked </li>
+              <li> Select the extracted folder. </li>
+              <li>Once selected, extension will automatically be added to the chrome</li>
             </OrderedList>
             <ButtonsWrapper>
               <Button
                 variant="contained"
                 onClick={async () => {
-                  await proceed()
+                  await handleContinue()
                 }}
+                endIcon={<NavigateNext />}
               >
                 CONTINUE
               </Button>
@@ -75,7 +81,7 @@ const Step4 = ({ proceed }) => {
             </GraySubTextdimP>
           </GraySubTextUL>
         </Grid>
-        <Grid item xs={12} md={6} sm={4} lg={4} xl={4}>
+        <Grid item xs={12} md={6} sm={9} lg={3} xl={2} sx={{ flexDirection: { xs: "row", md: "column" } }}>
           <img src={metamaskIcon} alt="Metamask extension" />
         </Grid>
       </Grid>

@@ -30,7 +30,7 @@ export const Header = styled.div`
     color: #99;
   `,
   NoChartText = styled.div`
-    background: ${colors.warningBGColor};
+    background: ${colors.errorLight};
     border-radius: 5px;
     padding: 6px;
     color: ${colors.text.white};
