@@ -1,10 +1,12 @@
 import React, { useState, useContext } from "react"
-import { get } from "lodash"
-import { Grid } from "@mui/material"
+import { get, orderBy } from "lodash"
+import { Alert, Grid } from "@mui/material"
+import { Box } from "@mui/system"
 import { API_URL } from "constants/index"
 
 import { CardSectionNoPadding } from "commons/newStyles"
 import OverlaySpinner from "commons/OverlaySpinner"
+import { colors } from "theme"
 import { IssueContext } from "../IssueContext"
 import { AppContext } from "../../AppContext"
 import Points from "../commons/Points"
@@ -26,7 +28,18 @@ const Proposals = ({ history, match }) => {
     isUmbrella ? "multiIssueReport" : "ztReport"
   }/${issuePath.replace(/\//g, "-")}`
 
-  const proposalsData = get(issue, "proposals", [])
+  let proposalsData = get(issue, "proposals", [])
+
+  proposalsData =
+    proposalsData.length > 0 &&
+    orderBy(
+      proposalsData,
+      (item) => {
+        return item.ratings.rating
+      },
+      ["desc"]
+    )
+
   if (!selectedItem.id) {
     if (proposalsData && proposalsData.length > 0) {
       updateSelectedItem(proposalsData[0])
@@ -54,11 +67,30 @@ const Proposals = ({ history, match }) => {
   }
 
   if (loading) {
-    return <OverlaySpinner />
+    return <OverlaySpinner loading={loading} />
   }
 
   return (
     <>
+      <Box>
+        <Alert
+          severity="warning"
+          sx={{
+            backgroundColor: colors.warningWrapper.backgroundColor,
+            borderRadius: "5px",
+            padding: "2px 16px",
+            fontSize: "14px",
+            letterSpacing: "0.15px",
+            lineHeight: "143%",
+            display: "inline-flex",
+            float: "right",
+            marginTop: "-36px",
+            marginBottom: "5px",
+          }}
+        >
+          The amounts and reasoning comes from citizens. Not from the ZTM company or this website.
+        </Alert>
+      </Box>
       <Grid container spacing={2} sx={{ mt: 0 }}>
         <div style={{ width: "375px" }}>
           <CardSectionNoPadding

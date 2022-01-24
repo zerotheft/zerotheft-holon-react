@@ -18,6 +18,9 @@ const useWeb3 = () => {
     convertStringToHash: (...args) => convertStringToHash(web3, ...args),
     convertToAscii: (...args) => convertToAscii(web3, ...args),
     carryTransaction: (...args) => carryTransaction(web3, loadWeb3, ...args),
+    isCorrectNetworkSelected: () => isCorrectNetworkSelected(),
+    isWalletInstalled: (...args) => isWalletInstalled(...args),
+    addOrSwitchCorrectNetwork: () => addOrSwitchCorrectNetwork(),
   }
 }
 
@@ -146,4 +149,74 @@ const convertStringToHash = (web3, item) => {
 
 const convertToAscii = (web3, item) => {
   return web3.utils.asciiToHex(item)
+}
+
+/**
+ * This method checks if user installed ethereum extension.
+ *  @param {null} - no params needed to be passed to this function.
+ *  @returns {Object} - installed status and name of extension if installed.
+ */
+const isWalletInstalled = () => {
+  if (window.ethereum || window.web3) {
+    let extensionInstalled = "none"
+    if (window.ethereum.isZTMWallet) {
+      extensionInstalled = "ztmwallet"
+    }
+    if (window.ethereum.isMetaMask) {
+      extensionInstalled = "metamask"
+    }
+    return { installed: true, installedExtension: extensionInstalled }
+  }
+  return { installed: false }
+}
+
+/**
+ * This method checks if user has selected correct network in the browser extension.
+ * `true` if network is right else `false`
+ * @param {null}
+ * @returns {Boolean} - flag if the chainId of extension network is same as config
+ */
+const isCorrectNetworkSelected = () => {
+  return window.ethereum.chainId === `0x${config.CHAIN_ID.toString(16)}`
+}
+
+/**
+ *
+ * @dev `addOrSwitchCorrectNetwork` method does following:
+ * - swtich network to the correct network
+ * - if correct network not found then add correct network to the browser extension
+ * - for development mode it does nothing but raise exception; since cannot add or switch network in development mode
+ *
+ * @param {null}
+ * @returns {null}
+ */
+const addOrSwitchCorrectNetwork = async () => {
+  const { CHAIN_ID, NETWORK_PARAMS, MODE } = config
+  const chainIDHex = `0x${CHAIN_ID.toString(16)}`
+
+  // In development mode switch and add doesn't work
+  if (MODE === "development" && !isCorrectNetworkSelected()) {
+    throw new Error("Please select the correct network in your browser wallet.")
+  }
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: chainIDHex }],
+    })
+  } catch (switchError) {
+    // This error code indicates that the chain has not been added to MetaMask.
+    if (switchError.code === 4902) {
+      // eslint-disable-next-line no-useless-catch
+      try {
+        await window.ethereum.request({
+          method: "wallet_addEthereumChain",
+          params: [NETWORK_PARAMS],
+        })
+      } catch (addError) {
+        throw addError
+      }
+    } else {
+      throw switchError
+    }
+  }
 }

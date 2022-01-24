@@ -65,11 +65,13 @@ const Header = () => {
     display: "flex",
     color: colors.grey500,
     fontSize: "14px",
+    textTransform: "unset",
   }
 
   const SubButtonSx = {
     display: "flex",
     color: colors.grey500,
+    textTransform: "unset",
   }
 
   useEffect(() => {

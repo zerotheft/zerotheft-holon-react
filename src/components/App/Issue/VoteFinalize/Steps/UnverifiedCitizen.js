@@ -1,5 +1,6 @@
 import React from "react"
 import { Button, Grid } from "@mui/material"
+import { NavigateNext } from "@mui/icons-material"
 import config from "config"
 import {
   CardSection,
@@ -45,6 +46,7 @@ const UnverifiedCitizen = ({ proceed }) => {
                 onClick={async () => {
                   await proceed()
                 }}
+                endIcon={<NavigateNext />}
               >
                 Continue
               </Button>
