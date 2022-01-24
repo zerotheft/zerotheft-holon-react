@@ -41,7 +41,7 @@ export const HeadlineH1 = styled.h1`
     font-size: 34px;
     line-height: 40px;
     letter-spacing: -0.01em;
-    color: #7f51c1;
+    color: ${colors.primaryDark};
   `,
   BlackHeadlineH3 = styled.h3`
     font-style: normal;
@@ -84,7 +84,6 @@ export const HeadlineH1 = styled.h1`
     font-size: 16px;
     line-height: 24px;
     letter-spacing: 0.44px;
-    color: #000000;
     color: ${colors.text.completeBlack};
   `,
   BlackBody2 = styled.p`
@@ -175,7 +174,6 @@ export const HeadlineH1 = styled.h1`
     padding: 6px;
   `,
   PrimaryButtonText1 = styled.p`
-    font-family: Roboto;
     font-style: normal;
     font-weight: bold;
     font-size: 14px;

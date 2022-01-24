@@ -44,6 +44,7 @@ const ProposalReport = ({ item, reportPath }) => {
     [ratingLoader, updateRatingLoader] = useState(false)
 
   const { setToastProperties } = useContext(ToastContext)
+  const { addOrSwitchCorrectNetwork } = useWeb3()
 
   // const { ProposalReports } = useContext(IssueContext)
   let maxTheftYear = null
@@ -80,23 +81,21 @@ const ProposalReport = ({ item, reportPath }) => {
   const changeRating = async (newRating) => {
     try {
       updateRatingLoader(true)
-      const feedbackContract = await loadContract("test")
+      const feedbackContract = await loadContract("ZTMFeedbacks")
 
       const { account, web3 } = await getWalletAccount()
 
       // Check if chrome wallet extn is installed
       const chromeWallet = !!window.web3
       if (!chromeWallet) {
-        const message = "No zerotheft wallet found."
+        const message = "No browser wallet has been found."
         setToastProperties({ message, type: "error" })
         return
       }
 
       // Check if correct network is selected
       if (web3.currentProvider.chainId !== `0x${CHAIN_ID.toString(16)}`) {
-        const message = "Please select the correct network."
-        setToastProperties({ message, type: "error" })
-        return
+        await addOrSwitchCorrectNetwork()
       }
 
       // Check if `account` is a verified voter ID

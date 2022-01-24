@@ -24,7 +24,7 @@ const Step4 = () => {
   const handleContinue = async () => {
     window.location.reload()
     if (!installed) {
-      const message = "Please install wallet extension."
+      const message = "Please install browser wallet extension."
       setToastProperties({ message, type: "error" })
     }
   }

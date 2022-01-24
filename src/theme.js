@@ -17,6 +17,7 @@ export const colors = {
     grey500: "#9E9E9E",
     grey700: "#616161",
     grey800: "#424242",
+    primaryDark: "#7f51c1",
     borders: {
       table: "#f2f2f2",
       dropdown: "#E7E9F1",
