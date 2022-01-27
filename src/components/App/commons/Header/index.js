@@ -140,25 +140,31 @@ const Header = () => {
                 onClose={handleCloseMoreMenu}
               >
                 <SubMenuAnchor>
-                  <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                  <NavLink to={ROUTES.DATALIST} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="citizens">
                       <Typography textAlign="center">Citizens/Proposals</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                  <NavLink to={ROUTES.VOTELIST} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="votes">
                       <Typography textAlign="center">Votes</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="hierarchyYaml">
                       <Typography textAlign="center">HierarchyYaml</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                  <a
+                    href={ROUTES.EXPORT_LOCATION}
+                    activeClassName="active"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={handleCloseMoreMenu}
+                  >
                     <MenuItem key="exportedData">
                       <Typography textAlign="center">Exported Data</Typography>
                     </MenuItem>
