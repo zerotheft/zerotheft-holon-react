@@ -4,6 +4,7 @@ import { get } from "lodash"
 import { Redirect, useLocation } from "react-router"
 import OverlaySpinner from "commons/OverlaySpinner"
 import { ToastContext } from "commons/ToastContext"
+import useWeb3 from "utils/useWeb3"
 import { VoteContext, VoteProvider } from "../VoteContext"
 import { checkNetwork, checkWalletInstallation, getUserMetamaskAddress, getUserRegistration } from "../voteConditions"
 
@@ -23,6 +24,7 @@ const Steps = ({ match, history }) => {
   const { selection, currentRequirementStep, updateCurrentRequirementStep, checkRequirements } =
     useContext(IssueContext)
 
+  const { addOrSwitchCorrectNetwork } = useWeb3()
   const [requirementCheckProgress, updateRequirementCheckProgress] = useState(false)
   const [localStorageData, updatelocalStorageData] = useState(true)
   const issuePath = `${match.params.pathname}/${match.params.id}`.replace(/%2F/g, "/")
@@ -91,8 +93,8 @@ const Steps = ({ match, history }) => {
       updateCurrentRequirementStep(false)
       await checkRequirements()
     } else {
-      const message = "Please follow the instructions on screen to setup network."
-      setToastProperties({ message, type: "error" })
+      await addOrSwitchCorrectNetwork()
+      await checkRequirements()
     }
     updateRequirementCheckProgress(false)
   }

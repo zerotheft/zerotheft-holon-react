@@ -34,7 +34,7 @@ const ProposalDetail = ({
     item && getProposalApi(item.id)
   }, [item])
 
-  if (proposalLoading && proposalLength > 0) {
+  if (proposalLoading) {
     return (
       <Body>
         <OverlaySpinner overlayParent loading backgroundColor="transparent" />
@@ -120,12 +120,7 @@ const ProposalDetail = ({
                   >
                     {convertJSONtoString(get(proposalInfo, "detail", {}))}
                   </div>
-                ) : (
-                  <>
-                    {get(item, "title") && <h5>{get(item, "title")}</h5>}
-                    <p>{get(item, "description")}</p>
-                  </>
-                )}
+                ) : null}
               </div>
             </>
           )}
