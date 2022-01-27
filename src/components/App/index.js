@@ -34,7 +34,7 @@ import ViewProposal from "./ViewProposal"
 
 const Wrapper = styled.section`
   min-height: 100vh;
-  padding: ${height.header}px 0 25px;
+  padding: ${height.header}px 0 0;
   background: ${colors.background.body};
   overflow: auto;
 `

@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import MenuIcon from "@mui/icons-material/Menu"
-import { Apps, Dvr, Home, Language, MoreVert, ViewList } from "@mui/icons-material"
+import { Apps, Dvr, Home, Language, MoreVert, ViewList, KeyboardArrowDown } from "@mui/icons-material"
 import config from "config"
 import BRANDLOGO from "assets/icons/zerotheft.svg"
 
@@ -16,7 +16,7 @@ import useFetch from "commons/hooks/useFetch"
 import * as ROUTES from "constants/routes"
 
 // import { Container } from "commons/styles";
-import { colors } from "theme"
+import { colors, height } from "theme"
 
 import { AppContext } from "../../AppContext"
 
@@ -82,7 +82,7 @@ const Header = () => {
   return (
     <AppBar color="neutral">
       <Container maxWidth="false">
-        <Toolbar disableGutters>
+        <NavToolBar disableGutters>
           <NavLink to="/">
             <Box component="img" alt="Your logo." src={BRANDLOGO} sx={{ display: { xs: "none", md: "flex" } }} />
           </NavLink>
@@ -113,19 +113,23 @@ const Header = () => {
                 </Button>
               </NavLink>
 
-              <Button
+              <NavButton
                 startIcon={<Apps />}
                 key="more"
                 onClick={handleOpenMoreMenu}
                 variant="text"
                 sx={buttonSx}
                 activeClassName="active"
+                endIcon={<KeyboardArrowDown />}
               >
                 More
-              </Button>
+              </NavButton>
 
               <Menu
-                sx={{ mt: "45px" }}
+                sx={{
+                  mt: "36px",
+                  pt: "0px",
+                }}
                 id="menu-appbar"
                 anchorEl={anchorElMore}
                 anchorOrigin={{
@@ -314,7 +318,7 @@ const Header = () => {
               <img src={BRANDLOGO} alt="Zerotheft Movement" />
             </Link>
           </Typography>
-        </Toolbar>
+        </NavToolBar>
       </Container>
     </AppBar>
   )
@@ -322,27 +326,48 @@ const Header = () => {
 
 export default Header
 
-const MenuAnchor = styled.div`
-  display: flex;
-  a {
-    text-decoration: none;
-    button {
-      min-height: 100%;
+const NavToolBar = styled(Toolbar)`
+    height: ${height.header}px;
+    min-height: ${height.header}px;
+  `,
+  NavButton = styled(Button)`
+    &&:hover {
+      background-color: rgba(127, 88, 191, 0.04);
     }
-  }
-  .active {
-    button {
+    &:focus {
+      background-color: ${colors.white};
+    }
+    &.active {
       color: ${colors.primary};
-      svg {
-        path {
-          fill: ${colors.primary};
+    }
+    span.MuiButton-endIcon {
+      margin-left: 0;
+    }
+  `,
+  MenuAnchor = styled.div`
+    display: flex;
+    a {
+      text-decoration: none;
+      button {
+        min-height: 100%;
+      }
+    }
+    .active {
+      button {
+        color: ${colors.primary};
+        svg {
+          path {
+            fill: ${colors.primary};
+          }
         }
       }
     }
-  }
-`
+  `
 
 const SubMenuAnchor = styled.div`
+  p {
+    font-size: 14px !important;
+  }
   a {
     text-decoration: none;
     color: ${colors.grey500};
