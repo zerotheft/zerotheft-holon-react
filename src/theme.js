@@ -84,7 +84,7 @@ export const colors = {
     },
   },
   height = {
-    header: 75,
+    header: 56,
     footer: 25,
   },
   fontSize = {
