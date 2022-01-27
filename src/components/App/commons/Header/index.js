@@ -41,6 +41,7 @@ const Header = () => {
   }
 
   const handleCloseNavMenu = () => {
+    handleCloseMoreMenuSmall()
     setAnchorElNav(null)
   }
 
@@ -140,25 +141,31 @@ const Header = () => {
                 onClose={handleCloseMoreMenu}
               >
                 <SubMenuAnchor>
-                  <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                  <NavLink to={ROUTES.DATALIST} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="citizens">
                       <Typography textAlign="center">Citizens/Proposals</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                  <NavLink to={ROUTES.VOTELIST} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="votes">
                       <Typography textAlign="center">Votes</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="hierarchyYaml">
                       <Typography textAlign="center">HierarchyYaml</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                  <a
+                    href={ROUTES.EXPORT_LOCATION}
+                    activeClassName="active"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={handleCloseMoreMenu}
+                  >
                     <MenuItem key="exportedData">
                       <Typography textAlign="center">Exported Data</Typography>
                     </MenuItem>
@@ -199,7 +206,7 @@ const Header = () => {
             >
               <SubMenuAnchor>
                 <MenuItem key="home">
-                  <NavLink to={ROUTES.HOME} exact activeClassName="active">
+                  <NavLink to={ROUTES.HOME} exact activeClassName="active" onClick={handleCloseNavMenu}>
                     <Button startIcon={<Home />} key="home" variant="text" sx={SubButtonSx}>
                       Home
                     </Button>
@@ -209,7 +216,12 @@ const Header = () => {
 
               <SubMenuAnchor>
                 <MenuItem key="holon">
-                  <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
+                  <a
+                    href={`${CENTRALIZED_SERVER_FRONTEND}/holons`}
+                    onClick={handleCloseNavMenu}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Button startIcon={<Language />} key="holon" variant="text" sx={SubButtonSx}>
                       Holons
                     </Button>
@@ -219,7 +231,7 @@ const Header = () => {
 
               <SubMenuAnchor>
                 <MenuItem key="path">
-                  <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active">
+                  <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active" onClick={handleCloseNavMenu}>
                     <Button startIcon={<ViewList />} key="path" variant="text" sx={SubButtonSx}>
                       Path
                     </Button>
@@ -259,25 +271,31 @@ const Header = () => {
               onClose={handleCloseMoreMenuSmall}
             >
               <SubMenuAnchor>
-                <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                <NavLink to={ROUTES.DATALIST} activeClassName="active" onClick={handleCloseNavMenu}>
                   <MenuItem key="citizens">
                     <Typography textAlign="center">Citizens/Proposals</Typography>
                   </MenuItem>
                 </NavLink>
 
-                <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                <NavLink to={ROUTES.VOTELIST} activeClassName="active" onClick={handleCloseNavMenu}>
                   <MenuItem key="votes">
                     <Typography textAlign="center">Votes</Typography>
                   </MenuItem>
                 </NavLink>
 
-                <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                <NavLink to={ROUTES.HIERARCHY} activeClassName="active" onClick={handleCloseNavMenu}>
                   <MenuItem key="hierarchyYaml">
                     <Typography textAlign="center">HierarchyYaml</Typography>
                   </MenuItem>
                 </NavLink>
 
-                <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                <a
+                  href={ROUTES.EXPORT_LOCATION}
+                  activeClassName="active"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={handleCloseNavMenu}
+                >
                   <MenuItem key="exportedData">
                     <Typography textAlign="center">Exported Data</Typography>
                   </MenuItem>
