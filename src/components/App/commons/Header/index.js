@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import MenuIcon from "@mui/icons-material/Menu"
-import { Apps, Dvr, Home, Language, MoreVert, ViewList, KeyboardArrowDown } from "@mui/icons-material"
+import { ListAlt, Dvr, Home, Language, MoreVert, ViewList, KeyboardArrowDown } from "@mui/icons-material"
 import config from "config"
 import BRANDLOGO from "assets/icons/zerotheft.svg"
 
@@ -114,7 +114,7 @@ const Header = () => {
               </NavLink>
 
               <NavButton
-                startIcon={<Apps />}
+                startIcon={<ListAlt />}
                 key="more"
                 onClick={handleOpenMoreMenu}
                 variant="text"
