@@ -17,7 +17,7 @@ export const post = async (path, data, apiUrl = API_URL) => {
     method: "post",
     data,
   }).catch((e) => {
-    throw e.response.data.error
+    throw e.response
   })
 }
 
