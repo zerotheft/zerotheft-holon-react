@@ -127,8 +127,13 @@ const IssueProvider = ({ children, id, match, location }) => {
         setToastProperties({ message, type: "success" })
         return true
       }
+
+      if (transferToWalletStatus.status === 400) {
+        return true
+      }
+
       setToastProperties({
-        message: transferToWalletStatus,
+        message: transferToWalletStatus.data.error,
         type: "error",
       })
       return false
