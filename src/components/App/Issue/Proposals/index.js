@@ -29,7 +29,6 @@ const Proposals = ({ history, match }) => {
   }/${issuePath.replace(/\//g, "-")}`
 
   let proposalsData = get(issue, "proposals", [])
-  console.log("Proposals dara", proposalsData)
   proposalsData =
     proposalsData.length > 0 &&
     orderBy(
