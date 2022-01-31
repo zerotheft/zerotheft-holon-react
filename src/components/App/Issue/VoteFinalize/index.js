@@ -145,8 +145,8 @@ const VoteFinalize = ({ match, location }) => {
     // showStepsPage(true);
 
     // For vote if all steps are completed
+    await vote(updatedVal)
     updateLoading(false)
-    vote(updatedVal)
   }
 
   useEffect(() => {
