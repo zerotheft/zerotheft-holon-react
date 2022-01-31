@@ -111,8 +111,14 @@ const CounterProposals = ({ history, match }) => {
               item={selectedItem}
               navigateToNext={navigateToNext}
               navigateToPrevious={navigateToPrevious}
-              nextDisableStatus={proposalsData.indexOf(selectedItem) + 1 >= proposalsData.length}
-              previousDisableStatus={proposalsData.indexOf(selectedItem) - 1 < 0}
+              nextDisableStatus={
+                proposalsData && proposalsData.length > 0
+                  ? proposalsData.indexOf(selectedItem) + 1 >= proposalsData.length
+                  : false
+              }
+              previousDisableStatus={
+                proposalsData && proposalsData.length > 0 ? proposalsData.indexOf(selectedItem) - 1 < 0 : false
+              }
               updateSelection={updateSelection}
               selection={selection}
               history={history}
