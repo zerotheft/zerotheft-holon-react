@@ -122,7 +122,8 @@ const IssueProvider = ({ children, id, match, location }) => {
         details
       )
 
-      if (transferToWalletStatus.status === "success") {
+      console.log("here", transferToWalletStatus)
+      if (transferToWalletStatus.success === true) {
         message = `We have successfully transferred ${amountToBefunded} to your wallet for voting.`
         setToastProperties({ message, type: "success" })
         return true
