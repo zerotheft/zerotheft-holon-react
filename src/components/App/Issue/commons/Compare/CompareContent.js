@@ -1,16 +1,25 @@
 import React, { useContext } from "react"
-import { get, lowerCase, upperCase, isEmpty } from "lodash"
+import { get, lowerCase, isEmpty } from "lodash"
 import { useHistory, useRouteMatch } from "react-router-dom"
-import StarRatings from "react-star-ratings"
 import styled from "styled-components"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFrown } from "@fortawesome/free-regular-svg-icons"
+import { Button } from "@mui/material"
+import { NavigateNext } from "@mui/icons-material"
 import { colors } from "theme"
-import Button from "commons/Buttons"
 import { convertJSONtoString } from "utils"
 
 import OverlaySpinner from "commons/OverlaySpinner"
+import {
+  BlackBody1,
+  BlackBody2,
+  BlackHeadlineH3,
+  ButtonText1,
+  GraySubtitle1,
+  PrimaryButtonText1,
+} from "commons/newStyles"
+import { CustomMUIRating } from "commons/muiCustomizedComponent"
 import { IssueContext } from "../../IssueContext"
 
 const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
@@ -35,26 +44,39 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
   if (lowerCase(vote) !== "yes" && lowerCase(vote) !== "no") return null
 
   return (
-    <Wrapper style={{ background: vote === "yes" ? "#EBF3F5" : "white" }}>
+    <Wrapper>
       <Header>
         <div className="left">
-          <div>{vote}</div>
-          <div>
-            there was {vote === "no" && "NO"} theft by
-            <br />
-            rigged economy
+          <div
+            style={{
+              color: vote === "yes" ? colors.background.green : colors.background.red,
+            }}
+          >
+            {vote}
+          </div>
+          <div style={{ marginLeft: "20px" }}>
+            <BlackBody2>
+              There was {vote === "no" && "NO"} theft by
+              <br />
+              rigged economy
+            </BlackBody2>
           </div>
         </div>
+
         {!hideBtn && !isEmpty(data) && (
           <Button
-            width={175}
-            height={55}
-            style={{ fontSize: 20, fontWeight: "700" }}
             onClick={async () => {
               await proceedToVoting()
             }}
+            variant="contained"
+            endIcon={<NavigateNext />}
+            size="large"
+            sx={{
+              borderRadius: "4px",
+              padding: "8px 16px",
+            }}
           >
-            I vote {upperCase(vote)}
+            <ButtonText1>I vote {vote}</ButtonText1>
           </Button>
         )}
       </Header>
@@ -62,10 +84,6 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
         <div>
           <span
             style={{
-              color: colors.primary,
-              fontSize: 15,
-              fontWeight: "500",
-              textDecoration: "underline",
               cursor: "pointer",
             }}
             onClick={() =>
@@ -76,21 +94,18 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
               )
             }
           >
-            select proposal
+            <PrimaryButtonText1>select proposal</PrimaryButtonText1>
           </span>
         </div>
       ) : (
         <>
-          <div style={{ fontSize: 20 }}>
-            This Proposal: ID {data.id}
+          <div>
+            <BlackBody1 style={{ display: "inline-block" }}>Proposal ID: {data.id}</BlackBody1>
             <span
               style={{
                 marginLeft: 15,
-                color: colors.primary,
-                fontSize: 15,
-                fontWeight: "500",
-                textDecoration: "underline",
                 cursor: "pointer",
+                display: "inline-block",
               }}
               onClick={() =>
                 history.push(
@@ -100,11 +115,37 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
                 )
               }
             >
-              change proposal
+              <PrimaryButtonText1>change proposal</PrimaryButtonText1>
             </span>
           </div>
-          <div>
-            <p>Theft Amount : {data.summary}</p>
+          <div style={{ marginTop: "22px" }}>
+            <BlackHeadlineH3> Theft Amount : {data.summary}</BlackHeadlineH3>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              marginTop: "6px",
+              marginBottom: "20px",
+            }}
+          >
+            <p>
+              <span style={{ verticalAlign: "middle", marginRight: "5px" }}>
+                <CustomMUIRating value={get(data, "ratings.rating", 0)} readOnly name="count_rating" />
+              </span>
+              <span style={{ marginRight: "10px" }}>({get(data, "ratings.count", 0)})</span>
+              <span style={{ verticalAlign: "middle", marginRight: "7px" }}>
+                <FontAwesomeIcon
+                  icon={faFrown}
+                  color={colors.text.deSaturatedRed}
+                  style={{
+                    height: "23px",
+                  }}
+                />
+              </span>
+              <span>{get(data, "complaints.count", 0)}</span>
+            </p>
           </div>
           <div
             style={{
@@ -113,9 +154,10 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
               justifyContent: "space-between",
             }}
           >
-            <p>
-              <span style={{ color: "#8D8D8D" }}>AUTHOR</span> {get(data, "author.name", "Anonymous")}
-            </p>
+            <GraySubtitle1>
+              <span style={{ color: colors.text.darkGray }}>AUTHOR</span>{" "}
+              <span style={{ color: colors.text.completeBlack }}>{get(data, "author.name", "Anonymous")}</span>
+            </GraySubtitle1>
             {/* <p>
           {get(data, 'ratings.count', 0)}
           <span style={{ margin: '0 5px' }}><StarRatings
@@ -128,28 +170,6 @@ const CompareContent = ({ vote = "yes", data = {}, id, hideBtn = false }) => {
           /></span>
           <FontAwesomeIcon icon={faFrown} color={colors.red} />{get(data, 'complaints.count', 0)}
         </p> */}
-          </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <p style={{ fontSize: 24 }}>
-              {get(data, "ratings.count", 0)}
-              <span style={{ margin: "0 5px" }}>
-                <StarRatings
-                  rating={get(data, "ratings.rating", 0)}
-                  starDimension="24px"
-                  starSpacing="1px"
-                  starRatedColor={colors.yellow}
-                  numberOfStars={5}
-                  name="count_rating"
-                />
-              </span>
-              <FontAwesomeIcon icon={faFrown} color={colors.red} /> {get(data, "complaints.count", 0)}
-            </p>
           </div>
           {data && details && (
             <>
@@ -173,15 +193,14 @@ export default CompareContent
 const Wrapper = styled.div`
     flex: 1;
     min-height: 0;
-    padding: 45px 65px 45px 55px;
+    padding: 20px;
     position: relative;
     & .description {
       font-size: 16px;
       line-height: 1.5;
       letter-spacing: 0.5px;
-      font-family: monospace;
       font-weight: 300;
-      margin-top: 15px;
+      margin-top: 22px;
       h4 {
         font-size: 18px;
         color: #000;

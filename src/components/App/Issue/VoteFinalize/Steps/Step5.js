@@ -1,5 +1,6 @@
 import React from "react"
 import { Button, Grid } from "@mui/material"
+import { NavigateNext } from "@mui/icons-material"
 import metamaskIcon from "assets/icons/metamask.svg"
 import config from "config"
 import { CardSection, GrayHeadlineH3, GrayHeadlineH5, GraySubTextUL, GrayTextP } from "commons/newStyles"
@@ -31,7 +32,9 @@ const Step5 = ({ proceed }) => {
         <Grid item lg={8}>
           <div>
             <GrayHeadlineH3>Configure Zerotheft Wallet</GrayHeadlineH3>
-            <GrayTextP>We need to configure zerotheft wallet to connect to {name}.</GrayTextP>
+            <GrayTextP style={{ marginBottom: "15px" }}>
+              We need to configure zerotheft wallet to connect to {name}.
+            </GrayTextP>
             <GrayHeadlineH5>Zerotheft Wallet Network Setup</GrayHeadlineH5>
             <div>
               <GrayTextP>
@@ -67,6 +70,7 @@ const Step5 = ({ proceed }) => {
                 onClick={async () => {
                   await proceed()
                 }}
+                endIcon={<NavigateNext />}
               >
                 Continue
               </Button>

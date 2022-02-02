@@ -2,10 +2,8 @@ import React from "react"
 import { startCase } from "lodash"
 import { Breadcrumbs, Grid, Link } from "@mui/material"
 import { Box } from "@mui/system"
-import { NavigateNext, Warning } from "@mui/icons-material"
+import { NavigateNext } from "@mui/icons-material"
 import { DarkCaption1, GrayCaption1 } from "commons/newStyles"
-import { colors } from "theme"
-import { WarningWrapper } from "./styles"
 
 // const checkRoute = (routes, currentRoute) => {
 //   if (!currentRoute || isEmpty(routes)) return true
@@ -42,14 +40,6 @@ const MainWrapper = ({ stepsPage, pathname, children, pathCrumbTemp }) => {
                     )
                   })}
                 </Breadcrumbs>
-              </Grid>
-              <Grid item xs={7}>
-                <WarningWrapper>
-                  <p>
-                    <Warning sx={{ float: "left", color: colors.secondaryVariant1 }} />
-                    The amounts and reasoning comes from citizens. Not from the ZTM company or this website.{" "}
-                  </p>
-                </WarningWrapper>
               </Grid>
             </Grid>
           </Box>

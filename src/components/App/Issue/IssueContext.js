@@ -6,6 +6,7 @@ import { getPathProposalsByPath, getProposal } from "apis/proposals"
 import { AppContext } from "components/App/AppContext"
 import config from "config"
 import { ToastContext } from "commons/ToastContext"
+import useWeb3 from "utils/useWeb3"
 import { Web3Context } from "../Web3Context"
 import {
   checkNetwork,
@@ -22,6 +23,7 @@ const IssueProvider = ({ children, id, match, location }) => {
   let { web3 } = useContext(Web3Context)
   const { loadWeb3 } = useContext(Web3Context)
   const { setToastProperties } = useContext(ToastContext)
+  const { addOrSwitchCorrectNetwork } = useWeb3()
   const [issue, error, loading, fetchIssue, selection, updateSelection, updateIssue] = useIssueFetcher(id, match)
   const [vote, updateVote] = useState()
 
@@ -81,8 +83,7 @@ const IssueProvider = ({ children, id, match, location }) => {
 
     const isCorrectNetwork = await checkNetwork(web3)
     if (!isCorrectNetwork) {
-      await updateCurrentRequirementStep(2)
-      return false
+      await addOrSwitchCorrectNetwork()
     }
 
     const userWalletAddress = await getUserMetamaskAddress(web3)
@@ -121,16 +122,21 @@ const IssueProvider = ({ children, id, match, location }) => {
         details
       )
 
-      if (transferToWalletStatus.status === "success") {
+      if (transferToWalletStatus.success === true) {
         message = `We have successfully transferred ${amountToBefunded} to your wallet for voting.`
         setToastProperties({ message, type: "success" })
-      } else {
-        setToastProperties({
-          message: transferToWalletStatus.response.data.error,
-          type: "error",
-        })
-        return false
+        return true
       }
+
+      if (transferToWalletStatus.status === 400) {
+        return true
+      }
+
+      setToastProperties({
+        message: transferToWalletStatus.data.error,
+        type: "error",
+      })
+      return false
     }
     return true
   }

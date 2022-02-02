@@ -1,7 +1,5 @@
 // eslint-disable no-throw-literal
 import React, { useState, useContext, useEffect } from "react"
-import styled from "styled-components"
-import { toast } from "react-toastify"
 import { useRouteMatch } from "react-router-dom"
 import { get, isEmpty } from "lodash"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -9,6 +7,7 @@ import { faFrown } from "@fortawesome/free-regular-svg-icons"
 
 import { Box } from "@mui/system"
 import { Card, CardContent, Grid, Rating } from "@mui/material"
+import { styled } from "@mui/material/styles"
 import config from "config"
 import { colors } from "theme"
 import { imageExists, numberWithCommas } from "utils"
@@ -30,8 +29,10 @@ import {
   ErrorOverline1,
   ErrorBody1,
   GrayHeadlineH5,
+  TheftBlockSec,
 } from "commons/newStyles"
 import OverlaySpinner from "commons/OverlaySpinner"
+import { ToastContext } from "commons/ToastContext"
 import { Header, NoChartText } from "../styles"
 
 const { CHAIN_ID, loadContract } = config
@@ -41,6 +42,9 @@ const ProposalReport = ({ item, reportPath }) => {
     match = useRouteMatch(),
     { carryTransaction, getWalletAccount, signMessage } = useWeb3(),
     [ratingLoader, updateRatingLoader] = useState(false)
+
+  const { setToastProperties } = useContext(ToastContext)
+  const { addOrSwitchCorrectNetwork } = useWeb3()
 
   // const { ProposalReports } = useContext(IssueContext)
   let maxTheftYear = null
@@ -84,18 +88,22 @@ const ProposalReport = ({ item, reportPath }) => {
       // Check if chrome wallet extn is installed
       const chromeWallet = !!window.web3
       if (!chromeWallet) {
-        throw new Error("No zerotheft wallet found.")
+        const message = "No browser wallet has been found."
+        setToastProperties({ message, type: "error" })
+        return
       }
 
       // Check if correct network is selected
       if (web3.currentProvider.chainId !== `0x${CHAIN_ID.toString(16)}`) {
-        throw new Error("Please select the correct network.")
+        await addOrSwitchCorrectNetwork()
       }
 
       // Check if `account` is a verified voter ID
       const { data } = await getVoterInfos(account.toLowerCase())
       if (!data.verifiedCitizen) {
-        throw new Error("You are not a verified citizen.")
+        const message = "You are not a verified citizen."
+        setToastProperties({ message, type: "error" })
+        return
       }
 
       // Check if `account` has already provided rating for this proposal
@@ -117,13 +125,25 @@ const ProposalReport = ({ item, reportPath }) => {
 
       await carryTransaction(feedbackContract, methodName, [item.id, newRating, signedMessage], txDetails)
       await getProposalApi(item.id)
-      toast.success(`Rating successfully ${ratingData.success ? "updated" : "provided"}.`)
+
+      const message = `Rating has been successfully ${ratingData.success ? "updated" : "provided"}.`
+      setToastProperties({ message, type: "success" })
     } catch (e) {
-      toast.error(e.message || "Something went wrong.")
+      const message = e.message || "Something went wrong."
+      setToastProperties({ message, type: "error" })
     } finally {
       updateRatingLoader(false)
     }
   }
+
+  const StyledRating = styled(Rating)({
+    "& .MuiRating-iconFilled": {
+      color: colors.secondaryVariant2,
+    },
+    "& .MuiRating-iconEmpty": {
+      color: colors.grey300,
+    },
+  })
 
   return (
     <Box>
@@ -131,10 +151,61 @@ const ProposalReport = ({ item, reportPath }) => {
       <div className="detailsWithCharts">
         <Header>
           {theftData && (no || yes) && (
-            <Card>
+            <Card sx={{ boxShadow: "none" }}>
               <CardContent>
                 <GrayHeadlineH4>Was there theft?</GrayHeadlineH4>
-                <div className="wrapLeftRightsec" style={{ marginTop: "10px" }}>
+                <div>
+                  <div
+                    className="wrapLeftRightsec"
+                    style={{
+                      marginTop: "10px",
+                      width: "100%",
+                      maxWidth: "400px",
+                    }}
+                  >
+                    <div className="leftTheftSec" style={{ width: "85%", float: "left" }}>
+                      <TheftBlockSec className="yesTheftsec" width={yes}>
+                        <span>Yes</span>
+                      </TheftBlockSec>
+                    </div>
+                    <div
+                      style={{
+                        width: "10%",
+                        float: "right",
+                        paddingTop: "2px",
+                      }}
+                    >
+                      <GrayHeadlineH5>{yes}%</GrayHeadlineH5>
+                    </div>
+                  </div>
+                  <div
+                    className="wrapLeftRightsec"
+                    style={{
+                      marginTop: "10px",
+                      width: "100%",
+                      maxWidth: "400px",
+                    }}
+                  >
+                    <div className="leftTheftSec" style={{ width: "85%", float: "left" }}>
+                      <TheftBlockSec className="noTheftsec" width={no}>
+                        <span>No</span>
+                      </TheftBlockSec>
+                    </div>
+                    <div
+                      style={{
+                        width: "10%",
+                        float: "right",
+                        paddingTop: "2px",
+                      }}
+                    >
+                      <GrayHeadlineH5>{no}%</GrayHeadlineH5>
+                    </div>
+                  </div>
+                </div>
+                {/* <div
+                  className="wrapLeftRightsec"
+                  style={{ marginTop: "100px" }}
+                >
                   <div className="leftTheftSec">
                     <TheftBlockSec className="yesTheftsec" width={yes}>
                       <span>Yes {yes}%</span>
@@ -143,8 +214,10 @@ const ProposalReport = ({ item, reportPath }) => {
                       <span>No {no}%</span>
                     </TheftBlockSec>
                   </div>
-                </div>
-                <GraySubtitle1>Total Voters : {numberWithCommas(get(theftData, "votes"))}</GraySubtitle1>
+                </div> */}
+                <GraySubtitle1 style={{ display: "inline-block", marginTop: "5px" }}>
+                  Total Voters : {numberWithCommas(get(theftData, "votes"))}
+                </GraySubtitle1>
                 {imageExists(`${reportPath}-votesForTheftAmount.svg`) ? (
                   <div className="imageWrapper">
                     <img
@@ -161,12 +234,12 @@ const ProposalReport = ({ item, reportPath }) => {
           )}
         </Header>
 
-        <Card>
+        <Card sx={{ boxShadow: "none" }}>
           <CardContent>
             <Grid container>
               <Grid item xs={8}>
                 <GrayHeadlineH5>#{item.id}</GrayHeadlineH5>
-                <Rating
+                <StyledRating
                   value={get(item, "ratings.rating", 0)}
                   name="proposal_rating"
                   onChange={(event, newValue) => {
@@ -182,55 +255,6 @@ const ProposalReport = ({ item, reportPath }) => {
             </Grid>
             <GrayHeadlineH4>If there was theft, which makes the best case.</GrayHeadlineH4>
             <GrayBody1>This is used to compare against, for when you make your final decision</GrayBody1>
-            {/* {allowSelect && (
-              <div className="btns">
-                <Button
-                  width={170}
-                  height={44}
-                  onClick={() => {
-                    updateSelection(
-                      type === "counter"
-                        ? { ...selection, counterProposal: item }
-                        : { ...selection, proposal: item }
-                    );
-                    history.push(
-                      `/path/${get(match, "params.pathname")}/issue/${get(
-                        match,
-                        "params.id"
-                      )}/${type === "counter" ? "vote" : "counter-proposals"}`
-                    );
-                  }}
-                  disabled={isEmpty(item)}
-                >
-                  Select This One
-                </Button>
-                <Button
-                  plain
-                  height={44}
-                  width={125}
-                  onClick={() => {
-                    updateSelection(
-                      type === "counter"
-                        ? { ...selection, counterProposal: null }
-                        : { ...selection, proposal: null }
-                    );
-                    history.push(
-                      `/path/${get(match, "params.pathname")}/issue/${get(
-                        match,
-                        "params.id"
-                      )}/${type === "counter" ? "vote" : "counter-proposals"}`
-                    );
-                  }}
-                  style={{
-                    marginLeft: 10,
-                    background: "transparent",
-                    borderWidth: 2,
-                  }}
-                >
-                  Skip This
-                </Button>
-              </div>
-            )} */}
             {!isEmpty(item) && (
               <>
                 {imageExists(`${reportPath}-theftValue-view.svg`) ? (
@@ -249,7 +273,7 @@ const ProposalReport = ({ item, reportPath }) => {
                   <div>
                     <GraySubtitle1>Theft Amount: </GraySubtitle1>
                     <HeadlineH1>{item.summary}</HeadlineH1>
-                    <SubTitle1>{maxTheftYear ? <h4>(in {maxTheftYear})</h4> : null}</SubTitle1>
+                    <SubTitle1>{maxTheftYear ? <>(in {maxTheftYear})</> : null}</SubTitle1>
                   </div>
                 </GrayCardSection>
 
@@ -271,43 +295,3 @@ const ProposalReport = ({ item, reportPath }) => {
 }
 
 export default ProposalReport
-
-const TheftBlockSec = styled.div`
-  display: flex;
-  border-radius: 2px;
-  flex-flow: column;
-  height: 30px;
-  margin-bottom: 10px;
-  align-item: center;
-  background: ${colors.grey200};
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-  position: relative;
-  span {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-    white-space: nowrap;
-    justify-content: center;
-    color: white;
-    padding-left: 10px;
-    position: relative;
-    z-index: 1;
-  }
-  &::before {
-    content: "";
-    display: block;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    height: 100%;
-    width: ${(props) => props.width || 0}%;
-    background: ${colors.background.green};
-  }
-  &.noTheftsec {
-    &::before {
-      background: ${colors.background.red};
-    }
-  }
-`

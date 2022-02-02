@@ -1,5 +1,6 @@
 import React from "react"
 import { Button, Grid } from "@mui/material"
+import { NavigateNext } from "@mui/icons-material"
 import config from "config"
 import {
   CardSection,
@@ -20,13 +21,13 @@ const UnverifiedCitizen = ({ proceed }) => {
     <CardSection>
       <Grid container>
         <Grid item lg={12}>
-          <GrayHeadlineH3>Verify Voter Id</GrayHeadlineH3>
-          <GrayTextP>You need to verify your voter id in order to vote</GrayTextP>
+          <GrayHeadlineH3>Verify Voter ID</GrayHeadlineH3>
+          <GrayTextP>You need to verify your voter ID in order to vote</GrayTextP>
           <Body>
             <div>
               <GrayHeadlineH5>Voter ID verification</GrayHeadlineH5>
               <GraySubTextP>
-                If you have already verified your voter id, Please click on continue. else, please follow below steps.
+                If you have already verified your voter ID, Please click on continue. else, please follow below steps.
               </GraySubTextP>
               <GraySubTextUL>
                 <OrderedList>
@@ -34,8 +35,8 @@ const UnverifiedCitizen = ({ proceed }) => {
                     Please click <MaterialLinkText onClick={() => window.open(retryUrl)}>here</MaterialLinkText> to
                     verify.
                   </li>
-                  <li>Proceed to verify your Voter Id</li>
-                  <li>Once Voter id has been verified, Click on continue. </li>
+                  <li>Proceed to verify your Voter ID</li>
+                  <li>Once Voter ID has been verified, Click on continue. </li>
                 </OrderedList>
               </GraySubTextUL>
             </div>
@@ -45,6 +46,7 @@ const UnverifiedCitizen = ({ proceed }) => {
                 onClick={async () => {
                   await proceed()
                 }}
+                endIcon={<NavigateNext />}
               >
                 Continue
               </Button>

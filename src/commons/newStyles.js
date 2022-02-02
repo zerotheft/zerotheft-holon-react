@@ -35,6 +35,21 @@ export const HeadlineH1 = styled.h1`
     letter-spacing: 0.1px;
     color: ${colors.primary};
   `,
+  PrimaryHeadlineH2 = styled.h2`
+    font-style: normal;
+    font-weight: bold;
+    font-size: 34px;
+    line-height: 40px;
+    letter-spacing: -0.01em;
+    color: ${colors.primaryDark};
+  `,
+  BlackHeadlineH3 = styled.h3`
+    font-style: normal;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 28px;
+    color: ${colors.text.blackH3};
+  `,
   GrayHeadlineH3 = styled.h3`
     font-size: 20px;
     font-weight: 500;
@@ -62,6 +77,21 @@ export const HeadlineH1 = styled.h1`
     letter-spacing: 0.25px;
     line-height: 20px;
     color: ${colors.grey500};
+  `,
+  BlackBody1 = styled.p`
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: 0.44px;
+    color: ${colors.text.completeBlack};
+  `,
+  BlackBody2 = styled.p`
+    font-size: 14px;
+    font-weight: normal;
+    letter-spacing: 0.25px;
+    line-height: 20px;
+    color: ${colors.text.completeBlack};
   `,
   GraySubtitle1 = styled.p`
     font-size: 14px;
@@ -142,6 +172,15 @@ export const HeadlineH1 = styled.h1`
     text-transform: uppercase;
     color: ${colors.text.white};
     padding: 6px;
+  `,
+  PrimaryButtonText1 = styled.p`
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 16px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+    color: ${colors.textTitle};
   `,
   MaterialLinkText = styled.span`
     color: ${colors.primary};
@@ -233,6 +272,45 @@ export const HeadlineH1 = styled.h1`
     }
     &::before {
       margin-right: 15px;
+    }
+  `,
+  TheftBlockSec = styled.div`
+    display: flex;
+    border-radius: 2px;
+    flex-flow: column;
+    height: 30px;
+    margin-bottom: 10px;
+    align-item: center;
+    background: ${colors.grey200};
+    font-size: 18px;
+    line-height: 24px;
+    letter-spacing: 0.15px;
+    position: relative;
+    span {
+      display: flex;
+      flex-flow: column;
+      height: 100%;
+      white-space: nowrap;
+      justify-content: center;
+      color: white;
+      padding-left: 10px;
+      position: relative;
+      z-index: 1;
+    }
+    &::before {
+      content: "";
+      display: block;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      height: 100%;
+      width: ${(props) => props.width || 0}%;
+      background: ${colors.background.green};
+    }
+    &.noTheftsec {
+      &::before {
+        background: ${colors.background.red};
+      }
     }
   `,
   TableWrapper = styled.div`

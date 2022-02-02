@@ -34,7 +34,7 @@ const ProposalDetail = ({
     item && getProposalApi(item.id)
   }, [item])
 
-  if (proposalLoading && proposalLength > 0) {
+  if (proposalLoading) {
     return (
       <Body>
         <OverlaySpinner overlayParent loading backgroundColor="transparent" />
@@ -47,7 +47,7 @@ const ProposalDetail = ({
 
   return (
     <Box>
-      <Card>
+      <Card sx={{ boxShadow: "none" }}>
         <CardContent>
           {proposalLength === 0 ? (
             <>
@@ -61,7 +61,7 @@ const ProposalDetail = ({
               <Grid container>
                 <Grid item xs={4}>
                   <Box>
-                    <GraySubtitle1>Proposal detail</GraySubtitle1>
+                    <GraySubtitle1>Proposal Detail</GraySubtitle1>
                   </Box>
                 </Grid>
                 <Grid item xs={8}>
@@ -96,9 +96,13 @@ const ProposalDetail = ({
                       variant="outlined"
                       onClick={navigateToNext}
                       disabled={nextDisableStatus}
-                      sx={{ height: "inherit", minWidth: "40px" }}
+                      sx={{
+                        height: "inherit",
+                        maxWidth: "40px",
+                        minWidth: "40px",
+                      }}
                     >
-                      <ArrowForwardIos fontSize="small" sx={{ ml: "-8px" }} />
+                      <ArrowForwardIos fontSize="small" />
                     </Button>
                   </div>
                 </Grid>
@@ -116,12 +120,7 @@ const ProposalDetail = ({
                   >
                     {convertJSONtoString(get(proposalInfo, "detail", {}))}
                   </div>
-                ) : (
-                  <>
-                    {get(item, "title") && <h5>{get(item, "title")}</h5>}
-                    <p>{get(item, "description")}</p>
-                  </>
-                )}
+                ) : null}
               </div>
             </>
           )}

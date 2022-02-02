@@ -1,5 +1,6 @@
 import React from "react"
 import { Button, Grid } from "@mui/material"
+import { NavigateNext } from "@mui/icons-material"
 import config from "config"
 import {
   CardSection,
@@ -30,7 +31,7 @@ const Step6 = ({ proceed }) => {
                     Navigate to register voter.{" "}
                     <MaterialLinkText onClick={() => window.open(registrationLink)}>Register Voter</MaterialLinkText>
                   </li>
-                  <li>Proceed with the flow provided on page to register your Voter Id</li>
+                  <li>Proceed with the flow provided on page to register your Voter ID</li>
                   <li>Switch back to this page and click continue.</li>
                 </OrderedList>
               </GraySubTextUL>
@@ -40,6 +41,7 @@ const Step6 = ({ proceed }) => {
                   onClick={async () => {
                     await proceed()
                   }}
+                  endIcon={<NavigateNext />}
                 >
                   Continue
                 </Button>

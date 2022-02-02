@@ -6,7 +6,7 @@ import styled from "styled-components"
 import { AppBar, Button, Container, IconButton, Menu, MenuItem, Toolbar, Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import MenuIcon from "@mui/icons-material/Menu"
-import { Apps, Dvr, Home, Language, MoreVert, ViewList } from "@mui/icons-material"
+import { ListAlt, Dvr, Home, Language, MoreVert, ViewList, KeyboardArrowDown } from "@mui/icons-material"
 import config from "config"
 import BRANDLOGO from "assets/icons/zerotheft.svg"
 
@@ -16,7 +16,7 @@ import useFetch from "commons/hooks/useFetch"
 import * as ROUTES from "constants/routes"
 
 // import { Container } from "commons/styles";
-import { colors } from "theme"
+import { colors, height } from "theme"
 
 import { AppContext } from "../../AppContext"
 
@@ -41,6 +41,7 @@ const Header = () => {
   }
 
   const handleCloseNavMenu = () => {
+    handleCloseMoreMenuSmall()
     setAnchorElNav(null)
   }
 
@@ -65,11 +66,13 @@ const Header = () => {
     display: "flex",
     color: colors.grey500,
     fontSize: "14px",
+    textTransform: "unset",
   }
 
   const SubButtonSx = {
     display: "flex",
     color: colors.grey500,
+    textTransform: "unset",
   }
 
   useEffect(() => {
@@ -79,7 +82,7 @@ const Header = () => {
   return (
     <AppBar color="neutral">
       <Container maxWidth="false">
-        <Toolbar disableGutters>
+        <NavToolBar disableGutters>
           <NavLink to="/">
             <Box component="img" alt="Your logo." src={BRANDLOGO} sx={{ display: { xs: "none", md: "flex" } }} />
           </NavLink>
@@ -110,19 +113,23 @@ const Header = () => {
                 </Button>
               </NavLink>
 
-              <Button
-                startIcon={<Apps />}
+              <NavButton
+                startIcon={<ListAlt />}
                 key="more"
                 onClick={handleOpenMoreMenu}
                 variant="text"
                 sx={buttonSx}
                 activeClassName="active"
+                endIcon={<KeyboardArrowDown />}
               >
                 More
-              </Button>
+              </NavButton>
 
               <Menu
-                sx={{ mt: "45px" }}
+                sx={{
+                  mt: "36px",
+                  pt: "0px",
+                }}
                 id="menu-appbar"
                 anchorEl={anchorElMore}
                 anchorOrigin={{
@@ -138,25 +145,31 @@ const Header = () => {
                 onClose={handleCloseMoreMenu}
               >
                 <SubMenuAnchor>
-                  <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                  <NavLink to={ROUTES.DATALIST} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="citizens">
                       <Typography textAlign="center">Citizens/Proposals</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                  <NavLink to={ROUTES.VOTELIST} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="votes">
                       <Typography textAlign="center">Votes</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                  <NavLink to={ROUTES.HIERARCHY} activeClassName="active" onClick={handleCloseMoreMenu}>
                     <MenuItem key="hierarchyYaml">
                       <Typography textAlign="center">HierarchyYaml</Typography>
                     </MenuItem>
                   </NavLink>
 
-                  <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                  <a
+                    href={ROUTES.EXPORT_LOCATION}
+                    activeClassName="active"
+                    target="_blank"
+                    rel="noreferrer"
+                    onClick={handleCloseMoreMenu}
+                  >
                     <MenuItem key="exportedData">
                       <Typography textAlign="center">Exported Data</Typography>
                     </MenuItem>
@@ -197,7 +210,7 @@ const Header = () => {
             >
               <SubMenuAnchor>
                 <MenuItem key="home">
-                  <NavLink to={ROUTES.HOME} exact activeClassName="active">
+                  <NavLink to={ROUTES.HOME} exact activeClassName="active" onClick={handleCloseNavMenu}>
                     <Button startIcon={<Home />} key="home" variant="text" sx={SubButtonSx}>
                       Home
                     </Button>
@@ -207,7 +220,12 @@ const Header = () => {
 
               <SubMenuAnchor>
                 <MenuItem key="holon">
-                  <a href={`${CENTRALIZED_SERVER_FRONTEND}/holons`} target="_blank" rel="noreferrer">
+                  <a
+                    href={`${CENTRALIZED_SERVER_FRONTEND}/holons`}
+                    onClick={handleCloseNavMenu}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
                     <Button startIcon={<Language />} key="holon" variant="text" sx={SubButtonSx}>
                       Holons
                     </Button>
@@ -217,7 +235,7 @@ const Header = () => {
 
               <SubMenuAnchor>
                 <MenuItem key="path">
-                  <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active">
+                  <NavLink to={`${ROUTES.PATH}/${country.value}`} activeClassName="active" onClick={handleCloseNavMenu}>
                     <Button startIcon={<ViewList />} key="path" variant="text" sx={SubButtonSx}>
                       Path
                     </Button>
@@ -257,25 +275,31 @@ const Header = () => {
               onClose={handleCloseMoreMenuSmall}
             >
               <SubMenuAnchor>
-                <NavLink to={ROUTES.DATALIST} activeClassName="active">
+                <NavLink to={ROUTES.DATALIST} activeClassName="active" onClick={handleCloseNavMenu}>
                   <MenuItem key="citizens">
                     <Typography textAlign="center">Citizens/Proposals</Typography>
                   </MenuItem>
                 </NavLink>
 
-                <NavLink to={ROUTES.VOTELIST} activeClassName="active">
+                <NavLink to={ROUTES.VOTELIST} activeClassName="active" onClick={handleCloseNavMenu}>
                   <MenuItem key="votes">
                     <Typography textAlign="center">Votes</Typography>
                   </MenuItem>
                 </NavLink>
 
-                <NavLink to={ROUTES.HIERARCHY} activeClassName="active">
+                <NavLink to={ROUTES.HIERARCHY} activeClassName="active" onClick={handleCloseNavMenu}>
                   <MenuItem key="hierarchyYaml">
                     <Typography textAlign="center">HierarchyYaml</Typography>
                   </MenuItem>
                 </NavLink>
 
-                <a href={ROUTES.EXPORT_LOCATION} activeClassName="active" target="_blank" rel="noreferrer">
+                <a
+                  href={ROUTES.EXPORT_LOCATION}
+                  activeClassName="active"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={handleCloseNavMenu}
+                >
                   <MenuItem key="exportedData">
                     <Typography textAlign="center">Exported Data</Typography>
                   </MenuItem>
@@ -294,7 +318,7 @@ const Header = () => {
               <img src={BRANDLOGO} alt="Zerotheft Movement" />
             </Link>
           </Typography>
-        </Toolbar>
+        </NavToolBar>
       </Container>
     </AppBar>
   )
@@ -302,27 +326,48 @@ const Header = () => {
 
 export default Header
 
-const MenuAnchor = styled.div`
-  display: flex;
-  a {
-    text-decoration: none;
-    button {
-      min-height: 100%;
+const NavToolBar = styled(Toolbar)`
+    height: ${height.header}px;
+    min-height: ${height.header}px;
+  `,
+  NavButton = styled(Button)`
+    &&:hover {
+      background-color: rgba(127, 88, 191, 0.04);
     }
-  }
-  .active {
-    button {
+    &:focus {
+      background-color: ${colors.white};
+    }
+    &.active {
       color: ${colors.primary};
-      svg {
-        path {
-          fill: ${colors.primary};
+    }
+    span.MuiButton-endIcon {
+      margin-left: 0;
+    }
+  `,
+  MenuAnchor = styled.div`
+    display: flex;
+    a {
+      text-decoration: none;
+      button {
+        min-height: 100%;
+      }
+    }
+    .active {
+      button {
+        color: ${colors.primary};
+        svg {
+          path {
+            fill: ${colors.primary};
+          }
         }
       }
     }
-  }
-`
+  `
 
 const SubMenuAnchor = styled.div`
+  p {
+    font-size: 14px !important;
+  }
   a {
     text-decoration: none;
     color: ${colors.grey500};
