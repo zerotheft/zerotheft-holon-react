@@ -80,7 +80,12 @@ const Header = () => {
   }, [])
 
   return (
-    <AppBar color="neutral">
+    <AppBar
+      sx={{
+        boxShadow: "0px 1px 8px rgba(0, 0, 0, 0.2)",
+      }}
+      color="neutral"
+    >
       <Container maxWidth="false">
         <NavToolBar disableGutters>
           <NavLink to="/">
